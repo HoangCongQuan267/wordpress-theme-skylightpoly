@@ -809,7 +809,7 @@ function hero_slideshow_customizer($wp_customize) {
     
     // Title Font Size
     $wp_customize->add_setting('hero_slideshow_title_size', array(
-        'default'           => '3',
+        'default'           => '1.2',
         'sanitize_callback' => 'sanitize_text_field',
         'transport'         => 'refresh',
     ));
@@ -841,7 +841,7 @@ function hero_slideshow_customizer($wp_customize) {
     
     // Subtitle Font Size
     $wp_customize->add_setting('hero_slideshow_subtitle_size', array(
-        'default'           => '1.5',
+        'default'           => '0.7',
         'sanitize_callback' => 'sanitize_text_field',
         'transport'         => 'refresh',
     ));

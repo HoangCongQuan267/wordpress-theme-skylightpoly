@@ -387,9 +387,11 @@
         // Initialize slideshow
         function initSlides() {
             slides.forEach((slide, index) => {
-                slide.style.opacity = index === 0 ? '1' : '0';
-                slide.style.transform = 'translateX(0)';
-                slide.style.transition = 'opacity 0.8s ease-in-out, transform 0.8s ease-in-out';
+                if (index === 0) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
             });
             
             if (indicators.length > 0) {

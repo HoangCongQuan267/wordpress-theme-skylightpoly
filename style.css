@@ -638,7 +638,7 @@ body {
 }
 
 .slide-title {
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     font-weight: 200;
     margin-bottom: 15px;
     line-height: 1.3;
@@ -647,7 +647,7 @@ body {
 }
 
 .slide-subtitle {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     margin-bottom: 25px;
     opacity: 0.9;
     font-weight: 300;
@@ -742,11 +742,11 @@ body {
     }
     
     .slide-title {
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
     
     .slide-subtitle {
-        font-size: 0.85rem;
+        font-size: 0.65rem;
     }
     
     .section-title {
@@ -776,12 +776,12 @@ body {
     }
     
     .slide-title {
-        font-size: 1.3rem;
+        font-size: 0.9rem;
         margin-bottom: 12px;
     }
     
     .slide-subtitle {
-        font-size: 0.8rem;
+        font-size: 0.6rem;
         margin-bottom: 20px;
     }
     
