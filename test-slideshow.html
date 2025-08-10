@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Slideshow Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Test Hero Section -->
+    <section class="hero-section" data-autoplay="true" data-duration="5000">
+        <div class="hero-slideshow">
+            <!-- Test Slide 1 -->
+            <div class="slide active" style="background-image: url('https://via.placeholder.com/1200x500/2154fe/ffffff?text=Slide+1')">
+                <div class="slide-content">
+                    <h1 class="slide-title">Welcome to Our Website</h1>
+                    <p class="slide-subtitle">Discover amazing features and services</p>
+                    <a href="#" class="slide-button">Get Started</a>
+                </div>
+            </div>
+            
+            <!-- Test Slide 2 -->
+            <div class="slide" style="background-image: url('https://via.placeholder.com/1200x500/4169e1/ffffff?text=Slide+2')">
+                <div class="slide-content">
+                    <h1 class="slide-title">Premium Quality</h1>
+                    <p class="slide-subtitle">Experience the best in class solutions</p>
+                    <a href="#" class="slide-button">Learn More</a>
+                </div>
+            </div>
+            
+            <!-- Test Slide 3 -->
+            <div class="slide" style="background-image: url('https://via.placeholder.com/1200x500/87ceeb/000000?text=Slide+3')">
+                <div class="slide-content">
+                    <h1 class="slide-title">Join Us Today</h1>
+                    <p class="slide-subtitle">Be part of our growing community</p>
+                    <a href="#" class="slide-button">Sign Up</a>
+                </div>
+            </div>
+            
+            <!-- Navigation Arrows -->
+            <button class="slideshow-arrows prev-arrow">‹</button>
+            <button class="slideshow-arrows next-arrow">›</button>
+            
+            <!-- Slide Indicators -->
+            <div class="slideshow-nav">
+                <span class="nav-dot active" data-slide="0"></span>
+                <span class="nav-dot" data-slide="1"></span>
+                <span class="nav-dot" data-slide="2"></span>
+            </div>
+        </div>
+    </section>
+    
+    <div style="padding: 50px; text-align: center;">
+        <h2>Hero Slideshow Test Page</h2>
+        <p>This page tests the hero slideshow functionality with sample images.</p>
+        <p>The slideshow should auto-play and respond to navigation controls.</p>
+    </div>
+    
+    <script src="js/custom.js"></script>
+</body>
+</html>

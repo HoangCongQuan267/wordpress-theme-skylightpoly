@@ -8,6 +8,93 @@
 
 get_header(); ?>
 
+<!-- Hero Section with Dynamic Slideshow -->
+<?php
+// Check if slideshow is enabled in customizer
+$slideshow_enabled = get_theme_mod('hero_slideshow_enable', true);
+if ($slideshow_enabled) :
+    // Try customizer slides first, then fallback to custom post type
+    $customizer_slides = get_customizer_hero_slides();
+    $hero_slides = !empty($customizer_slides) ? $customizer_slides : get_hero_slides();
+    $is_customizer = !empty($customizer_slides);
+    
+    // Debug: Show slide count (remove this in production)
+    // echo '<!-- Debug: Customizer slides: ' . count($customizer_slides) . ', Total slides: ' . count($hero_slides) . ' -->';
+    
+    if (!empty($hero_slides)) :
+?>
+<!-- Dynamic slides from WordPress Customizer or Admin -->
+<?php
+$autoplay = get_theme_mod('hero_slideshow_autoplay', true);
+$speed = get_theme_mod('hero_slideshow_speed', 5000);
+?>
+<section class="hero-section" data-autoplay="<?php echo $autoplay ? 'true' : 'false'; ?>" data-duration="<?php echo $speed; ?>">
+    <div class="hero-slideshow">
+        <?php foreach ($hero_slides as $index => $slide) : 
+            if ($is_customizer) {
+                // Customizer slide data
+                $slide_image = $slide['image_url'];
+                $slide_title = $slide['title'];
+                $slide_subtitle = $slide['subtitle'];
+                $button_text = $slide['button_text'];
+                $button_url = $slide['button_url'];
+            } else {
+                // Custom post type slide data
+                $slide_image = get_the_post_thumbnail_url($slide->ID, 'full');
+                $slide_title = get_the_title($slide->ID);
+                $slide_subtitle = get_post_meta($slide->ID, '_hero_slide_subtitle', true);
+                $button_text = get_post_meta($slide->ID, '_hero_slide_button_text', true);
+                $button_url = get_post_meta($slide->ID, '_hero_slide_button_url', true);
+            }
+            $active_class = ($index === 0) ? ' active' : '';
+        ?>
+        <div class="slide<?php echo $active_class; ?>" style="background-image: url('<?php echo esc_url($slide_image); ?>')">            <div class="slide-content">
+                <h1 class="slide-title"><?php echo esc_html($slide_title); ?></h1>
+                <?php if ($slide_subtitle) : ?>
+                    <p class="slide-subtitle"><?php echo esc_html($slide_subtitle); ?></p>
+                <?php endif; ?>
+                <?php if ($button_text && $button_url) : ?>
+                    <a href="<?php echo esc_url($button_url); ?>" class="slide-button"><?php echo esc_html($button_text); ?></a>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php endforeach; ?>
+        
+        <!-- Navigation Arrows -->
+        <button class="slideshow-arrows prev-arrow">‹</button>
+        <button class="slideshow-arrows next-arrow">›</button>
+        
+        <!-- Slide Indicators -->
+        <div class="slideshow-nav">
+            <?php foreach ($hero_slides as $index => $slide) : 
+                $active_class = ($index === 0) ? ' active' : '';
+            ?>
+            <span class="nav-dot<?php echo $active_class; ?>" data-slide="<?php echo $index; ?>"></span>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php 
+    else : 
+?>
+<!-- Fallback: Default hero section when no slides are configured -->
+<section class="hero-section">
+    <div class="hero-slideshow">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1 class="hero-title">Welcome to Our Website</h1>
+                <p class="hero-subtitle">Create your custom hero slides in WordPress admin</p>
+                <a href="<?php echo admin_url('edit.php?post_type=hero_slide'); ?>" class="hero-btn">Manage Slides</a>
+            </div>
+        </div>
+    </div>
+</section>
+<?php 
+    endif; // End slideshow enabled check
+endif; // End hero slides check
+?>
+
 <main class="site-main">
     <div class="content-area">
         <div class="posts-container full-width">

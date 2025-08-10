@@ -29,6 +29,9 @@
         
         // Accessibility Improvements
         improveAccessibility();
+        
+        // Hero Slideshow
+        initHeroSlideshow();
     });
 
     /**
@@ -357,5 +360,196 @@
     }, 250);
     
     window.addEventListener('resize', debouncedResize);
+
+    /**
+     * Hero Slideshow Functionality
+     */
+    function initHeroSlideshow() {
+        const heroSection = document.querySelector('.hero-section');
+        if (!heroSection) return;
+        
+        const slideshow = heroSection.querySelector('.hero-slideshow');
+        const slides = slideshow.querySelectorAll('.slide');
+        const prevBtn = slideshow.querySelector('.prev-arrow');
+        const nextBtn = slideshow.querySelector('.next-arrow');
+        const indicators = slideshow.querySelectorAll('.nav-dot');
+        
+        if (slides.length <= 1) return;
+        
+        let currentSlideIndex = 0;
+        let isTransitioning = false;
+        let autoPlayInterval;
+        
+        // Get settings from data attributes or defaults
+        const autoPlay = heroSection.dataset.autoplay !== 'false';
+        const slideDuration = parseInt(heroSection.dataset.duration) || 5000;
+        
+        // Initialize slideshow
+        function initSlides() {
+            slides.forEach((slide, index) => {
+                slide.style.opacity = index === 0 ? '1' : '0';
+                slide.style.transform = 'translateX(0)';
+                slide.style.transition = 'opacity 0.8s ease-in-out, transform 0.8s ease-in-out';
+            });
+            
+            if (indicators.length > 0) {
+                indicators[0].classList.add('active');
+            }
+        }
+        
+        // Show specific slide
+        function showSlide(index) {
+            if (isTransitioning || index === currentSlideIndex) return;
+            
+            isTransitioning = true;
+            
+            // Remove active class from current slide and indicator
+            slides[currentSlideIndex].classList.remove('active');
+            if (indicators.length > 0) {
+                indicators[currentSlideIndex].classList.remove('active');
+            }
+            
+            // Update current index
+            currentSlideIndex = index;
+            
+            // Add active class to new slide and indicator
+            slides[currentSlideIndex].classList.add('active');
+            if (indicators.length > 0) {
+                indicators[currentSlideIndex].classList.add('active');
+            }
+            
+            // Reset transition flag
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 800);
+        }
+        
+        // Next slide
+        function nextSlide() {
+            const nextIndex = (currentSlideIndex + 1) % slides.length;
+            showSlide(nextIndex);
+        }
+        
+        // Previous slide
+        function prevSlide() {
+            const prevIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+            showSlide(prevIndex);
+        }
+        
+        // Go to specific slide
+        function currentSlide(index) {
+            showSlide(index - 1);
+        }
+        
+        // Auto-play functionality
+        function startAutoPlay() {
+            if (autoPlay && slides.length > 1) {
+                autoPlayInterval = setInterval(nextSlide, slideDuration);
+            }
+        }
+        
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+        }
+        
+        // Event listeners
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                stopAutoPlay();
+                nextSlide();
+                startAutoPlay();
+            });
+        }
+        
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                stopAutoPlay();
+                prevSlide();
+                startAutoPlay();
+            });
+        }
+        
+        // Indicator clicks
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                stopAutoPlay();
+                showSlide(index);
+                startAutoPlay();
+            });
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                stopAutoPlay();
+                prevSlide();
+                startAutoPlay();
+            } else if (e.key === 'ArrowRight') {
+                stopAutoPlay();
+                nextSlide();
+                startAutoPlay();
+            }
+        });
+        
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        slideshow.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        slideshow.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                stopAutoPlay();
+                if (diff > 0) {
+                    nextSlide(); // Swipe left - next slide
+                } else {
+                    prevSlide(); // Swipe right - previous slide
+                }
+                startAutoPlay();
+            }
+        }
+        
+        // Pause on hover
+        slideshow.addEventListener('mouseenter', stopAutoPlay);
+        slideshow.addEventListener('mouseleave', startAutoPlay);
+        
+        // Pause when page is not visible
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        });
+        
+        // Initialize
+        initSlides();
+        startAutoPlay();
+        
+        // Make functions globally available for inline onclick handlers
+         window.currentSlide = currentSlide;
+         window.nextSlide = nextSlide;
+         window.prevSlide = prevSlide;
+     }
+
+    // Initialize hero slideshow when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHeroSlideshow);
+    } else {
+        initHeroSlideshow();
+    }
 
 })();

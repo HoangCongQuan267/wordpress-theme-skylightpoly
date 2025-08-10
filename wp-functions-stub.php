@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WordPress Functions Stub File
  * This file contains function declarations to resolve linter errors

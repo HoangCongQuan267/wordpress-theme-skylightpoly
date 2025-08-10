@@ -394,5 +394,385 @@ function apply_custom_menu_order($items, $args) {
     return $items;
 }
 add_filter('wp_nav_menu_objects', 'apply_custom_menu_order', 10, 2);
+
+/**
+ * Register Hero Slideshow Custom Post Type
+ */
+function register_hero_slideshow_post_type() {
+    $labels = array(
+        'name'                  => _x('Hero Slides', 'Post type general name', 'custom-blue-orange'),
+        'singular_name'         => _x('Hero Slide', 'Post type singular name', 'custom-blue-orange'),
+        'menu_name'             => _x('Hero Slideshow', 'Admin Menu text', 'custom-blue-orange'),
+        'name_admin_bar'        => _x('Hero Slide', 'Add New on Toolbar', 'custom-blue-orange'),
+        'add_new'               => __('Add New', 'custom-blue-orange'),
+        'add_new_item'          => __('Add New Hero Slide', 'custom-blue-orange'),
+        'new_item'              => __('New Hero Slide', 'custom-blue-orange'),
+        'edit_item'             => __('Edit Hero Slide', 'custom-blue-orange'),
+        'view_item'             => __('View Hero Slide', 'custom-blue-orange'),
+        'all_items'             => __('All Hero Slides', 'custom-blue-orange'),
+        'search_items'          => __('Search Hero Slides', 'custom-blue-orange'),
+        'parent_item_colon'     => __('Parent Hero Slides:', 'custom-blue-orange'),
+        'not_found'             => __('No hero slides found.', 'custom-blue-orange'),
+        'not_found_in_trash'    => __('No hero slides found in Trash.', 'custom-blue-orange'),
+        'featured_image'        => _x('Hero Slide Image', 'Overrides the "Featured Image" phrase', 'custom-blue-orange'),
+        'set_featured_image'    => _x('Set hero slide image', 'Overrides the "Set featured image" phrase', 'custom-blue-orange'),
+        'remove_featured_image' => _x('Remove hero slide image', 'Overrides the "Remove featured image" phrase', 'custom-blue-orange'),
+        'use_featured_image'    => _x('Use as hero slide image', 'Overrides the "Use as featured image" phrase', 'custom-blue-orange'),
+    );
+
+    $args = array(
+        'labels'             => $labels,
+        'public'             => false,
+        'publicly_queryable' => false,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => array('slug' => 'hero-slide'),
+        'capability_type'    => 'post',
+        'has_archive'        => false,
+        'hierarchical'       => false,
+        'menu_position'      => 20,
+        'menu_icon'          => 'dashicons-images-alt2',
+        'supports'           => array('title', 'thumbnail', 'page-attributes'),
+        'show_in_rest'       => true,
+    );
+
+    register_post_type('hero_slide', $args);
+}
+add_action('init', 'register_hero_slideshow_post_type');
+
+/**
+ * Add Hero Slide Meta Boxes
+ */
+function add_hero_slide_meta_boxes() {
+    add_meta_box(
+        'hero_slide_details',
+        __('Hero Slide Details', 'custom-blue-orange'),
+        'hero_slide_details_callback',
+        'hero_slide',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'add_hero_slide_meta_boxes');
+
+/**
+ * Hero Slide Meta Box Callback
+ */
+function hero_slide_details_callback($post) {
+    wp_nonce_field('hero_slide_details_nonce', 'hero_slide_details_nonce');
+    
+    $subtitle = get_post_meta($post->ID, '_hero_slide_subtitle', true);
+    $button_text = get_post_meta($post->ID, '_hero_slide_button_text', true);
+    $button_url = get_post_meta($post->ID, '_hero_slide_button_url', true);
+    $slide_order = get_post_meta($post->ID, '_hero_slide_order', true);
+    
+    echo '<table class="form-table">';
+    
+    echo '<tr>';
+    echo '<th><label for="hero_slide_subtitle">' . __('Subtitle', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="text" id="hero_slide_subtitle" name="hero_slide_subtitle" value="' . esc_attr($subtitle) . '" class="regular-text" /></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="hero_slide_button_text">' . __('Button Text', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="text" id="hero_slide_button_text" name="hero_slide_button_text" value="' . esc_attr($button_text) . '" class="regular-text" /></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="hero_slide_button_url">' . __('Button URL', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="url" id="hero_slide_button_url" name="hero_slide_button_url" value="' . esc_attr($button_url) . '" class="regular-text" /></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="hero_slide_order">' . __('Slide Order', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="number" id="hero_slide_order" name="hero_slide_order" value="' . esc_attr($slide_order) . '" min="0" step="1" /></td>';
+    echo '</tr>';
+    
+    echo '</table>';
+    
+    echo '<div style="margin-top: 20px; padding: 15px; background: #f0f8ff; border-left: 4px solid #0073aa; border-radius: 4px;">';
+    echo '<h4 style="margin-top: 0; color: #0073aa;">📝 How to use Hero Slides:</h4>';
+    echo '<ul style="margin: 10px 0; padding-left: 20px;">';
+    echo '<li><strong>Title:</strong> Main headline displayed on the slide</li>';
+    echo '<li><strong>Featured Image:</strong> Background image for the slide (recommended: 1920x1080px)</li>';
+    echo '<li><strong>Subtitle:</strong> Secondary text below the title</li>';
+    echo '<li><strong>Button Text & URL:</strong> Call-to-action button (optional)</li>';
+    echo '<li><strong>Slide Order:</strong> Number to control slide sequence (0 = first)</li>';
+    echo '</ul>';
+    echo '<p style="margin-bottom: 0;"><em>💡 Tip: Set the featured image first, then fill in the content fields.</em></p>';
+    echo '</div>';
+}
+
+/**
+ * Save Hero Slide Meta Data
+ */
+function save_hero_slide_meta_data($post_id) {
+    if (!isset($_POST['hero_slide_details_nonce']) || !wp_verify_nonce($_POST['hero_slide_details_nonce'], 'hero_slide_details_nonce')) {
+        return;
+    }
+    
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+    
+    if (isset($_POST['hero_slide_subtitle'])) {
+        update_post_meta($post_id, '_hero_slide_subtitle', sanitize_text_field($_POST['hero_slide_subtitle']));
+    }
+    
+    if (isset($_POST['hero_slide_button_text'])) {
+        update_post_meta($post_id, '_hero_slide_button_text', sanitize_text_field($_POST['hero_slide_button_text']));
+    }
+    
+    if (isset($_POST['hero_slide_button_url'])) {
+        update_post_meta($post_id, '_hero_slide_button_url', esc_url_raw($_POST['hero_slide_button_url']));
+    }
+    
+    if (isset($_POST['hero_slide_order'])) {
+        update_post_meta($post_id, '_hero_slide_order', intval($_POST['hero_slide_order']));
+    }
+}
+add_action('save_post', 'save_hero_slide_meta_data');
+
+/**
+ * Get Hero Slides for Frontend Display
+ */
+function get_hero_slides() {
+    $args = array(
+        'post_type'      => 'hero_slide',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'meta_key'       => '_hero_slide_order',
+        'orderby'        => 'meta_value_num',
+        'order'          => 'ASC',
+    );
+    
+    return get_posts($args);
+}
+
+/**
+ * Add admin notice for Hero Slideshow feature
+ */
+function hero_slideshow_admin_notice() {
+    $screen = get_current_screen();
+    if ($screen && $screen->post_type === 'hero_slide') {
+        echo '<div class="notice notice-info is-dismissible">';
+        echo '<p><strong>🎯 Hero Slideshow Feature:</strong> Create engaging hero slides for your homepage. Each slide can have a background image, title, subtitle, and call-to-action button.</p>';
+        echo '</div>';
+    }
+}
+add_action('admin_notices', 'hero_slideshow_admin_notice');
+
+/**
+ * Add custom columns to Hero Slides admin list
+ */
+function hero_slide_custom_columns($columns) {
+    $new_columns = array();
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['title'] = $columns['title'];
+    $new_columns['hero_image'] = __('Image', 'custom-blue-orange');
+    $new_columns['hero_subtitle'] = __('Subtitle', 'custom-blue-orange');
+    $new_columns['hero_button'] = __('Button', 'custom-blue-orange');
+    $new_columns['hero_order'] = __('Order', 'custom-blue-orange');
+    $new_columns['date'] = $columns['date'];
+    return $new_columns;
+}
+add_filter('manage_hero_slide_posts_columns', 'hero_slide_custom_columns');
+
+/**
+ * Display custom column content
+ */
+function hero_slide_custom_column_content($column, $post_id) {
+    switch ($column) {
+        case 'hero_image':
+            if (has_post_thumbnail($post_id)) {
+                echo get_the_post_thumbnail($post_id, array(60, 60));
+            } else {
+                echo '<span style="color: #999;">No image</span>';
+            }
+            break;
+        case 'hero_subtitle':
+            $subtitle = get_post_meta($post_id, '_hero_slide_subtitle', true);
+            echo $subtitle ? esc_html($subtitle) : '<span style="color: #999;">—</span>';
+            break;
+        case 'hero_button':
+            $button_text = get_post_meta($post_id, '_hero_slide_button_text', true);
+            $button_url = get_post_meta($post_id, '_hero_slide_button_url', true);
+            if ($button_text && $button_url) {
+                echo '<a href="' . esc_url($button_url) . '" target="_blank">' . esc_html($button_text) . '</a>';
+            } else {
+                echo '<span style="color: #999;">—</span>';
+            }
+            break;
+        case 'hero_order':
+            $order = get_post_meta($post_id, '_hero_slide_order', true);
+            echo $order !== '' ? intval($order) : '<span style="color: #999;">—</span>';
+            break;
+    }
+}
+add_action('manage_hero_slide_posts_custom_column', 'hero_slide_custom_column_content', 10, 2);
+
+/**
+ * Add Hero Slideshow to WordPress Customizer
+ */
+function hero_slideshow_customizer($wp_customize) {
+    // Add Hero Slideshow Section
+    $wp_customize->add_section('hero_slideshow_section', array(
+        'title'    => __('Hero Slideshow', 'custom-blue-orange'),
+        'priority' => 30,
+        'description' => __('Manage your homepage hero slideshow settings', 'custom-blue-orange'),
+    ));
+    
+    // Enable/Disable Slideshow
+    $wp_customize->add_setting('hero_slideshow_enable', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('hero_slideshow_enable', array(
+        'label'    => __('Enable Hero Slideshow', 'custom-blue-orange'),
+        'section'  => 'hero_slideshow_section',
+        'type'     => 'checkbox',
+        'priority' => 10,
+    ));
+    
+    // Slideshow Auto-play
+    $wp_customize->add_setting('hero_slideshow_autoplay', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('hero_slideshow_autoplay', array(
+        'label'    => __('Auto-play Slides', 'custom-blue-orange'),
+        'section'  => 'hero_slideshow_section',
+        'type'     => 'checkbox',
+        'priority' => 20,
+    ));
+    
+    // Slideshow Speed
+    $wp_customize->add_setting('hero_slideshow_speed', array(
+        'default'           => 5000,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('hero_slideshow_speed', array(
+        'label'       => __('Slide Duration (milliseconds)', 'custom-blue-orange'),
+        'description' => __('How long each slide is displayed (5000 = 5 seconds)', 'custom-blue-orange'),
+        'section'     => 'hero_slideshow_section',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 1000,
+            'max'  => 10000,
+            'step' => 500,
+        ),
+        'priority'    => 30,
+    ));
+    
+    // Add up to 5 slides
+    for ($i = 1; $i <= 5; $i++) {
+        // Slide Image
+        $wp_customize->add_setting("hero_slide_{$i}_image", array(
+            'default'           => '',
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "hero_slide_{$i}_image", array(
+            'label'     => sprintf(__('Slide %d Image', 'custom-blue-orange'), $i),
+            'section'   => 'hero_slideshow_section',
+            'mime_type' => 'image',
+            'priority'  => 40 + ($i * 10),
+        )));
+        
+        // Slide Title
+        $wp_customize->add_setting("hero_slide_{$i}_title", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("hero_slide_{$i}_title", array(
+            'label'    => sprintf(__('Slide %d Title', 'custom-blue-orange'), $i),
+            'section'  => 'hero_slideshow_section',
+            'type'     => 'text',
+            'priority' => 41 + ($i * 10),
+        ));
+        
+        // Slide Subtitle
+        $wp_customize->add_setting("hero_slide_{$i}_subtitle", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("hero_slide_{$i}_subtitle", array(
+            'label'    => sprintf(__('Slide %d Subtitle', 'custom-blue-orange'), $i),
+            'section'  => 'hero_slideshow_section',
+            'type'     => 'textarea',
+            'priority' => 42 + ($i * 10),
+        ));
+        
+        // Slide Button Text
+        $wp_customize->add_setting("hero_slide_{$i}_button_text", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("hero_slide_{$i}_button_text", array(
+            'label'    => sprintf(__('Slide %d Button Text', 'custom-blue-orange'), $i),
+            'section'  => 'hero_slideshow_section',
+            'type'     => 'text',
+            'priority' => 43 + ($i * 10),
+        ));
+        
+        // Slide Button URL
+        $wp_customize->add_setting("hero_slide_{$i}_button_url", array(
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("hero_slide_{$i}_button_url", array(
+            'label'    => sprintf(__('Slide %d Button URL', 'custom-blue-orange'), $i),
+            'section'  => 'hero_slideshow_section',
+            'type'     => 'url',
+            'priority' => 44 + ($i * 10),
+        ));
+    }
+}
+add_action('customize_register', 'hero_slideshow_customizer');
+
+/**
+ * Get Hero Slides from Customizer
+ */
+function get_customizer_hero_slides() {
+    $slides = array();
+    
+    for ($i = 1; $i <= 5; $i++) {
+        $image_id = get_theme_mod("hero_slide_{$i}_image");
+        $title = get_theme_mod("hero_slide_{$i}_title");
+        
+        if ($image_id && $title) {
+            $slides[] = array(
+                'image_id' => $image_id,
+                'image_url' => wp_get_attachment_image_url($image_id, 'full'),
+                'title' => $title,
+                'subtitle' => get_theme_mod("hero_slide_{$i}_subtitle"),
+                'button_text' => get_theme_mod("hero_slide_{$i}_button_text"),
+                'button_url' => get_theme_mod("hero_slide_{$i}_button_url"),
+            );
+        }
+    }
+    
+    return $slides;
+}
  
  ?>
