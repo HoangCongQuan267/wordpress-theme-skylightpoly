@@ -7,8 +7,35 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Test Hero Section -->
+    <!-- Test Hero Section with Custom Styling -->
     <section class="hero-section" data-autoplay="true" data-duration="5000">
+        <style>
+        /* Custom styling demo */
+        .hero-section .slide {
+            align-items: center; /* center, flex-start, flex-end */
+        }
+        .hero-section .slide-content {
+            background: rgba(33, 84, 254, 0.8); /* Custom panel background */
+            text-align: center; /* left, center, right */
+        }
+        .hero-section .slide-title {
+            font-family: 'Georgia'; /* Custom font */
+            font-size: 3.5rem; /* Custom size */
+            color: #ffffff; /* Custom color */
+        }
+        .hero-section .slide-subtitle {
+            font-size: 1.8rem; /* Custom size */
+            color: #f0f8ff; /* Custom color */
+        }
+        .hero-section .slide-button {
+            background: #ff6b35; /* Custom button color */
+            color: #ffffff;
+        }
+        .hero-section .slide-button:hover {
+            background: #ff6b35;
+            opacity: 0.9;
+        }
+        </style>
         <div class="hero-slideshow">
             <!-- Test Slide 1 -->
             <div class="slide active" style="background-image: url('https://via.placeholder.com/1200x500/2154fe/ffffff?text=Slide+1')">

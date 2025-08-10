@@ -552,4 +552,134 @@
         initHeroSlideshow();
     }
 
+    /**
+     * Contact Form Functionality
+     */
+    function initContactForm() {
+        const contactForm = document.getElementById('contact-form');
+        if (!contactForm) return;
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(contactForm);
+            const submitBtn = contactForm.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Validate form
+            if (!validateContactForm(contactForm)) {
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.innerHTML = '<span>Sending...</span>';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission (replace with actual AJAX call)
+            setTimeout(function() {
+                // Show success message
+                showFormMessage('Thank you! Your message has been sent successfully.', 'success');
+                
+                // Reset form
+                contactForm.reset();
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+    }
+
+    function validateContactForm(form) {
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(function(field) {
+            const errorMsg = field.parentNode.querySelector('.error-message');
+            
+            // Remove existing error message
+            if (errorMsg) {
+                errorMsg.remove();
+            }
+            
+            // Remove error styling
+            field.classList.remove('error');
+            
+            // Check if field is empty
+            if (!field.value.trim()) {
+                showFieldError(field, 'This field is required.');
+                isValid = false;
+            } else if (field.type === 'email' && !isValidEmail(field.value)) {
+                showFieldError(field, 'Please enter a valid email address.');
+                isValid = false;
+            }
+        });
+        
+        return isValid;
+    }
+
+    function showFieldError(field, message) {
+        field.classList.add('error');
+        
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = message;
+        errorDiv.style.color = '#dc3545';
+        errorDiv.style.fontSize = '0.875rem';
+        errorDiv.style.marginTop = '5px';
+        
+        field.parentNode.appendChild(errorDiv);
+    }
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function showFormMessage(message, type) {
+        // Remove existing messages
+        const existingMessage = document.querySelector('.form-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'form-message';
+        messageDiv.textContent = message;
+        
+        // Style the message
+        messageDiv.style.padding = '15px';
+        messageDiv.style.borderRadius = '8px';
+        messageDiv.style.marginTop = '20px';
+        messageDiv.style.fontWeight = '500';
+        
+        if (type === 'success') {
+            messageDiv.style.backgroundColor = '#d4edda';
+            messageDiv.style.color = '#155724';
+            messageDiv.style.border = '1px solid #c3e6cb';
+        } else {
+            messageDiv.style.backgroundColor = '#f8d7da';
+            messageDiv.style.color = '#721c24';
+            messageDiv.style.border = '1px solid #f5c6cb';
+        }
+        
+        const contactForm = document.getElementById('contact-form');
+        contactForm.appendChild(messageDiv);
+        
+        // Auto-remove message after 5 seconds
+        setTimeout(function() {
+            if (messageDiv.parentNode) {
+                messageDiv.remove();
+            }
+        }, 5000);
+    }
+
+    // Initialize contact form when DOM is loaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initContactForm);
+    } else {
+        initContactForm();
+    }
+
 })();

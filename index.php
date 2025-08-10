@@ -27,8 +27,56 @@ if ($slideshow_enabled) :
 <?php
 $autoplay = get_theme_mod('hero_slideshow_autoplay', true);
 $speed = get_theme_mod('hero_slideshow_speed', 5000);
+
+// Get styling options
+$panel_bg_color = get_theme_mod('hero_slideshow_panel_bg_color', 'rgba(0, 0, 0, 0.5)');
+$panel_opacity = get_theme_mod('hero_slideshow_panel_opacity', '0.8');
+$title_font = get_theme_mod('hero_slideshow_title_font', 'inherit');
+$title_size = get_theme_mod('hero_slideshow_title_size', '3');
+$title_color = get_theme_mod('hero_slideshow_title_color', '#ffffff');
+$subtitle_size = get_theme_mod('hero_slideshow_subtitle_size', '1.5');
+$subtitle_color = get_theme_mod('hero_slideshow_subtitle_color', '#ffffff');
+$content_position = get_theme_mod('hero_slideshow_content_position', 'center');
+$content_align = get_theme_mod('hero_slideshow_content_align', 'center');
+$button_bg_color = get_theme_mod('hero_slideshow_button_bg_color', '#2154fe');
+$button_text_color = get_theme_mod('hero_slideshow_button_text_color', '#ffffff');
+
+// Convert rgba if needed
+if (strpos($panel_bg_color, '#') === 0) {
+    $hex = str_replace('#', '', $panel_bg_color);
+    $r = hexdec(substr($hex, 0, 2));
+    $g = hexdec(substr($hex, 2, 2));
+    $b = hexdec(substr($hex, 4, 2));
+    $panel_bg_color = "rgba($r, $g, $b, $panel_opacity)";
+}
 ?>
 <section class="hero-section" data-autoplay="<?php echo $autoplay ? 'true' : 'false'; ?>" data-duration="<?php echo $speed; ?>">
+<style>
+.hero-section .slide {
+    align-items: <?php echo $content_position; ?>;
+}
+.hero-section .slide-content {
+    background: <?php echo $panel_bg_color; ?>;
+    text-align: <?php echo $content_align; ?>;
+}
+.hero-section .slide-title {
+    font-family: <?php echo $title_font !== 'inherit' ? $title_font : 'inherit'; ?>;
+    font-size: <?php echo $title_size; ?>rem;
+    color: <?php echo $title_color; ?>;
+}
+.hero-section .slide-subtitle {
+    font-size: <?php echo $subtitle_size; ?>rem;
+    color: <?php echo $subtitle_color; ?>;
+}
+.hero-section .slide-button {
+    background: <?php echo $button_bg_color; ?>;
+    color: <?php echo $button_text_color; ?>;
+}
+.hero-section .slide-button:hover {
+    background: <?php echo $button_bg_color; ?>;
+    opacity: 0.9;
+}
+</style>
     <div class="hero-slideshow">
         <?php foreach ($hero_slides as $index => $slide) : 
             if ($is_customizer) {

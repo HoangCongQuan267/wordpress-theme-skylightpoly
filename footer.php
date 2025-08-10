@@ -26,7 +26,6 @@
 
         <div class="footer-bottom">
             <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. Tất cả quyền được bảo lưu.</p>
-            <p>Được hỗ trợ bởi <a href="https://wordpress.org" target="_blank">WordPress</a></p>
         </div>
     </div>
 </footer>

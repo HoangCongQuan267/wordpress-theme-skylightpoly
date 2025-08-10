@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Home Page Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Demo header */
+        .demo-header {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        
+        .demo-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .demo-note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .demo-note h3 {
+            margin-top: 0;
+            color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-header">
+        <h1>🏠 Custom Home Page Demo</h1>
+        <p>Complete home page with slideshow, products, testimonials, and contact form</p>
+    </div>
+    
+    <div class="demo-note">
+        <div class="container">
+            <h3>📋 Home Page Structure</h3>
+            <p>This demo showcases the complete custom home page template with:</p>
+            <ul>
+                <li><strong>Hero Slideshow Section</strong> - Dynamic slideshow with customizable styling</li>
+                <li><strong>Products & Certificates Section</strong> - Showcase latest products and quality certifications</li>
+                <li><strong>Customer Testimonials Section</strong> - Real customer stories with ratings and photos</li>
+                <li><strong>Contact Form Section</strong> - Professional contact form with validation</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Hero Section with Dynamic Slideshow -->
+    <section class="hero-section" data-autoplay="true" data-duration="5000">
+        <style>
+        .hero-section .slide {
+            align-items: center;
+        }
+        .hero-section .slide-content {
+            background: rgba(0, 0, 0, 0.6);
+            text-align: center;
+        }
+        .hero-section .slide-title {
+            font-family: inherit;
+            font-size: 3rem;
+            color: #ffffff;
+        }
+        .hero-section .slide-subtitle {
+            font-size: 1.5rem;
+            color: #ffffff;
+        }
+        .hero-section .slide-button {
+            background: #667eea;
+            color: #ffffff;
+        }
+        .hero-section .slide-button:hover {
+            background: #667eea;
+            opacity: 0.9;
+        }
+        </style>
+        <div class="hero-slideshow">
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')">
+                <div class="slide-content">
+                    <h1 class="slide-title">Welcome to Our Company</h1>
+                    <p class="slide-subtitle">Leading innovation in technology solutions</p>
+                    <a href="#products" class="slide-button">Explore Products</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')">
+                <div class="slide-content">
+                    <h1 class="slide-title">Quality & Excellence</h1>
+                    <p class="slide-subtitle">Certified products with international standards</p>
+                    <a href="#certificates" class="slide-button">View Certificates</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')">
+                <div class="slide-content">
+                    <h1 class="slide-title">Customer Success</h1>
+                    <p class="slide-subtitle">Trusted by thousands of satisfied customers worldwide</p>
+                    <a href="#testimonials" class="slide-button">Read Stories</a>
+                </div>
+            </div>
+            
+            <!-- Navigation Arrows -->
+            <button class="slideshow-arrows prev-arrow">‹</button>
+            <button class="slideshow-arrows next-arrow">›</button>
+            
+            <!-- Slide Indicators -->
+            <div class="slideshow-nav">
+                <span class="nav-dot active" data-slide="0"></span>
+                <span class="nav-dot" data-slide="1"></span>
+                <span class="nav-dot" data-slide="2"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Products and Certificates Section -->
+    <section id="products" class="products-certificates-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">New Products & Certificates</h2>
+                <p class="section-subtitle">Discover our latest innovations and quality certifications</p>
+            </div>
+            
+            <div class="products-certificates-grid">
+                <!-- New Products -->
+                <div class="products-column">
+                    <h3 class="column-title">Latest Products</h3>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Smart Device Pro">
+                            </div>
+                            <div class="product-content">
+                                <h4 class="product-title">Smart Device Pro</h4>
+                                <p class="product-excerpt">Advanced IoT solution with AI-powered analytics and real-time monitoring capabilities.</p>
+                                <a href="#" class="product-link">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Enterprise Suite">
+                            </div>
+                            <div class="product-content">
+                                <h4 class="product-title">Enterprise Suite</h4>
+                                <p class="product-excerpt">Comprehensive business management platform designed for scalability and efficiency.</p>
+                                <a href="#" class="product-link">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Cloud Connect">
+                            </div>
+                            <div class="product-content">
+                                <h4 class="product-title">Cloud Connect</h4>
+                                <p class="product-excerpt">Seamless cloud integration service with enterprise-grade security and performance.</p>
+                                <a href="#" class="product-link">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Mobile Solutions">
+                            </div>
+                            <div class="product-content">
+                                <h4 class="product-title">Mobile Solutions</h4>
+                                <p class="product-excerpt">Cross-platform mobile applications with native performance and user experience.</p>
+                                <a href="#" class="product-link">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Data Analytics">
+                            </div>
+                            <div class="product-content">
+                                <h4 class="product-title">Data Analytics</h4>
+                                <p class="product-excerpt">Powerful business intelligence tools with machine learning and predictive analytics.</p>
+                                <a href="#" class="product-link">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Security Shield">
+                            </div>
+                            <div class="product-content">
+                                <h4 class="product-title">Security Shield</h4>
+                                <p class="product-excerpt">Advanced cybersecurity solution protecting against modern threats and vulnerabilities.</p>
+                                <a href="#" class="product-link">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Certificates -->
+                <div id="certificates" class="certificates-column">
+                    <h3 class="column-title">Our Certificates</h3>
+                    <div class="certificates-grid">
+                        <div class="certificate-card">
+                            <div class="certificate-icon">
+                                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" fill="#FFD700"/>
+                                </svg>
+                            </div>
+                            <h4 class="certificate-title">ISO 9001:2015</h4>
+                            <p class="certificate-description">Quality Management System certification ensuring consistent quality standards and customer satisfaction.</p>
+                        </div>
+                        <div class="certificate-card">
+                            <div class="certificate-icon">
+                                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h4 class="certificate-title">CE Marking</h4>
+                            <p class="certificate-description">European Conformity marking indicating compliance with EU safety, health, and environmental standards.</p>
+                        </div>
+                        <div class="certificate-card">
+                            <div class="certificate-icon">
+                                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L13.09 8.26L20 9L14 14L16.18 21L12 17.77L7.82 21L10 14L4 9L10.91 8.26L12 2Z" fill="#2196F3"/>
+                                </svg>
+                            </div>
+                            <h4 class="certificate-title">Industry Excellence</h4>
+                            <p class="certificate-description">Recognized for outstanding performance and innovation in technology solutions and customer service.</p>
+                        </div>
+                        <div class="certificate-card">
+                            <div class="certificate-icon">
+                                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 1L15.09 7.26L22 8L17 13L18.18 20L12 16.77L5.82 20L7 13L2 8L8.91 7.26L12 1Z" fill="#FF5722"/>
+                                </svg>
+                            </div>
+                            <h4 class="certificate-title">Security Certified</h4>
+                            <p class="certificate-description">Advanced security certification ensuring data protection and privacy compliance standards.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">What Our Customers Say</h2>
+                <p class="section-subtitle">Real stories from satisfied customers who trust our products and services</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="John Smith">
+                    </div>
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                        </div>
+                        <blockquote class="testimonial-text">
+                            "Outstanding quality and exceptional service. This product has completely transformed our business operations and exceeded all our expectations. The support team is incredibly responsive and knowledgeable."
+                        </blockquote>
+                        <div class="testimonial-author">
+                            <strong>John Smith</strong>
+                            <span class="company">Tech Solutions Inc.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-image">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Sarah Johnson">
+                    </div>
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                        </div>
+                        <blockquote class="testimonial-text">
+                            "Reliable, efficient, and incredibly user-friendly. The implementation was seamless and the results were immediate. Our productivity has increased by 40% since we started using their solutions."
+                        </blockquote>
+                        <div class="testimonial-author">
+                            <strong>Sarah Johnson</strong>
+                            <span class="company">Global Enterprises</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-image">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Michael Chen">
+                    </div>
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                        </div>
+                        <blockquote class="testimonial-text">
+                            "The best investment we've made for our company. Professional service, innovative solutions, and outstanding results. Their team truly understands our business needs and delivers accordingly."
+                        </blockquote>
+                        <div class="testimonial-author">
+                            <strong>Michael Chen</strong>
+                            <span class="company">Innovation Labs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-image">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Emily Rodriguez">
+                    </div>
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                        </div>
+                        <blockquote class="testimonial-text">
+                            "Exceptional customer service and top-notch products. They've been our trusted partner for over three years, consistently delivering quality solutions that drive our business forward."
+                        </blockquote>
+                        <div class="testimonial-author">
+                            <strong>Emily Rodriguez</strong>
+                            <span class="company">Digital Dynamics</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-image">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="David Wilson">
+                    </div>
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                        </div>
+                        <blockquote class="testimonial-text">
+                            "Impressive technology and flawless execution. The integration process was smooth and the ongoing support has been fantastic. Highly recommend to any business looking for reliable solutions."
+                        </blockquote>
+                        <div class="testimonial-author">
+                            <strong>David Wilson</strong>
+                            <span class="company">Future Systems</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-image">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Lisa Thompson">
+                    </div>
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                        </div>
+                        <blockquote class="testimonial-text">
+                            "Game-changing solutions that have revolutionized our workflow. The ROI has been incredible and the team's expertise is unmatched. We couldn't be happier with our decision to partner with them."
+                        </blockquote>
+                        <div class="testimonial-author">
+                            <strong>Lisa Thompson</strong>
+                            <span class="company">Smart Solutions Co.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="contact-form-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Ready to start your journey with us? Contact our team today</p>
+            </div>
+            
+            <div class="contact-form-wrapper">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 10C21 17 12 23 12 23S3 17 3 10C3 5.02944 7.02944 1 12 1C16.9706 1 21 5.02944 21 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <strong>Address</strong>
+                            <p>123 Business Street<br>Technology District<br>City, State 12345</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 16.92V19.92C22 20.52 21.52 21 20.92 21C9.4 21 0 11.6 0 0.08C0 -0.52 0.48 -1 1.08 -1H4.08C4.68 -1 5.16 -0.52 5.16 0.08C5.16 2.08 5.44 4.04 6 5.92C6.18 6.4 6.04 6.94 5.64 7.34L4.12 8.86C5.84 12.48 8.52 15.16 12.14 16.88L13.66 15.36C14.06 14.96 14.6 14.82 15.08 15C16.96 15.56 18.92 15.84 20.92 15.84C21.52 15.84 22 16.32 22 16.92Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <strong>Phone</strong>
+                            <p>+1 (555) 123-4567<br>+1 (555) 987-6543</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <strong>Email</strong>
+                            <p>info@yourcompany.com<br>support@yourcompany.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <strong>Business Hours</strong>
+                            <p>Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="contact-form" method="post" action="#">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first-name">First Name *</label>
+                                <input type="text" id="first-name" name="first_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name">Last Name *</label>
+                                <input type="text" id="last-name" name="last_name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Select a subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="product">Product Information</option>
+                                <option value="support">Technical Support</option>
+                                <option value="partnership">Partnership Opportunity</option>
+                                <option value="demo">Request Demo</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Tell us about your project, requirements, or how we can help you..."></textarea>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="newsletter" value="yes">
+                                <span class="checkmark"></span>
+                                Subscribe to our newsletter for updates, industry insights, and special offers
+                            </label>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <span>Send Message</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polygon points="22,2 15,22 11,13 2,9 22,2" fill="currentColor"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer style="background: #2c3e50; color: white; text-align: center; padding: 40px 0; margin-top: 0;">
+        <div class="container">
+            <p>&copy; 2024 Your Company Name. All rights reserved. | Custom WordPress Theme</p>
+            <p style="margin-top: 10px; opacity: 0.8; font-size: 0.9rem;">Professional home page with slideshow, products, testimonials, and contact form</p>
+        </div>
+    </footer>
+    
+    <script src="js/custom.js"></script>
+</body>
+</html>

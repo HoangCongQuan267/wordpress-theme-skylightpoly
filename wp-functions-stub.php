@@ -406,3 +406,200 @@ if (!defined('ARRAY_A')) {
 if (!defined('ABSPATH')) {
     define('ABSPATH', dirname(__FILE__) . '/');
 }
+
+// Additional WordPress functions for front-page.php
+if (!function_exists('admin_url')) {
+    function admin_url($path = '', $scheme = 'admin')
+    {
+        return 'http://localhost/wp-admin/' . ltrim($path, '/');
+    }
+}
+
+if (!function_exists('wp_trim_words')) {
+    function wp_trim_words($text, $num_words = 55, $more = null)
+    {
+        if (null === $more) {
+            $more = '...';
+        }
+        $words = explode(' ', $text);
+        if (count($words) > $num_words) {
+            $words = array_slice($words, 0, $num_words);
+            return implode(' ', $words) . $more;
+        }
+        return $text;
+    }
+}
+
+if (!function_exists('get_the_excerpt')) {
+    function get_the_excerpt($post = null)
+    {
+        return 'Sample excerpt text for the post.';
+    }
+}
+
+if (!function_exists('get_the_content')) {
+    function get_the_content($more_link_text = null, $strip_teaser = false)
+    {
+        return 'Sample content for the post.';
+    }
+}
+
+if (!function_exists('get_the_post_thumbnail_url')) {
+    function get_the_post_thumbnail_url($post = null, $size = 'post-thumbnail')
+    {
+        return 'https://via.placeholder.com/400x300';
+    }
+}
+
+if (!function_exists('get_the_ID')) {
+    function get_the_ID()
+    {
+        return 1;
+    }
+}
+
+if (!function_exists('wp_reset_postdata')) {
+    function wp_reset_postdata()
+    {
+        // Reset global post data
+    }
+}
+
+if (!class_exists('WP_Query')) {
+    class WP_Query
+    {
+        public $posts = array();
+
+        public function __construct($args = array())
+        {
+            // Mock some sample posts
+            $this->posts = array(
+                (object) array(
+                    'ID' => 1,
+                    'post_title' => 'Sample Product 1',
+                    'post_content' => 'This is a sample product description.',
+                    'post_excerpt' => 'Sample excerpt'
+                ),
+                (object) array(
+                    'ID' => 2,
+                    'post_title' => 'Sample Product 2',
+                    'post_content' => 'This is another sample product description.',
+                    'post_excerpt' => 'Another sample excerpt'
+                )
+            );
+        }
+
+        public function have_posts()
+        {
+            return !empty($this->posts);
+        }
+
+        public function the_post()
+        {
+            global $post;
+            if (!empty($this->posts)) {
+                $post = array_shift($this->posts);
+            }
+        }
+    }
+}
+
+// Additional WordPress functions for theme customization and meta data
+if (!function_exists('get_theme_mod')) {
+    function get_theme_mod($name, $default = false)
+    {
+        // Mock theme customizer values
+        $theme_mods = array(
+            'hero_slideshow_enable' => true,
+            'hero_slideshow_autoplay' => true,
+            'hero_slideshow_speed' => 5000,
+            'hero_slideshow_panel_bg_color' => 'rgba(0, 0, 0, 0.5)',
+            'hero_slideshow_panel_opacity' => '0.8',
+            'hero_slideshow_title_font' => 'inherit',
+            'hero_slideshow_title_size' => '3',
+            'hero_slideshow_title_color' => '#ffffff',
+            'hero_slideshow_subtitle_size' => '1.5',
+            'hero_slideshow_subtitle_color' => '#ffffff',
+            'hero_slideshow_content_position' => 'center',
+            'hero_slideshow_content_align' => 'center',
+            'hero_slideshow_button_bg_color' => '#2154fe',
+            'hero_slideshow_button_text_color' => '#ffffff'
+        );
+
+        return isset($theme_mods[$name]) ? $theme_mods[$name] : $default;
+    }
+}
+
+if (!function_exists('get_post_meta')) {
+    function get_post_meta($post_id, $key = '', $single = false)
+    {
+        // Mock post meta values
+        $meta_values = array(
+            '_hero_slide_subtitle' => 'Sample slide subtitle',
+            '_hero_slide_button_text' => 'Learn More',
+            '_hero_slide_button_url' => '#',
+            '_customer_name' => 'John Doe',
+            '_customer_company' => 'Sample Company',
+            '_customer_rating' => 5,
+            '_featured_product' => 'yes'
+        );
+
+        if ($key && isset($meta_values[$key])) {
+            return $single ? $meta_values[$key] : array($meta_values[$key]);
+        }
+
+        return $single ? '' : array();
+    }
+}
+
+if (!function_exists('esc_html')) {
+    function esc_html($text)
+    {
+        return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    }
+}
+
+// Helper functions for slideshow functionality
+if (!function_exists('get_customizer_hero_slides')) {
+    function get_customizer_hero_slides()
+    {
+        // Mock customizer slides
+        return array(
+            array(
+                'image_url' => 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+                'title' => 'Welcome to Our Company',
+                'subtitle' => 'Innovation and Excellence',
+                'button_text' => 'Discover More',
+                'button_url' => '#products'
+            ),
+            array(
+                'image_url' => 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+                'title' => 'Quality Products',
+                'subtitle' => 'Trusted by Professionals',
+                'button_text' => 'View Products',
+                'button_url' => '#products'
+            )
+        );
+    }
+}
+
+if (!function_exists('get_hero_slides')) {
+    function get_hero_slides()
+    {
+        // Mock hero slides from custom post type
+        return array(
+            (object) array(
+                'ID' => 1,
+                'post_title' => 'Hero Slide 1',
+                'post_content' => 'Sample slide content'
+            ),
+            (object) array(
+                'ID' => 2,
+                'post_title' => 'Hero Slide 2',
+                'post_content' => 'Another slide content'
+            )
+        );
+    }
+}
+
+// Additional WordPress functions can be added here as needed

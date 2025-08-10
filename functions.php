@@ -747,6 +747,193 @@ function hero_slideshow_customizer($wp_customize) {
             'priority' => 44 + ($i * 10),
         ));
     }
+    
+    // Slideshow Styling Options
+    
+    // Content Panel Background Color
+    $wp_customize->add_setting('hero_slideshow_panel_bg_color', array(
+        'default'           => 'rgba(0, 0, 0, 0.5)',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'hero_slideshow_panel_bg_color', array(
+        'label'    => __('Content Panel Background Color', 'custom-blue-orange'),
+        'section'  => 'hero_slideshow_section',
+        'priority' => 100,
+    )));
+    
+    // Content Panel Opacity
+    $wp_customize->add_setting('hero_slideshow_panel_opacity', array(
+        'default'           => '0.8',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('hero_slideshow_panel_opacity', array(
+        'label'       => __('Content Panel Opacity', 'custom-blue-orange'),
+        'section'     => 'hero_slideshow_section',
+        'type'        => 'range',
+        'input_attrs' => array(
+            'min'  => 0,
+            'max'  => 1,
+            'step' => 0.1,
+        ),
+        'priority'    => 101,
+    ));
+    
+    // Title Font Family
+    $wp_customize->add_setting('hero_slideshow_title_font', array(
+        'default'           => 'inherit',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('hero_slideshow_title_font', array(
+        'label'    => __('Title Font Family', 'custom-blue-orange'),
+        'section'  => 'hero_slideshow_section',
+        'type'     => 'select',
+        'choices'  => array(
+            'inherit'     => 'Default Theme Font',
+            'Arial'       => 'Arial',
+            'Helvetica'   => 'Helvetica',
+            'Georgia'     => 'Georgia',
+            'Times'       => 'Times New Roman',
+            'Courier'     => 'Courier New',
+            'Verdana'     => 'Verdana',
+            'Trebuchet'   => 'Trebuchet MS',
+            'Impact'      => 'Impact',
+        ),
+        'priority' => 102,
+    ));
+    
+    // Title Font Size
+    $wp_customize->add_setting('hero_slideshow_title_size', array(
+        'default'           => '3',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('hero_slideshow_title_size', array(
+        'label'       => __('Title Font Size (rem)', 'custom-blue-orange'),
+        'section'     => 'hero_slideshow_section',
+        'type'        => 'range',
+        'input_attrs' => array(
+            'min'  => 1,
+            'max'  => 6,
+            'step' => 0.1,
+        ),
+        'priority'    => 103,
+    ));
+    
+    // Title Color
+    $wp_customize->add_setting('hero_slideshow_title_color', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'hero_slideshow_title_color', array(
+        'label'    => __('Title Color', 'custom-blue-orange'),
+        'section'  => 'hero_slideshow_section',
+        'priority' => 104,
+    )));
+    
+    // Subtitle Font Size
+    $wp_customize->add_setting('hero_slideshow_subtitle_size', array(
+        'default'           => '1.5',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('hero_slideshow_subtitle_size', array(
+        'label'       => __('Subtitle Font Size (rem)', 'custom-blue-orange'),
+        'section'     => 'hero_slideshow_section',
+        'type'        => 'range',
+        'input_attrs' => array(
+            'min'  => 0.8,
+            'max'  => 3,
+            'step' => 0.1,
+        ),
+        'priority'    => 105,
+    ));
+    
+    // Subtitle Color
+    $wp_customize->add_setting('hero_slideshow_subtitle_color', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'hero_slideshow_subtitle_color', array(
+        'label'    => __('Subtitle Color', 'custom-blue-orange'),
+        'section'  => 'hero_slideshow_section',
+        'priority' => 106,
+    )));
+    
+    // Content Position
+    $wp_customize->add_setting('hero_slideshow_content_position', array(
+        'default'           => 'center',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('hero_slideshow_content_position', array(
+        'label'    => __('Content Position', 'custom-blue-orange'),
+        'section'  => 'hero_slideshow_section',
+        'type'     => 'select',
+        'choices'  => array(
+            'flex-start' => 'Top',
+            'center'     => 'Center',
+            'flex-end'   => 'Bottom',
+        ),
+        'priority' => 107,
+    ));
+    
+    // Content Alignment
+    $wp_customize->add_setting('hero_slideshow_content_align', array(
+        'default'           => 'center',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('hero_slideshow_content_align', array(
+        'label'    => __('Content Text Alignment', 'custom-blue-orange'),
+        'section'  => 'hero_slideshow_section',
+        'type'     => 'select',
+        'choices'  => array(
+            'left'   => 'Left',
+            'center' => 'Center',
+            'right'  => 'Right',
+        ),
+        'priority' => 108,
+    ));
+    
+    // Button Background Color
+    $wp_customize->add_setting('hero_slideshow_button_bg_color', array(
+        'default'           => '#2154fe',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'hero_slideshow_button_bg_color', array(
+        'label'    => __('Button Background Color', 'custom-blue-orange'),
+        'section'  => 'hero_slideshow_section',
+        'priority' => 109,
+    )));
+    
+    // Button Text Color
+    $wp_customize->add_setting('hero_slideshow_button_text_color', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'hero_slideshow_button_text_color', array(
+        'label'    => __('Button Text Color', 'custom-blue-orange'),
+        'section'  => 'hero_slideshow_section',
+        'priority' => 110,
+    )));
 }
 add_action('customize_register', 'hero_slideshow_customizer');
 
