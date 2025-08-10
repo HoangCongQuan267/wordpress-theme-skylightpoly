@@ -22,10 +22,10 @@ body {
 
 /* Sky Blue and White Color Palette Variables */
 :root {
-    --primary-sky-blue: #0f87dc;
-    --secondary-sky-blue: #0f87dc;
-    --accent-sky-blue: #0f87dc;
-    --light-sky-blue: #0f87dc;
+    --primary-sky-blue: #2154fe;
+    --secondary-sky-blue: #2154fe;
+    --accent-sky-blue: #2154fe;
+    --light-sky-blue: #2154fe;
     --pure-white: #ffffff;
     --off-white: #fafafa;
     --light-gray: #eceff1;
@@ -46,7 +46,7 @@ body {
 
 /* Top Header Row - Contact Info */
 .header-top {
-    background: #0f87dc;
+    background: #2154fe;
     color: var(--pure-white);
     padding: 4px 0;
     font-size: 12px;
@@ -88,6 +88,41 @@ body {
 
 .contact-info a:hover {
     color: var(--accent-sky-blue);
+}
+
+/* Region Selector Styling */
+.region-selector {
+    margin-right: 15px;
+}
+
+.region-selector select {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--pure-white);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.region-selector select:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--accent-sky-blue);
+}
+
+.region-selector select:focus {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--accent-sky-blue);
+    box-shadow: 0 0 0 2px rgba(135, 206, 235, 0.3);
+}
+
+.region-selector select option {
+    background: var(--deep-navy);
+    color: var(--pure-white);
+    padding: 4px 8px;
 }
 
 .social-links {

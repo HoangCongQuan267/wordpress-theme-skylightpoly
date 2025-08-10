@@ -164,7 +164,7 @@ add_filter('body_class', 'custom_blue_orange_body_classes');
  * Customize login page
  */
 function custom_blue_orange_login_styles() {
-    ?>
+     ?>
     <style type="text/css">
         body.login {
             background-color: #f8f9fa;
@@ -328,10 +328,71 @@ function custom_blue_orange_pagination() {
             'mid_size' => 3
         ));
         
-        if ($pagination) {
-            echo $pagination;
+        if (!empty($pagination) && (is_string($pagination) || is_array($pagination))) {
+            if (is_string($pagination)) {
+                echo $pagination;
+            } elseif (is_array($pagination)) {
+                echo implode('', $pagination);
+            }
         }
     }
 }
 
-?>
+/**
+ * Custom Menu Order Support
+ * Add support for custom menu item ordering
+ */
+function custom_menu_order_support() {
+    // Add custom menu order field to menu items
+    add_action('wp_nav_menu_item_custom_fields', 'custom_menu_order_field', 10, 4);
+    add_action('wp_update_nav_menu_item', 'custom_menu_order_save', 10, 3);
+}
+add_action('init', 'custom_menu_order_support');
+
+/**
+ * Add custom order field to menu items
+ */
+function custom_menu_order_field($item_id, $item, $depth, $args) {
+    $menu_order = get_post_meta($item_id, '_menu_item_custom_order', true);
+    ?>
+    <p class="field-custom-order description description-wide">
+        <label for="edit-menu-item-custom-order-<?php echo $item_id; ?>">
+            <?php _e('Custom Order'); ?><br />
+            <input type="number" id="edit-menu-item-custom-order-<?php echo $item_id; ?>" class="widefat code edit-menu-item-custom-order" name="menu-item-custom-order[<?php echo $item_id; ?>]" value="<?php echo esc_attr($menu_order); ?>" />
+            <span class="description"><?php _e('Enter a number to set custom order (lower numbers appear first)'); ?></span>
+        </label>
+    </p>
+    <?php
+}
+
+/**
+ * Save custom order field
+ */
+function custom_menu_order_save($menu_id, $menu_item_db_id, $args) {
+    if (isset($_REQUEST['menu-item-custom-order'][$menu_item_db_id])) {
+        $custom_order = sanitize_text_field($_REQUEST['menu-item-custom-order'][$menu_item_db_id]);
+        update_post_meta($menu_item_db_id, '_menu_item_custom_order', $custom_order);
+    }
+}
+
+/**
+ * Apply custom menu ordering
+ */
+function apply_custom_menu_order($items, $args) {
+    if (isset($args->theme_location) && $args->theme_location == 'primary') {
+        // Sort items by custom order
+        usort($items, function($a, $b) {
+            $order_a = get_post_meta($a->ID, '_menu_item_custom_order', true);
+            $order_b = get_post_meta($b->ID, '_menu_item_custom_order', true);
+            
+            $order_a = $order_a ? intval($order_a) : 999;
+            $order_b = $order_b ? intval($order_b) : 999;
+            
+            return $order_a - $order_b;
+        });
+    }
+    return $items;
+}
+add_filter('wp_nav_menu_objects', 'apply_custom_menu_order', 10, 2);
+ 
+ ?>

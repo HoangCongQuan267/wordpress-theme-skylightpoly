@@ -16,13 +16,22 @@
         <div class="header-top">
             <div class="container">
                 <div class="contact-info">
+                    <span class="region-selector">
+                        <select id="region-select" onchange="updateRegionInfo(this.value)">
+                            <option value="vietnam" selected>Vietnam</option>
+                            <option value="usa">United States</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="singapore">Singapore</option>
+                            <option value="japan">Japan</option>
+                        </select>
+                    </span>
                     <span class="phone">
-                        <a href="tel:+84123456789">+84 123 456 789</a>
+                        <a href="tel:+84123456789" id="phone-link">+84 123 456 789</a>
                     </span>
                     <span class="email">
-                        <a href="mailto:info@yoursite.com">info@yoursite.com</a>
+                        <a href="mailto:info@yoursite.com" id="email-link">info@yoursite.com</a>
                     </span>
-                    <span class="address">
+                    <span class="address" id="address-text">
                         123 Đường Chính, Thành phố, Việt Nam
                     </span>
                 </div>
@@ -107,4 +116,52 @@
                 });
             }
         });
+
+        // Region selector functionality
+        function updateRegionInfo(region) {
+            const phoneLink = document.getElementById('phone-link');
+            const emailLink = document.getElementById('email-link');
+            const addressText = document.getElementById('address-text');
+
+            const regionData = {
+                vietnam: {
+                    phone: '+84 123 456 789',
+                    phoneHref: 'tel:+84123456789',
+                    email: 'info@yoursite.com',
+                    address: '123 Đường Chính, Thành phố, Việt Nam'
+                },
+                usa: {
+                    phone: '+1 555 123 4567',
+                    phoneHref: 'tel:+15551234567',
+                    email: 'info@yoursite.com',
+                    address: '123 Main Street, New York, NY 10001, USA'
+                },
+                uk: {
+                    phone: '+44 20 7123 4567',
+                    phoneHref: 'tel:+442071234567',
+                    email: 'info@yoursite.co.uk',
+                    address: '123 High Street, London SW1A 1AA, UK'
+                },
+                singapore: {
+                    phone: '+65 6123 4567',
+                    phoneHref: 'tel:+6561234567',
+                    email: 'info@yoursite.sg',
+                    address: '123 Orchard Road, Singapore 238858'
+                },
+                japan: {
+                    phone: '+81 3 1234 5678',
+                    phoneHref: 'tel:+81312345678',
+                    email: 'info@yoursite.jp',
+                    address: '123 Shibuya, Tokyo 150-0002, Japan'
+                }
+            };
+
+            if (regionData[region]) {
+                phoneLink.textContent = regionData[region].phone;
+                phoneLink.href = regionData[region].phoneHref;
+                emailLink.textContent = regionData[region].email;
+                emailLink.href = 'mailto:' + regionData[region].email;
+                addressText.textContent = regionData[region].address;
+            }
+        }
     </script>
