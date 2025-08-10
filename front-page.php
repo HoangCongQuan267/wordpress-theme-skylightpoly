@@ -151,328 +151,347 @@ endif; // End hero slides check
 ?>
 
 <!-- New Products Section -->
-<section class="products-section">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Sản Phẩm Mới Nhất</h2>
-            <p class="section-subtitle">Khám phá những đổi mới và giải pháp tiên tiến nhất của chúng tôi</p>
-        </div>
+<?php if (get_theme_mod('products_section_enable', true)) : ?>
+    <section class="products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><?php echo esc_html(get_theme_mod('products_section_title', 'Sản Phẩm Mới Nhất')); ?></h2>
+                <p class="section-subtitle"><?php echo esc_html(get_theme_mod('products_section_subtitle', 'Khám phá những đổi mới và giải pháp tiên tiến nhất của chúng tôi')); ?></p>
+            </div>
 
-        <div class="products-grid">
-            <?php
-            // Get latest products (you can customize this query)
-            $products_query = new WP_Query(array(
-                'post_type' => 'product', // Change to your product post type
-                'posts_per_page' => 6,
-                'meta_key' => '_featured_product',
-                'meta_value' => 'yes',
-                'orderby' => 'date',
-                'order' => 'DESC'
-            ));
-
-            if ($products_query->have_posts()) :
-                while ($products_query->have_posts()) : $products_query->the_post();
-            ?>
-                    <div class="product-card">
-                        <?php if (has_post_thumbnail()) : ?>
-                            <div class="product-image">
-                                <?php the_post_thumbnail('medium'); ?>
-                            </div>
-                        <?php endif; ?>
-                        <div class="product-content">
-                            <h4 class="product-title"><?php the_title(); ?></h4>
-                            <p class="product-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 15); ?></p>
-                            <a href="<?php the_permalink(); ?>" class="product-link">Tìm Hiểu Thêm</a>
-                        </div>
-                    </div>
+            <div class="products-grid">
                 <?php
-                endwhile;
-                wp_reset_postdata();
-            else :
+                // Get products from Customizer
+                $products = get_products();
+
+                if (!empty($products)) :
+                    foreach ($products as $product) :
                 ?>
-                <!-- Demo products when no products are available -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 1">
-                    </div>
-                    <div class="product-content">
-                        <h4 class="product-title">Sản Phẩm Cao Cấp A</h4>
-                        <p class="product-excerpt">Giải pháp chất lượng cao được thiết kế cho các doanh nghiệp hiện đại với tính năng tiên tiến.</p>
-                        <a href="#" class="product-link">Tìm Hiểu Thêm</a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 2">
-                    </div>
-                    <div class="product-content">
-                        <h4 class="product-title">Dòng Sản Phẩm Đổi Mới B</h4>
-                        <p class="product-excerpt">Công nghệ tiên tiến mang lại hiệu suất và độ tin cậy vượt trội.</p>
-                        <a href="#" class="product-link">Tìm Hiểu Thêm</a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 3">
-                    </div>
-                    <div class="product-content">
-                        <h4 class="product-title">Bộ Giải Pháp Chuyên Nghiệp C</h4>
-                        <p class="product-excerpt">Giải pháp toàn diện cho các yêu cầu cấp doanh nghiệp và khả năng mở rộng.</p>
-                        <a href="#" class="product-link">Tìm Hiểu Thêm</a>
-                    </div>
-                </div>
-            <?php endif; ?>
-        </div>
-    </div>
-</section>
-
-<!-- Certificates Section -->
-<section class="certificates-section">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Chứng Nhận Của Chúng Tôi</h2>
-            <p class="section-subtitle">Chứng nhận chất lượng và sự công nhận trong ngành</p>
-        </div>
-
-        <div class="certificates-grid">
-            <div class="certificate-card">
-                <div class="certificate-icon">
-                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" fill="#FFD700" />
-                    </svg>
-                </div>
-                <h4 class="certificate-title">ISO 9001:2015</h4>
-                <p class="certificate-description">Chứng nhận Hệ thống Quản lý Chất lượng đảm bảo tiêu chuẩn chất lượng nhất quán.</p>
-            </div>
-            <div class="certificate-card">
-                <div class="certificate-icon">
-                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <h4 class="certificate-title">Chứng Nhận CE</h4>
-                <p class="certificate-description">Dấu hiệu Tuân thủ Châu Âu cho thấy sự tuân thủ các tiêu chuẩn an toàn của EU.</p>
-            </div>
-            <div class="certificate-card">
-                <div class="certificate-icon">
-                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L13.09 8.26L20 9L14 14L16.18 21L12 17.77L7.82 21L10 14L4 9L10.91 8.26L12 2Z" fill="#2196F3" />
-                    </svg>
-                </div>
-                <h4 class="certificate-title">Xuất Sắc Ngành</h4>
-                <p class="certificate-description">Được công nhận về hiệu suất xuất sắc và đổi mới trong lĩnh vực ngành của chúng tôi.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Customer Testimonials Section -->
-<section class="testimonials-section">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Khách Hàng Nói Gì Về Chúng Tôi</h2>
-            <p class="section-subtitle">Những câu chuyện thật từ khách hàng hài lòng tin tưởng sản phẩm của chúng tôi</p>
-        </div>
-
-        <div class="testimonials-grid">
-            <?php
-            // Get testimonials (you can customize this query)
-            $testimonials_query = new WP_Query(array(
-                'post_type' => 'testimonial', // Change to your testimonial post type
-                'posts_per_page' => 6,
-                'orderby' => 'date',
-                'order' => 'DESC'
-            ));
-
-            if ($testimonials_query->have_posts()) :
-                while ($testimonials_query->have_posts()) : $testimonials_query->the_post();
-                    $customer_name = get_post_meta(get_the_ID(), '_customer_name', true);
-                    $customer_company = get_post_meta(get_the_ID(), '_customer_company', true);
-                    $customer_rating = get_post_meta(get_the_ID(), '_customer_rating', true);
-            ?>
-                    <div class="testimonial-card">
-                        <?php if (has_post_thumbnail()) : ?>
-                            <div class="testimonial-image">
-                                <?php the_post_thumbnail('thumbnail'); ?>
-                            </div>
-                        <?php endif; ?>
-                        <div class="testimonial-content">
-                            <div class="testimonial-rating">
-                                <?php for ($i = 1; $i <= 5; $i++) : ?>
-                                    <span class="star <?php echo ($i <= $customer_rating) ? 'filled' : ''; ?>">★</span>
-                                <?php endfor; ?>
-                            </div>
-                            <blockquote class="testimonial-text">
-                                "<?php echo wp_trim_words(get_the_content(), 30); ?>"
-                            </blockquote>
-                            <div class="testimonial-author">
-                                <strong><?php echo esc_html($customer_name ?: get_the_title()); ?></strong>
-                                <?php if ($customer_company) : ?>
-                                    <span class="company"><?php echo esc_html($customer_company); ?></span>
+                        <div class="product-card">
+                            <?php if (!empty($product['image_url'])) : ?>
+                                <div class="product-image">
+                                    <img src="<?php echo esc_url($product['image_url']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
+                                </div>
+                            <?php endif; ?>
+                            <div class="product-content">
+                                <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
+                                <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>
+                                <?php if (!empty($product['link'])) : ?>
+                                    <a href="<?php echo esc_url($product['link']); ?>" class="product-link">Tìm Hiểu Thêm</a>
+                                <?php else : ?>
+                                    <a href="#" class="product-link">Tìm Hiểu Thêm</a>
                                 <?php endif; ?>
                             </div>
                         </div>
-                    </div>
-                <?php
-                endwhile;
-                wp_reset_postdata();
-            else :
-                ?>
-                <!-- Demo testimonials when no testimonials are available -->
-                <div class="testimonial-card">
-                    <div class="testimonial-image">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Customer 1">
-                    </div>
-                    <div class="testimonial-content">
-                        <div class="testimonial-rating">
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
+                    <?php
+                    endforeach;
+                else :
+                    ?>
+                    <!-- Demo products when no products are available -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 1">
                         </div>
-                        <blockquote class="testimonial-text">
-                            "Chất lượng xuất sắc và dịch vụ đặc biệt. Sản phẩm này đã thay đổi hoạt động kinh doanh của chúng tôi và vượt quá mọi mong đợi."
-                        </blockquote>
-                        <div class="testimonial-author">
-                            <strong>Nguyễn Văn An</strong>
-                            <span class="company">Công ty Giải Pháp Công Nghệ</span>
+                        <div class="product-content">
+                            <h4 class="product-title">Sản Phẩm Cao Cấp A</h4>
+                            <p class="product-excerpt">Giải pháp chất lượng cao được thiết kế cho các doanh nghiệp hiện đại với tính năng tiên tiến.</p>
+                            <a href="#" class="product-link">Tìm Hiểu Thêm</a>
                         </div>
                     </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-image">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Customer 2">
-                    </div>
-                    <div class="testimonial-content">
-                        <div class="testimonial-rating">
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 2">
                         </div>
-                        <blockquote class="testimonial-text">
-                            "Đáng tin cậy, hiệu quả và thân thiện với người dùng. Đội ngũ hỗ trợ cực kỳ nhanh chóng và hữu ích. Rất khuyến khích!"
-                        </blockquote>
-                        <div class="testimonial-author">
-                            <strong>Trần Thị Bình</strong>
-                            <span class="company">Tập Đoàn Toàn Cầu</span>
+                        <div class="product-content">
+                            <h4 class="product-title">Dòng Sản Phẩm Đổi Mới B</h4>
+                            <p class="product-excerpt">Công nghệ tiên tiến mang lại hiệu suất và độ tin cậy vượt trội.</p>
+                            <a href="#" class="product-link">Tìm Hiểu Thêm</a>
                         </div>
                     </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-image">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Customer 3">
-                    </div>
-                    <div class="testimonial-content">
-                        <div class="testimonial-rating">
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
-                            <span class="star filled">★</span>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 3">
                         </div>
-                        <blockquote class="testimonial-text">
-                            "Đầu tư tốt nhất mà chúng tôi đã thực hiện cho công ty. Dịch vụ chuyên nghiệp và giải pháp đổi mới mang lại kết quả thực tế."
-                        </blockquote>
-                        <div class="testimonial-author">
-                            <strong>Lê Minh Cường</strong>
-                            <span class="company">Phòng Thí Nghiệm Đổi Mới</span>
+                        <div class="product-content">
+                            <h4 class="product-title">Bộ Giải Pháp Chuyên Nghiệp C</h4>
+                            <p class="product-excerpt">Giải pháp toàn diện cho các yêu cầu cấp doanh nghiệp và khả năng mở rộng.</p>
+                            <a href="#" class="product-link">Tìm Hiểu Thêm</a>
                         </div>
                     </div>
-                </div>
-            <?php endif; ?>
+                <?php endif; ?>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+<?php endif; ?>
+
+<!-- Certificates Section -->
+<?php if (get_theme_mod('certificates_section_enable', true)) : ?>
+    <section class="certificates-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><?php echo esc_html(get_theme_mod('certificates_section_title', 'Chứng Nhận Của Chúng Tôi')); ?></h2>
+                <p class="section-subtitle"><?php echo esc_html(get_theme_mod('certificates_section_subtitle', 'Chứng nhận chất lượng và sự công nhận trong ngành')); ?></p>
+            </div>
+
+            <div class="certificates-grid">
+                <?php
+                $certificates = get_certificates();
+                if (!empty($certificates)) :
+                    foreach ($certificates as $certificate) : ?>
+                        <div class="certificate-card">
+                            <?php if ($certificate['image_url']) : ?>
+                                <div class="certificate-icon">
+                                    <img src="<?php echo esc_url($certificate['image_url']); ?>" alt="<?php echo esc_attr($certificate['title']); ?>" width="60" height="60">
+                                </div>
+                            <?php else : ?>
+                                <div class="certificate-icon">
+                                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" fill="#FFD700" />
+                                    </svg>
+                                </div>
+                            <?php endif; ?>
+                            <h4 class="certificate-title"><?php echo esc_html($certificate['title']); ?></h4>
+                            <p class="certificate-description"><?php echo esc_html($certificate['content']); ?></p>
+                        </div>
+                    <?php endforeach;
+                else : ?>
+                    <!-- Fallback content when no certificates are available -->
+                    <div class="certificate-card">
+                        <div class="certificate-icon">
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" fill="#FFD700" />
+                            </svg>
+                        </div>
+                        <h4 class="certificate-title">ISO 9001:2015</h4>
+                        <p class="certificate-description">Chứng nhận Hệ thống Quản lý Chất lượng đảm bảo tiêu chuẩn chất lượng nhất quán.</p>
+                    </div>
+                    <div class="certificate-card">
+                        <div class="certificate-icon">
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <h4 class="certificate-title">Chứng Nhận CE</h4>
+                        <p class="certificate-description">Dấu hiệu Tuân thủ Châu Âu cho thấy sự tuân thủ các tiêu chuẩn an toàn của EU.</p>
+                    </div>
+                    <div class="certificate-card">
+                        <div class="certificate-icon">
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L13.09 8.26L20 9L14 14L16.18 21L12 17.77L7.82 21L10 14L4 9L10.91 8.26L12 2Z" fill="#2196F3" />
+                            </svg>
+                        </div>
+                        <h4 class="certificate-title">Xuất Sắc Ngành</h4>
+                        <p class="certificate-description">Được công nhận về hiệu suất xuất sắc và đổi mới trong lĩnh vực ngành của chúng tôi.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
+
+<!-- Customer Testimonials Section -->
+<?php if (get_theme_mod('testimonials_section_enable', true)) : ?>
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><?php echo esc_html(get_theme_mod('testimonials_section_title', 'Khách Hàng Nói Gì Về Chúng Tôi')); ?></h2>
+                <p class="section-subtitle"><?php echo esc_html(get_theme_mod('testimonials_section_subtitle', 'Những câu chuyện thật từ khách hàng hài lòng tin tưởng sản phẩm của chúng tôi')); ?></p>
+            </div>
+
+            <div class="testimonials-grid">
+                <?php
+                // Get testimonials from Customizer
+                $testimonials = get_testimonials();
+
+                if (!empty($testimonials)) :
+                    foreach ($testimonials as $testimonial) :
+                ?>
+                        <div class="testimonial-card">
+                            <?php if (!empty($testimonial['image_url'])) : ?>
+                                <div class="testimonial-image">
+                                    <img src="<?php echo esc_url($testimonial['image_url']); ?>" alt="<?php echo esc_attr($testimonial['customer_name']); ?>">
+                                </div>
+                            <?php endif; ?>
+                            <div class="testimonial-content">
+                                <div class="testimonial-rating">
+                                    <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                        <span class="star <?php echo ($i <= $testimonial['rating']) ? 'filled' : ''; ?>">★</span>
+                                    <?php endfor; ?>
+                                </div>
+                                <blockquote class="testimonial-text">
+                                    "<?php echo esc_html(wp_trim_words($testimonial['content'], 30)); ?>"
+                                </blockquote>
+                                <div class="testimonial-author">
+                                    <strong><?php echo esc_html($testimonial['customer_name']); ?></strong>
+                                    <?php if (!empty($testimonial['customer_company'])) : ?>
+                                        <span class="company"><?php echo esc_html($testimonial['customer_company']); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                    endforeach;
+                else :
+                    ?>
+                    <!-- Demo testimonials when no testimonials are available -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-image">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Customer 1">
+                        </div>
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating">
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                            </div>
+                            <blockquote class="testimonial-text">
+                                "Chất lượng xuất sắc và dịch vụ đặc biệt. Sản phẩm này đã thay đổi hoạt động kinh doanh của chúng tôi và vượt quá mọi mong đợi."
+                            </blockquote>
+                            <div class="testimonial-author">
+                                <strong>Nguyễn Văn An</strong>
+                                <span class="company">Công ty Giải Pháp Công Nghệ</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-image">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Customer 2">
+                        </div>
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating">
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                            </div>
+                            <blockquote class="testimonial-text">
+                                "Đáng tin cậy, hiệu quả và thân thiện với người dùng. Đội ngũ hỗ trợ cực kỳ nhanh chóng và hữu ích. Rất khuyến khích!"
+                            </blockquote>
+                            <div class="testimonial-author">
+                                <strong>Trần Thị Bình</strong>
+                                <span class="company">Tập Đoàn Toàn Cầu</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-image">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Customer 3">
+                        </div>
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating">
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                            </div>
+                            <blockquote class="testimonial-text">
+                                "Đầu tư tốt nhất mà chúng tôi đã thực hiện cho công ty. Dịch vụ chuyên nghiệp và giải pháp đổi mới mang lại kết quả thực tế."
+                            </blockquote>
+                            <div class="testimonial-author">
+                                <strong>Lê Minh Cường</strong>
+                                <span class="company">Phòng Thí Nghiệm Đổi Mới</span>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
 
 <!-- Contact Form Section -->
-<section class="contact-form-section">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Liên Hệ Với Chúng Tôi</h2>
-        </div>
+<?php if (get_theme_mod('contact_section_enable', true)) : ?>
+    <section class="contact-form-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><?php echo esc_html(get_theme_mod('contact_section_title', 'Liên Hệ Với Chúng Tôi')); ?></h2>
+                <p class="section-subtitle"><?php echo esc_html(get_theme_mod('contact_section_subtitle', 'Hãy liên hệ với chúng tôi để được tư vấn và hỗ trợ tốt nhất')); ?></p>
+            </div>
 
-        <div class="contact-form-wrapper">
-            <div class="contact-info">
-                <div class="contact-items-wrapper">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 16.5C21 16.88 20.79 17.21 20.47 17.38L12.57 21.82C12.41 21.94 12.21 22 12 22C11.79 22 11.59 21.94 11.43 21.82L3.53 17.38C3.21 17.21 3 16.88 3 16.5V7.5C3 7.12 3.21 6.79 3.53 6.62L11.43 2.18C11.59 2.06 11.79 2 12 2C12.21 2 12.41 2.06 12.57 2.18L20.47 6.62C20.79 6.79 21 7.12 21 7.5V16.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
+            <div class="contact-form-wrapper">
+                <div class="contact-info">
+                    <div class="contact-items-wrapper">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21 16.5C21 16.88 20.79 17.21 20.47 17.38L12.57 21.82C12.41 21.94 12.21 22 12 22C11.79 22 11.59 21.94 11.43 21.82L3.53 17.38C3.21 17.21 3 16.88 3 16.5V7.5C3 7.12 3.21 6.79 3.53 6.62L11.43 2.18C11.59 2.06 11.79 2 12 2C12.21 2 12.41 2.06 12.57 2.18L20.47 6.62C20.79 6.79 21 7.12 21 7.5V16.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <div class="contact-details">
+                                <strong>Địa Chỉ</strong>
+                                <p>123 Đường Kinh Doanh<br>Thành Phố, Tỉnh 12345</p>
+                            </div>
                         </div>
-                        <div class="contact-details">
-                            <strong>Địa Chỉ</strong>
-                            <p>123 Đường Kinh Doanh<br>Thành Phố, Tỉnh 12345</p>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 16.92V19.92C22 20.52 21.52 21 20.92 21C9.4 21 0 11.6 0 0.08C0 -0.52 0.48 -1 1.08 -1H4.08C4.68 -1 5.16 -0.52 5.16 0.08C5.16 2.08 5.44 4.04 6 5.92C6.18 6.4 6.04 6.94 5.64 7.34L4.12 8.86C5.84 12.48 8.52 15.16 12.14 16.88L13.66 15.36C14.06 14.96 14.6 14.82 15.08 15C16.96 15.56 18.92 15.84 20.92 15.84C21.52 15.84 22 16.32 22 16.92Z" fill="currentColor" />
+                                </svg>
+                            </div>
+                            <div class="contact-details">
+                                <strong>Điện Thoại</strong>
+                                <p>+84 (028) 123-4567</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22 16.92V19.92C22 20.52 21.52 21 20.92 21C9.4 21 0 11.6 0 0.08C0 -0.52 0.48 -1 1.08 -1H4.08C4.68 -1 5.16 -0.52 5.16 0.08C5.16 2.08 5.44 4.04 6 5.92C6.18 6.4 6.04 6.94 5.64 7.34L4.12 8.86C5.84 12.48 8.52 15.16 12.14 16.88L13.66 15.36C14.06 14.96 14.6 14.82 15.08 15C16.96 15.56 18.92 15.84 20.92 15.84C21.52 15.84 22 16.32 22 16.92Z" fill="currentColor" />
-                            </svg>
-                        </div>
-                        <div class="contact-details">
-                            <strong>Điện Thoại</strong>
-                            <p>+84 (028) 123-4567</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                        <div class="contact-details">
-                            <strong>Email</strong>
-                            <p>info@congtyban.com</p>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <div class="contact-details">
+                                <strong>Email</strong>
+                                <p>info@congtyban.com</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="contact-form">
-                <form id="contact-form" method="post" action="#">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="first-name">Tên *</label>
-                            <input type="text" id="first-name" name="first_name" required>
+                <div class="contact-form">
+                    <form id="contact-form" method="post" action="#">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first-name">Tên *</label>
+                                <input type="text" id="first-name" name="first_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name">Họ *</label>
+                                <input type="text" id="last-name" name="last_name" required>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="last-name">Họ *</label>
-                            <input type="text" id="last-name" name="last_name" required>
+                            <label for="email">Địa Chỉ Email *</label>
+                            <input type="email" id="email" name="email" required>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Địa Chỉ Email *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Số Điện Thoại</label>
-                        <input type="tel" id="phone" name="phone">
-                    </div>
-                    <div class="form-group">
-                        <label for="company">Công Ty</label>
-                        <input type="text" id="company" name="company">
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Tin Nhắn *</label>
-                        <textarea id="message" name="message" rows="5" required placeholder="Hãy cho chúng tôi biết về dự án hoặc yêu cầu của bạn..."></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">
-                        <span>Gửi Tin Nhắn</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <polygon points="22,2 15,22 11,13 2,9 22,2" fill="currentColor" />
-                        </svg>
-                    </button>
-                </form>
+                        <div class="form-group">
+                            <label for="phone">Số Điện Thoại</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Công Ty</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Tin Nhắn *</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Hãy cho chúng tôi biết về dự án hoặc yêu cầu của bạn..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <span>Gửi Tin Nhắn</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <polygon points="22,2 15,22 11,13 2,9 22,2" fill="currentColor" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+<?php endif; ?>
 
 <?php get_footer(); ?>

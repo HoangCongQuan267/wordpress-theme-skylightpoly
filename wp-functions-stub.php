@@ -354,6 +354,156 @@ if (!function_exists('wp_list_categories')) {
     function wp_list_categories($args = '') {}
 }
 
+// WordPress translation functions
+if (!function_exists('__')) {
+    function __($text, $domain = 'default') {
+        return $text;
+    }
+}
+
+if (!function_exists('_e')) {
+    function _e($text, $domain = 'default') {
+        echo $text;
+    }
+}
+
+// WordPress sanitization functions
+if (!function_exists('sanitize_text_field')) {
+    function sanitize_text_field($str) {
+        return $str;
+    }
+}
+
+if (!function_exists('sanitize_textarea_field')) {
+    function sanitize_textarea_field($str) {
+        return $str;
+    }
+}
+
+if (!function_exists('esc_url_raw')) {
+    function esc_url_raw($url, $protocols = null) {
+        return $url;
+    }
+}
+
+if (!function_exists('absint')) {
+    function absint($maybeint) {
+        return abs(intval($maybeint));
+    }
+}
+
+// WordPress post functions
+if (!function_exists('register_post_type')) {
+    function register_post_type($post_type, $args = array()) {
+        return true;
+    }
+}
+
+if (!function_exists('add_meta_box')) {
+    function add_meta_box($id, $title, $callback, $screen = null, $context = 'advanced', $priority = 'default', $callback_args = null) {
+        return true;
+    }
+}
+
+if (!function_exists('wp_nonce_field')) {
+    function wp_nonce_field($action = -1, $name = '_wpnonce', $referer = true, $echo = true) {
+        return '';
+    }
+}
+
+if (!function_exists('wp_verify_nonce')) {
+    function wp_verify_nonce($nonce, $action = -1) {
+        return true;
+    }
+}
+
+if (!function_exists('current_user_can')) {
+    function current_user_can($capability, $object_id = null) {
+        return true;
+    }
+}
+
+if (!function_exists('update_post_meta')) {
+    function update_post_meta($post_id, $meta_key, $meta_value, $prev_value = '') {
+        return true;
+    }
+}
+
+if (!function_exists('get_posts')) {
+    function get_posts($args = null) {
+        return array();
+    }
+}
+
+if (!function_exists('get_the_post_thumbnail')) {
+    function get_the_post_thumbnail($post = null, $size = 'post-thumbnail', $attr = '') {
+        return '';
+    }
+}
+
+if (!function_exists('wp_get_attachment_image_url')) {
+    function wp_get_attachment_image_url($attachment_id, $size = 'thumbnail', $icon = false) {
+        return '';
+    }
+}
+
+if (!function_exists('wp_get_attachment_image')) {
+    function wp_get_attachment_image($attachment_id, $size = 'thumbnail', $icon = false, $attr = '') {
+        // Mock function - returns a placeholder image HTML
+        $url = wp_get_attachment_image_url($attachment_id, $size, $icon);
+        $alt = is_array($attr) && isset($attr['alt']) ? $attr['alt'] : 'Image';
+        return '<img src="' . esc_url($url) . '" alt="' . esc_attr($alt) . '" />';
+    }
+}
+
+if (!function_exists('get_post_thumbnail_id')) {
+    function get_post_thumbnail_id($post = null) {
+        return 0;
+    }
+}
+
+if (!function_exists('get_current_screen')) {
+    function get_current_screen() {
+        return null;
+    }
+}
+
+if (!function_exists('checked')) {
+    function checked($checked, $current = true, $echo = true) {
+        return '';
+    }
+}
+
+if (!function_exists('selected')) {
+    function selected($selected, $current = true, $echo = true) {
+        return '';
+    }
+}
+
+if (!function_exists('wp_validate_boolean')) {
+    function wp_validate_boolean($var) {
+        return (bool) $var;
+    }
+}
+
+// WordPress constants
+if (!defined('DOING_AUTOSAVE')) {
+    define('DOING_AUTOSAVE', false);
+}
+
+// WordPress Customizer classes
+if (!class_exists('WP_Customize_Media_Control')) {
+    class WP_Customize_Media_Control {
+        public function __construct($manager, $id, $args = array()) {}
+    }
+}
+
+if (!class_exists('WP_Customize_Color_Control')) {
+    class WP_Customize_Color_Control {
+        public function __construct($manager, $id, $args = array()) {}
+    }
+}
+
 if (!function_exists('wp_get_archives')) {
     function wp_get_archives($args = '') {}
 }
@@ -597,6 +747,105 @@ if (!function_exists('get_hero_slides')) {
                 'ID' => 2,
                 'post_title' => 'Hero Slide 2',
                 'post_content' => 'Another slide content'
+            )
+        );
+    }
+}
+
+if (!function_exists('get_products')) {
+    function get_products()
+    {
+        // Mock products data
+        return array(
+            array(
+                'id' => 1,
+                'title' => 'Dòng Sản Phẩm Đổi Mới A',
+                'content' => 'Giải pháp chất lượng cao được thiết kế cho các doanh nghiệp hiện đại với tính năng tiên tiến.',
+                'image' => '',
+                'image_url' => 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                'featured' => true,
+                'price' => '$299',
+                'link' => '#'
+            ),
+            array(
+                'id' => 2,
+                'title' => 'Dòng Sản Phẩm Đổi Mới B',
+                'content' => 'Công nghệ tiên tiến mang lại hiệu suất và độ tin cậy vượt trội.',
+                'image' => '',
+                'image_url' => 'https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                'featured' => false,
+                'price' => '$499',
+                'link' => '#'
+            ),
+            array(
+                'id' => 3,
+                'title' => 'Bộ Giải Pháp Chuyên Nghiệp C',
+                'content' => 'Giải pháp toàn diện cho các yêu cầu cấp doanh nghiệp và khả năng mở rộng.',
+                'image' => '',
+                'image_url' => 'https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                'featured' => false,
+                'price' => '$799',
+                'link' => '#'
+            )
+        );
+    }
+}
+
+if (!function_exists('get_certificates')) {
+    function get_certificates()
+    {
+        // Mock certificates data
+        return array(
+            array(
+                'id' => 1,
+                'title' => 'ISO 9001:2015',
+                'content' => 'Chứng nhận Hệ thống Quản lý Chất lượng đảm bảo tiêu chuẩn chất lượng nhất quán.',
+                'image' => '',
+                'image_url' => ''
+            ),
+            array(
+                'id' => 2,
+                'title' => 'Chứng Nhận CE',
+                'content' => 'Dấu hiệu Tuân thủ Châu Âu cho thấy sự tuân thủ các tiêu chuẩn an toàn của EU.',
+                'image' => '',
+                'image_url' => ''
+            ),
+            array(
+                'id' => 3,
+                'title' => 'Xuất Sắc Ngành',
+                'content' => 'Được công nhận về hiệu suất xuất sắc và đổi mới trong lĩnh vực ngành của chúng tôi.',
+                'image' => '',
+                'image_url' => ''
+            )
+        );
+    }
+}
+
+if (!function_exists('get_testimonials')) {
+    function get_testimonials()
+    {
+        // Mock testimonials data
+        return array(
+            array(
+                'id' => 1,
+                'content' => 'Dịch vụ xuất sắc và sản phẩm chất lượng cao. Đội ngũ chuyên nghiệp và hỗ trợ tuyệt vời.',
+                'customer_name' => 'Nguyễn Văn A',
+                'customer_company' => 'Công ty ABC',
+                'rating' => 5
+            ),
+            array(
+                'id' => 2,
+                'content' => 'Rất hài lòng với giải pháp được cung cấp. Hiệu quả và đáng tin cậy.',
+                'customer_name' => 'Trần Thị B',
+                'customer_company' => 'Doanh nghiệp XYZ',
+                'rating' => 5
+            ),
+            array(
+                'id' => 3,
+                'content' => 'Đối tác tuyệt vời với cam kết chất lượng và dịch vụ khách hàng xuất sắc.',
+                'customer_name' => 'Lê Văn C',
+                'customer_company' => 'Tập đoàn DEF',
+                'rating' => 4
             )
         );
     }

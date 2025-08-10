@@ -442,6 +442,144 @@ function register_hero_slideshow_post_type() {
 add_action('init', 'register_hero_slideshow_post_type');
 
 /**
+ * Register Product Custom Post Type
+ */
+function register_product_post_type() {
+    $labels = array(
+        'name'                  => _x('Products', 'Post type general name', 'custom-blue-orange'),
+        'singular_name'         => _x('Product', 'Post type singular name', 'custom-blue-orange'),
+        'menu_name'             => _x('Products', 'Admin Menu text', 'custom-blue-orange'),
+        'name_admin_bar'        => _x('Product', 'Add New on Toolbar', 'custom-blue-orange'),
+        'add_new'               => __('Add New', 'custom-blue-orange'),
+        'add_new_item'          => __('Add New Product', 'custom-blue-orange'),
+        'new_item'              => __('New Product', 'custom-blue-orange'),
+        'edit_item'             => __('Edit Product', 'custom-blue-orange'),
+        'view_item'             => __('View Product', 'custom-blue-orange'),
+        'all_items'             => __('All Products', 'custom-blue-orange'),
+        'search_items'          => __('Search Products', 'custom-blue-orange'),
+        'parent_item_colon'     => __('Parent Products:', 'custom-blue-orange'),
+        'not_found'             => __('No products found.', 'custom-blue-orange'),
+        'not_found_in_trash'    => __('No products found in Trash.', 'custom-blue-orange'),
+        'featured_image'        => _x('Product Image', 'Overrides the "Featured Image" phrase', 'custom-blue-orange'),
+        'set_featured_image'    => _x('Set product image', 'Overrides the "Set featured image" phrase', 'custom-blue-orange'),
+        'remove_featured_image' => _x('Remove product image', 'Overrides the "Remove featured image" phrase', 'custom-blue-orange'),
+        'use_featured_image'    => _x('Use as product image', 'Overrides the "Use as featured image" phrase', 'custom-blue-orange'),
+    );
+
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => array('slug' => 'product'),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => 21,
+        'menu_icon'          => 'dashicons-products',
+        'supports'           => array('title', 'editor', 'excerpt', 'thumbnail', 'page-attributes'),
+        'show_in_rest'       => true,
+    );
+
+    register_post_type('product', $args);
+}
+add_action('init', 'register_product_post_type');
+
+/**
+ * Register Certificate Custom Post Type
+ */
+function register_certificate_post_type() {
+    $labels = array(
+        'name'                  => _x('Certificates', 'Post type general name', 'custom-blue-orange'),
+        'singular_name'         => _x('Certificate', 'Post type singular name', 'custom-blue-orange'),
+        'menu_name'             => _x('Certificates', 'Admin Menu text', 'custom-blue-orange'),
+        'name_admin_bar'        => _x('Certificate', 'Add New on Toolbar', 'custom-blue-orange'),
+        'add_new'               => __('Add New', 'custom-blue-orange'),
+        'add_new_item'          => __('Add New Certificate', 'custom-blue-orange'),
+        'new_item'              => __('New Certificate', 'custom-blue-orange'),
+        'edit_item'             => __('Edit Certificate', 'custom-blue-orange'),
+        'view_item'             => __('View Certificate', 'custom-blue-orange'),
+        'all_items'             => __('All Certificates', 'custom-blue-orange'),
+        'search_items'          => __('Search Certificates', 'custom-blue-orange'),
+        'parent_item_colon'     => __('Parent Certificates:', 'custom-blue-orange'),
+        'not_found'             => __('No certificates found.', 'custom-blue-orange'),
+        'not_found_in_trash'    => __('No certificates found in Trash.', 'custom-blue-orange'),
+        'featured_image'        => _x('Certificate Icon', 'Overrides the "Featured Image" phrase', 'custom-blue-orange'),
+        'set_featured_image'    => _x('Set certificate icon', 'Overrides the "Set featured image" phrase', 'custom-blue-orange'),
+        'remove_featured_image' => _x('Remove certificate icon', 'Overrides the "Remove featured image" phrase', 'custom-blue-orange'),
+        'use_featured_image'    => _x('Use as certificate icon', 'Overrides the "Use as featured image" phrase', 'custom-blue-orange'),
+    );
+
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => array('slug' => 'certificate'),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => 22,
+        'menu_icon'          => 'dashicons-awards',
+        'supports'           => array('title', 'editor', 'thumbnail', 'page-attributes'),
+        'show_in_rest'       => true,
+    );
+
+    register_post_type('certificate', $args);
+}
+add_action('init', 'register_certificate_post_type');
+
+/**
+ * Register Testimonial Custom Post Type
+ */
+function register_testimonial_post_type() {
+    $labels = array(
+        'name'                  => _x('Testimonials', 'Post type general name', 'custom-blue-orange'),
+        'singular_name'         => _x('Testimonial', 'Post type singular name', 'custom-blue-orange'),
+        'menu_name'             => _x('Testimonials', 'Admin Menu text', 'custom-blue-orange'),
+        'name_admin_bar'        => _x('Testimonial', 'Add New on Toolbar', 'custom-blue-orange'),
+        'add_new'               => __('Add New', 'custom-blue-orange'),
+        'add_new_item'          => __('Add New Testimonial', 'custom-blue-orange'),
+        'new_item'              => __('New Testimonial', 'custom-blue-orange'),
+        'edit_item'             => __('Edit Testimonial', 'custom-blue-orange'),
+        'view_item'             => __('View Testimonial', 'custom-blue-orange'),
+        'all_items'             => __('All Testimonials', 'custom-blue-orange'),
+        'search_items'          => __('Search Testimonials', 'custom-blue-orange'),
+        'parent_item_colon'     => __('Parent Testimonials:', 'custom-blue-orange'),
+        'not_found'             => __('No testimonials found.', 'custom-blue-orange'),
+        'not_found_in_trash'    => __('No testimonials found in Trash.', 'custom-blue-orange'),
+        'featured_image'        => _x('Customer Photo', 'Overrides the "Featured Image" phrase', 'custom-blue-orange'),
+        'set_featured_image'    => _x('Set customer photo', 'Overrides the "Set featured image" phrase', 'custom-blue-orange'),
+        'remove_featured_image' => _x('Remove customer photo', 'Overrides the "Remove featured image" phrase', 'custom-blue-orange'),
+        'use_featured_image'    => _x('Use as customer photo', 'Overrides the "Use as featured image" phrase', 'custom-blue-orange'),
+    );
+
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => array('slug' => 'testimonial'),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => 23,
+        'menu_icon'          => 'dashicons-testimonial',
+        'supports'           => array('title', 'editor', 'thumbnail', 'page-attributes'),
+        'show_in_rest'       => true,
+    );
+
+    register_post_type('testimonial', $args);
+}
+add_action('init', 'register_testimonial_post_type');
+
+/**
  * Add Hero Slide Meta Boxes
  */
 function add_hero_slide_meta_boxes() {
@@ -455,6 +593,100 @@ function add_hero_slide_meta_boxes() {
     );
 }
 add_action('add_meta_boxes', 'add_hero_slide_meta_boxes');
+
+/**
+ * Add Product Meta Boxes
+ */
+function add_product_meta_boxes() {
+    add_meta_box(
+        'product_details',
+        __('Product Details', 'custom-blue-orange'),
+        'product_details_callback',
+        'product',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'add_product_meta_boxes');
+
+/**
+ * Product Meta Box Callback
+ */
+function product_details_callback($post) {
+    wp_nonce_field('product_details_nonce', 'product_details_nonce');
+    
+    $featured_product = get_post_meta($post->ID, '_featured_product', true);
+    $product_price = get_post_meta($post->ID, '_product_price', true);
+    $product_link = get_post_meta($post->ID, '_product_link', true);
+    
+    echo '<table class="form-table">';
+    
+    echo '<tr>';
+    echo '<th><label for="featured_product">' . __('Featured Product', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="checkbox" id="featured_product" name="featured_product" value="yes" ' . checked($featured_product, 'yes', false) . ' /> ' . __('Mark as featured product', 'custom-blue-orange') . '</td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="product_price">' . __('Price', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="text" id="product_price" name="product_price" value="' . esc_attr($product_price) . '" class="regular-text" /></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="product_link">' . __('External Link', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="url" id="product_link" name="product_link" value="' . esc_attr($product_link) . '" class="regular-text" /></td>';
+    echo '</tr>';
+    
+    echo '</table>';
+}
+
+/**
+ * Add Testimonial Meta Boxes
+ */
+function add_testimonial_meta_boxes() {
+    add_meta_box(
+        'testimonial_details',
+        __('Testimonial Details', 'custom-blue-orange'),
+        'testimonial_details_callback',
+        'testimonial',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'add_testimonial_meta_boxes');
+
+/**
+ * Testimonial Meta Box Callback
+ */
+function testimonial_details_callback($post) {
+    wp_nonce_field('testimonial_details_nonce', 'testimonial_details_nonce');
+    
+    $customer_name = get_post_meta($post->ID, '_customer_name', true);
+    $customer_company = get_post_meta($post->ID, '_customer_company', true);
+    $customer_rating = get_post_meta($post->ID, '_customer_rating', true);
+    
+    echo '<table class="form-table">';
+    
+    echo '<tr>';
+    echo '<th><label for="customer_name">' . __('Customer Name', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="text" id="customer_name" name="customer_name" value="' . esc_attr($customer_name) . '" class="regular-text" /></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="customer_company">' . __('Company', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="text" id="customer_company" name="customer_company" value="' . esc_attr($customer_company) . '" class="regular-text" /></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="customer_rating">' . __('Rating', 'custom-blue-orange') . '</label></th>';
+    echo '<td><select id="customer_rating" name="customer_rating">';
+    for ($i = 1; $i <= 5; $i++) {
+        echo '<option value="' . $i . '"' . selected($customer_rating, $i, false) . '>' . $i . ' Star' . ($i > 1 ? 's' : '') . '</option>';
+    }
+    echo '</select></td>';
+    echo '</tr>';
+    
+    echo '</table>';
+}
 
 /**
  * Hero Slide Meta Box Callback
@@ -539,6 +771,68 @@ function save_hero_slide_meta_data($post_id) {
 add_action('save_post', 'save_hero_slide_meta_data');
 
 /**
+ * Save Product Meta Data
+ */
+function save_product_meta_data($post_id) {
+    if (!isset($_POST['product_details_nonce']) || !wp_verify_nonce($_POST['product_details_nonce'], 'product_details_nonce')) {
+        return;
+    }
+    
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+    
+    if (isset($_POST['featured_product'])) {
+        update_post_meta($post_id, '_featured_product', 'yes');
+    } else {
+        update_post_meta($post_id, '_featured_product', 'no');
+    }
+    
+    if (isset($_POST['product_price'])) {
+        update_post_meta($post_id, '_product_price', sanitize_text_field($_POST['product_price']));
+    }
+    
+    if (isset($_POST['product_link'])) {
+        update_post_meta($post_id, '_product_link', esc_url_raw($_POST['product_link']));
+    }
+}
+add_action('save_post', 'save_product_meta_data');
+
+/**
+ * Save Testimonial Meta Data
+ */
+function save_testimonial_meta_data($post_id) {
+    if (!isset($_POST['testimonial_details_nonce']) || !wp_verify_nonce($_POST['testimonial_details_nonce'], 'testimonial_details_nonce')) {
+        return;
+    }
+    
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+    
+    if (isset($_POST['customer_name'])) {
+        update_post_meta($post_id, '_customer_name', sanitize_text_field($_POST['customer_name']));
+    }
+    
+    if (isset($_POST['customer_company'])) {
+        update_post_meta($post_id, '_customer_company', sanitize_text_field($_POST['customer_company']));
+    }
+    
+    if (isset($_POST['customer_rating'])) {
+        update_post_meta($post_id, '_customer_rating', intval($_POST['customer_rating']));
+    }
+}
+add_action('save_post', 'save_testimonial_meta_data');
+
+/**
  * Get Hero Slides for Frontend Display
  */
 function get_hero_slides() {
@@ -552,6 +846,91 @@ function get_hero_slides() {
     );
     
     return get_posts($args);
+}
+
+/**
+ * Get Products for Frontend Display from Customizer
+ */
+function get_products() {
+    $count = get_theme_mod('products_section_count', 6);
+    $product_list = array();
+    
+    for ($i = 1; $i <= $count; $i++) {
+        $image_id = get_theme_mod("product_{$i}_image", '');
+        $title = get_theme_mod("product_{$i}_title", '');
+        $description = get_theme_mod("product_{$i}_description", '');
+        $link = get_theme_mod("product_{$i}_link", '');
+        
+        if (!empty($title) || !empty($image_id)) {
+            $product_list[] = array(
+                'id' => $i,
+                'title' => $title,
+                'content' => $description,
+                'image' => $image_id ? wp_get_attachment_image($image_id, 'medium') : '',
+                'image_url' => $image_id ? wp_get_attachment_image_url($image_id, 'medium') : '',
+                'featured' => false,
+                'price' => '',
+                'link' => $link
+            );
+        }
+    }
+    
+    return $product_list;
+}
+
+/**
+ * Get Certificates for Frontend Display from Customizer
+ */
+function get_certificates() {
+    $count = get_theme_mod('certificates_section_count', 4);
+    $certificate_list = array();
+    
+    for ($i = 1; $i <= $count; $i++) {
+        $image_id = get_theme_mod("certificate_{$i}_image", '');
+        $title = get_theme_mod("certificate_{$i}_title", '');
+        $description = get_theme_mod("certificate_{$i}_description", '');
+        
+        if (!empty($title) || !empty($image_id)) {
+            $certificate_list[] = array(
+                'id' => $i,
+                'title' => $title,
+                'content' => $description,
+                'image' => $image_id ? wp_get_attachment_image($image_id, 'medium') : '',
+                'image_url' => $image_id ? wp_get_attachment_image_url($image_id, 'medium') : ''
+            );
+        }
+    }
+    
+    return $certificate_list;
+}
+
+/**
+ * Get Testimonials for Frontend Display from Customizer
+ */
+function get_testimonials() {
+    $count = get_theme_mod('testimonials_section_count', 6);
+    $testimonial_list = array();
+    
+    for ($i = 1; $i <= $count; $i++) {
+        $image_id = get_theme_mod("testimonial_{$i}_image", '');
+        $name = get_theme_mod("testimonial_{$i}_name", '');
+        $position = get_theme_mod("testimonial_{$i}_position", '');
+        $content = get_theme_mod("testimonial_{$i}_content", '');
+        
+        if (!empty($name) || !empty($content)) {
+            $testimonial_list[] = array(
+                'id' => $i,
+                'content' => $content,
+                'customer_name' => $name,
+                'customer_company' => $position,
+                'rating' => 5,
+                'image_id' => $image_id,
+                'image_url' => $image_id ? wp_get_attachment_image_url($image_id, 'thumbnail') : ''
+            );
+        }
+    }
+    
+    return $testimonial_list;
 }
 
 /**
@@ -936,6 +1315,439 @@ function hero_slideshow_customizer($wp_customize) {
     )));
 }
 add_action('customize_register', 'hero_slideshow_customizer');
+
+/**
+ * Add Homepage Sections to WordPress Customizer
+ */
+function homepage_sections_customizer($wp_customize) {
+    // Add Homepage Sections Panel
+    $wp_customize->add_panel('homepage_sections_panel', array(
+        'title'    => __('Homepage Sections', 'custom-blue-orange'),
+        'priority' => 25,
+        'description' => __('Manage your homepage sections visibility and settings', 'custom-blue-orange'),
+    ));
+    
+    // Products Section
+    $wp_customize->add_section('products_section', array(
+        'title'    => __('Products Section', 'custom-blue-orange'),
+        'panel'    => 'homepage_sections_panel',
+        'priority' => 10,
+        'description' => __('Manage your products section settings', 'custom-blue-orange'),
+    ));
+    
+    // Enable/Disable Products Section
+    $wp_customize->add_setting('products_section_enable', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('products_section_enable', array(
+        'label'    => __('Enable Products Section', 'custom-blue-orange'),
+        'section'  => 'products_section',
+        'type'     => 'checkbox',
+        'priority' => 10,
+    ));
+    
+    // Products Section Title
+    $wp_customize->add_setting('products_section_title', array(
+        'default'           => __('Sản Phẩm Mới', 'custom-blue-orange'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('products_section_title', array(
+        'label'    => __('Section Title', 'custom-blue-orange'),
+        'section'  => 'products_section',
+        'type'     => 'text',
+        'priority' => 20,
+    ));
+    
+    // Products Section Subtitle
+    $wp_customize->add_setting('products_section_subtitle', array(
+        'default'           => __('Khám phá những sản phẩm mới nhất và chất lượng cao từ chúng tôi', 'custom-blue-orange'),
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('products_section_subtitle', array(
+        'label'    => __('Section Subtitle', 'custom-blue-orange'),
+        'section'  => 'products_section',
+        'type'     => 'textarea',
+        'priority' => 30,
+    ));
+    
+    // Number of Products to Display
+    $wp_customize->add_setting('products_section_count', array(
+        'default'           => 6,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('products_section_count', array(
+        'label'       => __('Number of Products to Display', 'custom-blue-orange'),
+        'section'     => 'products_section',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 1,
+            'max'  => 6,
+            'step' => 1,
+        ),
+        'priority'    => 40,
+    ));
+    
+    // Individual Products
+    for ($i = 1; $i <= 6; $i++) {
+        // Product Image
+        $wp_customize->add_setting("product_{$i}_image", array(
+            'default'           => '',
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "product_{$i}_image", array(
+            'label'    => sprintf(__('Product %d Image', 'custom-blue-orange'), $i),
+            'section'  => 'products_section',
+            'mime_type' => 'image',
+            'priority' => 40 + ($i * 10),
+        )));
+        
+        // Product Title
+        $wp_customize->add_setting("product_{$i}_title", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("product_{$i}_title", array(
+            'label'    => sprintf(__('Product %d Title', 'custom-blue-orange'), $i),
+            'section'  => 'products_section',
+            'type'     => 'text',
+            'priority' => 41 + ($i * 10),
+        ));
+        
+        // Product Description
+        $wp_customize->add_setting("product_{$i}_description", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("product_{$i}_description", array(
+            'label'    => sprintf(__('Product %d Description', 'custom-blue-orange'), $i),
+            'section'  => 'products_section',
+            'type'     => 'textarea',
+            'priority' => 42 + ($i * 10),
+        ));
+        
+        // Product Link
+        $wp_customize->add_setting("product_{$i}_link", array(
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("product_{$i}_link", array(
+            'label'    => sprintf(__('Product %d Link', 'custom-blue-orange'), $i),
+            'section'  => 'products_section',
+            'type'     => 'url',
+            'priority' => 43 + ($i * 10),
+        ));
+    }
+    
+    // Certificates Section
+    $wp_customize->add_section('certificates_section', array(
+        'title'    => __('Certificates Section', 'custom-blue-orange'),
+        'panel'    => 'homepage_sections_panel',
+        'priority' => 20,
+        'description' => __('Manage your certificates section settings', 'custom-blue-orange'),
+    ));
+    
+    // Enable/Disable Certificates Section
+    $wp_customize->add_setting('certificates_section_enable', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('certificates_section_enable', array(
+        'label'    => __('Enable Certificates Section', 'custom-blue-orange'),
+        'section'  => 'certificates_section',
+        'type'     => 'checkbox',
+        'priority' => 10,
+    ));
+    
+    // Certificates Section Title
+    $wp_customize->add_setting('certificates_section_title', array(
+        'default'           => __('Chứng Nhận & Giải Thưởng', 'custom-blue-orange'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('certificates_section_title', array(
+        'label'    => __('Section Title', 'custom-blue-orange'),
+        'section'  => 'certificates_section',
+        'type'     => 'text',
+        'priority' => 20,
+    ));
+    
+    // Certificates Section Subtitle
+    $wp_customize->add_setting('certificates_section_subtitle', array(
+        'default'           => __('Những chứng nhận uy tín và giải thưởng danh giá khẳng định chất lượng dịch vụ', 'custom-blue-orange'),
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('certificates_section_subtitle', array(
+        'label'    => __('Section Subtitle', 'custom-blue-orange'),
+        'section'  => 'certificates_section',
+        'type'     => 'textarea',
+        'priority' => 30,
+    ));
+    
+    // Number of Certificates to Display
+    $wp_customize->add_setting('certificates_section_count', array(
+        'default'           => 4,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('certificates_section_count', array(
+        'label'       => __('Number of Certificates to Display', 'custom-blue-orange'),
+        'section'     => 'certificates_section',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 1,
+            'max'  => 4,
+            'step' => 1,
+        ),
+        'priority'    => 40,
+    ));
+    
+    // Individual Certificates
+    for ($i = 1; $i <= 4; $i++) {
+        // Certificate Image
+        $wp_customize->add_setting("certificate_{$i}_image", array(
+            'default'           => '',
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "certificate_{$i}_image", array(
+            'label'    => sprintf(__('Certificate %d Image', 'custom-blue-orange'), $i),
+            'section'  => 'certificates_section',
+            'mime_type' => 'image',
+            'priority' => 40 + ($i * 10),
+        )));
+        
+        // Certificate Title
+        $wp_customize->add_setting("certificate_{$i}_title", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("certificate_{$i}_title", array(
+            'label'    => sprintf(__('Certificate %d Title', 'custom-blue-orange'), $i),
+            'section'  => 'certificates_section',
+            'type'     => 'text',
+            'priority' => 41 + ($i * 10),
+        ));
+        
+        // Certificate Description
+        $wp_customize->add_setting("certificate_{$i}_description", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("certificate_{$i}_description", array(
+            'label'    => sprintf(__('Certificate %d Description', 'custom-blue-orange'), $i),
+            'section'  => 'certificates_section',
+            'type'     => 'textarea',
+            'priority' => 42 + ($i * 10),
+        ));
+    }
+    
+    // Testimonials Section
+    $wp_customize->add_section('testimonials_section', array(
+        'title'    => __('Testimonials Section', 'custom-blue-orange'),
+        'panel'    => 'homepage_sections_panel',
+        'priority' => 30,
+        'description' => __('Manage your testimonials section settings', 'custom-blue-orange'),
+    ));
+    
+    // Enable/Disable Testimonials Section
+    $wp_customize->add_setting('testimonials_section_enable', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('testimonials_section_enable', array(
+        'label'    => __('Enable Testimonials Section', 'custom-blue-orange'),
+        'section'  => 'testimonials_section',
+        'type'     => 'checkbox',
+        'priority' => 10,
+    ));
+    
+    // Testimonials Section Title
+    $wp_customize->add_setting('testimonials_section_title', array(
+        'default'           => __('Khách Hàng Nói Gì Về Chúng Tôi', 'custom-blue-orange'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('testimonials_section_title', array(
+        'label'    => __('Section Title', 'custom-blue-orange'),
+        'section'  => 'testimonials_section',
+        'type'     => 'text',
+        'priority' => 20,
+    ));
+    
+    // Testimonials Section Subtitle
+    $wp_customize->add_setting('testimonials_section_subtitle', array(
+        'default'           => __('Những câu chuyện thật từ khách hàng hài lòng tin tưởng sản phẩm của chúng tôi', 'custom-blue-orange'),
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('testimonials_section_subtitle', array(
+        'label'    => __('Section Subtitle', 'custom-blue-orange'),
+        'section'  => 'testimonials_section',
+        'type'     => 'textarea',
+        'priority' => 30,
+    ));
+    
+    // Number of Testimonials to Display
+    $wp_customize->add_setting('testimonials_section_count', array(
+        'default'           => 6,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('testimonials_section_count', array(
+        'label'       => __('Number of Testimonials to Display', 'custom-blue-orange'),
+        'section'     => 'testimonials_section',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 1,
+            'max'  => 6,
+            'step' => 1,
+        ),
+        'priority'    => 40,
+    ));
+    
+    // Individual Testimonials
+    for ($i = 1; $i <= 6; $i++) {
+        // Testimonial Image
+        $wp_customize->add_setting("testimonial_{$i}_image", array(
+            'default'           => '',
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "testimonial_{$i}_image", array(
+            'label'    => sprintf(__('Testimonial %d Image', 'custom-blue-orange'), $i),
+            'section'  => 'testimonials_section',
+            'mime_type' => 'image',
+            'priority' => 40 + ($i * 10),
+        )));
+        
+        // Testimonial Name
+        $wp_customize->add_setting("testimonial_{$i}_name", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("testimonial_{$i}_name", array(
+            'label'    => sprintf(__('Testimonial %d Name', 'custom-blue-orange'), $i),
+            'section'  => 'testimonials_section',
+            'type'     => 'text',
+            'priority' => 41 + ($i * 10),
+        ));
+        
+        // Testimonial Position
+        $wp_customize->add_setting("testimonial_{$i}_position", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("testimonial_{$i}_position", array(
+            'label'    => sprintf(__('Testimonial %d Position', 'custom-blue-orange'), $i),
+            'section'  => 'testimonials_section',
+            'type'     => 'text',
+            'priority' => 42 + ($i * 10),
+        ));
+        
+        // Testimonial Content
+        $wp_customize->add_setting("testimonial_{$i}_content", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("testimonial_{$i}_content", array(
+            'label'    => sprintf(__('Testimonial %d Content', 'custom-blue-orange'), $i),
+            'section'  => 'testimonials_section',
+            'type'     => 'textarea',
+            'priority' => 43 + ($i * 10),
+        ));
+    }
+    
+    // Contact Section
+    $wp_customize->add_section('contact_section', array(
+        'title'    => __('Contact Section', 'custom-blue-orange'),
+        'panel'    => 'homepage_sections_panel',
+        'priority' => 40,
+        'description' => __('Manage your contact section settings', 'custom-blue-orange'),
+    ));
+    
+    // Enable/Disable Contact Section
+    $wp_customize->add_setting('contact_section_enable', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('contact_section_enable', array(
+        'label'    => __('Enable Contact Section', 'custom-blue-orange'),
+        'section'  => 'contact_section',
+        'type'     => 'checkbox',
+        'priority' => 10,
+    ));
+    
+    // Contact Section Title
+    $wp_customize->add_setting('contact_section_title', array(
+        'default'           => __('Liên Hệ Với Chúng Tôi', 'custom-blue-orange'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('contact_section_title', array(
+        'label'    => __('Section Title', 'custom-blue-orange'),
+        'section'  => 'contact_section',
+        'type'     => 'text',
+        'priority' => 20,
+    ));
+    
+    // Contact Section Subtitle
+    $wp_customize->add_setting('contact_section_subtitle', array(
+        'default'           => __('Hãy liên hệ với chúng tôi để được tư vấn và hỗ trợ tốt nhất', 'custom-blue-orange'),
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('contact_section_subtitle', array(
+        'label'    => __('Section Subtitle', 'custom-blue-orange'),
+        'section'  => 'contact_section',
+        'type'     => 'textarea',
+        'priority' => 30,
+    ));
+}
+add_action('customize_register', 'homepage_sections_customizer');
 
 /**
  * Get Hero Slides from Customizer
