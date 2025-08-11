@@ -98,7 +98,7 @@ body {
     background: rgba(255, 255, 255, 0.1);
     color: var(--pure-white);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
+    border-radius: 8px;
     padding: 4px 8px;
     font-size: 12px;
     font-family: inherit;
@@ -250,9 +250,9 @@ body {
 
 /* Main Content */
 .site-main {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
+    /* max-width: 1200px; */
+    /* margin: 40px auto; */
+    /* padding: 0 20px; */
 }
 
 .content-area {
@@ -1028,7 +1028,7 @@ body {
     background: var(--primary-sky-blue);
     color: white;
     padding: 12px 24px;
-    border-radius: 4px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: 500;
     font-size: 0.85rem;
@@ -1105,7 +1105,7 @@ body {
     background: white;
     color: #333;
     padding: 0;
-    border-radius: 4px;
+    border-radius: 8px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     opacity: 0;
     visibility: hidden;
@@ -1416,7 +1416,7 @@ body {
     background: var(--primary-sky-blue);
     color: white;
     padding: 12px 30px;
-    border-radius: 4px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: 500;
     font-size: 0.9rem;
@@ -1447,7 +1447,7 @@ body {
 .certificate-card {
     background: white;
     padding: 40px 30px;
-    border-radius: 4px;
+    border-radius: 8px;
     text-align: center;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease;
@@ -1482,7 +1482,6 @@ body {
 
 /* Testimonials Section */
 .testimonials-section {
-    background: var(--off-white);
     padding: 20px 0px;
 }
 
@@ -1493,8 +1492,7 @@ body {
 }
 
 .testimonial-card {
-    background: #fafafa;
-    border-radius: 2px;
+    border-radius: 8px;
     padding: 20px 40px;
     position: relative;
     border: 1px solid #f5f5f5;
@@ -1566,7 +1564,6 @@ body {
 
 /* Contact Form Section */
 .contact-form-section {
-    background: rgba(175, 194, 255, 0.1);
     padding: 20px 10px;
     color: #1a1a1a;
 }
@@ -1639,7 +1636,7 @@ body {
 .contact-form {
     background: white;
     padding: 20px;
-    border-radius: 4px;
+    border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     border: 1px solid #f0f0f0;
 }
