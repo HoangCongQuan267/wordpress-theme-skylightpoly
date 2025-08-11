@@ -348,65 +348,93 @@ if ($section_spacing !== 'normal') {
         $certificates_style = get_theme_mod('certificates_display_style', 'cards');
     ?>
         <section class="certificates-section style-<?php echo esc_attr($certificates_style); ?>" style="background-color: <?php echo esc_attr($certificates_bg_color); ?>; color: <?php echo esc_attr($certificates_text_color); ?>;">
-            <div class="container-2">
+            <div class="container">
                 <div class="section-header">
                     <h2 class="section-title"><?php echo esc_html(get_theme_mod('certificates_section_title', 'Chứng Nhận & Giải Thưởng')); ?></h2>
                     <p class="section-subtitle"><?php echo esc_html(get_theme_mod('certificates_section_subtitle', 'Chứng nhận chất lượng và sự công nhận trong ngành')); ?></p>
                 </div>
 
-                <div class="certificates-grid">
+                <div class="certificates-carousel">
                     <?php
                     $certificates = get_certificates();
+                    $certificates_to_display = array();
+
                     if (!empty($certificates)) :
-                        foreach ($certificates as $certificate) : ?>
-                            <div class="certificate-item">
-                                <?php if ($certificate['image_url']) : ?>
-                                    <div class="certificate-image">
-                                        <img src="<?php echo esc_url($certificate['image_url']); ?>" alt="<?php echo esc_attr($certificate['title']); ?>">
-                                    </div>
-                                    <?php if ($certificate['title']) : ?>
-                                        <div class="certificate-overlay">
-                                            <h4 class="certificate-title"><?php echo esc_html($certificate['title']); ?></h4>
+                        $certificates_to_display = $certificates;
+                    else :
+                        // Fallback content when no certificates are available
+                        $certificates_to_display = array(
+                            array(
+                                'title' => 'ISO 9001:2015',
+                                'image_url' => 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                            ),
+                            array(
+                                'title' => 'Chứng Nhận CE',
+                                'image_url' => 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                            ),
+                            array(
+                                'title' => 'Xuất Sắc Ngành',
+                                'image_url' => 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                            ),
+                            array(
+                                'title' => 'Chứng Nhận An Toàn',
+                                'image_url' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                            ),
+                            array(
+                                'title' => 'Chứng Nhận Chất Lượng',
+                                'image_url' => 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                            )
+                        );
+                    endif;
+                    ?>
+
+                    <div class="certificates-container" data-current="0">
+                        <!-- Chevron Navigation Buttons -->
+                        <?php if (count($certificates_to_display) > 1) : ?>
+                            <button class="carousel-nav carousel-nav-prev" aria-label="Previous certificate">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <button class="carousel-nav carousel-nav-next" aria-label="Next certificate">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        <?php endif; ?>
+
+                        <div class="certificates-track">
+                            <?php foreach ($certificates_to_display as $index => $certificate) :
+                                $active_class = ($index === 0) ? ' active' : '';
+                            ?>
+                                <div class="certificate-slide<?php echo $active_class; ?>" data-index="<?php echo $index; ?>" data-title="<?php echo esc_attr($certificate['title']); ?>">
+                                    <?php if ($certificate['image_url']) : ?>
+                                        <div class="certificate-image">
+                                            <img src="<?php echo esc_url($certificate['image_url']); ?>" alt="<?php echo esc_attr($certificate['title']); ?>">
+                                            <!-- Tooltip -->
+                                            <div class="certificate-tooltip"><?php echo esc_html($certificate['title']); ?></div>
                                         </div>
+                                        <?php if ($certificate['title']) : ?>
+                                            <div class="certificate-overlay">
+                                                <h4 class="certificate-title"><?php echo esc_html($certificate['title']); ?></h4>
+                                            </div>
+                                        <?php endif; ?>
                                     <?php endif; ?>
-                                <?php endif; ?>
-                            </div>
-                        <?php endforeach;
-                    else : ?>
-                        <!-- Fallback content when no certificates are available -->
-                        <div class="certificate-item">
-                            <div class="certificate-image">
-                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="ISO 9001:2015">
-                            </div>
-                            <div class="certificate-overlay">
-                                <h4 class="certificate-title">ISO 9001:2015</h4>
-                            </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                        <div class="certificate-item">
-                            <div class="certificate-image">
-                                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Chứng Nhận CE">
+
+                        <!-- Navigation Indicators -->
+                        <?php if (count($certificates_to_display) > 1) : ?>
+                            <div class="certificate-indicators">
+                                <?php foreach ($certificates_to_display as $index => $certificate) :
+                                    $active_class = ($index === 0) ? ' active' : '';
+                                ?>
+                                    <button class="indicator-dot<?php echo $active_class; ?>" data-slide="<?php echo $index; ?>"></button>
+                                <?php endforeach; ?>
                             </div>
-                            <div class="certificate-overlay">
-                                <h4 class="certificate-title">Chứng Nhận CE</h4>
-                            </div>
-                        </div>
-                        <div class="certificate-item">
-                            <div class="certificate-image">
-                                <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Xuất Sắc Ngành">
-                            </div>
-                            <div class="certificate-overlay">
-                                <h4 class="certificate-title">Xuất Sắc Ngành</h4>
-                            </div>
-                        </div>
-                        <div class="certificate-item">
-                            <div class="certificate-image">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Chứng Nhận An Toàn">
-                            </div>
-                            <div class="certificate-overlay">
-                                <h4 class="certificate-title">Chứng Nhận An Toàn</h4>
-                            </div>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </section>

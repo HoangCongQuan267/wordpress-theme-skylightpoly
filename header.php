@@ -16,23 +16,39 @@
         <div class="header-top">
             <div class="container">
                 <div class="contact-info">
-                    <span class="region-selector">
-                        <select id="region-select" onchange="updateRegionInfo(this.value)">
-                            <option value="vietnam" selected>Vietnam</option>
-                            <option value="usa">United States</option>
-                            <option value="uk">United Kingdom</option>
-                            <option value="singapore">Singapore</option>
-                            <option value="japan">Japan</option>
-                        </select>
-                    </span>
+                    <?php if (get_theme_mod('show_region_selection', true)) : ?>
+                        <span class="region-selector">
+                            <select id="region-select" onchange="updateRegionInfo(this.value)">
+                                <?php
+                                $default_region = get_theme_mod('default_region', 'vietnam');
+                                $regions = array(
+                                    'vietnam' => __('Vietnam', 'custom-blue-orange'),
+                                    'usa' => __('United States', 'custom-blue-orange'),
+                                    'uk' => __('United Kingdom', 'custom-blue-orange'),
+                                    'singapore' => __('Singapore', 'custom-blue-orange'),
+                                    'japan' => __('Japan', 'custom-blue-orange')
+                                );
+                                foreach ($regions as $value => $label) :
+                                    $selected = ($value === $default_region) ? 'selected' : '';
+                                ?>
+                                    <option value="<?php echo esc_attr($value); ?>" <?php echo $selected; ?>><?php echo esc_html($label); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </span>
+                    <?php endif; ?>
                     <span class="phone">
-                        <a href="tel:+84123456789" id="phone-link">+84 123 456 789</a>
+                        <?php 
+                        $default_phone = get_theme_mod('default_phone', '+84 123 456 789');
+                        $phone_href = 'tel:' . preg_replace('/[^0-9+]/', '', $default_phone);
+                        ?>
+                        <a href="<?php echo esc_attr($phone_href); ?>" id="phone-link"><?php echo esc_html($default_phone); ?></a>
                     </span>
                     <span class="email">
-                        <a href="mailto:info@yoursite.com" id="email-link">info@yoursite.com</a>
+                        <?php $default_email = get_theme_mod('default_email', 'info@yoursite.com'); ?>
+                        <a href="mailto:<?php echo esc_attr($default_email); ?>" id="email-link"><?php echo esc_html($default_email); ?></a>
                     </span>
                     <span class="address" id="address-text">
-                        123 Đường Chính, Thành phố, Việt Nam
+                        <?php echo esc_html(get_theme_mod('default_address', '123 Đường Chính, Thành phố, Việt Nam')); ?>
                     </span>
                 </div>
             </div>
@@ -50,9 +66,18 @@
                         </a>
                     <?php endif; ?>
 
-                    <?php if (get_bloginfo('description')) : ?>
-                        <p class="site-description"><?php bloginfo('description'); ?></p>
-                    <?php endif; ?>
+                    <div class="site-text">
+                        <h1 class="site-title">
+                            <a href="<?php echo esc_url(home_url('/')); ?>"><?php bloginfo('name'); ?></a>
+                        </h1>
+                        <?php
+                        $site_slogan = get_theme_mod('site_slogan');
+                        if ($site_slogan) : ?>
+                            <p class="site-slogan"><?php echo esc_html($site_slogan); ?></p>
+                        <?php elseif (get_bloginfo('description')) : ?>
+                            <p class="site-slogan"><?php bloginfo('description'); ?></p>
+                        <?php endif; ?>
+                    </div>
                 </div>
 
                 <nav class="main-navigation" role="navigation" aria-label="Primary Menu">
@@ -118,50 +143,71 @@
         });
 
         // Region selector functionality
-        function updateRegionInfo(region) {
-            const phoneLink = document.getElementById('phone-link');
-            const emailLink = document.getElementById('email-link');
-            const addressText = document.getElementById('address-text');
+        <?php if (get_theme_mod('show_region_selection', true)) : ?>
 
-            const regionData = {
-                vietnam: {
-                    phone: '+84 123 456 789',
-                    phoneHref: 'tel:+84123456789',
-                    email: 'info@yoursite.com',
-                    address: '123 Đường Chính, Thành phố, Việt Nam'
-                },
-                usa: {
-                    phone: '+1 555 123 4567',
-                    phoneHref: 'tel:+15551234567',
-                    email: 'info@yoursite.com',
-                    address: '123 Main Street, New York, NY 10001, USA'
-                },
-                uk: {
-                    phone: '+44 20 7123 4567',
-                    phoneHref: 'tel:+442071234567',
-                    email: 'info@yoursite.co.uk',
-                    address: '123 High Street, London SW1A 1AA, UK'
-                },
-                singapore: {
-                    phone: '+65 6123 4567',
-                    phoneHref: 'tel:+6561234567',
-                    email: 'info@yoursite.sg',
-                    address: '123 Orchard Road, Singapore 238858'
-                },
-                japan: {
-                    phone: '+81 3 1234 5678',
-                    phoneHref: 'tel:+81312345678',
-                    email: 'info@yoursite.jp',
-                    address: '123 Shibuya, Tokyo 150-0002, Japan'
+            function updateRegionInfo(region) {
+                const phoneLink = document.getElementById('phone-link');
+                const emailLink = document.getElementById('email-link');
+                const addressText = document.getElementById('address-text');
+
+                const regionData = {
+                    <?php
+                    $regions = array('vietnam', 'usa', 'uk', 'singapore', 'japan');
+                    foreach ($regions as $index => $region) :
+                        $phone = get_theme_mod("region_{$region}_phone", '');
+                        $email = get_theme_mod("region_{$region}_email", '');
+                        $address = get_theme_mod("region_{$region}_address", '');
+
+                        // Fallback to default values if region-specific customizer is empty
+                        if (empty($phone) && empty($email) && empty($address)) {
+                            switch ($region) {
+                                case 'vietnam':
+                                    $phone = get_theme_mod('default_phone', '+84 123 456 789');
+                                    $email = get_theme_mod('default_email', 'info@yoursite.com');
+                                    $address = get_theme_mod('default_address', '123 Đường Chính, Thành phố, Việt Nam');
+                                    break;
+                                case 'usa':
+                                    $phone = '+1 555 123 4567';
+                                    $email = 'info@yoursite.com';
+                                    $address = '123 Main Street, New York, NY 10001, USA';
+                                    break;
+                                case 'uk':
+                                    $phone = '+44 20 7123 4567';
+                                    $email = 'info@yoursite.co.uk';
+                                    $address = '123 High Street, London SW1A 1AA, UK';
+                                    break;
+                                case 'singapore':
+                                    $phone = '+65 6123 4567';
+                                    $email = 'info@yoursite.sg';
+                                    $address = '123 Orchard Road, Singapore 238858';
+                                    break;
+                                case 'japan':
+                                    $phone = '+81 3 1234 5678';
+                                    $email = 'info@yoursite.jp';
+                                    $address = '123 Shibuya, Tokyo 150-0002, Japan';
+                                    break;
+                            }
+                        }
+
+                        $phone_href = 'tel:' . preg_replace('/[^0-9+]/', '', $phone);
+                    ?>
+                        <?php echo esc_attr($region); ?>: {
+                            phone: '<?php echo esc_attr($phone); ?>',
+                            phoneHref: '<?php echo esc_attr($phone_href); ?>',
+                            email: '<?php echo esc_attr($email); ?>',
+                            address: '<?php echo esc_attr($address); ?>'
+                        }
+                        <?php echo ($index < count($regions) - 1) ? ',' : ''; ?>
+                    <?php endforeach; ?>
+                };
+
+                if (regionData[region]) {
+                    phoneLink.textContent = regionData[region].phone;
+                    phoneLink.href = regionData[region].phoneHref;
+                    emailLink.textContent = regionData[region].email;
+                    emailLink.href = 'mailto:' + regionData[region].email;
+                    addressText.textContent = regionData[region].address;
                 }
-            };
-
-            if (regionData[region]) {
-                phoneLink.textContent = regionData[region].phone;
-                phoneLink.href = regionData[region].phoneHref;
-                emailLink.textContent = regionData[region].email;
-                emailLink.href = 'mailto:' + regionData[region].email;
-                addressText.textContent = regionData[region].address;
             }
-        }
+        <?php endif; ?>
     </script>

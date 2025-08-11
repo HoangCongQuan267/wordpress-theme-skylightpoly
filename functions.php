@@ -2469,5 +2469,165 @@ function get_brand_logos() {
     
     return $logos;
 }
+
+/**
+ * Header Customizer Settings
+ */
+function header_customizer($wp_customize) {
+    // Header Panel
+    $wp_customize->add_panel('header_panel', array(
+        'title' => __('Header Settings', 'custom-blue-orange'),
+        'priority' => 30,
+    ));
+
+    // Site Branding Section
+    $wp_customize->add_section('site_branding_section', array(
+        'title' => __('Site Branding', 'custom-blue-orange'),
+        'panel' => 'header_panel',
+        'priority' => 10,
+    ));
+
+    // Site Slogan
+    $wp_customize->add_setting('site_slogan', array(
+        'default' => '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('site_slogan', array(
+        'label' => __('Site Slogan', 'custom-blue-orange'),
+        'section' => 'site_branding_section',
+        'type' => 'text',
+        'description' => __('Enter a slogan to display below the site title', 'custom-blue-orange'),
+    ));
+
+    // Region Selection Section
+    $wp_customize->add_section('region_selection_section', array(
+        'title' => __('Region Selection', 'custom-blue-orange'),
+        'panel' => 'header_panel',
+        'priority' => 20,
+    ));
+    
+    // Show Region Selection
+    $wp_customize->add_setting('show_region_selection', array(
+        'default' => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ));
+    
+    $wp_customize->add_control('show_region_selection', array(
+        'label' => __('Display Region Selection', 'custom-blue-orange'),
+        'section' => 'region_selection_section',
+        'type' => 'checkbox',
+        'priority' => 5,
+    ));
+    
+    // Contact Information Section
+    $wp_customize->add_section('contact_info_section', array(
+        'title' => __('Contact Information', 'custom-blue-orange'),
+        'panel' => 'header_panel',
+        'priority' => 25,
+    ));
+    
+    // Default Phone
+    $wp_customize->add_setting('default_phone', array(
+        'default' => '+84 123 456 789',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    
+    $wp_customize->add_control('default_phone', array(
+        'label' => __('Default Phone Number', 'custom-blue-orange'),
+        'section' => 'contact_info_section',
+        'type' => 'text',
+        'priority' => 10,
+    ));
+    
+    // Default Email
+    $wp_customize->add_setting('default_email', array(
+        'default' => 'info@yoursite.com',
+        'sanitize_callback' => 'sanitize_email',
+    ));
+    
+    $wp_customize->add_control('default_email', array(
+        'label' => __('Default Email Address', 'custom-blue-orange'),
+        'section' => 'contact_info_section',
+        'type' => 'email',
+        'priority' => 20,
+    ));
+    
+    // Default Address
+    $wp_customize->add_setting('default_address', array(
+        'default' => '123 Đường Chính, Thành phố, Việt Nam',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+    
+    $wp_customize->add_control('default_address', array(
+        'label' => __('Default Address', 'custom-blue-orange'),
+        'section' => 'contact_info_section',
+        'type' => 'textarea',
+        'priority' => 30,
+    ));
+
+    // Default Region
+    $wp_customize->add_setting('default_region', array(
+        'default' => 'vietnam',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('default_region', array(
+        'label' => __('Default Region', 'custom-blue-orange'),
+        'section' => 'region_selection_section',
+        'type' => 'select',
+        'choices' => array(
+            'vietnam' => __('Vietnam', 'custom-blue-orange'),
+            'usa' => __('United States', 'custom-blue-orange'),
+            'uk' => __('United Kingdom', 'custom-blue-orange'),
+            'singapore' => __('Singapore', 'custom-blue-orange'),
+            'japan' => __('Japan', 'custom-blue-orange'),
+        ),
+    ));
+
+    // Region Data Settings
+    $regions = array('vietnam', 'usa', 'uk', 'singapore', 'japan');
+    $region_labels = array(
+        'vietnam' => 'Vietnam',
+        'usa' => 'United States',
+        'uk' => 'United Kingdom',
+        'singapore' => 'Singapore',
+        'japan' => 'Japan'
+    );
+
+    foreach ($regions as $region) {
+        // Phone
+        $wp_customize->add_setting("region_{$region}_phone", array(
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ));
+        $wp_customize->add_control("region_{$region}_phone", array(
+            'label' => sprintf(__('%s Phone', 'custom-blue-orange'), $region_labels[$region]),
+            'section' => 'region_selection_section',
+            'type' => 'text',
+        ));
+
+        // Email
+        $wp_customize->add_setting("region_{$region}_email", array(
+            'default' => '',
+            'sanitize_callback' => 'sanitize_email',
+        ));
+        $wp_customize->add_control("region_{$region}_email", array(
+            'label' => sprintf(__('%s Email', 'custom-blue-orange'), $region_labels[$region]),
+            'section' => 'region_selection_section',
+            'type' => 'email',
+        ));
+
+        // Address
+        $wp_customize->add_setting("region_{$region}_address", array(
+            'default' => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+        ));
+        $wp_customize->add_control("region_{$region}_address", array(
+            'label' => sprintf(__('%s Address', 'custom-blue-orange'), $region_labels[$region]),
+            'section' => 'region_selection_section',
+            'type' => 'textarea',
+        ));
+    }
+}
+add_action('customize_register', 'header_customizer');
  
  ?>

@@ -32,6 +32,9 @@
         
         // Hero Slideshow
         initHeroSlideshow();
+        
+        // Certificate Carousel
+        initCertificateCarousel();
     });
 
     /**
@@ -759,5 +762,135 @@ function closeContactPanel() {
             });
         }
     };
+
+    /**
+     * Certificate Carousel Functionality
+     */
+    function initCertificateCarousel() {
+        const container = document.querySelector('.certificates-container');
+        const slides = document.querySelectorAll('.certificate-slide');
+        const indicators = document.querySelectorAll('.indicator-dot');
+        
+        if (!container || slides.length === 0) return;
+        
+        let currentSlide = 0;
+        
+        // Function to update slide positions
+        function updateSlidePositions() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                
+                const position = index - currentSlide;
+                let transform = '';
+                let zIndex = 0;
+                let filter = '';
+                let opacity = 1;
+                
+                if (position === 0) {
+                    // Center slide
+                    transform = 'translateX(0) scale(1)';
+                    zIndex = 3;
+                    filter = 'blur(0)';
+                    opacity = 1;
+                    slide.classList.add('active');
+                } else if (position === -1) {
+                    // Left slide
+                    transform = 'translateX(-120px) scale(0.9)';
+                    zIndex = 2;
+                    filter = 'blur(1px)';
+                    opacity = 0.8;
+                } else if (position === 1) {
+                    // Right slide
+                    transform = 'translateX(120px) scale(0.9)';
+                    zIndex = 2;
+                    filter = 'blur(1px)';
+                    opacity = 0.8;
+                } else if (position === -2) {
+                    // Far left slide
+                    transform = 'translateX(-240px) scale(0.8)';
+                    zIndex = 1;
+                    filter = 'blur(2px)';
+                    opacity = 0.6;
+                } else if (position === 2) {
+                    // Far right slide
+                    transform = 'translateX(240px) scale(0.8)';
+                    zIndex = 1;
+                    filter = 'blur(2px)';
+                    opacity = 0.6;
+                } else {
+                    // Hidden slides
+                    if (position < 0) {
+                        transform = 'translateX(-360px) scale(0.7)';
+                    } else {
+                        transform = 'translateX(360px) scale(0.7)';
+                    }
+                    zIndex = 0;
+                    filter = 'blur(3px)';
+                    opacity = 0.4;
+                }
+                
+                slide.style.transform = transform;
+                slide.style.zIndex = zIndex;
+                slide.style.filter = filter;
+                slide.style.opacity = opacity;
+            });
+            
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+        }
+        
+        // Add click handlers to indicators
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentSlide = index;
+                updateSlidePositions();
+            });
+        });
+        
+        // Remove click handlers from slides - only chevron and indicator navigation allowed
+        // slides.forEach((slide, index) => {
+        //     slide.addEventListener('click', () => {
+        //         if (index !== currentSlide) {
+        //             currentSlide = index;
+        //             updateSlidePositions();
+        //         }
+        //     });
+        // });
+        
+        // Add chevron navigation functionality
+        const prevButton = document.querySelector('.carousel-nav-prev');
+        const nextButton = document.querySelector('.carousel-nav-next');
+        
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                currentSlide = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
+                updateSlidePositions();
+            });
+        }
+        
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                updateSlidePositions();
+            });
+        }
+        
+        // Initialize carousel
+        updateSlidePositions();
+        
+        // Auto-play functionality disabled
+        let autoPlayInterval;
+        
+        function startAutoPlay() {
+            // Auto-play is disabled
+            return;
+        }
+        
+        function stopAutoPlay() {
+            clearInterval(autoPlayInterval);
+        }
+    }
 
 })();
