@@ -891,12 +891,18 @@ body {
 /* Products Grid */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 30px;
     margin-top: 50px;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+}
+
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .product-card {
@@ -906,6 +912,34 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     border: 1px solid #f0f0f0;
+}
+
+.product-card.horizontal-card {
+    display: flex;
+    align-items: stretch;
+    border: 2px solid #e0e0e0;
+    min-height: 180px;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card.horizontal-card .product-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.product-card.horizontal-card .product-image {
+    flex: 0 0 40%;
+    height: auto;
+}
+
+.product-card.horizontal-card .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .product-card:hover {
@@ -936,19 +970,19 @@ body {
 }
 
 .product-title {
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 700;
     color: #1a1a1a;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     line-height: 1.4;
     letter-spacing: 0.2px;
 }
 
 .product-excerpt {
     color: #666;
-    font-size: 0.9rem;
-    line-height: 1.7;
-    margin-bottom: 25px;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
 .product-link {
@@ -956,7 +990,7 @@ body {
     color: #1a1a1a;
     font-weight: 300;
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     border-bottom: 1px solid transparent;
@@ -965,6 +999,80 @@ body {
 
 .product-link:hover {
     border-bottom-color: #1a1a1a;
+}
+
+/* Product Overlay */
+.product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.product-card:hover .product-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+.product-link-btn {
+    display: inline-block;
+    background: var(--primary-sky-blue);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    transform: translateY(10px);
+}
+
+.product-card:hover .product-link-btn {
+    transform: translateY(0);
+}
+
+.product-link-btn:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Show All Button */
+.section-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 0px;
+}
+
+.show-all-btn {
+    display: inline-block;
+    background: var(--primary-sky-blue);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    border: 2px solid #2154fe;
+}
+
+.show-all-btn:hover {
+    background: transparent;
+    color: #2154fe;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(33, 84, 254, 0.2);
 }
 
 /* Certificates Grid */

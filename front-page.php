@@ -167,19 +167,21 @@ endif; // End hero slides check
                 if (!empty($products)) :
                     foreach ($products as $product) :
                 ?>
-                        <div class="product-card">
+                        <div class="product-card horizontal-card">
+                            <div class="product-content">
+                                <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
+                                <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>
+                            </div>
                             <?php if (!empty($product['image_url'])) : ?>
                                 <div class="product-image">
                                     <img src="<?php echo esc_url($product['image_url']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
                                 </div>
                             <?php endif; ?>
-                            <div class="product-content">
-                                <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
-                                <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>
+                            <div class="product-overlay">
                                 <?php if (!empty($product['link'])) : ?>
-                                    <a href="<?php echo esc_url($product['link']); ?>" class="product-link">Tìm Hiểu Thêm</a>
+                                    <a href="<?php echo esc_url($product['link']); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
                                 <?php else : ?>
-                                    <a href="#" class="product-link">Tìm Hiểu Thêm</a>
+                                    <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -188,37 +190,60 @@ endif; // End hero slides check
                 else :
                     ?>
                     <!-- Demo products when no products are available -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 1">
-                        </div>
+                    <div class="product-card horizontal-card">
                         <div class="product-content">
                             <h4 class="product-title">Sản Phẩm Cao Cấp A</h4>
                             <p class="product-excerpt">Giải pháp chất lượng cao được thiết kế cho các doanh nghiệp hiện đại với tính năng tiên tiến.</p>
-                            <a href="#" class="product-link">Tìm Hiểu Thêm</a>
+                        </div>
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 1">
+                        </div>
+                        <div class="product-overlay">
+                            <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
                         </div>
                     </div>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 2">
-                        </div>
+                    <div class="product-card horizontal-card">
                         <div class="product-content">
                             <h4 class="product-title">Dòng Sản Phẩm Đổi Mới B</h4>
                             <p class="product-excerpt">Công nghệ tiên tiến mang lại hiệu suất và độ tin cậy vượt trội.</p>
-                            <a href="#" class="product-link">Tìm Hiểu Thêm</a>
+                        </div>
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 2">
+                        </div>
+                        <div class="product-overlay">
+                            <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
                         </div>
                     </div>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 3">
-                        </div>
+                    <div class="product-card horizontal-card">
                         <div class="product-content">
                             <h4 class="product-title">Bộ Giải Pháp Chuyên Nghiệp C</h4>
                             <p class="product-excerpt">Giải pháp toàn diện cho các yêu cầu cấp doanh nghiệp và khả năng mở rộng.</p>
-                            <a href="#" class="product-link">Tìm Hiểu Thêm</a>
+                        </div>
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 3">
+                        </div>
+                        <div class="product-overlay">
+                            <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
+                        </div>
+                    </div>
+                    <div class="product-card horizontal-card">
+                        <div class="product-content">
+                            <h4 class="product-title">Giải Pháp Thông Minh D</h4>
+                            <p class="product-excerpt">Công nghệ AI tiên tiến giúp tối ưu hóa quy trình làm việc và nâng cao hiệu quả.</p>
+                        </div>
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 4">
+                        </div>
+                        <div class="product-overlay">
+                            <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
                         </div>
                     </div>
                 <?php endif; ?>
+            </div>
+
+            <!-- Show All Products Button -->
+            <div class="section-footer">
+                <a href="#" class="show-all-btn">Xem Tất Cả Sản Phẩm</a>
             </div>
         </div>
     </section>
