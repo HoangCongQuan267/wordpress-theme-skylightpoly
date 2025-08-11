@@ -129,6 +129,17 @@
     </a>
 </div>
 
+<!-- Floating Message Button -->
+<div class="floating-message-btn" id="floatingMessageBtn">
+    <button class="message-btn" onclick="scrollToContact()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M8 9h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M8 13h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </button>
+</div>
+
 <div class="floating-contact-btn" id="floatingContactBtn">
     <div class="contact-btn-container" id="contactBtnContainer">
         <div class="ring-animation"></div>
