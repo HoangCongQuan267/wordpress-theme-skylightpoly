@@ -2411,7 +2411,7 @@ function branding_banner_customizer($wp_customize) {
         // Brand Logo Image
         $wp_customize->add_setting("brand_logo_{$i}_image", array(
             'default' => '',
-            'sanitize_callback' => 'esc_url_raw',
+            'sanitize_callback' => 'absint',
         ));
         $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "brand_logo_{$i}_image", array(
             'label' => "Brand Logo {$i} - Image",
@@ -2451,16 +2451,19 @@ function get_brand_logos() {
     $logos = array();
     
     for ($i = 1; $i <= 12; $i++) {
-        $image = get_theme_mod("brand_logo_{$i}_image");
+        $image_id = get_theme_mod("brand_logo_{$i}_image");
         $name = get_theme_mod("brand_logo_{$i}_name");
         $url = get_theme_mod("brand_logo_{$i}_url");
         
-        if ($image) {
-            $logos[] = array(
-                'image' => $image,
-                'name' => $name ?: "Brand {$i}",
-                'url' => $url,
-            );
+        if ($image_id) {
+            $image_url = wp_get_attachment_image_url($image_id, 'medium');
+            if ($image_url) {
+                $logos[] = array(
+                    'image' => $image_url,
+                    'name' => $name ?: "Brand {$i}",
+                    'url' => $url,
+                );
+            }
         }
     }
     

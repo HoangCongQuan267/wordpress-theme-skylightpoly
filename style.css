@@ -995,12 +995,12 @@ body {
     width: auto;
     height: auto;
     object-fit: contain;
-    filter: grayscale(100%) opacity(0.6);
+    filter: opacity(0.8);
     transition: all 0.3s ease;
 }
 
 .branding-banner-thin .brand-logo-item:hover .brand-logo {
-    filter: grayscale(0%) opacity(1);
+    filter: opacity(1);
     transform: scale(1.1);
 }
 
