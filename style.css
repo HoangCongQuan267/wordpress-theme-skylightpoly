@@ -1046,10 +1046,54 @@ body {
     transform: translateY(-2px);
 }
 
+/* Floating Message Button */
+.floating-message-btn {
+    position: fixed;
+    bottom: 270px;
+    right: 30px;
+    z-index: 1002;
+}
+
+.message-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary-sky-blue);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.message-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    background: var(--primary-sky-blue);
+}
+
+.message-btn svg {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 2px;
+}
+
+.message-text {
+    font-size: 8px;
+    line-height: 1;
+    margin-top: 1px;
+}
+
 /* Floating Contact Button */
 .floating-contact-btn {
     position: fixed;
-    bottom: 90px;
+    bottom: 180px;
     right: 30px;
     z-index: 1001;
     cursor: pointer;
@@ -1067,7 +1111,7 @@ body {
     transform: translateX(20px);
     transition: all 0.3s ease;
     position: fixed;
-    bottom: 100px;
+    bottom: 180px;
     right: 90px;
     z-index: 1000;
     min-width: 280px;
@@ -1283,6 +1327,26 @@ body {
 }
 
 @media (max-width: 768px) {
+    .floating-message-btn {
+        bottom: 150px;
+        right: 20px;
+    }
+    
+    .message-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 9px;
+    }
+    
+    .message-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .message-text {
+        font-size: 7px;
+    }
+    
     .floating-contact-btn {
         bottom: 80px;
         right: 20px;
@@ -1841,5 +1905,61 @@ body {
     
     .contact-details p {
         font-size: 0.7rem;
+    }
+}
+
+/* Zalo Floating Button */
+.zalo-floating-btn {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    z-index: 1001;
+}
+
+.zalo-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #0068FF;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(0, 104, 255, 0.3);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.zalo-btn:hover {
+    background: #0056d6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 104, 255, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+.zalo-text {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Responsive styles for Zalo button */
+@media (max-width: 768px) {
+    .zalo-floating-btn {
+        bottom: 20px;
+        left: 20px;
+    }
+    
+    .zalo-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    
+    .zalo-text {
+        font-size: 13px;
     }
 }

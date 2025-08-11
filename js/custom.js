@@ -745,25 +745,19 @@ function closeContactPanel() {
             }
         });
         
-        // Hide button when contact section is visible
+        // Contact button remains visible at all times
+        // Removed intersection observer to keep button always visible
+    }
+
+    // Make scrollToContact function globally accessible
+    window.scrollToContact = function() {
         const contactSection = document.querySelector('.contact-form-section');
         if (contactSection) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        floatingBtn.style.opacity = '0';
-                        floatingBtn.style.pointerEvents = 'none';
-                    } else {
-                        floatingBtn.style.opacity = '1';
-                        floatingBtn.style.pointerEvents = 'auto';
-                    }
-                });
-            }, {
-                threshold: 0.3
+            contactSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
             });
-            
-            observer.observe(contactSection);
         }
-    }
+    };
 
 })();

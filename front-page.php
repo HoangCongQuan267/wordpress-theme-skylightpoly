@@ -564,6 +564,28 @@ endif; // End hero slides check
         </div>
     </div>
 </div>
+
+<!-- Zalo Floating Button -->
+<div class="zalo-floating-btn" id="zaloFloatingBtn">
+    <a href="https://zalo.me/" target="_blank" class="zalo-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3.04 1.05 4.36L2 22l5.64-1.05C9.96 21.64 11.46 22 13 22h-1c5.52 0 10-4.48 10-10S17.52 2 12 2z" fill="#0068FF" />
+            <path d="M8.5 9.5c0-.28.22-.5.5-.5h6c.28 0 .5.22.5.5s-.22.5-.5.5H9c-.28 0-.5-.22-.5-.5zm0 2c0-.28.22-.5.5-.5h6c.28 0 .5.22.5.5s-.22.5-.5.5H9c-.28 0-.5-.22-.5-.5zm0 2c0-.28.22-.5.5-.5h4c.28 0 .5.22.5.5s-.22.5-.5.5H9c-.28 0-.5-.22-.5-.5z" fill="white" />
+        </svg>
+        <span class="zalo-text">Zalo</span>
+    </a>
+</div>
+</div>
+
+<!-- Floating Message Button -->
+<div class="floating-message-btn" id="floatingMessageBtn">
+    <button class="message-btn" onclick="scrollToContact()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M8 9h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M8 13h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </button>
 </div>
 
 <div class="floating-contact-btn" id="floatingContactBtn">
