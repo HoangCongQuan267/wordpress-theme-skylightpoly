@@ -1017,6 +1017,7 @@ body {
 /* Testimonials Section */
 .testimonials-section {
     background: var(--off-white);
+    padding: 20px 0px;
 }
 
 .testimonials-grid {
@@ -1100,7 +1101,7 @@ body {
 /* Contact Form Section */
 .contact-form-section {
     background: rgba(175, 194, 255, 0.1);
-    padding: 10px 0;
+    padding: 20px 10px;
     color: #1a1a1a;
 }
 
@@ -1191,7 +1192,7 @@ body {
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    font-weight: 700;
+    font-weight: 400;
     color: #1a1a1a;
     font-size: 0.75rem;
     letter-spacing: 0.3px;
