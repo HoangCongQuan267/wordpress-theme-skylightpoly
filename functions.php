@@ -1752,6 +1752,183 @@ function homepage_sections_customizer($wp_customize)
          ));
     }
 
+    // Video Section
+    $wp_customize->add_section('video_section', array(
+        'title'    => __('Video Section', 'custom-blue-orange'),
+        'panel'    => 'homepage_sections_panel',
+        'priority' => 15,
+        'description' => __('Manage your video section settings (supports up to 6 videos)', 'custom-blue-orange'),
+    ));
+
+    // Enable/Disable Video Section
+    $wp_customize->add_setting('video_section_enable', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('video_section_enable', array(
+        'label'    => __('Enable Video Section', 'custom-blue-orange'),
+        'section'  => 'video_section',
+        'type'     => 'checkbox',
+        'priority' => 10,
+    ));
+
+    // Video Section Title
+    $wp_customize->add_setting('video_section_title', array(
+        'default'           => __('Video Giới Thiệu', 'custom-blue-orange'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('video_section_title', array(
+        'label'    => __('Section Title', 'custom-blue-orange'),
+        'section'  => 'video_section',
+        'type'     => 'text',
+        'priority' => 20,
+    ));
+
+    // Video Section Subtitle
+    $wp_customize->add_setting('video_section_subtitle', array(
+        'default'           => __('Khám phá thêm về chúng tôi qua video giới thiệu', 'custom-blue-orange'),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('video_section_subtitle', array(
+        'label'    => __('Section Subtitle', 'custom-blue-orange'),
+        'section'  => 'video_section',
+        'type'     => 'text',
+        'priority' => 30,
+    ));
+
+    // Video Section Background Color
+    $wp_customize->add_setting('video_section_bg_color', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'video_section_bg_color', array(
+        'label'    => __('Section Background Color', 'custom-blue-orange'),
+        'section'  => 'video_section',
+        'priority' => 35,
+    )));
+
+    // Video Section Text Color
+    $wp_customize->add_setting('video_section_text_color', array(
+        'default'           => '#333333',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'video_section_text_color', array(
+        'label'    => __('Section Text Color', 'custom-blue-orange'),
+        'section'  => 'video_section',
+        'priority' => 36,
+    )));
+
+    // Video Layout
+    $wp_customize->add_setting('video_section_layout', array(
+        'default'           => 'grid',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('video_section_layout', array(
+        'label'    => __('Video Layout', 'custom-blue-orange'),
+        'section'  => 'video_section',
+        'type'     => 'select',
+        'choices'  => array(
+            'grid'     => __('Grid Layout', 'custom-blue-orange'),
+            'centered' => __('Centered', 'custom-blue-orange'),
+            'left'     => __('Left Aligned', 'custom-blue-orange'),
+            'right'    => __('Right Aligned', 'custom-blue-orange'),
+        ),
+        'priority' => 37,
+    ));
+
+    // Individual Video Controls (up to 6 videos)
+    for ($i = 1; $i <= 6; $i++) {
+        // Video Title
+        $wp_customize->add_setting("video_{$i}_title", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("video_{$i}_title", array(
+            'label'    => sprintf(__('Video %d Title', 'custom-blue-orange'), $i),
+            'section'  => 'video_section',
+            'type'     => 'text',
+            'priority' => 40 + ($i * 10),
+        ));
+
+        // Video Type
+        $wp_customize->add_setting("video_{$i}_type", array(
+            'default'           => 'youtube',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("video_{$i}_type", array(
+            'label'    => sprintf(__('Video %d Type', 'custom-blue-orange'), $i),
+            'section'  => 'video_section',
+            'type'     => 'select',
+            'choices'  => array(
+                'youtube' => __('YouTube', 'custom-blue-orange'),
+                'vimeo'   => __('Vimeo', 'custom-blue-orange'),
+                'mp4'     => __('MP4 File', 'custom-blue-orange'),
+            ),
+            'priority' => 41 + ($i * 10),
+        ));
+
+        // Video URL
+        $wp_customize->add_setting("video_{$i}_url", array(
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("video_{$i}_url", array(
+            'label'       => sprintf(__('Video %d URL', 'custom-blue-orange'), $i),
+            'section'     => 'video_section',
+            'type'        => 'url',
+            'description' => __('Enter YouTube, Vimeo, or MP4 file URL', 'custom-blue-orange'),
+            'priority'    => 42 + ($i * 10),
+        ));
+
+        // Video Poster Image (for MP4)
+        $wp_customize->add_setting("video_{$i}_poster", array(
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "video_{$i}_poster", array(
+            'label'       => sprintf(__('Video %d Poster Image', 'custom-blue-orange'), $i),
+            'section'     => 'video_section',
+            'mime_type'   => 'image',
+            'description' => __('Poster image for MP4 videos (optional)', 'custom-blue-orange'),
+            'priority'    => 43 + ($i * 10),
+        )));
+
+        // Video Description
+        $wp_customize->add_setting("video_{$i}_description", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("video_{$i}_description", array(
+            'label'    => sprintf(__('Video %d Description', 'custom-blue-orange'), $i),
+            'section'  => 'video_section',
+            'type'     => 'textarea',
+            'description' => __('Optional description text below the video', 'custom-blue-orange'),
+            'priority' => 44 + ($i * 10),
+        ));
+    }
+
     // Certificates Section
     $wp_customize->add_section('certificates_section', array(
         'title'    => __('Certificates Section', 'custom-blue-orange'),

@@ -376,7 +376,151 @@ if ($section_spacing !== 'normal') {
         </section>
     <?php endif; ?>
 
+    <!-- Video Section -->
+    <?php if (get_theme_mod('video_section_enable', true)) :
+        // Get video section styling options
+        $video_bg_color = get_theme_mod('video_section_bg_color', '#ffffff');
+        $video_text_color = get_theme_mod('video_section_text_color', '#333333');
+        $video_layout = get_theme_mod('video_section_layout', 'grid');
+    ?>
+        <section class="video-section layout-<?php echo esc_attr($video_layout); ?>" style="background-color: <?php echo esc_attr($video_bg_color); ?>; color: <?php echo esc_attr($video_text_color); ?>;">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title"><?php echo esc_html(get_theme_mod('video_section_title', 'Video Giới Thiệu')); ?></h2>
+                    <div class="title-ribbon">
+                        <div class="ribbon-line"></div>
+                        <div class="ribbon-diamond"></div>
+                        <div class="ribbon-line"></div>
+                    </div>
+                    <p class="section-subtitle"><?php echo esc_html(get_theme_mod('video_section_subtitle', 'Khám phá thêm về chúng tôi qua video giới thiệu')); ?></p>
+                </div>
 
+                <div class="videos-grid">
+                    <?php
+                    // Get videos from Customizer (support for multiple videos)
+                    $videos = [];
+                    for ($i = 1; $i <= 6; $i++) {
+                        $video_url = get_theme_mod("video_{$i}_url", '');
+                        $video_title = get_theme_mod("video_{$i}_title", '');
+                        $video_description = get_theme_mod("video_{$i}_description", '');
+                        $video_type = get_theme_mod("video_{$i}_type", 'youtube');
+                        $video_poster = get_theme_mod("video_{$i}_poster", '');
+                        
+                        if (!empty($video_url) || !empty($video_title)) {
+                            $videos[] = [
+                                'url' => $video_url,
+                                'title' => $video_title,
+                                'description' => $video_description,
+                                'type' => $video_type,
+                                'poster' => $video_poster
+                            ];
+                        }
+                    }
+
+                    if (!empty($videos)) :
+                        foreach ($videos as $video) :
+                    ?>
+                            <div class="video-card">
+                                <?php if (!empty($video['title'])) : ?>
+                                    <h4 class="video-title"><?php echo esc_html($video['title']); ?></h4>
+                                <?php endif; ?>
+                                
+                                <div class="video-content">
+                                    <?php if (!empty($video['url'])) :
+                                        if ($video['type'] === 'youtube') :
+                                            // Extract YouTube video ID
+                                            preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $video['url'], $matches);
+                                            $youtube_id = isset($matches[1]) ? $matches[1] : '';
+                                            if ($youtube_id) :
+                                    ?>
+                                                <div class="video-wrapper youtube-video">
+                                                    <iframe src="https://www.youtube.com/embed/<?php echo esc_attr($youtube_id); ?>?rel=0&showinfo=0"
+                                                            frameborder="0"
+                                                            allowfullscreen
+                                                            title="<?php echo esc_attr($video['title']); ?>">
+                                                    </iframe>
+                                                </div>
+                                            <?php
+                                            endif;
+                                        elseif ($video['type'] === 'vimeo') :
+                                            // Extract Vimeo video ID
+                                            preg_match('/vimeo\.com\/(\d+)/', $video['url'], $matches);
+                                            $vimeo_id = isset($matches[1]) ? $matches[1] : '';
+                                            if ($vimeo_id) :
+                                    ?>
+                                                <div class="video-wrapper vimeo-video">
+                                                    <iframe src="https://player.vimeo.com/video/<?php echo esc_attr($vimeo_id); ?>"
+                                                            frameborder="0"
+                                                            allowfullscreen
+                                                            title="<?php echo esc_attr($video['title']); ?>">
+                                                    </iframe>
+                                                </div>
+                                            <?php
+                                            endif;
+                                        elseif ($video['type'] === 'mp4') :
+                                    ?>
+                                            <div class="video-wrapper mp4-video">
+                                                <video controls <?php echo !empty($video['poster']) ? 'poster="' . esc_url($video['poster']) . '"' : ''; ?>>
+                                                    <source src="<?php echo esc_url($video['url']); ?>" type="video/mp4">
+                                                    <p>Trình duyệt của bạn không hỗ trợ video HTML5.</p>
+                                                </video>
+                                            </div>
+                                        <?php endif;
+                                    else : ?>
+                                        <div class="video-wrapper demo-video">
+                                            <div class="demo-video-placeholder">
+                                                <div class="demo-video-icon">
+                                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M8 5v14l11-7z"/>
+                                                    </svg>
+                                                </div>
+                                                <h3>Video Demo</h3>
+                                                <p>Thêm URL video trong WordPress Customizer</p>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <?php if (!empty($video['description'])) : ?>
+                                    <div class="video-description">
+                                        <p><?php echo esc_html($video['description']); ?></p>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        <?php
+                        endforeach;
+                    else :
+                        // Demo videos when no videos are configured
+                        for ($i = 1; $i <= 3; $i++) :
+                    ?>
+                            <div class="video-card">
+                                <h4 class="video-title">Video Demo <?php echo $i; ?></h4>
+                                <div class="video-content">
+                                    <div class="video-wrapper demo-video">
+                                        <div class="demo-video-placeholder">
+                                            <div class="demo-video-icon">
+                                                <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M8 5v14l11-7z"/>
+                                                </svg>
+                                            </div>
+                                            <h3>Video Demo <?php echo $i; ?></h3>
+                                            <p>Thêm URL video trong WordPress Customizer để hiển thị video thực tế</p>
+                                            <a href="<?php echo admin_url('customize.php'); ?>" class="demo-video-btn">Cấu Hình Video</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="video-description">
+                                    <p>Mô tả cho video demo số <?php echo $i; ?>. Bạn có thể thay đổi nội dung này trong WordPress Customizer.</p>
+                                </div>
+                            </div>
+                        <?php
+                        endfor;
+                    endif;
+                    ?>
+                </div>
+            </div>
+        </section>
+    <?php endif; ?>
 
     <!-- Certificates Section -->
     <?php if (get_theme_mod('certificates_section_enable', true)) :
