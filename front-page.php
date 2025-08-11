@@ -185,6 +185,29 @@ if ($section_spacing !== 'normal') {
                         foreach ($products as $product) :
                     ?>
                             <div class="product-card horizontal-card">
+                                <?php
+                                // Determine which badge to show (priority: custom_badge > discount > hot_tag)
+                                $badge_text = '';
+                                $badge_class = '';
+
+                                if (!empty($product['custom_badge'])) {
+                                    $badge_text = $product['custom_badge'];
+                                    $badge_class = 'custom-badge';
+                                } elseif (!empty($product['discount']) && $product['discount'] > 0) {
+                                    $badge_text = '-' . $product['discount'] . '%';
+                                    $badge_class = 'discount-badge';
+                                } elseif (!empty($product['hot_tag'])) {
+                                    $badge_text = 'HOT';
+                                    $badge_class = 'hot-badge';
+                                }
+                                ?>
+
+                                <?php if (!empty($badge_text)) : ?>
+                                    <div class="product-badge <?php echo esc_attr($badge_class); ?>">
+                                        <?php echo esc_html($badge_text); ?>
+                                    </div>
+                                <?php endif; ?>
+
                                 <div class="product-content">
                                     <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
                                     <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>

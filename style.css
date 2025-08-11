@@ -21,10 +21,10 @@ body {
 
 /* Sky Blue and White Color Palette Variables */
 :root {
-    --primary-sky-blue: #1241d9;
-    --secondary-sky-blue: #567eff;
-    --accent-sky-blue: #1241d9;
-    --light-sky-blue: #1241d9;
+    --primary-sky-blue: #1e38a1;
+    --secondary-sky-blue: #65a7fd;
+    --accent-sky-blue: #1e38a1;
+    --light-sky-blue: #1e38a1;
     --pure-white: #ffffff;
     --off-white: #fafafa;
     --light-gray: #eceff1;
@@ -912,6 +912,51 @@ body {
     min-height: 180px;
     position: relative;
     overflow: hidden;
+}
+
+/* Product Badge Styles */
+.product-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    animation: badgePulse 2s infinite;
+}
+
+.product-badge.hot-badge {
+    background: linear-gradient(135deg, #ff4757, #ff3742);
+    color: white;
+}
+
+.product-badge.discount-badge {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    color: white;
+}
+
+.product-badge.custom-badge {
+    background: linear-gradient(135deg, #ffa726, #ff9800);
+    color: white;
+}
+
+@keyframes badgePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.product-badge:hover {
+    transform: scale(1.1);
+    animation: none;
 }
 
 .product-card.horizontal-card .product-content {

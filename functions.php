@@ -902,6 +902,9 @@ function get_products()
         $title = get_theme_mod("product_{$i}_title", '');
         $description = get_theme_mod("product_{$i}_description", '');
         $link = get_theme_mod("product_{$i}_link", '');
+        $hot_tag = get_theme_mod("product_{$i}_hot_tag", false);
+        $discount = get_theme_mod("product_{$i}_discount", '');
+        $custom_badge = get_theme_mod("product_{$i}_custom_badge", '');
 
         if (!empty($title) || !empty($image_id)) {
             $product_list[] = array(
@@ -912,7 +915,10 @@ function get_products()
                 'image_url' => $image_id ? wp_get_attachment_image_url($image_id, 'medium') : '',
                 'featured' => false,
                 'price' => '',
-                'link' => $link
+                'link' => $link,
+                'hot_tag' => $hot_tag,
+                'discount' => $discount,
+                'custom_badge' => $custom_badge
             );
         }
     }
@@ -1606,6 +1612,55 @@ function homepage_sections_customizer($wp_customize)
             'section'  => 'products_section',
             'type'     => 'url',
             'priority' => 43 + ($i * 10),
+        ));
+
+        // Product Hot Tag
+        $wp_customize->add_setting("product_{$i}_hot_tag", array(
+            'default'           => false,
+            'sanitize_callback' => 'wp_validate_boolean',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("product_{$i}_hot_tag", array(
+            'label'    => sprintf(__('Product %d - Show Hot Tag', 'custom-blue-orange'), $i),
+            'section'  => 'products_section',
+            'type'     => 'checkbox',
+            'priority' => 44 + ($i * 10),
+        ));
+
+        // Product Discount Percentage
+        $wp_customize->add_setting("product_{$i}_discount", array(
+            'default'           => '',
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("product_{$i}_discount", array(
+            'label'       => sprintf(__('Product %d - Discount Percentage', 'custom-blue-orange'), $i),
+            'section'     => 'products_section',
+            'type'        => 'number',
+            'input_attrs' => array(
+                'min'  => 0,
+                'max'  => 99,
+                'step' => 1,
+            ),
+            'description' => __('Enter discount percentage (0-99). Leave empty for no discount.', 'custom-blue-orange'),
+            'priority'    => 45 + ($i * 10),
+        ));
+
+        // Product Custom Badge Text
+        $wp_customize->add_setting("product_{$i}_custom_badge", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("product_{$i}_custom_badge", array(
+            'label'       => sprintf(__('Product %d - Custom Badge Text', 'custom-blue-orange'), $i),
+            'section'     => 'products_section',
+            'type'        => 'text',
+            'description' => __('Custom badge text (e.g., "NEW", "SALE", "LIMITED"). Overrides hot tag and discount.', 'custom-blue-orange'),
+            'priority'    => 46 + ($i * 10),
         ));
     }
 
