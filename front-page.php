@@ -222,6 +222,11 @@ if ($section_spacing !== 'normal') {
             <div class="container">
                 <div class="section-header">
                     <h2 class="section-title"><?php echo esc_html(get_theme_mod('products_section_title', 'Sản Phẩm Mới Nhất')); ?></h2>
+                    <div class="title-ribbon">
+                        <div class="ribbon-line"></div>
+                        <div class="ribbon-diamond"></div>
+                        <div class="ribbon-line"></div>
+                    </div>
                     <p class="section-subtitle"><?php echo esc_html(get_theme_mod('products_section_subtitle', 'Khám phá những đổi mới và giải pháp tiên tiến nhất của chúng tôi')); ?></p>
                 </div>
 
@@ -351,6 +356,11 @@ if ($section_spacing !== 'normal') {
             <div class="container">
                 <div class="section-header">
                     <h2 class="section-title"><?php echo esc_html(get_theme_mod('certificates_section_title', 'Chứng Nhận & Giải Thưởng')); ?></h2>
+                    <div class="title-ribbon">
+                        <div class="ribbon-line"></div>
+                        <div class="ribbon-diamond"></div>
+                        <div class="ribbon-line"></div>
+                    </div>
                     <p class="section-subtitle"><?php echo esc_html(get_theme_mod('certificates_section_subtitle', 'Chứng nhận chất lượng và sự công nhận trong ngành')); ?></p>
                 </div>
 
@@ -451,6 +461,11 @@ if ($section_spacing !== 'normal') {
             <div class="container">
                 <div class="section-header">
                     <h2 class="section-title"><?php echo esc_html(get_theme_mod('testimonials_section_title', 'Khách Hàng Nói Gì Về Chúng Tôi')); ?></h2>
+                    <div class="title-ribbon">
+                        <div class="ribbon-line"></div>
+                        <div class="ribbon-diamond"></div>
+                        <div class="ribbon-line"></div>
+                    </div>
                     <p class="section-subtitle"><?php echo esc_html(get_theme_mod('testimonials_section_subtitle', 'Những câu chuyện thật từ khách hàng hài lòng tin tưởng sản phẩm của chúng tôi')); ?></p>
                 </div>
 

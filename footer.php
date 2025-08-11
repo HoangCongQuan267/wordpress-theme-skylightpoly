@@ -4,6 +4,11 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title"><?php echo esc_html(get_theme_mod('contact_section_title', 'Liên Hệ Với Chúng Tôi')); ?></h2>
+                <div class="title-ribbon">
+                    <div class="ribbon-line"></div>
+                    <div class="ribbon-diamond"></div>
+                    <div class="ribbon-line"></div>
+                </div>
                 <p class="section-subtitle"><?php echo esc_html(get_theme_mod('contact_section_subtitle', 'Hãy liên hệ với chúng tôi để được tư vấn và hỗ trợ tốt nhất')); ?></p>
             </div>
 

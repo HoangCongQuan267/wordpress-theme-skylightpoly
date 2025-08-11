@@ -928,6 +928,61 @@ body {
     display: none;
 }
 
+/* Title Ribbon Styles */
+.title-ribbon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+    gap: 15px;
+}
+
+.ribbon-line {
+    height: 2px;
+    width: 60px;
+    background: linear-gradient(90deg, transparent 0%, var(--primary-sky-blue) 50%, transparent 100%);
+    border-radius: 1px;
+}
+
+.ribbon-diamond {
+    width: 12px;
+    height: 12px;
+    background: var(--primary-sky-blue);
+    transform: rotate(45deg);
+    border-radius: 2px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(30, 56, 161, 0.3);
+}
+
+.ribbon-diamond::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    background: var(--pure-white);
+    border-radius: 1px;
+}
+
+/* Responsive ribbon adjustments */
+@media (max-width: 768px) {
+    .ribbon-line {
+        width: 40px;
+    }
+    
+    .ribbon-diamond {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .ribbon-diamond::before {
+        width: 4px;
+        height: 4px;
+    }
+}
+
 /* White text for blue background sections */
 .products-section .section-title,
 .testimonials-section .section-title {
