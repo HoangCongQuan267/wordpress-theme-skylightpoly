@@ -348,7 +348,7 @@ if ($section_spacing !== 'normal') {
         $certificates_style = get_theme_mod('certificates_display_style', 'cards');
     ?>
         <section class="certificates-section style-<?php echo esc_attr($certificates_style); ?>" style="background-color: <?php echo esc_attr($certificates_bg_color); ?>; color: <?php echo esc_attr($certificates_text_color); ?>;">
-            <div class="container">
+            <div class="container-2">
                 <div class="section-header">
                     <h2 class="section-title"><?php echo esc_html(get_theme_mod('certificates_section_title', 'Chứng Nhận & Giải Thưởng')); ?></h2>
                     <p class="section-subtitle"><?php echo esc_html(get_theme_mod('certificates_section_subtitle', 'Chứng nhận chất lượng và sự công nhận trong ngành')); ?></p>
@@ -359,50 +359,52 @@ if ($section_spacing !== 'normal') {
                     $certificates = get_certificates();
                     if (!empty($certificates)) :
                         foreach ($certificates as $certificate) : ?>
-                            <div class="certificate-card">
+                            <div class="certificate-item">
                                 <?php if ($certificate['image_url']) : ?>
-                                    <div class="certificate-icon">
-                                        <img src="<?php echo esc_url($certificate['image_url']); ?>" alt="<?php echo esc_attr($certificate['title']); ?>" width="60" height="60">
+                                    <div class="certificate-image">
+                                        <img src="<?php echo esc_url($certificate['image_url']); ?>" alt="<?php echo esc_attr($certificate['title']); ?>">
                                     </div>
-                                <?php else : ?>
-                                    <div class="certificate-icon">
-                                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" fill="#FFD700" />
-                                        </svg>
-                                    </div>
+                                    <?php if ($certificate['title']) : ?>
+                                        <div class="certificate-overlay">
+                                            <h4 class="certificate-title"><?php echo esc_html($certificate['title']); ?></h4>
+                                        </div>
+                                    <?php endif; ?>
                                 <?php endif; ?>
-                                <h4 class="certificate-title"><?php echo esc_html($certificate['title']); ?></h4>
-                                <p class="certificate-description"><?php echo esc_html($certificate['content']); ?></p>
                             </div>
                         <?php endforeach;
                     else : ?>
                         <!-- Fallback content when no certificates are available -->
-                        <div class="certificate-card">
-                            <div class="certificate-icon">
-                                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" fill="#FFD700" />
-                                </svg>
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="ISO 9001:2015">
                             </div>
-                            <h4 class="certificate-title">ISO 9001:2015</h4>
-                            <p class="certificate-description">Chứng nhận Hệ thống Quản lý Chất lượng đảm bảo tiêu chuẩn chất lượng nhất quán.</p>
+                            <div class="certificate-overlay">
+                                <h4 class="certificate-title">ISO 9001:2015</h4>
+                            </div>
                         </div>
-                        <div class="certificate-card">
-                            <div class="certificate-icon">
-                                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Chứng Nhận CE">
                             </div>
-                            <h4 class="certificate-title">Chứng Nhận CE</h4>
-                            <p class="certificate-description">Dấu hiệu Tuân thủ Châu Âu cho thấy sự tuân thủ các tiêu chuẩn an toàn của EU.</p>
+                            <div class="certificate-overlay">
+                                <h4 class="certificate-title">Chứng Nhận CE</h4>
+                            </div>
                         </div>
-                        <div class="certificate-card">
-                            <div class="certificate-icon">
-                                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 2L13.09 8.26L20 9L14 14L16.18 21L12 17.77L7.82 21L10 14L4 9L10.91 8.26L12 2Z" fill="#2196F3" />
-                                </svg>
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Xuất Sắc Ngành">
                             </div>
-                            <h4 class="certificate-title">Xuất Sắc Ngành</h4>
-                            <p class="certificate-description">Được công nhận về hiệu suất xuất sắc và đổi mới trong lĩnh vực ngành của chúng tôi.</p>
+                            <div class="certificate-overlay">
+                                <h4 class="certificate-title">Xuất Sắc Ngành</h4>
+                            </div>
+                        </div>
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Chứng Nhận An Toàn">
+                            </div>
+                            <div class="certificate-overlay">
+                                <h4 class="certificate-title">Chứng Nhận An Toàn</h4>
+                            </div>
                         </div>
                     <?php endif; ?>
                 </div>
