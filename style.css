@@ -21,10 +21,10 @@ body {
 
 /* Sky Blue and White Color Palette Variables */
 :root {
-    --primary-sky-blue: #00249a;
-    --secondary-sky-blue: #00249a;
-    --accent-sky-blue: #00249a;
-    --light-sky-blue: #00249a;
+    --primary-sky-blue: #1241d9;
+    --secondary-sky-blue: #567eff;
+    --accent-sky-blue: #1241d9;
+    --light-sky-blue: #1241d9;
     --pure-white: #ffffff;
     --off-white: #fafafa;
     --light-gray: #eceff1;
@@ -36,7 +36,7 @@ body {
 
 /* Header Styles */
 .site-header {
-    background: linear-gradient(135deg, var(--primary-sky-blue) 0%, var(--secondary-sky-blue) 100%);
+    background: linear-gradient(135deg, var(--primary-sky-blue) 60%, var(--secondary-sky-blue) 40%);
     box-shadow: 0 2px 10px rgba(135, 206, 235, 0.3);
     position: sticky;
     top: 0;
@@ -45,7 +45,7 @@ body {
 
 /* Top Header Row - Contact Info */
 .header-top {
-    background: #00249a;
+    background: var(--primary-sky-blue);
     color: var(--pure-white);
     padding: 4px 0;
     font-size: 12px;
@@ -373,22 +373,12 @@ body {
 
 /* Footer */
 .site-footer {
-    background: linear-gradient(135deg, var(--primary-sky-blue) 0%, var(--secondary-sky-blue) 100%);
+    background: linear-gradient(135deg, var(--primary-sky-blue) 60%, var(--secondary-sky-blue) 40%);
     color: var(--pure-white);
     padding: 50px 0 25px;
     margin-top: 0;
     position: relative;
     overflow: hidden;
-}
-
-.site-footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-sky-blue), var(--silver-accent), var(--accent-sky-blue));
 }
 
 .site-footer .container {

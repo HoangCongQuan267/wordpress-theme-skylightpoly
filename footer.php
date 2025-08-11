@@ -18,7 +18,7 @@
                             </div>
                             <div class="contact-details">
                                 <strong>Địa Chỉ</strong>
-                                <p>123 Đường Kinh Doanh<br>Thành Phố, Tỉnh 12345</p>
+                                <p><?php echo nl2br(esc_html(get_theme_mod('company_address', '123 Đường Kinh Doanh\nThành Phố, Tỉnh 12345'))); ?></p>
                             </div>
                         </div>
                         <div class="contact-item">
@@ -29,7 +29,7 @@
                             </div>
                             <div class="contact-details">
                                 <strong>Điện Thoại</strong>
-                                <p>+84 (028) 123-4567</p>
+                                <p><?php echo esc_html(get_theme_mod('company_phone', '+84 (028) 123-4567')); ?></p>
                             </div>
                         </div>
                         <div class="contact-item">
@@ -41,7 +41,7 @@
                             </div>
                             <div class="contact-details">
                                 <strong>Email</strong>
-                                <p>info@congtyban.com</p>
+                                <p><?php echo esc_html(get_theme_mod('company_email', 'info@congtyban.com')); ?></p>
                             </div>
                         </div>
                     </div>
@@ -98,18 +98,26 @@
 
                 <div class="footer-contact">
                     <h3>Thông tin liên hệ</h3>
-                    <p>Điện thoại: +84 123 456 789</p>
-                    <p>Email: info@<?php bloginfo('name'); ?>.com</p>
-                    <p>Địa chỉ: 123 Đường Chính, Thành phố, Việt Nam</p>
+                    <p>Điện thoại: <?php echo esc_html(get_theme_mod('company_phone', '+84 (028) 123-4567')); ?></p>
+                    <p>Email: <?php echo esc_html(get_theme_mod('company_email', 'info@congtyban.com')); ?></p>
+                    <p>Địa chỉ: <?php echo nl2br(esc_html(get_theme_mod('company_address', '123 Đường Kinh Doanh\nThành Phố, Tỉnh 12345'))); ?></p>
                 </div>
 
                 <div class="footer-social">
                     <h3>Theo dõi chúng tôi</h3>
                     <div class="social-links">
-                        <a href="#" class="social-link">Facebook</a>
-                        <a href="#" class="social-link">Twitter</a>
-                        <a href="#" class="social-link">Instagram</a>
-                        <a href="#" class="social-link">LinkedIn</a>
+                        <?php if (get_theme_mod('social_facebook_url', '#') !== '#') : ?>
+                            <a href="<?php echo esc_url(get_theme_mod('social_facebook_url', '#')); ?>" class="social-link" target="_blank">Facebook</a>
+                        <?php endif; ?>
+                        <?php if (get_theme_mod('social_twitter_url', '#') !== '#') : ?>
+                            <a href="<?php echo esc_url(get_theme_mod('social_twitter_url', '#')); ?>" class="social-link" target="_blank">Twitter</a>
+                        <?php endif; ?>
+                        <?php if (get_theme_mod('social_instagram_url', '#') !== '#') : ?>
+                            <a href="<?php echo esc_url(get_theme_mod('social_instagram_url', '#')); ?>" class="social-link" target="_blank">Instagram</a>
+                        <?php endif; ?>
+                        <?php if (get_theme_mod('social_linkedin_url', '#') !== '#') : ?>
+                            <a href="<?php echo esc_url(get_theme_mod('social_linkedin_url', '#')); ?>" class="social-link" target="_blank">LinkedIn</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -216,48 +224,52 @@
         <button class="close-panel-btn" onclick="closeContactPanel()">&times;</button>
     </div>
     <div class="contact-list">
-        <div class="contact-item">
-            <div class="contact-avatar">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
+        <?php
+        $sales_contacts = get_sales_contacts();
+        if (!empty($sales_contacts)) :
+            foreach ($sales_contacts as $contact) : ?>
+                <div class="contact-item">
+                    <div class="contact-avatar">
+                        <?php if (!empty($contact['avatar_url'])) : ?>
+                            <img src="<?php echo esc_url($contact['avatar_url']); ?>" alt="<?php echo esc_attr($contact['name']); ?>" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                        <?php else : ?>
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        <?php endif; ?>
+                    </div>
+                    <div class="contact-info-2">
+                        <div class="contact-name"><?php echo esc_html($contact['name']); ?></div>
+                        <?php if (!empty($contact['position'])) : ?>
+                            <div class="contact-position" style="font-size: 12px; color: #666; margin-bottom: 2px;"><?php echo esc_html($contact['position']); ?></div>
+                        <?php endif; ?>
+                        <a href="tel:<?php echo esc_attr(str_replace(' ', '', $contact['phone'])); ?>" class="contact-phone"><?php echo esc_html($contact['phone']); ?></a>
+                    </div>
+                </div>
+            <?php endforeach;
+        else : ?>
+            <!-- Fallback to default contacts if none configured -->
+            <div class="contact-item">
+                <div class="contact-avatar">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="contact-info-2">
+                    <div class="contact-name">Nguyễn Văn An</div>
+                    <div class="contact-position" style="font-size: 12px; color: #666; margin-bottom: 2px;">Sales Manager</div>
+                    <a href="tel:+84123456789" class="contact-phone">+84 123 456 789</a>
+                </div>
             </div>
-            <div class="contact-info-2">
-                <div class="contact-name">Nguyễn Văn An</div>
-                <a href="tel:+84123456789" class="contact-phone">+84 123 456 789</a>
-            </div>
-        </div>
-        <div class="contact-item">
-            <div class="contact-avatar">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </div>
-            <div class="contact-info-2">
-                <div class="contact-name">Trần Thị Bình</div>
-                <a href="tel:+84987654321" class="contact-phone">+84 987 654 321</a>
-            </div>
-        </div>
-        <div class="contact-item">
-            <div class="contact-avatar">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </div>
-            <div class="contact-info-2">
-                <div class="contact-name">Lê Minh Cường</div>
-                <a href="tel:+84555123456" class="contact-phone">+84 555 123 456</a>
-            </div>
-        </div>
+        <?php endif; ?>
     </div>
 </div>
 
 <!-- Zalo Floating Button -->
 <div class="zalo-floating-btn" id="zaloFloatingBtn">
-    <a href="https://zalo.me/" target="_blank" class="zalo-btn">
+    <a href="<?php echo esc_url(get_theme_mod('social_zalo_url', 'https://zalo.me/')); ?>" target="_blank" class="zalo-btn">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3.04 1.05 4.36L2 22l5.64-1.05C9.96 21.64 11.46 22 13 22h-1c5.52 0 10-4.48 10-10S17.52 2 12 2z" fill="#0068FF" />
             <path d="M8.5 9.5c0-.28.22-.5.5-.5h6c.28 0 .5.22.5.5s-.22.5-.5.5H9c-.28 0-.5-.22-.5-.5zm0 2c0-.28.22-.5.5-.5h6c.28 0 .5.22.5.5s-.22.5-.5.5H9c-.28 0-.5-.22-.5-.5zm0 2c0-.28.22-.5.5-.5h4c.28 0 .5.22.5.5s-.22.5-.5.5H9c-.28 0-.5-.22-.5-.5z" fill="white" />

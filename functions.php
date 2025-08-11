@@ -2019,4 +2019,258 @@ function get_customizer_hero_slides()
     return $slides;
 }
 
-?>
+/**
+ * Footer & Contact Customizer Settings
+ * Add customizer support for footer contact information and sales team
+ */
+function footer_contact_customizer($wp_customize) {
+    // Footer Contact Panel
+    $wp_customize->add_panel('footer_contact_panel', array(
+        'title'       => __('Footer & Contact Settings', 'custom-blue-orange'),
+        'description' => __('Customize footer contact information and sales team', 'custom-blue-orange'),
+        'priority'    => 160,
+    ));
+
+    // Company Information Section
+    $wp_customize->add_section('company_info_section', array(
+        'title'    => __('Company Information', 'custom-blue-orange'),
+        'panel'    => 'footer_contact_panel',
+        'priority' => 10,
+    ));
+
+    // Company Address
+    $wp_customize->add_setting('company_address', array(
+        'default'           => '123 Đường Kinh Doanh\nThành Phố, Tỉnh 12345',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('company_address', array(
+        'label'    => __('Company Address', 'custom-blue-orange'),
+        'section'  => 'company_info_section',
+        'type'     => 'textarea',
+        'priority' => 10,
+    ));
+
+    // Company Phone
+    $wp_customize->add_setting('company_phone', array(
+        'default'           => '+84 (028) 123-4567',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('company_phone', array(
+        'label'    => __('Company Phone', 'custom-blue-orange'),
+        'section'  => 'company_info_section',
+        'type'     => 'text',
+        'priority' => 20,
+    ));
+
+    // Company Email
+    $wp_customize->add_setting('company_email', array(
+        'default'           => 'info@congtyban.com',
+        'sanitize_callback' => 'sanitize_email',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('company_email', array(
+        'label'    => __('Company Email', 'custom-blue-orange'),
+        'section'  => 'company_info_section',
+        'type'     => 'email',
+        'priority' => 30,
+    ));
+
+    // Sales Team Section
+    $wp_customize->add_section('sales_team_section', array(
+        'title'    => __('Sales Team Contacts', 'custom-blue-orange'),
+        'panel'    => 'footer_contact_panel',
+        'priority' => 20,
+    ));
+
+    // Number of Sales Contacts
+    $wp_customize->add_setting('sales_contacts_count', array(
+        'default'           => 3,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('sales_contacts_count', array(
+        'label'       => __('Number of Sales Contacts', 'custom-blue-orange'),
+        'section'     => 'sales_team_section',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min' => 1,
+            'max' => 10,
+        ),
+        'priority'    => 10,
+    ));
+
+    // Individual Sales Contact Settings (up to 10)
+    for ($i = 1; $i <= 10; $i++) {
+        // Sales Contact Name
+        $wp_customize->add_setting("sales_contact_{$i}_name", array(
+            'default'           => $i <= 3 ? 
+                ($i == 1 ? 'Nguyễn Văn An' : ($i == 2 ? 'Trần Thị Bình' : 'Lê Minh Cường')) : '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("sales_contact_{$i}_name", array(
+            'label'    => sprintf(__('Contact %d - Name', 'custom-blue-orange'), $i),
+            'section'  => 'sales_team_section',
+            'type'     => 'text',
+            'priority' => 10 + ($i * 10),
+        ));
+
+        // Sales Contact Phone
+        $wp_customize->add_setting("sales_contact_{$i}_phone", array(
+            'default'           => $i <= 3 ? 
+                ($i == 1 ? '+84 123 456 789' : ($i == 2 ? '+84 987 654 321' : '+84 555 123 456')) : '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("sales_contact_{$i}_phone", array(
+            'label'    => sprintf(__('Contact %d - Phone', 'custom-blue-orange'), $i),
+            'section'  => 'sales_team_section',
+            'type'     => 'tel',
+            'priority' => 11 + ($i * 10),
+        ));
+
+        // Sales Contact Avatar
+        $wp_customize->add_setting("sales_contact_{$i}_avatar", array(
+            'default'           => '',
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "sales_contact_{$i}_avatar", array(
+            'label'     => sprintf(__('Contact %d - Avatar Image', 'custom-blue-orange'), $i),
+            'section'   => 'sales_team_section',
+            'mime_type' => 'image',
+            'priority'  => 12 + ($i * 10),
+        )));
+
+        // Sales Contact Position/Title
+        $wp_customize->add_setting("sales_contact_{$i}_position", array(
+            'default'           => $i <= 3 ? 
+                ($i == 1 ? 'Sales Manager' : ($i == 2 ? 'Senior Sales Executive' : 'Sales Representative')) : '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+        
+        $wp_customize->add_control("sales_contact_{$i}_position", array(
+            'label'    => sprintf(__('Contact %d - Position/Title', 'custom-blue-orange'), $i),
+            'section'  => 'sales_team_section',
+            'type'     => 'text',
+            'priority' => 13 + ($i * 10),
+        ));
+    }
+
+    // Social Media Section
+    $wp_customize->add_section('social_media_section', array(
+        'title'    => __('Social Media Links', 'custom-blue-orange'),
+        'panel'    => 'footer_contact_panel',
+        'priority' => 30,
+    ));
+
+    // Facebook URL
+    $wp_customize->add_setting('social_facebook_url', array(
+        'default'           => '#',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('social_facebook_url', array(
+        'label'    => __('Facebook URL', 'custom-blue-orange'),
+        'section'  => 'social_media_section',
+        'type'     => 'url',
+        'priority' => 10,
+    ));
+
+    // Twitter URL
+    $wp_customize->add_setting('social_twitter_url', array(
+        'default'           => '#',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('social_twitter_url', array(
+        'label'    => __('Twitter URL', 'custom-blue-orange'),
+        'section'  => 'social_media_section',
+        'type'     => 'url',
+        'priority' => 20,
+    ));
+
+    // Instagram URL
+    $wp_customize->add_setting('social_instagram_url', array(
+        'default'           => '#',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('social_instagram_url', array(
+        'label'    => __('Instagram URL', 'custom-blue-orange'),
+        'section'  => 'social_media_section',
+        'type'     => 'url',
+        'priority' => 30,
+    ));
+
+    // LinkedIn URL
+    $wp_customize->add_setting('social_linkedin_url', array(
+        'default'           => '#',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('social_linkedin_url', array(
+        'label'    => __('LinkedIn URL', 'custom-blue-orange'),
+        'section'  => 'social_media_section',
+        'type'     => 'url',
+        'priority' => 40,
+    ));
+
+    // Zalo URL
+    $wp_customize->add_setting('social_zalo_url', array(
+        'default'           => 'https://zalo.me/',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+    
+    $wp_customize->add_control('social_zalo_url', array(
+        'label'    => __('Zalo URL', 'custom-blue-orange'),
+        'section'  => 'social_media_section',
+        'type'     => 'url',
+        'priority' => 50,
+    ));
+}
+add_action('customize_register', 'footer_contact_customizer');
+
+/**
+ * Get Sales Contacts for Frontend Display
+ */
+function get_sales_contacts() {
+    $contacts = array();
+    $count = get_theme_mod('sales_contacts_count', 3);
+    
+    for ($i = 1; $i <= $count; $i++) {
+        $name = get_theme_mod("sales_contact_{$i}_name");
+        $phone = get_theme_mod("sales_contact_{$i}_phone");
+        $avatar_id = get_theme_mod("sales_contact_{$i}_avatar");
+        $position = get_theme_mod("sales_contact_{$i}_position");
+        
+        if ($name && $phone) {
+            $contacts[] = array(
+                'name' => $name,
+                'phone' => $phone,
+                'avatar_id' => $avatar_id,
+                'avatar_url' => $avatar_id ? wp_get_attachment_image_url($avatar_id, 'thumbnail') : '',
+                'position' => $position,
+            );
+        }
+    }
+    
+    return $contacts;
+}
+ 
+ ?>
