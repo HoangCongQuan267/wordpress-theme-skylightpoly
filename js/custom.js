@@ -164,24 +164,9 @@
         backToTopBtn.innerHTML = '↑';
         backToTopBtn.className = 'back-to-top';
         backToTopBtn.setAttribute('aria-label', 'Back to top');
-        backToTopBtn.style.cssText = `
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background-color: var(--primary-orange);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        `;
+        // CSS styles are handled in style.css
+        backToTopBtn.style.opacity = '0';
+        backToTopBtn.style.visibility = 'hidden';
         
         document.body.appendChild(backToTopBtn);
         
@@ -677,11 +662,108 @@
         }, 5000);
     }
 
+
+
     // Initialize contact form when DOM is loaded
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initContactForm);
+        document.addEventListener('DOMContentLoaded', function() {
+            initContactForm();
+            initFloatingContactButton();
+        });
     } else {
         initContactForm();
+        initFloatingContactButton();
+    }
+
+// Close contact panel function (global)
+function closeContactPanel() {
+    const panel = document.getElementById('phonePanel');
+    if (panel) {
+        panel.classList.remove('show');
+    }
+}
+
+    // Enhanced floating contact button with persistent panel
+    function initFloatingContactButton() {
+        const floatingBtn = document.getElementById('floatingContactBtn');
+        const contactBtn = floatingBtn?.querySelector('.contact-btn');
+        const phonePanel = document.getElementById('phonePanel');
+        
+        if (!floatingBtn || !contactBtn || !phonePanel) return;
+        
+        let hoverTimeout;
+        
+        // Show panel on hover
+        floatingBtn.addEventListener('mouseenter', () => {
+            clearTimeout(hoverTimeout);
+            phonePanel.classList.add('show');
+        });
+        
+        // Keep panel open when hovering over it
+        phonePanel.addEventListener('mouseenter', () => {
+            clearTimeout(hoverTimeout);
+            phonePanel.classList.add('show');
+        });
+        
+        // Hide panel with delay when leaving both button and panel
+        floatingBtn.addEventListener('mouseleave', (e) => {
+            if (!phonePanel.contains(e.relatedTarget)) {
+                hoverTimeout = setTimeout(() => {
+                    if (!phonePanel.matches(':hover') && !floatingBtn.matches(':hover')) {
+                        phonePanel.classList.remove('show');
+                    }
+                }, 300);
+            }
+        });
+        
+        phonePanel.addEventListener('mouseleave', (e) => {
+            if (!floatingBtn.contains(e.relatedTarget)) {
+                hoverTimeout = setTimeout(() => {
+                    if (!phonePanel.matches(':hover') && !floatingBtn.matches(':hover')) {
+                        phonePanel.classList.remove('show');
+                    }
+                }, 300);
+            }
+        });
+        
+        // Click to call functionality
+        contactBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // If panel is visible, keep it open, otherwise show it
+            if (!phonePanel.classList.contains('show')) {
+                phonePanel.classList.add('show');
+            }
+            
+            // Optional: scroll to contact section if exists
+            const contactSection = document.querySelector('.contact-form-section');
+            if (contactSection) {
+                contactSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+        
+        // Hide button when contact section is visible
+        const contactSection = document.querySelector('.contact-form-section');
+        if (contactSection) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        floatingBtn.style.opacity = '0';
+                        floatingBtn.style.pointerEvents = 'none';
+                    } else {
+                        floatingBtn.style.opacity = '1';
+                        floatingBtn.style.pointerEvents = 'auto';
+                    }
+                });
+            }, {
+                threshold: 0.3
+            });
+            
+            observer.observe(contactSection);
+        }
     }
 
 })();
