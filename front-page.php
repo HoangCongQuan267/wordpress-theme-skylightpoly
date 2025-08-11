@@ -162,6 +162,55 @@ if ($section_spacing !== 'normal') {
         <?php endif; ?>
     <?php endif; ?>
 
+    <!-- Thin Branding Banner Section -->
+    <?php if (get_theme_mod('branding_banner_enable', true)) :
+        // Get branding banner styling options
+        $branding_bg_color = get_theme_mod('branding_banner_bg_color', '#f8f9fa');
+        $branding_text_color = get_theme_mod('branding_banner_text_color', '#333333');
+    ?>
+        <section class="branding-banner-thin" style="background-color: <?php echo esc_attr($branding_bg_color); ?>; color: <?php echo esc_attr($branding_text_color); ?>;">
+            <div class="container">
+                <div class="brand-logos-horizontal">
+                    <?php
+                    $brand_logos = get_brand_logos();
+                    $logos_to_display = array();
+
+                    if (!empty($brand_logos)) :
+                        $logos_to_display = $brand_logos;
+                    else :
+                        // Demo brand logos when no logos are configured
+                        $logos_to_display = array(
+                            array('name' => 'Microsoft', 'image' => 'https://img.icons8.com/color/96/microsoft.png'),
+                            array('name' => 'Google', 'image' => 'https://img.icons8.com/color/96/google-logo.png'),
+                            array('name' => 'Apple', 'image' => 'https://img.icons8.com/ios-filled/96/mac-os.png'),
+                            array('name' => 'Amazon', 'image' => 'https://img.icons8.com/color/96/amazon.png'),
+                            array('name' => 'Samsung', 'image' => 'https://img.icons8.com/color/96/samsung.png'),
+                            array('name' => 'Intel', 'image' => 'https://img.icons8.com/color/96/intel.png'),
+                        );
+                    endif;
+
+                    // Display logos many times to ensure full width coverage
+                    for ($i = 0; $i < 8; $i++) :
+                        foreach ($logos_to_display as $logo) :
+                    ?>
+                            <div class="brand-logo-item">
+                                <?php if (!empty($logo['url'])) : ?>
+                                    <a href="<?php echo esc_url($logo['url']); ?>" target="_blank" rel="noopener">
+                                        <img src="<?php echo esc_url($logo['image']); ?>" alt="<?php echo esc_attr($logo['name']); ?>" class="brand-logo">
+                                    </a>
+                                <?php else : ?>
+                                    <img src="<?php echo esc_url($logo['image']); ?>" alt="<?php echo esc_attr($logo['name']); ?>" class="brand-logo">
+                                <?php endif; ?>
+                            </div>
+                    <?php
+                        endforeach;
+                    endfor;
+                    ?>
+                </div>
+            </div>
+        </section>
+    <?php endif; ?>
+
     <!-- New Products Section -->
     <?php if (get_theme_mod('products_section_enable', true)) :
         // Get products section styling options
@@ -288,6 +337,8 @@ if ($section_spacing !== 'normal') {
             </div>
         </section>
     <?php endif; ?>
+
+
 
     <!-- Certificates Section -->
     <?php if (get_theme_mod('certificates_section_enable', true)) :

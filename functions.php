@@ -2327,5 +2327,144 @@ function get_sales_contacts() {
     
     return $contacts;
 }
+
+/**
+ * Branding Banner Customizer Settings
+ */
+function branding_banner_customizer($wp_customize) {
+    // Branding Banner Panel
+    $wp_customize->add_panel('branding_banner_panel', array(
+        'title' => 'Branding Banner Settings',
+        'description' => 'Configure brand logos and branding banner display',
+        'priority' => 160,
+    ));
+
+    // Branding Banner General Settings
+    $wp_customize->add_section('branding_banner_general', array(
+        'title' => 'General Settings',
+        'panel' => 'branding_banner_panel',
+        'priority' => 10,
+    ));
+
+    // Enable/Disable Branding Banner
+    $wp_customize->add_setting('branding_banner_enable', array(
+        'default' => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ));
+    $wp_customize->add_control('branding_banner_enable', array(
+        'label' => 'Enable Branding Banner',
+        'section' => 'branding_banner_general',
+        'type' => 'checkbox',
+    ));
+
+    // Branding Banner Title
+    $wp_customize->add_setting('branding_banner_title', array(
+        'default' => 'Trusted by Leading Brands',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('branding_banner_title', array(
+        'label' => 'Banner Title',
+        'section' => 'branding_banner_general',
+        'type' => 'text',
+    ));
+
+    // Branding Banner Subtitle
+    $wp_customize->add_setting('branding_banner_subtitle', array(
+        'default' => 'Companies worldwide trust our products and solutions',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+    $wp_customize->add_control('branding_banner_subtitle', array(
+        'label' => 'Banner Subtitle',
+        'section' => 'branding_banner_general',
+        'type' => 'textarea',
+    ));
+
+    // Branding Banner Background Color
+    $wp_customize->add_setting('branding_banner_bg_color', array(
+        'default' => '#f8f9fa',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'branding_banner_bg_color', array(
+        'label' => 'Background Color',
+        'section' => 'branding_banner_general',
+    )));
+
+    // Branding Banner Text Color
+    $wp_customize->add_setting('branding_banner_text_color', array(
+        'default' => '#333333',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'branding_banner_text_color', array(
+        'label' => 'Text Color',
+        'section' => 'branding_banner_general',
+    )));
+
+    // Brand Logos Section
+    $wp_customize->add_section('branding_banner_logos', array(
+        'title' => 'Brand Logos',
+        'panel' => 'branding_banner_panel',
+        'priority' => 20,
+    ));
+
+    // Add up to 12 brand logo settings
+    for ($i = 1; $i <= 12; $i++) {
+        // Brand Logo Image
+        $wp_customize->add_setting("brand_logo_{$i}_image", array(
+            'default' => '',
+            'sanitize_callback' => 'esc_url_raw',
+        ));
+        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "brand_logo_{$i}_image", array(
+            'label' => "Brand Logo {$i} - Image",
+            'section' => 'branding_banner_logos',
+            'mime_type' => 'image',
+        )));
+
+        // Brand Logo Name
+        $wp_customize->add_setting("brand_logo_{$i}_name", array(
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ));
+        $wp_customize->add_control("brand_logo_{$i}_name", array(
+            'label' => "Brand Logo {$i} - Name",
+            'section' => 'branding_banner_logos',
+            'type' => 'text',
+        ));
+
+        // Brand Logo URL
+        $wp_customize->add_setting("brand_logo_{$i}_url", array(
+            'default' => '',
+            'sanitize_callback' => 'esc_url_raw',
+        ));
+        $wp_customize->add_control("brand_logo_{$i}_url", array(
+            'label' => "Brand Logo {$i} - URL",
+            'section' => 'branding_banner_logos',
+            'type' => 'url',
+        ));
+    }
+}
+add_action('customize_register', 'branding_banner_customizer');
+
+/**
+ * Get Brand Logos for Frontend Display
+ */
+function get_brand_logos() {
+    $logos = array();
+    
+    for ($i = 1; $i <= 12; $i++) {
+        $image = get_theme_mod("brand_logo_{$i}_image");
+        $name = get_theme_mod("brand_logo_{$i}_name");
+        $url = get_theme_mod("brand_logo_{$i}_url");
+        
+        if ($image) {
+            $logos[] = array(
+                'image' => $image,
+                'name' => $name ?: "Brand {$i}",
+                'url' => $url,
+            );
+        }
+    }
+    
+    return $logos;
+}
  
  ?>

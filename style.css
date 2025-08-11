@@ -959,6 +959,104 @@ body {
     animation: none;
 }
 
+/* Thin Branding Banner Section */
+.branding-banner-thin {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.brand-logos-horizontal {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    width: max-content;
+    min-width: 200%;
+    animation: scrollLogos 25s linear infinite;
+    justify-content: flex-start;
+}
+
+.branding-banner-thin .brand-logo-item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.branding-banner-thin .brand-logo {
+    max-width: 80px;
+    max-height: 40px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(100%) opacity(0.6);
+    transition: all 0.3s ease;
+}
+
+.branding-banner-thin .brand-logo-item:hover .brand-logo {
+    filter: grayscale(0%) opacity(1);
+    transform: scale(1.1);
+}
+
+.branding-banner-thin .brand-logo-item a {
+    display: block;
+    text-decoration: none;
+}
+
+/* Pause animation on hover */
+.branding-banner-thin:hover .brand-logos-horizontal {
+    animation-play-state: paused;
+}
+
+/* Scrolling animation for logos */
+@keyframes scrollLogos {
+    0% {
+        transform: translateX(-12.5%);
+    }
+    100% {
+        transform: translateX(-25%);
+    }
+}
+
+/* Responsive Design for Thin Banner */
+@media (max-width: 768px) {
+    .branding-banner-thin {
+        height: 60px;
+    }
+
+    .brand-logos-horizontal {
+        gap: 40px;
+        min-width: 250%;
+    }
+
+    .branding-banner-thin .brand-logo {
+        max-width: 60px;
+        max-height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .branding-banner-thin {
+        height: 50px;
+    }
+
+    .brand-logos-horizontal {
+        gap: 30px;
+        min-width: 300%;
+    }
+
+    .branding-banner-thin .brand-logo {
+        max-width: 50px;
+        max-height: 25px;
+    }
+}
+
 .product-card.horizontal-card .product-content {
     flex: 1;
     padding: 20px;
