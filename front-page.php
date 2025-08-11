@@ -265,6 +265,21 @@ if ($section_spacing !== 'normal') {
                                 <div class="product-content">
                                     <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
                                     <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>
+
+                                    <?php if (!empty($product['price']) || !empty($product['discount_price'])) : ?>
+                                        <div class="product-pricing">
+                                            <?php
+                                            $unit_text = !empty($product['unit']) ? '/' . $product['unit'] : '/đơn vị';
+                                            $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
+                                            ?>
+                                            <?php if (!empty($product['discount_price']) && !empty($product['price'])) : ?>
+                                                <span class="original-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                <span class="discount-price"><?php echo number_format($product['discount_price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                            <?php elseif (!empty($product['price'])) : ?>
+                                                <span class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                                 <?php if (!empty($product['image_url'])) : ?>
                                     <div class="product-image">
@@ -282,12 +297,20 @@ if ($section_spacing !== 'normal') {
                         <?php
                         endforeach;
                     else :
+                        // Get default unit and currency for demo products
+                        $default_unit = get_theme_mod('products_default_unit', 'đơn vị');
+                        $demo_unit_text = '/' . $default_unit;
+                        $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
                         ?>
                         <!-- Demo products when no products are available -->
                         <div class="product-card horizontal-card">
                             <div class="product-content">
                                 <h4 class="product-title">Sản Phẩm Cao Cấp A</h4>
                                 <p class="product-excerpt">Giải pháp chất lượng cao được thiết kế cho các doanh nghiệp hiện đại với tính năng tiên tiến.</p>
+                                <div class="product-pricing">
+                                    <span class="original-price">2.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                    <span class="discount-price">1.999.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                </div>
                             </div>
                             <div class="product-image">
                                 <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 1">
@@ -300,6 +323,9 @@ if ($section_spacing !== 'normal') {
                             <div class="product-content">
                                 <h4 class="product-title">Dòng Sản Phẩm Đổi Mới B</h4>
                                 <p class="product-excerpt">Công nghệ tiên tiến mang lại hiệu suất và độ tin cậy vượt trội.</p>
+                                <div class="product-pricing">
+                                    <span class="current-price">3.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                </div>
                             </div>
                             <div class="product-image">
                                 <img src="https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 2">
@@ -312,6 +338,10 @@ if ($section_spacing !== 'normal') {
                             <div class="product-content">
                                 <h4 class="product-title">Bộ Giải Pháp Chuyên Nghiệp C</h4>
                                 <p class="product-excerpt">Giải pháp toàn diện cho các yêu cầu cấp doanh nghiệp và khả năng mở rộng.</p>
+                                <div class="product-pricing">
+                                    <span class="original-price">5.000.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                    <span class="discount-price">4.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                </div>
                             </div>
                             <div class="product-image">
                                 <img src="https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 3">
@@ -324,6 +354,9 @@ if ($section_spacing !== 'normal') {
                             <div class="product-content">
                                 <h4 class="product-title">Giải Pháp Thông Minh D</h4>
                                 <p class="product-excerpt">Công nghệ AI tiên tiến giúp tối ưu hóa quy trình làm việc và nâng cao hiệu quả.</p>
+                                <div class="product-pricing">
+                                    <span class="current-price">7.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                </div>
                             </div>
                             <div class="product-image">
                                 <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 4">

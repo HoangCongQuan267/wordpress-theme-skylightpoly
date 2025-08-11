@@ -905,6 +905,9 @@ function get_products()
         $hot_tag = get_theme_mod("product_{$i}_hot_tag", false);
         $discount = get_theme_mod("product_{$i}_discount", '');
         $custom_badge = get_theme_mod("product_{$i}_custom_badge", '');
+        $price = get_theme_mod("product_{$i}_price", '');
+        $discount_price = get_theme_mod("product_{$i}_discount_price", '');
+        $unit = get_theme_mod("product_{$i}_unit", 'đơn vị');
 
         if (!empty($title) || !empty($image_id)) {
             $product_list[] = array(
@@ -914,7 +917,9 @@ function get_products()
                 'image' => $image_id ? wp_get_attachment_image($image_id, 'medium') : '',
                 'image_url' => $image_id ? wp_get_attachment_image_url($image_id, 'medium') : '',
                 'featured' => false,
-                'price' => '',
+                'price' => $price,
+                'discount_price' => $discount_price,
+                'unit' => $unit,
                 'link' => $link,
                 'hot_tag' => $hot_tag,
                 'discount' => $discount,
@@ -1556,6 +1561,36 @@ function homepage_sections_customizer($wp_customize)
         'priority'    => 40,
     ));
 
+    // Default Unit for Demo Products
+    $wp_customize->add_setting('products_default_unit', array(
+        'default'           => 'đơn vị',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('products_default_unit', array(
+        'label'       => __('Default Unit for Demo Products', 'custom-blue-orange'),
+        'section'     => 'products_section',
+        'type'        => 'text',
+        'description' => __('Unit used for demo products when no custom products are configured', 'custom-blue-orange'),
+        'priority'    => 41,
+    ));
+
+    // Currency Symbol
+    $wp_customize->add_setting('products_currency_symbol', array(
+        'default'           => 'đ',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('products_currency_symbol', array(
+        'label'       => __('Currency Symbol', 'custom-blue-orange'),
+        'section'     => 'products_section',
+        'type'        => 'text',
+        'description' => __('Currency symbol to display with prices (e.g., đ, $, €, ¥)', 'custom-blue-orange'),
+        'priority'    => 42,
+    ));
+
     // Individual Products
     for ($i = 1; $i <= 6; $i++) {
         // Product Image
@@ -1569,7 +1604,7 @@ function homepage_sections_customizer($wp_customize)
             'label'    => sprintf(__('Product %d Image', 'custom-blue-orange'), $i),
             'section'  => 'products_section',
             'mime_type' => 'image',
-            'priority' => 40 + ($i * 10),
+            'priority' => 50 + ($i * 10),
         )));
 
         // Product Title
@@ -1583,7 +1618,7 @@ function homepage_sections_customizer($wp_customize)
             'label'    => sprintf(__('Product %d Title', 'custom-blue-orange'), $i),
             'section'  => 'products_section',
             'type'     => 'text',
-            'priority' => 41 + ($i * 10),
+            'priority' => 51 + ($i * 10),
         ));
 
         // Product Description
@@ -1597,7 +1632,7 @@ function homepage_sections_customizer($wp_customize)
             'label'    => sprintf(__('Product %d Description', 'custom-blue-orange'), $i),
             'section'  => 'products_section',
             'type'     => 'textarea',
-            'priority' => 42 + ($i * 10),
+            'priority' => 52 + ($i * 10),
         ));
 
         // Product Link
@@ -1611,7 +1646,7 @@ function homepage_sections_customizer($wp_customize)
             'label'    => sprintf(__('Product %d Link', 'custom-blue-orange'), $i),
             'section'  => 'products_section',
             'type'     => 'url',
-            'priority' => 43 + ($i * 10),
+            'priority' => 53 + ($i * 10),
         ));
 
         // Product Hot Tag
@@ -1625,7 +1660,7 @@ function homepage_sections_customizer($wp_customize)
             'label'    => sprintf(__('Product %d - Show Hot Tag', 'custom-blue-orange'), $i),
             'section'  => 'products_section',
             'type'     => 'checkbox',
-            'priority' => 44 + ($i * 10),
+            'priority' => 54 + ($i * 10),
         ));
 
         // Product Discount Percentage
@@ -1645,7 +1680,7 @@ function homepage_sections_customizer($wp_customize)
                 'step' => 1,
             ),
             'description' => __('Enter discount percentage (0-99). Leave empty for no discount.', 'custom-blue-orange'),
-            'priority'    => 45 + ($i * 10),
+            'priority'    => 55 + ($i * 10),
         ));
 
         // Product Custom Badge Text
@@ -1660,8 +1695,61 @@ function homepage_sections_customizer($wp_customize)
             'section'     => 'products_section',
             'type'        => 'text',
             'description' => __('Custom badge text (e.g., "NEW", "SALE", "LIMITED"). Overrides hot tag and discount.', 'custom-blue-orange'),
-            'priority'    => 46 + ($i * 10),
+            'priority'    => 56 + ($i * 10),
         ));
+
+        // Product Price
+        $wp_customize->add_setting("product_{$i}_price", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("product_{$i}_price", array(
+            'label'       => sprintf(__('Product %d - Price', 'custom-blue-orange'), $i),
+            'section'     => 'products_section',
+            'type'        => 'number',
+            'input_attrs' => array(
+                'min'  => 0,
+                'step' => 1000,
+            ),
+            'description' => __('Enter price (e.g., 2500000 for 2,500,000)', 'custom-blue-orange'),
+            'priority'    => 57 + ($i * 10),
+        ));
+
+        // Product Discount Price
+        $wp_customize->add_setting("product_{$i}_discount_price", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("product_{$i}_discount_price", array(
+            'label'       => sprintf(__('Product %d - Discount Price', 'custom-blue-orange'), $i),
+            'section'     => 'products_section',
+            'type'        => 'number',
+            'input_attrs' => array(
+                'min'  => 0,
+                'step' => 1000,
+            ),
+            'description' => __('Enter discounted price. Leave empty if no discount.', 'custom-blue-orange'),
+            'priority'    => 58 + ($i * 10),
+        ));
+
+        // Product Unit
+        $wp_customize->add_setting("product_{$i}_unit", array(
+            'default'           => 'đơn vị',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("product_{$i}_unit", array(
+             'label'       => sprintf(__('Product %d - Unit', 'custom-blue-orange'), $i),
+             'section'     => 'products_section',
+             'type'        => 'text',
+             'description' => __('Enter unit type (e.g., "đơn vị", "kg", "m", "bộ", "chiếc")', 'custom-blue-orange'),
+             'priority'    => 59 + ($i * 10),
+         ));
     }
 
     // Certificates Section

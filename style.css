@@ -1252,7 +1252,37 @@ body {
     color: #666;
     font-size: 0.75rem;
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+}
+
+/* Product Pricing Styles */
+.product-pricing {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.original-price {
+    font-size: 0.7rem;
+    color: #999;
+    text-decoration: line-through;
+    font-weight: 400;
+}
+
+.discount-price {
+    font-size: 0.85rem;
+    color: #e74c3c;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.current-price {
+    font-size: 0.85rem;
+    color: var(--primary-sky-blue);
+    font-weight: 700;
+    letter-spacing: 0.3px;
 }
 
 .product-link {
@@ -2330,6 +2360,20 @@ body {
     .product-card,
     .testimonial-card {
         margin: 0 10px;
+    }
+    
+    .product-pricing {
+        gap: 8px;
+        margin-top: 8px;
+    }
+    
+    .original-price {
+        font-size: 0.65rem;
+    }
+    
+    .discount-price,
+    .current-price {
+        font-size: 0.75rem;
     }
     
     .contact-form {
