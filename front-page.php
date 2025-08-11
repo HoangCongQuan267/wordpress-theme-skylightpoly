@@ -519,51 +519,7 @@ endif; // End hero slides check
     </section>
 <?php endif; ?>
 
-<!-- Floating Contact Button -->
-<div class="phone-number-panel" id="phonePanel">
-    <div class="panel-header">
-        <h4>Liên Hệ Đội Ngũ Bán Hàng</h4>
-        <button class="close-panel-btn" onclick="closeContactPanel()">&times;</button>
-    </div>
-    <div class="contact-list">
-        <div class="contact-item">
-            <div class="contact-avatar">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </div>
-            <div class="contact-info-2">
-                <div class="contact-name">Nguyễn Văn An</div>
-                <a href="tel:+84123456789" class="contact-phone">+84 123 456 789</a>
-            </div>
-        </div>
-        <div class="contact-item">
-            <div class="contact-avatar">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </div>
-            <div class="contact-info-2">
-                <div class="contact-name">Trần Thị Bình</div>
-                <a href="tel:+84987654321" class="contact-phone">+84 987 654 321</a>
-            </div>
-        </div>
-        <div class="contact-item">
-            <div class="contact-avatar">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </div>
-            <div class="contact-info-2">
-                <div class="contact-name">Lê Minh Cường</div>
-                <a href="tel:+84555123456" class="contact-phone">+84 555 123 456</a>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 
 
