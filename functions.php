@@ -761,44 +761,55 @@ function get_hero_slides()
 }
 
 /**
- * Get Products for Frontend Display from Customizer
+ * Get Products for Frontend Display from Customizer (Category-based)
  */
 function get_products()
 {
-    $count = get_theme_mod('products_section_count', 6);
-    $count = max(1, min(50, $count)); // Ensure between 1 and 50
     $product_list = array();
+    $category_count = get_theme_mod('product_categories_count', 3);
+    $category_count = max(1, min(20, $category_count));
 
-    for ($i = 1; $i <= $count; $i++) {
-        $image_id = get_theme_mod("product_{$i}_image", '');
-        $title = get_theme_mod("product_{$i}_title", '');
-        $description = get_theme_mod("product_{$i}_description", '');
-        $link = get_theme_mod("product_{$i}_link", '');
-        $hot_tag = get_theme_mod("product_{$i}_hot_tag", false);
-        $discount = get_theme_mod("product_{$i}_discount", '');
-        $custom_badge = get_theme_mod("product_{$i}_custom_badge", '');
-        $price = get_theme_mod("product_{$i}_price", '');
-        $discount_price = get_theme_mod("product_{$i}_discount_price", '');
-        $unit = get_theme_mod("product_{$i}_unit", 'đơn vị');
-        $category = get_theme_mod("product_{$i}_category", 1);
+    // Loop through each category
+    for ($cat_id = 1; $cat_id <= $category_count; $cat_id++) {
+        $product_count = get_theme_mod("product_category_{$cat_id}_product_count", 3);
+        $product_count = max(0, min(10, $product_count));
 
-        if (!empty($title) || !empty($image_id)) {
-            $product_list[] = array(
-                'id' => $i,
-                'title' => $title,
-                'content' => $description,
-                'image' => $image_id ? wp_get_attachment_image($image_id, 'medium') : '',
-                'image_url' => $image_id ? wp_get_attachment_image_url($image_id, 'medium') : '',
-                'featured' => false,
-                'price' => $price,
-                'discount_price' => $discount_price,
-                'unit' => $unit,
-                'link' => $link,
-                'hot_tag' => $hot_tag,
-                'discount' => $discount,
-                'custom_badge' => $custom_badge,
-                'category' => $category
-            );
+        // Loop through products in this category
+        for ($prod_id = 1; $prod_id <= $product_count; $prod_id++) {
+            $image_id = get_theme_mod("category_{$cat_id}_product_{$prod_id}_image", '');
+            $title = get_theme_mod("category_{$cat_id}_product_{$prod_id}_title", '');
+            $description = get_theme_mod("category_{$cat_id}_product_{$prod_id}_description", '');
+            $link = get_theme_mod("category_{$cat_id}_product_{$prod_id}_link", '');
+            $price = get_theme_mod("category_{$cat_id}_product_{$prod_id}_price", '');
+            $discount_price = get_theme_mod("category_{$cat_id}_product_{$prod_id}_discount_price", '');
+            $unit = get_theme_mod("category_{$cat_id}_product_{$prod_id}_unit", 'đơn vị');
+            $custom_badge = get_theme_mod("category_{$cat_id}_product_{$prod_id}_custom_badge", '');
+
+            if (!empty($title) || !empty($image_id)) {
+                // Calculate discount percentage if both prices are set
+                $discount = '';
+                $hot_tag = false;
+                if (!empty($price) && !empty($discount_price) && $discount_price < $price) {
+                    $discount = round((($price - $discount_price) / $price) * 100);
+                }
+
+                $product_list[] = array(
+                    'id' => "cat_{$cat_id}_prod_{$prod_id}",
+                    'title' => $title,
+                    'content' => $description,
+                    'image' => $image_id ? wp_get_attachment_image($image_id, 'medium') : '',
+                    'image_url' => $image_id ? wp_get_attachment_image_url($image_id, 'medium') : '',
+                    'featured' => false,
+                    'price' => $price,
+                    'discount_price' => $discount_price,
+                    'unit' => $unit,
+                    'link' => $link,
+                    'hot_tag' => $hot_tag,
+                    'discount' => $discount,
+                    'custom_badge' => $custom_badge,
+                    'category' => $cat_id
+                );
+            }
         }
     }
 
@@ -806,34 +817,78 @@ function get_products()
 }
 
 /**
- * Get Products Grouped by Categories
+ * Get Products Grouped by Categories (Optimized for Category-based Structure)
  */
 function get_products_by_categories()
 {
-    $products = get_products();
-    $categories = get_product_categories();
     $grouped_products = array();
+    $category_count = get_theme_mod('product_categories_count', 3);
+    $category_count = max(1, min(20, $category_count));
 
-    // Initialize categories
-    foreach ($categories as $cat_id => $category) {
-        $grouped_products[$cat_id] = array(
-            'category' => $category,
-            'products' => array()
-        );
-    }
+    // Loop through each category and get its products directly
+    for ($cat_id = 1; $cat_id <= $category_count; $cat_id++) {
+        $category_title = get_theme_mod("product_category_{$cat_id}_title", '');
+        $category_link = get_theme_mod("product_category_{$cat_id}_link", '#');
+        $product_count = get_theme_mod("product_category_{$cat_id}_product_count", 3);
+        $product_count = max(0, min(10, $product_count));
 
-    // Group products by category
-    foreach ($products as $product) {
-        $cat_id = $product['category'];
-        if (isset($grouped_products[$cat_id])) {
-            $grouped_products[$cat_id]['products'][] = $product;
+        // Skip empty categories
+        if (empty($category_title) || $product_count == 0) {
+            continue;
+        }
+
+        $category_products = array();
+
+        // Get products for this category
+        for ($prod_id = 1; $prod_id <= $product_count; $prod_id++) {
+            $image_id = get_theme_mod("category_{$cat_id}_product_{$prod_id}_image", '');
+            $title = get_theme_mod("category_{$cat_id}_product_{$prod_id}_title", '');
+            $description = get_theme_mod("category_{$cat_id}_product_{$prod_id}_description", '');
+            $link = get_theme_mod("category_{$cat_id}_product_{$prod_id}_link", '');
+            $price = get_theme_mod("category_{$cat_id}_product_{$prod_id}_price", '');
+            $discount_price = get_theme_mod("category_{$cat_id}_product_{$prod_id}_discount_price", '');
+            $unit = get_theme_mod("category_{$cat_id}_product_{$prod_id}_unit", 'đơn vị');
+            $custom_badge = get_theme_mod("category_{$cat_id}_product_{$prod_id}_custom_badge", '');
+
+            if (!empty($title) || !empty($image_id)) {
+                // Calculate discount percentage if both prices are set
+                $discount = '';
+                $hot_tag = false;
+                if (!empty($price) && !empty($discount_price) && $discount_price < $price) {
+                    $discount = round((($price - $discount_price) / $price) * 100);
+                }
+
+                $category_products[] = array(
+                    'id' => "cat_{$cat_id}_prod_{$prod_id}",
+                    'title' => $title,
+                    'content' => $description,
+                    'image' => $image_id ? wp_get_attachment_image($image_id, 'medium') : '',
+                    'image_url' => $image_id ? wp_get_attachment_image_url($image_id, 'medium') : '',
+                    'featured' => false,
+                    'price' => $price,
+                    'discount_price' => $discount_price,
+                    'unit' => $unit,
+                    'link' => $link,
+                    'hot_tag' => $hot_tag,
+                    'discount' => $discount,
+                    'custom_badge' => $custom_badge,
+                    'category' => $cat_id
+                );
+            }
+        }
+
+        // Only add category if it has products
+        if (!empty($category_products)) {
+            $grouped_products[$cat_id] = array(
+                'category' => array(
+                    'id' => $cat_id,
+                    'title' => $category_title,
+                    'link' => $category_link
+                ),
+                'products' => $category_products
+            );
         }
     }
-
-    // Remove empty categories
-    $grouped_products = array_filter($grouped_products, function ($category_data) {
-        return !empty($category_data['products']);
-    });
 
     return $grouped_products;
 }
@@ -1354,7 +1409,7 @@ function homepage_sections_customizer($wp_customize)
         'title'    => __('Products Section', 'custom-blue-orange'),
         'panel'    => 'homepage_sections_panel',
         'priority' => 10,
-        'description' => __('Manage your products section settings (up to 50 products)', 'custom-blue-orange'),
+        'description' => __('Manage your products section display settings. Products are now organized by categories in the Product Categories section.', 'custom-blue-orange'),
     ));
 
     // Enable/Disable Products Section
@@ -1444,25 +1499,7 @@ function homepage_sections_customizer($wp_customize)
         'priority' => 30,
     ));
 
-    // Number of Products to Display
-    $wp_customize->add_setting('products_section_count', array(
-        'default'           => 6,
-        'sanitize_callback' => 'absint',
-        'transport'         => 'refresh',
-    ));
-
-    $wp_customize->add_control('products_section_count', array(
-        'label'       => __('Number of Products to Display', 'custom-blue-orange'),
-        'section'     => 'products_section',
-        'type'        => 'number',
-        'input_attrs' => array(
-            'min'  => 1,
-            'max'  => 50,
-            'step' => 1,
-        ),
-        'description' => __('You can add up to 50 products', 'custom-blue-orange'),
-        'priority'    => 40,
-    ));
+    // Note: Product count is now managed per category in the Product Categories section
 
     // Default Unit for Demo Products
     $wp_customize->add_setting('products_default_unit', array(
@@ -1494,224 +1531,8 @@ function homepage_sections_customizer($wp_customize)
         'priority'    => 42,
     ));
 
-    // Individual Products - Generate maximum fields for flexibility
-    // Users can control how many are displayed via the count setting
-    $max_products = 50; // Always generate maximum fields
-
-    for ($i = 1; $i <= $max_products; $i++) {
-        // Product Image
-        $wp_customize->add_setting("product_{$i}_image", array(
-            'default'           => '',
-            'sanitize_callback' => 'absint',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "product_{$i}_image", array(
-            'label'    => sprintf(__('Product %d Image', 'custom-blue-orange'), $i),
-            'section'  => 'products_section',
-            'mime_type' => 'image',
-            'priority' => 50 + ($i * 10),
-            'active_callback' => function () use ($i) {
-                return get_theme_mod('products_section_count', 6) >= $i;
-            },
-        )));
-
-        // Product Title
-        $wp_customize->add_setting("product_{$i}_title", array(
-            'default'           => '',
-            'sanitize_callback' => 'sanitize_text_field',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("product_{$i}_title", array(
-            'label'    => sprintf(__('Product %d Title', 'custom-blue-orange'), $i),
-            'section'  => 'products_section',
-            'type'     => 'text',
-            'priority' => 51 + ($i * 10),
-            'active_callback' => function () use ($i) {
-                return get_theme_mod('products_section_count', 6) >= $i;
-            },
-        ));
-
-        // Product Description
-        $wp_customize->add_setting("product_{$i}_description", array(
-            'default'           => '',
-            'sanitize_callback' => 'sanitize_textarea_field',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("product_{$i}_description", array(
-            'label'    => sprintf(__('Product %d Description', 'custom-blue-orange'), $i),
-            'section'  => 'products_section',
-            'type'     => 'textarea',
-            'priority' => 52 + ($i * 10),
-            'active_callback' => function () use ($i) {
-                return get_theme_mod('products_section_count', 6) >= $i;
-            },
-        ));
-
-        // Product Link
-        $wp_customize->add_setting("product_{$i}_link", array(
-            'default'           => '',
-            'sanitize_callback' => 'esc_url_raw',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("product_{$i}_link", array(
-            'label'    => sprintf(__('Product %d Link', 'custom-blue-orange'), $i),
-            'section'  => 'products_section',
-            'type'     => 'url',
-            'priority' => 53 + ($i * 10),
-            'active_callback' => function () use ($i) {
-                return get_theme_mod('products_section_count', 6) >= $i;
-            },
-        ));
-
-        // Product Hot Tag
-        $wp_customize->add_setting("product_{$i}_hot_tag", array(
-            'default'           => false,
-            'sanitize_callback' => 'wp_validate_boolean',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("product_{$i}_hot_tag", array(
-            'label'    => sprintf(__('Product %d - Show Hot Tag', 'custom-blue-orange'), $i),
-            'section'  => 'products_section',
-            'type'     => 'checkbox',
-            'priority' => 54 + ($i * 10),
-            'active_callback' => function () use ($i) {
-                return get_theme_mod('products_section_count', 6) >= $i;
-            },
-        ));
-
-        // Product Discount Percentage
-        $wp_customize->add_setting("product_{$i}_discount", array(
-            'default'           => '',
-            'sanitize_callback' => 'absint',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("product_{$i}_discount", array(
-            'label'       => sprintf(__('Product %d - Discount Percentage', 'custom-blue-orange'), $i),
-            'section'     => 'products_section',
-            'type'        => 'number',
-            'input_attrs' => array(
-                'min'  => 0,
-                'max'  => 99,
-                'step' => 1,
-            ),
-            'description' => __('Enter discount percentage (0-99). Leave empty for no discount.', 'custom-blue-orange'),
-            'priority'    => 55 + ($i * 10),
-            'active_callback' => function () use ($i) {
-                return get_theme_mod('products_section_count', 6) >= $i;
-            },
-        ));
-
-        // Product Custom Badge Text
-        $wp_customize->add_setting("product_{$i}_custom_badge", array(
-            'default'           => '',
-            'sanitize_callback' => 'sanitize_text_field',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("product_{$i}_custom_badge", array(
-            'label'       => sprintf(__('Product %d - Custom Badge Text', 'custom-blue-orange'), $i),
-            'section'     => 'products_section',
-            'type'        => 'text',
-            'description' => __('Custom badge text (e.g., "NEW", "SALE", "LIMITED"). Overrides hot tag and discount.', 'custom-blue-orange'),
-            'priority'    => 56 + ($i * 10),
-            'active_callback' => function () use ($i) {
-                return get_theme_mod('products_section_count', 6) >= $i;
-            },
-        ));
-
-        // Product Price
-        $wp_customize->add_setting("product_{$i}_price", array(
-            'default'           => '',
-            'sanitize_callback' => 'sanitize_text_field',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("product_{$i}_price", array(
-            'label'       => sprintf(__('Product %d - Price', 'custom-blue-orange'), $i),
-            'section'     => 'products_section',
-            'type'        => 'number',
-            'input_attrs' => array(
-                'min'  => 0,
-                'step' => 1000,
-            ),
-            'description' => __('Enter price (e.g., 2500000 for 2,500,000)', 'custom-blue-orange'),
-            'priority'    => 57 + ($i * 10),
-            'active_callback' => function () use ($i) {
-                return get_theme_mod('products_section_count', 6) >= $i;
-            },
-        ));
-
-        // Product Discount Price
-        $wp_customize->add_setting("product_{$i}_discount_price", array(
-            'default'           => '',
-            'sanitize_callback' => 'sanitize_text_field',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("product_{$i}_discount_price", array(
-            'label'       => sprintf(__('Product %d - Discount Price', 'custom-blue-orange'), $i),
-            'section'     => 'products_section',
-            'type'        => 'number',
-            'input_attrs' => array(
-                'min'  => 0,
-                'step' => 1000,
-            ),
-            'description' => __('Enter discounted price. Leave empty if no discount.', 'custom-blue-orange'),
-            'priority'    => 58 + ($i * 10),
-            'active_callback' => function () use ($i) {
-                return get_theme_mod('products_section_count', 6) >= $i;
-            },
-        ));
-
-        // Product Unit
-        $wp_customize->add_setting("product_{$i}_unit", array(
-            'default'           => 'đơn vị',
-            'sanitize_callback' => 'sanitize_text_field',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("product_{$i}_unit", array(
-            'label'       => sprintf(__('Product %d - Unit', 'custom-blue-orange'), $i),
-            'section'     => 'products_section',
-            'type'        => 'text',
-            'description' => __('Enter unit type (e.g., "đơn vị", "kg", "m", "bộ", "chiếc")', 'custom-blue-orange'),
-            'priority'    => 59 + ($i * 10),
-            'active_callback' => function () use ($i) {
-                return get_theme_mod('products_section_count', 6) >= $i;
-            },
-        ));
-
-        // Product Category
-        $wp_customize->add_setting("product_{$i}_category", array(
-            'default'           => 1,
-            'sanitize_callback' => 'absint',
-            'transport'         => 'refresh',
-        ));
-
-        // Generate category choices for all available categories
-        $category_choices = array();
-        for ($cat = 1; $cat <= 20; $cat++) {
-            $category_choices[$cat] = sprintf(__('Category %d', 'custom-blue-orange'), $cat);
-        }
-
-        $wp_customize->add_control("product_{$i}_category", array(
-            'label'       => sprintf(__('Product %d - Category', 'custom-blue-orange'), $i),
-            'section'     => 'products_section',
-            'type'        => 'select',
-            'choices'     => $category_choices,
-            'description' => __('Select which category this product belongs to', 'custom-blue-orange'),
-            'priority'    => 60 + ($i * 10),
-            'active_callback' => function () use ($i) {
-                return get_theme_mod('products_section_count', 6) >= $i;
-            },
-        ));
-    }
+    // Note: Individual product settings have been moved to category-specific sections below
+    // This provides better organization and management of products by category
 
     // Product Categories Section
     $wp_customize->add_section('product_categories_section', array(
@@ -1780,6 +1601,193 @@ function homepage_sections_customizer($wp_customize)
                 return get_theme_mod('product_categories_count', 3) >= $i;
             },
         ));
+
+        // Create individual section for each category's products
+        $wp_customize->add_section("product_category_{$i}_products", array(
+            'title'    => sprintf(__('Category %d Products', 'custom-blue-orange'), $i),
+            'panel'    => 'homepage_sections_panel',
+            'priority' => 14 + $i,
+            'description' => sprintf(__('Manage products for Category %d (up to 10 products)', 'custom-blue-orange'), $i),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('product_categories_count', 3) >= $i && !empty(get_theme_mod("product_category_{$i}_title", ''));
+            },
+        ));
+
+        // Number of Products in this Category
+        $wp_customize->add_setting("product_category_{$i}_product_count", array(
+            'default'           => 3,
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("product_category_{$i}_product_count", array(
+            'label'       => sprintf(__('Number of Products in Category %d', 'custom-blue-orange'), $i),
+            'section'     => "product_category_{$i}_products",
+            'type'        => 'number',
+            'input_attrs' => array(
+                'min' => 0,
+                'max' => 10,
+            ),
+            'description' => __('Set the number of products in this category (0-10)', 'custom-blue-orange'),
+            'priority'    => 10,
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('product_categories_count', 3) >= $i && !empty(get_theme_mod("product_category_{$i}_title", ''));
+            },
+        ));
+
+        // Products for this Category
+        $max_products_per_category = 10;
+        for ($j = 1; $j <= $max_products_per_category; $j++) {
+            $product_priority_base = 20 + ($j * 8);
+
+            // Product Image
+            $wp_customize->add_setting("category_{$i}_product_{$j}_image", array(
+                'default'           => '',
+                'sanitize_callback' => 'absint',
+                'transport'         => 'refresh',
+            ));
+
+            $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "category_{$i}_product_{$j}_image", array(
+                'label'    => sprintf(__('Product %d Image', 'custom-blue-orange'), $j),
+                'section'  => "product_category_{$i}_products",
+                'mime_type' => 'image',
+                'priority' => $product_priority_base,
+                'active_callback' => function () use ($i, $j) {
+                    return get_theme_mod('product_categories_count', 3) >= $i && !empty(get_theme_mod("product_category_{$i}_title", '')) && get_theme_mod("product_category_{$i}_product_count", 3) >= $j;
+                },
+            )));
+
+            // Product Title
+            $wp_customize->add_setting("category_{$i}_product_{$j}_title", array(
+                'default'           => '',
+                'sanitize_callback' => 'sanitize_text_field',
+                'transport'         => 'refresh',
+            ));
+
+            $wp_customize->add_control("category_{$i}_product_{$j}_title", array(
+                'label'    => sprintf(__('Product %d Title', 'custom-blue-orange'), $j),
+                'section'  => "product_category_{$i}_products",
+                'type'     => 'text',
+                'priority' => $product_priority_base + 1,
+                'active_callback' => function () use ($i, $j) {
+                    return get_theme_mod('product_categories_count', 3) >= $i && !empty(get_theme_mod("product_category_{$i}_title", '')) && get_theme_mod("product_category_{$i}_product_count", 3) >= $j;
+                },
+            ));
+
+            // Product Description
+            $wp_customize->add_setting("category_{$i}_product_{$j}_description", array(
+                'default'           => '',
+                'sanitize_callback' => 'sanitize_textarea_field',
+                'transport'         => 'refresh',
+            ));
+
+            $wp_customize->add_control("category_{$i}_product_{$j}_description", array(
+                'label'    => sprintf(__('Product %d Description', 'custom-blue-orange'), $j),
+                'section'  => "product_category_{$i}_products",
+                'type'     => 'textarea',
+                'priority' => $product_priority_base + 2,
+                'active_callback' => function () use ($i, $j) {
+                    return get_theme_mod('product_categories_count', 3) >= $i && !empty(get_theme_mod("product_category_{$i}_title", '')) && get_theme_mod("product_category_{$i}_product_count", 3) >= $j;
+                },
+            ));
+
+            // Product Link
+            $wp_customize->add_setting("category_{$i}_product_{$j}_link", array(
+                'default'           => '',
+                'sanitize_callback' => 'esc_url_raw',
+                'transport'         => 'refresh',
+            ));
+
+            $wp_customize->add_control("category_{$i}_product_{$j}_link", array(
+                'label'    => sprintf(__('Product %d Link', 'custom-blue-orange'), $j),
+                'section'  => "product_category_{$i}_products",
+                'type'     => 'url',
+                'priority' => $product_priority_base + 3,
+                'active_callback' => function () use ($i, $j) {
+                    return get_theme_mod('product_categories_count', 3) >= $i && !empty(get_theme_mod("product_category_{$i}_title", '')) && get_theme_mod("product_category_{$i}_product_count", 3) >= $j;
+                },
+            ));
+
+            // Product Price
+            $wp_customize->add_setting("category_{$i}_product_{$j}_price", array(
+                'default'           => '',
+                'sanitize_callback' => 'sanitize_text_field',
+                'transport'         => 'refresh',
+            ));
+
+            $wp_customize->add_control("category_{$i}_product_{$j}_price", array(
+                'label'       => sprintf(__('Product %d Price', 'custom-blue-orange'), $j),
+                'section'     => "product_category_{$i}_products",
+                'type'        => 'number',
+                'input_attrs' => array(
+                    'min'  => 0,
+                    'step' => 1000,
+                ),
+                'description' => __('Enter price (e.g., 2500000 for 2,500,000)', 'custom-blue-orange'),
+                'priority'    => $product_priority_base + 4,
+                'active_callback' => function () use ($i, $j) {
+                    return get_theme_mod('product_categories_count', 3) >= $i && !empty(get_theme_mod("product_category_{$i}_title", '')) && get_theme_mod("product_category_{$i}_product_count", 3) >= $j;
+                },
+            ));
+
+            // Product Discount Price
+            $wp_customize->add_setting("category_{$i}_product_{$j}_discount_price", array(
+                'default'           => '',
+                'sanitize_callback' => 'sanitize_text_field',
+                'transport'         => 'refresh',
+            ));
+
+            $wp_customize->add_control("category_{$i}_product_{$j}_discount_price", array(
+                'label'       => sprintf(__('Product %d Discount Price', 'custom-blue-orange'), $j),
+                'section'     => "product_category_{$i}_products",
+                'type'        => 'number',
+                'input_attrs' => array(
+                    'min'  => 0,
+                    'step' => 1000,
+                ),
+                'description' => __('Enter discounted price. Leave empty if no discount.', 'custom-blue-orange'),
+                'priority'    => $product_priority_base + 5,
+                'active_callback' => function () use ($i, $j) {
+                    return get_theme_mod('product_categories_count', 3) >= $i && !empty(get_theme_mod("product_category_{$i}_title", '')) && get_theme_mod("product_category_{$i}_product_count", 3) >= $j;
+                },
+            ));
+
+            // Product Unit
+            $wp_customize->add_setting("category_{$i}_product_{$j}_unit", array(
+                'default'           => 'đơn vị',
+                'sanitize_callback' => 'sanitize_text_field',
+                'transport'         => 'refresh',
+            ));
+
+            $wp_customize->add_control("category_{$i}_product_{$j}_unit", array(
+                'label'       => sprintf(__('Product %d Unit', 'custom-blue-orange'), $j),
+                'section'     => "product_category_{$i}_products",
+                'type'        => 'text',
+                'description' => __('Enter unit type (e.g., "đơn vị", "kg", "m", "bộ", "chiếc")', 'custom-blue-orange'),
+                'priority'    => $product_priority_base + 6,
+                'active_callback' => function () use ($i, $j) {
+                    return get_theme_mod('product_categories_count', 3) >= $i && !empty(get_theme_mod("product_category_{$i}_title", '')) && get_theme_mod("product_category_{$i}_product_count", 3) >= $j;
+                },
+            ));
+
+            // Product Custom Badge
+            $wp_customize->add_setting("category_{$i}_product_{$j}_custom_badge", array(
+                'default'           => '',
+                'sanitize_callback' => 'sanitize_text_field',
+                'transport'         => 'refresh',
+            ));
+
+            $wp_customize->add_control("category_{$i}_product_{$j}_custom_badge", array(
+                'label'       => sprintf(__('Product %d Custom Badge', 'custom-blue-orange'), $j),
+                'section'     => "product_category_{$i}_products",
+                'type'        => 'text',
+                'description' => __('Custom badge text (e.g., "NEW", "SALE", "LIMITED")', 'custom-blue-orange'),
+                'priority'    => $product_priority_base + 7,
+                'active_callback' => function () use ($i, $j) {
+                    return get_theme_mod('product_categories_count', 3) >= $i && !empty(get_theme_mod("product_category_{$i}_title", '')) && get_theme_mod("product_category_{$i}_product_count", 3) >= $j;
+                },
+            ));
+        }
     }
 
     // Video Section
