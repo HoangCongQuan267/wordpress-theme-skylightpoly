@@ -405,7 +405,7 @@ if ($section_spacing !== 'normal') {
                         $video_description = get_theme_mod("video_{$i}_description", '');
                         $video_type = get_theme_mod("video_{$i}_type", 'youtube');
                         $video_poster = get_theme_mod("video_{$i}_poster", '');
-                        
+
                         if (!empty($video_url) || !empty($video_title)) {
                             $videos[] = [
                                 'url' => $video_url,
@@ -424,7 +424,7 @@ if ($section_spacing !== 'normal') {
                                 <?php if (!empty($video['title'])) : ?>
                                     <h4 class="video-title"><?php echo esc_html($video['title']); ?></h4>
                                 <?php endif; ?>
-                                
+
                                 <div class="video-content">
                                     <?php if (!empty($video['url'])) :
                                         if ($video['type'] === 'youtube') :
@@ -435,9 +435,9 @@ if ($section_spacing !== 'normal') {
                                     ?>
                                                 <div class="video-wrapper youtube-video">
                                                     <iframe src="https://www.youtube.com/embed/<?php echo esc_attr($youtube_id); ?>?rel=0&showinfo=0"
-                                                            frameborder="0"
-                                                            allowfullscreen
-                                                            title="<?php echo esc_attr($video['title']); ?>">
+                                                        frameborder="0"
+                                                        allowfullscreen
+                                                        title="<?php echo esc_attr($video['title']); ?>">
                                                     </iframe>
                                                 </div>
                                             <?php
@@ -447,18 +447,18 @@ if ($section_spacing !== 'normal') {
                                             preg_match('/vimeo\.com\/(\d+)/', $video['url'], $matches);
                                             $vimeo_id = isset($matches[1]) ? $matches[1] : '';
                                             if ($vimeo_id) :
-                                    ?>
+                                            ?>
                                                 <div class="video-wrapper vimeo-video">
                                                     <iframe src="https://player.vimeo.com/video/<?php echo esc_attr($vimeo_id); ?>"
-                                                            frameborder="0"
-                                                            allowfullscreen
-                                                            title="<?php echo esc_attr($video['title']); ?>">
+                                                        frameborder="0"
+                                                        allowfullscreen
+                                                        title="<?php echo esc_attr($video['title']); ?>">
                                                     </iframe>
                                                 </div>
                                             <?php
                                             endif;
                                         elseif ($video['type'] === 'mp4') :
-                                    ?>
+                                            ?>
                                             <div class="video-wrapper mp4-video">
                                                 <video controls <?php echo !empty($video['poster']) ? 'poster="' . esc_url($video['poster']) . '"' : ''; ?>>
                                                     <source src="<?php echo esc_url($video['url']); ?>" type="video/mp4">
@@ -471,7 +471,7 @@ if ($section_spacing !== 'normal') {
                                             <div class="demo-video-placeholder">
                                                 <div class="demo-video-icon">
                                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
-                                                        <path d="M8 5v14l11-7z"/>
+                                                        <path d="M8 5v14l11-7z" />
                                                     </svg>
                                                 </div>
                                                 <h3>Video Demo</h3>
@@ -492,7 +492,7 @@ if ($section_spacing !== 'normal') {
                     else :
                         // Demo videos when no videos are configured
                         for ($i = 1; $i <= 3; $i++) :
-                    ?>
+                        ?>
                             <div class="video-card">
                                 <h4 class="video-title">Video Demo <?php echo $i; ?></h4>
                                 <div class="video-content">
@@ -500,7 +500,7 @@ if ($section_spacing !== 'normal') {
                                         <div class="demo-video-placeholder">
                                             <div class="demo-video-icon">
                                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
-                                                    <path d="M8 5v14l11-7z"/>
+                                                    <path d="M8 5v14l11-7z" />
                                                 </svg>
                                             </div>
                                             <h3>Video Demo <?php echo $i; ?></h3>
@@ -513,7 +513,7 @@ if ($section_spacing !== 'normal') {
                                     <p>Mô tả cho video demo số <?php echo $i; ?>. Bạn có thể thay đổi nội dung này trong WordPress Customizer.</p>
                                 </div>
                             </div>
-                        <?php
+                    <?php
                         endfor;
                     endif;
                     ?>
@@ -627,127 +627,5 @@ if ($section_spacing !== 'normal') {
         </section>
     <?php endif; ?>
 
-    <!-- Customer Testimonials Section -->
-    <?php if (get_theme_mod('testimonials_section_enable', true)) :
-        // Get testimonials section styling options
-        $testimonials_bg_color = get_theme_mod('testimonials_section_bg_color', '#ffffff');
-        $testimonials_text_color = get_theme_mod('testimonials_section_text_color', '#333333');
-        $testimonials_layout = get_theme_mod('testimonials_layout_style', 'grid');
-    ?>
-        <section class="testimonials-section layout-<?php echo esc_attr($testimonials_layout); ?>" style="background-color: <?php echo esc_attr($testimonials_bg_color); ?>; color: <?php echo esc_attr($testimonials_text_color); ?>;">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title"><?php echo esc_html(get_theme_mod('testimonials_section_title', 'Khách Hàng Nói Gì Về Chúng Tôi')); ?></h2>
-                    <div class="title-ribbon">
-                        <div class="ribbon-line"></div>
-                        <div class="ribbon-diamond"></div>
-                        <div class="ribbon-line"></div>
-                    </div>
-                    <p class="section-subtitle"><?php echo esc_html(get_theme_mod('testimonials_section_subtitle', 'Những câu chuyện thật từ khách hàng hài lòng tin tưởng sản phẩm của chúng tôi')); ?></p>
-                </div>
 
-                <div class="testimonials-grid">
-                    <?php
-                    // Get testimonials from Customizer
-                    $testimonials = get_testimonials();
-
-                    if (!empty($testimonials)) :
-                        foreach ($testimonials as $testimonial) :
-                    ?>
-                            <div class="testimonial-card">
-                                <?php if (!empty($testimonial['image_url'])) : ?>
-                                    <div class="testimonial-image">
-                                        <img src="<?php echo esc_url($testimonial['image_url']); ?>" alt="<?php echo esc_attr($testimonial['customer_name']); ?>">
-                                    </div>
-                                <?php endif; ?>
-                                <div class="testimonial-content">
-                                    <div class="testimonial-rating">
-                                        <?php for ($i = 1; $i <= 5; $i++) : ?>
-                                            <span class="star <?php echo ($i <= $testimonial['rating']) ? 'filled' : ''; ?>">★</span>
-                                        <?php endfor; ?>
-                                    </div>
-                                    <blockquote class="testimonial-text">
-                                        "<?php echo esc_html(wp_trim_words($testimonial['content'], 30)); ?>"
-                                    </blockquote>
-                                    <div class="testimonial-author">
-                                        <strong><?php echo esc_html($testimonial['customer_name']); ?></strong>
-                                        <?php if (!empty($testimonial['customer_company'])) : ?>
-                                            <span class="company"><?php echo esc_html($testimonial['customer_company']); ?></span>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php
-                        endforeach;
-                    else :
-                        ?>
-                        <!-- Demo testimonials when no testimonials are available -->
-                        <div class="testimonial-card">
-                            <div class="testimonial-image">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Customer 1">
-                            </div>
-                            <div class="testimonial-content">
-                                <div class="testimonial-rating">
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                </div>
-                                <blockquote class="testimonial-text">
-                                    "Chất lượng xuất sắc và dịch vụ đặc biệt. Sản phẩm này đã thay đổi hoạt động kinh doanh của chúng tôi và vượt quá mọi mong đợi."
-                                </blockquote>
-                                <div class="testimonial-author">
-                                    <strong>Nguyễn Văn An</strong>
-                                    <span class="company">Công ty Giải Pháp Công Nghệ</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <div class="testimonial-image">
-                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Customer 2">
-                            </div>
-                            <div class="testimonial-content">
-                                <div class="testimonial-rating">
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                </div>
-                                <blockquote class="testimonial-text">
-                                    "Đáng tin cậy, hiệu quả và thân thiện với người dùng. Đội ngũ hỗ trợ cực kỳ nhanh chóng và hữu ích. Rất khuyến khích!"
-                                </blockquote>
-                                <div class="testimonial-author">
-                                    <strong>Trần Thị Bình</strong>
-                                    <span class="company">Tập Đoàn Toàn Cầu</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <div class="testimonial-image">
-                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Customer 3">
-                            </div>
-                            <div class="testimonial-content">
-                                <div class="testimonial-rating">
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                    <span class="star filled">★</span>
-                                </div>
-                                <blockquote class="testimonial-text">
-                                    "Đầu tư tốt nhất mà chúng tôi đã thực hiện cho công ty. Dịch vụ chuyên nghiệp và giải pháp đổi mới mang lại kết quả thực tế."
-                                </blockquote>
-                                <div class="testimonial-author">
-                                    <strong>Lê Minh Cường</strong>
-                                    <span class="company">Phòng Thí Nghiệm Đổi Mới</span>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </section>
-    <?php endif; ?>
     <?php get_footer(); ?>
