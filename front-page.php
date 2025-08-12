@@ -230,79 +230,99 @@ if ($section_spacing !== 'normal') {
                     <p class="section-subtitle"><?php echo esc_html(get_theme_mod('products_section_subtitle', 'Khám phá những đổi mới và giải pháp tiên tiến nhất của chúng tôi')); ?></p>
                 </div>
 
-                <div class="products-grid">
-                    <?php
-                    // Get products from Customizer
-                    $products = get_products();
+                <?php
+                // Get products grouped by categories
+                $grouped_products = get_products_by_categories();
 
-                    if (!empty($products)) :
-                        foreach ($products as $product) :
-                    ?>
-                            <div class="product-card horizontal-card">
-                                <?php
-                                // Determine which badge to show (priority: custom_badge > discount > hot_tag)
-                                $badge_text = '';
-                                $badge_class = '';
+                if (!empty($grouped_products)) :
+                    foreach ($grouped_products as $category_data) :
+                ?>
+                        <div class="product-category-section">
+                            <!-- Category Header with Title and Line -->
+                            <div class="category-header">
+                                <h3 class="category-title"><?php echo esc_html($category_data['category']['title']); ?></h3>
+                                <div class="category-line"></div>
+                            </div>
+                            
+                            <!-- Products Grid for this Category -->
+                            <div class="products-grid">
+                                <?php foreach ($category_data['products'] as $product) : ?>
+                                    <div class="product-card horizontal-card">
+                                        <?php
+                                        // Determine which badge to show (priority: custom_badge > discount > hot_tag)
+                                        $badge_text = '';
+                                        $badge_class = '';
 
-                                if (!empty($product['custom_badge'])) {
-                                    $badge_text = $product['custom_badge'];
-                                    $badge_class = 'custom-badge';
-                                } elseif (!empty($product['discount']) && $product['discount'] > 0) {
-                                    $badge_text = '-' . $product['discount'] . '%';
-                                    $badge_class = 'discount-badge';
-                                } elseif (!empty($product['hot_tag'])) {
-                                    $badge_text = 'HOT';
-                                    $badge_class = 'hot-badge';
-                                }
-                                ?>
+                                        if (!empty($product['custom_badge'])) {
+                                            $badge_text = $product['custom_badge'];
+                                            $badge_class = 'custom-badge';
+                                        } elseif (!empty($product['discount']) && $product['discount'] > 0) {
+                                            $badge_text = '-' . $product['discount'] . '%';
+                                            $badge_class = 'discount-badge';
+                                        } elseif (!empty($product['hot_tag'])) {
+                                            $badge_text = 'HOT';
+                                            $badge_class = 'hot-badge';
+                                        }
+                                        ?>
 
-                                <?php if (!empty($badge_text)) : ?>
-                                    <div class="product-badge <?php echo esc_attr($badge_class); ?>">
-                                        <?php echo esc_html($badge_text); ?>
-                                    </div>
-                                <?php endif; ?>
+                                        <?php if (!empty($badge_text)) : ?>
+                                            <div class="product-badge <?php echo esc_attr($badge_class); ?>">
+                                                <?php echo esc_html($badge_text); ?>
+                                            </div>
+                                        <?php endif; ?>
 
-                                <div class="product-content">
-                                    <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
-                                    <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>
+                                        <div class="product-content">
+                                            <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
+                                            <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>
 
-                                    <?php if (!empty($product['price']) || !empty($product['discount_price'])) : ?>
-                                        <div class="product-pricing">
-                                            <?php
-                                            $unit_text = !empty($product['unit']) ? '/' . $product['unit'] : '/đơn vị';
-                                            $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
-                                            ?>
-                                            <?php if (!empty($product['discount_price']) && !empty($product['price'])) : ?>
-                                                <span class="original-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
-                                                <span class="discount-price"><?php echo number_format($product['discount_price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
-                                            <?php elseif (!empty($product['price'])) : ?>
-                                                <span class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                            <?php if (!empty($product['price']) || !empty($product['discount_price'])) : ?>
+                                                <div class="product-pricing">
+                                                    <?php
+                                                    $unit_text = !empty($product['unit']) ? '/' . $product['unit'] : '/đơn vị';
+                                                    $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
+                                                    ?>
+                                                    <?php if (!empty($product['discount_price']) && !empty($product['price'])) : ?>
+                                                        <span class="original-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                        <span class="discount-price"><?php echo number_format($product['discount_price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                    <?php elseif (!empty($product['price'])) : ?>
+                                                        <span class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                    <?php endif; ?>
+                                                </div>
                                             <?php endif; ?>
                                         </div>
-                                    <?php endif; ?>
-                                </div>
-                                <?php if (!empty($product['image_url'])) : ?>
-                                    <div class="product-image">
-                                        <img src="<?php echo esc_url($product['image_url']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
+                                        <?php if (!empty($product['image_url'])) : ?>
+                                            <div class="product-image">
+                                                <img src="<?php echo esc_url($product['image_url']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="product-overlay">
+                                            <?php if (!empty($product['link'])) : ?>
+                                                <a href="<?php echo esc_url($product['link']); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
+                                            <?php else : ?>
+                                                <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
-                                <?php endif; ?>
-                                <div class="product-overlay">
-                                    <?php if (!empty($product['link'])) : ?>
-                                        <a href="<?php echo esc_url($product['link']); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
-                                    <?php else : ?>
-                                        <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
-                                    <?php endif; ?>
-                                </div>
+                                <?php endforeach; ?>
                             </div>
-                        <?php
-                        endforeach;
-                    else :
-                        // Get default unit and currency for demo products
-                        $default_unit = get_theme_mod('products_default_unit', 'đơn vị');
-                        $demo_unit_text = '/' . $default_unit;
-                        $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
-                        ?>
-                        <!-- Demo products when no products are available -->
+                            
+                            <!-- See All Products Button for this Category -->
+                            <div class="category-footer">
+                                <a href="<?php echo esc_url($category_data['category']['link']); ?>" class="btn btn-outline-primary btn-see-all">
+                                    <?php _e('See All Products', 'custom-blue-orange'); ?>
+                                </a>
+                            </div>
+                        </div>
+                    <?php
+                    endforeach;
+                else :
+                    // Get default unit and currency for demo products
+                    $default_unit = get_theme_mod('products_default_unit', 'đơn vị');
+                    $demo_unit_text = '/' . $default_unit;
+                    $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
+                    ?>
+                    <!-- Demo products when no products are available -->
+                    <div class="products-grid">
                         <div class="product-card horizontal-card">
                             <div class="product-content">
                                 <h4 class="product-title">Sản Phẩm Cao Cấp A</h4>
@@ -365,13 +385,13 @@ if ($section_spacing !== 'normal') {
                                 <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
                             </div>
                         </div>
-                    <?php endif; ?>
-                </div>
+                    </div>
 
-                <!-- Show All Products Button -->
-                <div class="section-footer">
-                    <a href="#" class="show-all-btn">Xem Tất Cả Sản Phẩm</a>
-                </div>
+                    <!-- Show All Products Button -->
+                    <div class="section-footer">
+                        <a href="#" class="show-all-btn">Xem Tất Cả Sản Phẩm</a>
+                    </div>
+                <?php endif; ?>
             </div>
         </section>
     <?php endif; ?>

@@ -895,6 +895,7 @@ function get_hero_slides()
 function get_products()
 {
     $count = get_theme_mod('products_section_count', 6);
+    $count = max(1, min(50, $count)); // Ensure between 1 and 50
     $product_list = array();
 
     for ($i = 1; $i <= $count; $i++) {
@@ -908,6 +909,7 @@ function get_products()
         $price = get_theme_mod("product_{$i}_price", '');
         $discount_price = get_theme_mod("product_{$i}_discount_price", '');
         $unit = get_theme_mod("product_{$i}_unit", 'đơn vị');
+        $category = get_theme_mod("product_{$i}_category", 1);
 
         if (!empty($title) || !empty($image_id)) {
             $product_list[] = array(
@@ -923,12 +925,71 @@ function get_products()
                 'link' => $link,
                 'hot_tag' => $hot_tag,
                 'discount' => $discount,
-                'custom_badge' => $custom_badge
+                'custom_badge' => $custom_badge,
+                'category' => $category
             );
         }
     }
 
     return $product_list;
+}
+
+/**
+ * Get Products Grouped by Categories
+ */
+function get_products_by_categories()
+{
+    $products = get_products();
+    $categories = get_product_categories();
+    $grouped_products = array();
+
+    // Initialize categories
+    foreach ($categories as $cat_id => $category) {
+        $grouped_products[$cat_id] = array(
+            'category' => $category,
+            'products' => array()
+        );
+    }
+
+    // Group products by category
+    foreach ($products as $product) {
+        $cat_id = $product['category'];
+        if (isset($grouped_products[$cat_id])) {
+            $grouped_products[$cat_id]['products'][] = $product;
+        }
+    }
+
+    // Remove empty categories
+    $grouped_products = array_filter($grouped_products, function ($category_data) {
+        return !empty($category_data['products']);
+    });
+
+    return $grouped_products;
+}
+
+/**
+ * Get Product Categories
+ */
+function get_product_categories()
+{
+    $categories = array();
+    $category_count = get_theme_mod('product_categories_count', 3);
+    $category_count = max(1, min(20, $category_count)); // Ensure between 1 and 20
+
+    for ($i = 1; $i <= $category_count; $i++) {
+        $title = get_theme_mod("product_category_{$i}_title", '');
+        $link = get_theme_mod("product_category_{$i}_link", '#');
+
+        if (!empty($title)) {
+            $categories[$i] = array(
+                'id' => $i,
+                'title' => $title,
+                'link' => $link
+            );
+        }
+    }
+
+    return $categories;
 }
 
 /**
@@ -1452,7 +1513,7 @@ function homepage_sections_customizer($wp_customize)
         'title'    => __('Products Section', 'custom-blue-orange'),
         'panel'    => 'homepage_sections_panel',
         'priority' => 10,
-        'description' => __('Manage your products section settings', 'custom-blue-orange'),
+        'description' => __('Manage your products section settings (up to 50 products)', 'custom-blue-orange'),
     ));
 
     // Enable/Disable Products Section
@@ -1555,9 +1616,10 @@ function homepage_sections_customizer($wp_customize)
         'type'        => 'number',
         'input_attrs' => array(
             'min'  => 1,
-            'max'  => 6,
+            'max'  => 50,
             'step' => 1,
         ),
+        'description' => __('You can add up to 50 products', 'custom-blue-orange'),
         'priority'    => 40,
     ));
 
@@ -1591,8 +1653,11 @@ function homepage_sections_customizer($wp_customize)
         'priority'    => 42,
     ));
 
-    // Individual Products
-    for ($i = 1; $i <= 6; $i++) {
+    // Individual Products - Generate maximum fields for flexibility
+    // Users can control how many are displayed via the count setting
+    $max_products = 50; // Always generate maximum fields
+
+    for ($i = 1; $i <= $max_products; $i++) {
         // Product Image
         $wp_customize->add_setting("product_{$i}_image", array(
             'default'           => '',
@@ -1605,6 +1670,9 @@ function homepage_sections_customizer($wp_customize)
             'section'  => 'products_section',
             'mime_type' => 'image',
             'priority' => 50 + ($i * 10),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('products_section_count', 6) >= $i;
+            },
         )));
 
         // Product Title
@@ -1619,6 +1687,9 @@ function homepage_sections_customizer($wp_customize)
             'section'  => 'products_section',
             'type'     => 'text',
             'priority' => 51 + ($i * 10),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('products_section_count', 6) >= $i;
+            },
         ));
 
         // Product Description
@@ -1633,6 +1704,9 @@ function homepage_sections_customizer($wp_customize)
             'section'  => 'products_section',
             'type'     => 'textarea',
             'priority' => 52 + ($i * 10),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('products_section_count', 6) >= $i;
+            },
         ));
 
         // Product Link
@@ -1647,6 +1721,9 @@ function homepage_sections_customizer($wp_customize)
             'section'  => 'products_section',
             'type'     => 'url',
             'priority' => 53 + ($i * 10),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('products_section_count', 6) >= $i;
+            },
         ));
 
         // Product Hot Tag
@@ -1661,6 +1738,9 @@ function homepage_sections_customizer($wp_customize)
             'section'  => 'products_section',
             'type'     => 'checkbox',
             'priority' => 54 + ($i * 10),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('products_section_count', 6) >= $i;
+            },
         ));
 
         // Product Discount Percentage
@@ -1681,6 +1761,9 @@ function homepage_sections_customizer($wp_customize)
             ),
             'description' => __('Enter discount percentage (0-99). Leave empty for no discount.', 'custom-blue-orange'),
             'priority'    => 55 + ($i * 10),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('products_section_count', 6) >= $i;
+            },
         ));
 
         // Product Custom Badge Text
@@ -1696,6 +1779,9 @@ function homepage_sections_customizer($wp_customize)
             'type'        => 'text',
             'description' => __('Custom badge text (e.g., "NEW", "SALE", "LIMITED"). Overrides hot tag and discount.', 'custom-blue-orange'),
             'priority'    => 56 + ($i * 10),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('products_section_count', 6) >= $i;
+            },
         ));
 
         // Product Price
@@ -1715,6 +1801,9 @@ function homepage_sections_customizer($wp_customize)
             ),
             'description' => __('Enter price (e.g., 2500000 for 2,500,000)', 'custom-blue-orange'),
             'priority'    => 57 + ($i * 10),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('products_section_count', 6) >= $i;
+            },
         ));
 
         // Product Discount Price
@@ -1734,6 +1823,9 @@ function homepage_sections_customizer($wp_customize)
             ),
             'description' => __('Enter discounted price. Leave empty if no discount.', 'custom-blue-orange'),
             'priority'    => 58 + ($i * 10),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('products_section_count', 6) >= $i;
+            },
         ));
 
         // Product Unit
@@ -1744,12 +1836,109 @@ function homepage_sections_customizer($wp_customize)
         ));
 
         $wp_customize->add_control("product_{$i}_unit", array(
-             'label'       => sprintf(__('Product %d - Unit', 'custom-blue-orange'), $i),
-             'section'     => 'products_section',
-             'type'        => 'text',
-             'description' => __('Enter unit type (e.g., "đơn vị", "kg", "m", "bộ", "chiếc")', 'custom-blue-orange'),
-             'priority'    => 59 + ($i * 10),
-         ));
+            'label'       => sprintf(__('Product %d - Unit', 'custom-blue-orange'), $i),
+            'section'     => 'products_section',
+            'type'        => 'text',
+            'description' => __('Enter unit type (e.g., "đơn vị", "kg", "m", "bộ", "chiếc")', 'custom-blue-orange'),
+            'priority'    => 59 + ($i * 10),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('products_section_count', 6) >= $i;
+            },
+        ));
+
+        // Product Category
+        $wp_customize->add_setting("product_{$i}_category", array(
+            'default'           => 1,
+            'sanitize_callback' => 'absint',
+            'transport'         => 'refresh',
+        ));
+
+        // Generate category choices for all available categories
+        $category_choices = array();
+        for ($cat = 1; $cat <= 20; $cat++) {
+            $category_choices[$cat] = sprintf(__('Category %d', 'custom-blue-orange'), $cat);
+        }
+
+        $wp_customize->add_control("product_{$i}_category", array(
+            'label'       => sprintf(__('Product %d - Category', 'custom-blue-orange'), $i),
+            'section'     => 'products_section',
+            'type'        => 'select',
+            'choices'     => $category_choices,
+            'description' => __('Select which category this product belongs to', 'custom-blue-orange'),
+            'priority'    => 60 + ($i * 10),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('products_section_count', 6) >= $i;
+            },
+        ));
+    }
+
+    // Product Categories Section
+    $wp_customize->add_section('product_categories_section', array(
+        'title'    => __('Product Categories', 'custom-blue-orange'),
+        'panel'    => 'homepage_sections_panel',
+        'priority' => 14,
+        'description' => __('Manage product categories (up to 20 categories)', 'custom-blue-orange'),
+    ));
+
+    // Number of Categories
+    $wp_customize->add_setting('product_categories_count', array(
+        'default'           => 3,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('product_categories_count', array(
+        'label'       => __('Number of Categories', 'custom-blue-orange'),
+        'section'     => 'product_categories_section',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min' => 1,
+            'max' => 20,
+        ),
+        'description' => __('Set the number of product categories (1-20)', 'custom-blue-orange'),
+        'priority'    => 10,
+    ));
+
+    // Category Settings Loop - Generate maximum fields for flexibility
+    // Users can control how many are displayed via the count setting
+    $max_categories = 20; // Always generate maximum fields
+
+    for ($i = 1; $i <= $max_categories; $i++) {
+        // Category Title
+        $wp_customize->add_setting("product_category_{$i}_title", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("product_category_{$i}_title", array(
+            'label'       => sprintf(__('Category %d - Title', 'custom-blue-orange'), $i),
+            'section'     => 'product_categories_section',
+            'type'        => 'text',
+            'description' => __('Enter category title', 'custom-blue-orange'),
+            'priority'    => 10 + ($i * 5),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('product_categories_count', 3) >= $i;
+            },
+        ));
+
+        // Category Link
+        $wp_customize->add_setting("product_category_{$i}_link", array(
+            'default'           => '#',
+            'sanitize_callback' => 'esc_url_raw',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("product_category_{$i}_link", array(
+            'label'       => sprintf(__('Category %d - "See All" Link', 'custom-blue-orange'), $i),
+            'section'     => 'product_categories_section',
+            'type'        => 'url',
+            'description' => __('Enter URL for "See All Products" button', 'custom-blue-orange'),
+            'priority'    => 11 + ($i * 5),
+            'active_callback' => function () use ($i) {
+                return get_theme_mod('product_categories_count', 3) >= $i;
+            },
+        ));
     }
 
     // Video Section
@@ -2343,7 +2532,8 @@ function get_customizer_hero_slides()
  * Footer & Contact Customizer Settings
  * Add customizer support for footer contact information and sales team
  */
-function footer_contact_customizer($wp_customize) {
+function footer_contact_customizer($wp_customize)
+{
     // Footer Contact Panel
     $wp_customize->add_panel('footer_contact_panel', array(
         'title'       => __('Footer & Contact Settings', 'custom-blue-orange'),
@@ -2364,7 +2554,7 @@ function footer_contact_customizer($wp_customize) {
         'sanitize_callback' => 'sanitize_textarea_field',
         'transport'         => 'refresh',
     ));
-    
+
     $wp_customize->add_control('company_address', array(
         'label'    => __('Company Address', 'custom-blue-orange'),
         'section'  => 'company_info_section',
@@ -2378,7 +2568,7 @@ function footer_contact_customizer($wp_customize) {
         'sanitize_callback' => 'sanitize_text_field',
         'transport'         => 'refresh',
     ));
-    
+
     $wp_customize->add_control('company_phone', array(
         'label'    => __('Company Phone', 'custom-blue-orange'),
         'section'  => 'company_info_section',
@@ -2392,7 +2582,7 @@ function footer_contact_customizer($wp_customize) {
         'sanitize_callback' => 'sanitize_email',
         'transport'         => 'refresh',
     ));
-    
+
     $wp_customize->add_control('company_email', array(
         'label'    => __('Company Email', 'custom-blue-orange'),
         'section'  => 'company_info_section',
@@ -2413,7 +2603,7 @@ function footer_contact_customizer($wp_customize) {
         'sanitize_callback' => 'absint',
         'transport'         => 'refresh',
     ));
-    
+
     $wp_customize->add_control('sales_contacts_count', array(
         'label'       => __('Number of Sales Contacts', 'custom-blue-orange'),
         'section'     => 'sales_team_section',
@@ -2429,12 +2619,12 @@ function footer_contact_customizer($wp_customize) {
     for ($i = 1; $i <= 10; $i++) {
         // Sales Contact Name
         $wp_customize->add_setting("sales_contact_{$i}_name", array(
-            'default'           => $i <= 3 ? 
+            'default'           => $i <= 3 ?
                 ($i == 1 ? 'Nguyễn Văn An' : ($i == 2 ? 'Trần Thị Bình' : 'Lê Minh Cường')) : '',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'refresh',
         ));
-        
+
         $wp_customize->add_control("sales_contact_{$i}_name", array(
             'label'    => sprintf(__('Contact %d - Name', 'custom-blue-orange'), $i),
             'section'  => 'sales_team_section',
@@ -2444,12 +2634,12 @@ function footer_contact_customizer($wp_customize) {
 
         // Sales Contact Phone
         $wp_customize->add_setting("sales_contact_{$i}_phone", array(
-            'default'           => $i <= 3 ? 
+            'default'           => $i <= 3 ?
                 ($i == 1 ? '+84 123 456 789' : ($i == 2 ? '+84 987 654 321' : '+84 555 123 456')) : '',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'refresh',
         ));
-        
+
         $wp_customize->add_control("sales_contact_{$i}_phone", array(
             'label'    => sprintf(__('Contact %d - Phone', 'custom-blue-orange'), $i),
             'section'  => 'sales_team_section',
@@ -2463,7 +2653,7 @@ function footer_contact_customizer($wp_customize) {
             'sanitize_callback' => 'absint',
             'transport'         => 'refresh',
         ));
-        
+
         $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "sales_contact_{$i}_avatar", array(
             'label'     => sprintf(__('Contact %d - Avatar Image', 'custom-blue-orange'), $i),
             'section'   => 'sales_team_section',
@@ -2473,12 +2663,12 @@ function footer_contact_customizer($wp_customize) {
 
         // Sales Contact Position/Title
         $wp_customize->add_setting("sales_contact_{$i}_position", array(
-            'default'           => $i <= 3 ? 
+            'default'           => $i <= 3 ?
                 ($i == 1 ? 'Sales Manager' : ($i == 2 ? 'Senior Sales Executive' : 'Sales Representative')) : '',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'refresh',
         ));
-        
+
         $wp_customize->add_control("sales_contact_{$i}_position", array(
             'label'    => sprintf(__('Contact %d - Position/Title', 'custom-blue-orange'), $i),
             'section'  => 'sales_team_section',
@@ -2500,7 +2690,7 @@ function footer_contact_customizer($wp_customize) {
         'sanitize_callback' => 'esc_url_raw',
         'transport'         => 'refresh',
     ));
-    
+
     $wp_customize->add_control('social_facebook_url', array(
         'label'    => __('Facebook URL', 'custom-blue-orange'),
         'section'  => 'social_media_section',
@@ -2514,7 +2704,7 @@ function footer_contact_customizer($wp_customize) {
         'sanitize_callback' => 'esc_url_raw',
         'transport'         => 'refresh',
     ));
-    
+
     $wp_customize->add_control('social_twitter_url', array(
         'label'    => __('Twitter URL', 'custom-blue-orange'),
         'section'  => 'social_media_section',
@@ -2528,7 +2718,7 @@ function footer_contact_customizer($wp_customize) {
         'sanitize_callback' => 'esc_url_raw',
         'transport'         => 'refresh',
     ));
-    
+
     $wp_customize->add_control('social_instagram_url', array(
         'label'    => __('Instagram URL', 'custom-blue-orange'),
         'section'  => 'social_media_section',
@@ -2542,7 +2732,7 @@ function footer_contact_customizer($wp_customize) {
         'sanitize_callback' => 'esc_url_raw',
         'transport'         => 'refresh',
     ));
-    
+
     $wp_customize->add_control('social_linkedin_url', array(
         'label'    => __('LinkedIn URL', 'custom-blue-orange'),
         'section'  => 'social_media_section',
@@ -2556,7 +2746,7 @@ function footer_contact_customizer($wp_customize) {
         'sanitize_callback' => 'esc_url_raw',
         'transport'         => 'refresh',
     ));
-    
+
     $wp_customize->add_control('social_zalo_url', array(
         'label'    => __('Zalo URL', 'custom-blue-orange'),
         'section'  => 'social_media_section',
@@ -2569,16 +2759,17 @@ add_action('customize_register', 'footer_contact_customizer');
 /**
  * Get Sales Contacts for Frontend Display
  */
-function get_sales_contacts() {
+function get_sales_contacts()
+{
     $contacts = array();
     $count = get_theme_mod('sales_contacts_count', 3);
-    
+
     for ($i = 1; $i <= $count; $i++) {
         $name = get_theme_mod("sales_contact_{$i}_name");
         $phone = get_theme_mod("sales_contact_{$i}_phone");
         $avatar_id = get_theme_mod("sales_contact_{$i}_avatar");
         $position = get_theme_mod("sales_contact_{$i}_position");
-        
+
         if ($name && $phone) {
             $contacts[] = array(
                 'name' => $name,
@@ -2589,14 +2780,15 @@ function get_sales_contacts() {
             );
         }
     }
-    
+
     return $contacts;
 }
 
 /**
  * Branding Banner Customizer Settings
  */
-function branding_banner_customizer($wp_customize) {
+function branding_banner_customizer($wp_customize)
+{
     // Branding Banner Panel
     $wp_customize->add_panel('branding_banner_panel', array(
         'title' => 'Branding Banner Settings',
@@ -2712,14 +2904,15 @@ add_action('customize_register', 'branding_banner_customizer');
 /**
  * Get Brand Logos for Frontend Display
  */
-function get_brand_logos() {
+function get_brand_logos()
+{
     $logos = array();
-    
+
     for ($i = 1; $i <= 12; $i++) {
         $image_id = get_theme_mod("brand_logo_{$i}_image");
         $name = get_theme_mod("brand_logo_{$i}_name");
         $url = get_theme_mod("brand_logo_{$i}_url");
-        
+
         if ($image_id) {
             $image_url = wp_get_attachment_image_url($image_id, 'medium');
             if ($image_url) {
@@ -2731,14 +2924,15 @@ function get_brand_logos() {
             }
         }
     }
-    
+
     return $logos;
 }
 
 /**
  * Header Customizer Settings
  */
-function header_customizer($wp_customize) {
+function header_customizer($wp_customize)
+{
     // Header Panel
     $wp_customize->add_panel('header_panel', array(
         'title' => __('Header Settings', 'custom-blue-orange'),
@@ -2770,59 +2964,59 @@ function header_customizer($wp_customize) {
         'panel' => 'header_panel',
         'priority' => 20,
     ));
-    
+
     // Show Region Selection
     $wp_customize->add_setting('show_region_selection', array(
         'default' => true,
         'sanitize_callback' => 'wp_validate_boolean',
     ));
-    
+
     $wp_customize->add_control('show_region_selection', array(
         'label' => __('Display Region Selection', 'custom-blue-orange'),
         'section' => 'region_selection_section',
         'type' => 'checkbox',
         'priority' => 5,
     ));
-    
+
     // Contact Information Section
     $wp_customize->add_section('contact_info_section', array(
         'title' => __('Contact Information', 'custom-blue-orange'),
         'panel' => 'header_panel',
         'priority' => 25,
     ));
-    
+
     // Default Phone
     $wp_customize->add_setting('default_phone', array(
         'default' => '+84 123 456 789',
         'sanitize_callback' => 'sanitize_text_field',
     ));
-    
+
     $wp_customize->add_control('default_phone', array(
         'label' => __('Default Phone Number', 'custom-blue-orange'),
         'section' => 'contact_info_section',
         'type' => 'text',
         'priority' => 10,
     ));
-    
+
     // Default Email
     $wp_customize->add_setting('default_email', array(
         'default' => 'info@yoursite.com',
         'sanitize_callback' => 'sanitize_email',
     ));
-    
+
     $wp_customize->add_control('default_email', array(
         'label' => __('Default Email Address', 'custom-blue-orange'),
         'section' => 'contact_info_section',
         'type' => 'email',
         'priority' => 20,
     ));
-    
+
     // Default Address
     $wp_customize->add_setting('default_address', array(
         'default' => '123 Đường Chính, Thành phố, Việt Nam',
         'sanitize_callback' => 'sanitize_textarea_field',
     ));
-    
+
     $wp_customize->add_control('default_address', array(
         'label' => __('Default Address', 'custom-blue-orange'),
         'section' => 'contact_info_section',
@@ -2894,5 +3088,5 @@ function header_customizer($wp_customize) {
     }
 }
 add_action('customize_register', 'header_customizer');
- 
- ?>
+
+?>
