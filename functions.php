@@ -1595,7 +1595,7 @@ function homepage_sections_customizer($wp_customize)
             'label'       => sprintf(__('Category %d - "See All" Link', 'custom-blue-orange'), $i),
             'section'     => 'product_categories_section',
             'type'        => 'url',
-            'description' => __('Enter URL for "See All Products" button', 'custom-blue-orange'),
+            'description' => __('Enter URL for "Xem tất cả sản phẩm" button', 'custom-blue-orange'),
             'priority'    => 11 + ($i * 5),
             'active_callback' => function () use ($i) {
                 return get_theme_mod('product_categories_count', 3) >= $i;

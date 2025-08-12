@@ -243,7 +243,7 @@ if ($section_spacing !== 'normal') {
                                 <h3 class="category-title"><?php echo esc_html($category_data['category']['title']); ?></h3>
                                 <div class="category-line"></div>
                             </div>
-                            
+
                             <!-- Products Grid for this Category -->
                             <div class="products-grid">
                                 <?php foreach ($category_data['products'] as $product) : ?>
@@ -305,11 +305,11 @@ if ($section_spacing !== 'normal') {
                                     </div>
                                 <?php endforeach; ?>
                             </div>
-                            
+
                             <!-- See All Products Button for this Category -->
                             <div class="category-footer">
                                 <a href="<?php echo esc_url($category_data['category']['link']); ?>" class="btn btn-outline-primary btn-see-all">
-                                    <?php _e('See All Products', 'custom-blue-orange'); ?>
+                                    <?php _e('Xem tất cả sản phẩm', 'custom-blue-orange'); ?>
                                 </a>
                             </div>
                         </div>
