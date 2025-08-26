@@ -216,7 +216,7 @@ if ($section_spacing !== 'normal') {
         // Get products section styling options
         $products_bg_color = get_theme_mod('products_section_bg_color', '#ffffff');
         $products_text_color = get_theme_mod('products_section_text_color', '#333333');
-        $products_layout = get_theme_mod('products_section_layout', 'grid');
+        $products_layout = get_theme_mod('products_grid_layout', 'grid');
     ?>
         <section class="products-section layout-<?php echo esc_attr($products_layout); ?>" style="background-color: <?php echo esc_attr($products_bg_color); ?>; color: <?php echo esc_attr($products_text_color); ?>;">
             <div class="container">
@@ -233,6 +233,8 @@ if ($section_spacing !== 'normal') {
                 <?php
                 // Get products grouped by categories
                 $grouped_products = get_products_by_categories();
+                
+                // Products are now loading from customizer data
 
                 if (!empty($grouped_products)) :
                     foreach ($grouped_products as $category_data) :
@@ -240,7 +242,7 @@ if ($section_spacing !== 'normal') {
                         <div class="product-category-section">
                             <!-- Category Header with Title and Line -->
                             <div class="category-header">
-                                <h3 class="category-title"><?php echo esc_html($category_data['category']['title']); ?></h3>
+                                <h3 class="category-title"><?php echo esc_html($category_data['category']->name); ?></h3>
                                 <div class="category-line"></div>
                             </div>
 
@@ -290,9 +292,9 @@ if ($section_spacing !== 'normal') {
                                                 </div>
                                             <?php endif; ?>
                                         </div>
-                                        <?php if (!empty($product['image_url'])) : ?>
+                                        <?php if (!empty($product['image'])) : ?>
                                             <div class="product-image">
-                                                <img src="<?php echo esc_url($product['image_url']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
+                                                <img src="<?php echo esc_url($product['image']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
                                             </div>
                                         <?php endif; ?>
                                         <div class="product-overlay">
@@ -308,7 +310,16 @@ if ($section_spacing !== 'normal') {
 
                             <!-- See All Products Button for this Category -->
                             <div class="category-footer">
-                                <a href="<?php echo esc_url($category_data['category']['link']); ?>" class="btn btn-outline-primary btn-see-all">
+                                <?php
+                                $category_link = '#';
+                                if (function_exists('get_term_link') && isset($category_data['category']->taxonomy)) {
+                                    $term_link = get_term_link($category_data['category']);
+                                    if (!is_wp_error($term_link)) {
+                                        $category_link = $term_link;
+                                    }
+                                }
+                                ?>
+                                <a href="<?php echo esc_url($category_link); ?>" class="btn btn-outline-primary btn-see-all">
                                     <?php _e('Xem tất cả sản phẩm', 'custom-blue-orange'); ?>
                                 </a>
                             </div>

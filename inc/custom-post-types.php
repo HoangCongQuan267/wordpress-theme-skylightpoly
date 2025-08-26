@@ -202,3 +202,47 @@ function register_brand_logo_post_type()
     register_post_type('brand_logo', $args);
 }
 add_action('init', 'register_brand_logo_post_type');
+
+/**
+ * Register Product Category Taxonomy
+ */
+function register_product_category_taxonomy()
+{
+    $labels = array(
+        'name'                       => _x('Product Categories', 'Taxonomy General Name', 'custom-blue-orange'),
+        'singular_name'              => _x('Product Category', 'Taxonomy Singular Name', 'custom-blue-orange'),
+        'menu_name'                  => __('Product Categories', 'custom-blue-orange'),
+        'all_items'                  => __('All Product Categories', 'custom-blue-orange'),
+        'parent_item'                => __('Parent Product Category', 'custom-blue-orange'),
+        'parent_item_colon'          => __('Parent Product Category:', 'custom-blue-orange'),
+        'new_item_name'              => __('New Product Category Name', 'custom-blue-orange'),
+        'add_new_item'               => __('Add New Product Category', 'custom-blue-orange'),
+        'edit_item'                  => __('Edit Product Category', 'custom-blue-orange'),
+        'update_item'                => __('Update Product Category', 'custom-blue-orange'),
+        'view_item'                  => __('View Product Category', 'custom-blue-orange'),
+        'separate_items_with_commas' => __('Separate product categories with commas', 'custom-blue-orange'),
+        'add_or_remove_items'        => __('Add or remove product categories', 'custom-blue-orange'),
+        'choose_from_most_used'      => __('Choose from the most used', 'custom-blue-orange'),
+        'popular_items'              => __('Popular Product Categories', 'custom-blue-orange'),
+        'search_items'               => __('Search Product Categories', 'custom-blue-orange'),
+        'not_found'                  => __('Not Found', 'custom-blue-orange'),
+        'no_terms'                   => __('No product categories', 'custom-blue-orange'),
+        'items_list'                 => __('Product categories list', 'custom-blue-orange'),
+        'items_list_navigation'      => __('Product categories list navigation', 'custom-blue-orange'),
+    );
+
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => true,
+        'show_in_rest'               => true,
+        'rewrite'                    => array('slug' => 'product-category'),
+    );
+
+    register_taxonomy('product_category', array('product'), $args);
+}
+add_action('init', 'register_product_category_taxonomy');

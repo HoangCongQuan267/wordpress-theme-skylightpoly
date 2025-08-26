@@ -1768,18 +1768,38 @@ add_action('customize_register', 'products_management_customizer');
  */
 function get_product_categories()
 {
-    $categories_json = get_theme_mod('product_categories', '');
-    if (empty($categories_json)) {
+    $categories = array();
+    
+    // Get categories from individual customizer fields
+    $categories_count = get_theme_mod('product_categories_count', 3);
+    
+    for ($i = 1; $i <= $categories_count; $i++) {
+        $category_title = get_theme_mod("product_category_{$i}_title", '');
+        $category_link = get_theme_mod("product_category_{$i}_link", '');
+        
+        if (!empty($category_title)) {
+            // Create category slug from title
+            $category_slug = strtolower(str_replace(' ', '-', trim($category_title)));
+            
+            $categories[] = array(
+                'name' => $category_title,
+                'slug' => $category_slug,
+                'link' => $category_link
+            );
+        }
+    }
+    
+    // If no categories found, return demo data
+    if (empty($categories)) {
         return array(
-            array('name' => 'Tấm Lợp Lấy Sáng', 'slug' => 'tam-lop-lay-sang'),
-            array('name' => 'Tấm Polycarbonate', 'slug' => 'tam-polycarbonate'),
-            array('name' => 'Tấm Nhựa Thông Minh', 'slug' => 'tam-nhua-thong-minh'),
-            array('name' => 'Phụ Kiện', 'slug' => 'phu-kien')
+            array('name' => 'Tấm Lợp Lấy Sáng', 'slug' => 'tam-lop-lay-sang', 'link' => ''),
+            array('name' => 'Tấm Polycarbonate', 'slug' => 'tam-polycarbonate', 'link' => ''),
+            array('name' => 'Tấm Nhựa Thông Minh', 'slug' => 'tam-nhua-thong-minh', 'link' => ''),
+            array('name' => 'Phụ Kiện', 'slug' => 'phu-kien', 'link' => '')
         );
     }
     
-    $categories = json_decode($categories_json, true);
-    return is_array($categories) ? $categories : array();
+    return $categories;
 }
 
 /**
@@ -1787,44 +1807,96 @@ function get_product_categories()
  */
 function get_products_data()
 {
-    $products_json = get_theme_mod('products_data', '');
-    if (empty($products_json)) {
+    $products = array();
+    
+    // Get products from individual customizer fields
+    $categories_count = get_theme_mod('product_categories_count', 3);
+    
+    for ($i = 1; $i <= $categories_count; $i++) {
+        $category_title = get_theme_mod("product_category_{$i}_title", '');
+        if (empty($category_title)) continue;
+        
+        // Create category slug from title
+         $category_slug = strtolower(str_replace(' ', '-', trim($category_title)));
+        
+        $products_count = get_theme_mod("product_category_{$i}_product_count", 3);
+        
+        for ($j = 1; $j <= $products_count; $j++) {
+            $title = get_theme_mod("category_{$i}_product_{$j}_title", '');
+            $description = get_theme_mod("category_{$i}_product_{$j}_description", '');
+            $price = get_theme_mod("category_{$i}_product_{$j}_price", '');
+            $discount_price = get_theme_mod("category_{$i}_product_{$j}_discount_price", '');
+            $image_id = get_theme_mod("category_{$i}_product_{$j}_image", '');
+            $link = get_theme_mod("category_{$i}_product_{$j}_link", '');
+            $badge = get_theme_mod("category_{$i}_product_{$j}_badge", '');
+            $unit = get_theme_mod("category_{$i}_product_{$j}_unit", 'đơn vị');
+            
+            if (!empty($title)) {
+                $image_url = '';
+                if (!empty($image_id) && function_exists('wp_get_attachment_url')) {
+                    $image_url = wp_get_attachment_url($image_id);
+                }
+                
+                $products[] = array(
+                    'title' => $title,
+                    'description' => $description,
+                    'price' => $price, // Store as numeric value from customizer
+                    'discount_price' => $discount_price,
+                    'image' => $image_url,
+                    'category' => $category_slug,
+                    'badge' => $badge,
+                    'link' => $link,
+                    'unit' => $unit
+                );
+            }
+        }
+    }
+    
+    // If no products found, return demo data with numeric prices
+    if (empty($products)) {
         return array(
             array(
                 'title' => 'Tấm Lợp Lấy Sáng Polycarbonate',
                 'description' => 'Tấm lợp lấy sáng chất lượng cao, chống tia UV, độ bền vượt trội.',
-                'price' => '150,000 VNĐ/m²',
+                'price' => 150000, // Numeric value
+                'discount_price' => '',
                 'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-1.jpg' : '',
                 'category' => 'tam-lop-lay-sang',
-                'badge' => 'Bán Chạy'
+                'badge' => 'Bán Chạy',
+                'link' => '#'
             ),
             array(
                 'title' => 'Tấm Polycarbonate Rỗng',
                 'description' => 'Tấm polycarbonate rỗng cách nhiệt tốt, tiết kiệm năng lượng.',
-                'price' => '200,000 VNĐ/m²',
+                'price' => 200000, // Numeric value
+                'discount_price' => '',
                 'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-2.jpg' : '',
                 'category' => 'tam-polycarbonate',
-                'badge' => 'Mới'
+                'badge' => 'Mới',
+                'link' => '#'
             ),
             array(
                 'title' => 'Tấm Nhựa Thông Minh PVC',
                 'description' => 'Tấm nhựa thông minh chống thấm, chống mối mọt.',
-                'price' => '120,000 VNĐ/m²',
+                'price' => 120000, // Numeric value
+                'discount_price' => '',
                 'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-3.jpg' : '',
                 'category' => 'tam-nhua-thong-minh',
-                'badge' => 'Khuyến Mãi'
+                'badge' => 'Khuyến Mãi',
+                'link' => '#'
             ),
             array(
                 'title' => 'Phụ Kiện Lắp Đặt',
                 'description' => 'Bộ phụ kiện lắp đặt hoàn chỉnh cho tấm lợp.',
-                'price' => '50,000 VNĐ/bộ',
+                'price' => 50000, // Numeric value
+                'discount_price' => '',
                 'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-4.jpg' : '',
-                 'category' => 'phu-kien',
-                'badge' => ''
+                'category' => 'phu-kien',
+                'badge' => '',
+                'link' => '#'
             )
         );
     }
     
-    $products = json_decode($products_json, true);
-    return is_array($products) ? $products : array();
+    return $products;
 }

@@ -173,7 +173,7 @@ $search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : 
                                     $max_pages = $products_query->max_num_pages;
                                 }
 
-                                if (function_exists('paginate_links') && $max_pages > 1) {
+                                if (function_exists('paginate_links') && isset($max_pages) && $max_pages > 1) {
                                     $current_page = 1;
                                     if (function_exists('get_query_var')) {
                                         $current_page = max(1, get_query_var('paged'));
@@ -234,9 +234,9 @@ $search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : 
                                 <div class="product-category-section">
                                     <!-- Category Header -->
                                     <div class="category-header">
-                                        <h2 class="category-title"><?php echo esc_html($category_data['category']['title']); ?></h2>
+                                        <h2 class="category-title"><?php echo esc_html($category_data['category']->name); ?></h2>
                                         <div class="category-line"></div>
-                                        <a href="?category=<?php echo esc_attr($category_data['category']['slug']); ?>" class="view-category-link">Xem tất cả</a>
+                                        <a href="?category=<?php echo esc_attr($category_data['category']->slug); ?>" class="view-category-link">Xem tất cả</a>
                                     </div>
 
                                     <!-- Products Grid for this Category -->
@@ -286,9 +286,9 @@ $search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : 
                                                     <?php endif; ?>
                                                 </div>
 
-                                                <?php if (!empty($product['image_url'])) : ?>
+                                                <?php if (!empty($product['image'])) : ?>
                                                     <div class="product-image">
-                                                        <img src="<?php echo esc_url($product['image_url']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
+                                                        <img src="<?php echo esc_url($product['image']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
                                                     </div>
                                                 <?php endif; ?>
 
@@ -306,7 +306,7 @@ $search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : 
                                     <!-- Show More Button -->
                                     <?php if (count($category_data['products']) > 6) : ?>
                                         <div class="category-footer">
-                                            <a href="?category=<?php echo esc_attr($category_data['category']['slug']); ?>" class="btn btn-outline-primary btn-see-all">
+                                            <a href="?category=<?php echo esc_attr($category_data['category']->slug); ?>" class="btn btn-outline-primary btn-see-all">
                                                 Xem thêm <?php echo count($category_data['products']) - 6; ?> sản phẩm
                                             </a>
                                         </div>

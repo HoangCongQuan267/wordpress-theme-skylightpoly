@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Helper Functions
  *
@@ -19,7 +20,8 @@ if (!defined('ABSPATH')) {
  *
  * @return array Array of hero slides
  */
-function get_hero_slides() {
+function get_hero_slides()
+{
     $args = array(
         'post_type' => 'hero_slide',
         'posts_per_page' => -1,
@@ -28,10 +30,10 @@ function get_hero_slides() {
         'orderby' => 'meta_value_num',
         'order' => 'ASC'
     );
-    
+
     $slides = get_posts($args);
     $hero_slides = array();
-    
+
     foreach ($slides as $slide) {
         $hero_slides[] = array(
             'id' => $slide->ID,
@@ -44,7 +46,7 @@ function get_hero_slides() {
             'slide_order' => get_post_meta($slide->ID, '_hero_slide_order', true)
         );
     }
-    
+
     return $hero_slides;
 }
 
@@ -54,7 +56,8 @@ function get_hero_slides() {
  * @param int $limit Number of products to retrieve
  * @return array Array of products
  */
-function get_products($limit = -1) {
+function get_products($limit = -1)
+{
     $args = array(
         'post_type' => 'product',
         'posts_per_page' => $limit,
@@ -62,10 +65,10 @@ function get_products($limit = -1) {
         'orderby' => 'date',
         'order' => 'DESC'
     );
-    
+
     $products = get_posts($args);
     $product_list = array();
-    
+
     foreach ($products as $product) {
         $product_list[] = array(
             'id' => $product->ID,
@@ -79,7 +82,7 @@ function get_products($limit = -1) {
             'permalink' => get_permalink($product->ID)
         );
     }
-    
+
     return $product_list;
 }
 
@@ -90,68 +93,99 @@ function get_products($limit = -1) {
  * @param int $limit Number of products per category
  * @return array Array of products grouped by category
  */
-function get_products_by_categories($categories = array(), $limit = 5) {
+function get_products_by_categories($categories = array(), $limit = 5)
+{
     $products_by_category = array();
-    
-    if (empty($categories)) {
-        if (function_exists('get_terms')) {
-            $categories = get_terms(array(
-                'taxonomy' => 'product_category',
-                'hide_empty' => false,
-                'fields' => 'ids'
-            ));
-        } else {
-            $categories = array();
-        }
+
+    // Get categories and products from customizer data
+    if (function_exists('get_product_categories')) {
+        $all_categories = get_product_categories();
+    } else {
+        $all_categories = array();
     }
-    
-    foreach ($categories as $category_id) {
-        $args = array(
-            'post_type' => 'product',
-            'posts_per_page' => $limit,
-            'post_status' => 'publish',
-            'tax_query' => array(
-                array(
-                    'taxonomy' => 'product_category',
-                    'field' => 'term_id',
-                    'terms' => $category_id
-                )
-            )
-        );
-        
-        if (function_exists('get_posts')) {
-            $products = get_posts($args);
-        } else {
-            $products = array();
+
+    if (function_exists('get_products_data')) {
+        $all_products = get_products_data();
+    } else {
+        $all_products = array();
+    }
+
+    // If no categories specified, use all available categories
+    if (empty($categories)) {
+        $categories = $all_categories;
+    }
+
+    foreach ($all_categories as $category) {
+        if (empty($category['slug']) || empty($category['name'])) {
+            continue;
         }
-        
-        $category = null;
-        if (function_exists('get_term')) {
-            $category = get_term($category_id, 'product_category');
-        }
-        
-        if ($category && (!function_exists('is_wp_error') || !is_wp_error($category))) {
-            $products_by_category[$category_id] = array(
-                'category' => $category,
-                'products' => array()
-            );
-            
-            foreach ($products as $product) {
-                $products_by_category[$category_id]['products'][] = array(
-                    'id' => $product->ID,
-                    'title' => $product->post_title,
-                    'content' => $product->post_content,
-                    'excerpt' => $product->post_excerpt,
-                    'image' => get_the_post_thumbnail_url($product->ID, 'full'),
-                    'featured' => get_post_meta($product->ID, 'featured_product', true),
-                    'price' => get_post_meta($product->ID, 'product_price', true),
-                    'link' => get_post_meta($product->ID, 'product_link', true),
-                    'permalink' => get_permalink($product->ID)
+
+        // Filter products for this category
+        $category_products = array();
+        $product_count = 0;
+
+        foreach ($all_products as $product) {
+            if ($product_count >= $limit) {
+                break;
+            }
+
+            if (isset($product['category']) && $product['category'] === $category['slug']) {
+                // Extract numeric price from formatted string
+                $price_numeric = '';
+                $discount_price_numeric = '';
+
+                if (isset($product['price']) && !empty($product['price'])) {
+                    // Remove currency symbols, units, and formatting to get numeric value
+                    $price_numeric = preg_replace('/[^0-9]/', '', $product['price']);
+                    $price_numeric = !empty($price_numeric) ? intval($price_numeric) : '';
+                }
+
+                if (isset($product['discount_price']) && !empty($product['discount_price'])) {
+                    $discount_price_numeric = preg_replace('/[^0-9]/', '', $product['discount_price']);
+                    $discount_price_numeric = !empty($discount_price_numeric) ? intval($discount_price_numeric) : '';
+                }
+
+                // Convert customizer product data to expected format
+                $category_products[] = array(
+                    'id' => uniqid(), // Generate unique ID for customizer products
+                    'title' => isset($product['title']) ? $product['title'] : '',
+                    'content' => isset($product['description']) ? $product['description'] : '',
+                    'excerpt' => isset($product['description']) ? wp_trim_words($product['description'], 20) : '',
+                    'image' => isset($product['image']) ? $product['image'] : '',
+                    'featured' => false,
+                    'price' => $price_numeric,
+                    'discount_price' => $discount_price_numeric,
+                    'discount' => '',
+                    'unit' => isset($product['unit']) ? $product['unit'] : '',
+                    'custom_badge' => isset($product['badge']) ? $product['badge'] : '',
+                    'hot_tag' => '',
+                    'link' => isset($product['link']) ? $product['link'] : '#',
+                    'permalink' => isset($product['link']) ? $product['link'] : '#'
                 );
+                $product_count++;
             }
         }
+
+        // Only add category if it has products
+        if (!empty($category_products)) {
+            // Create a mock category object with required WordPress taxonomy properties
+            $category_obj = (object) array(
+                'term_id' => uniqid(),
+                'name' => $category['name'],
+                'slug' => $category['slug'],
+                'description' => '',
+                'taxonomy' => 'product_category',
+                'parent' => 0,
+                'count' => count($category_products)
+            );
+
+            $products_by_category[$category['slug']] = array(
+                'category' => $category_obj,
+                'products' => $category_products
+            );
+        }
     }
-    
+
     return $products_by_category;
 }
 
@@ -167,7 +201,8 @@ function get_products_by_categories($categories = array(), $limit = 5) {
  * @param int $limit Number of testimonials to retrieve
  * @return array Array of testimonials
  */
-function get_testimonials($limit = -1) {
+function get_testimonials($limit = -1)
+{
     $args = array(
         'post_type' => 'testimonial',
         'posts_per_page' => $limit,
@@ -175,10 +210,10 @@ function get_testimonials($limit = -1) {
         'orderby' => 'date',
         'order' => 'DESC'
     );
-    
+
     $testimonials = get_posts($args);
     $testimonial_list = array();
-    
+
     foreach ($testimonials as $testimonial) {
         $testimonial_list[] = array(
             'id' => $testimonial->ID,
@@ -189,7 +224,7 @@ function get_testimonials($limit = -1) {
             'permalink' => get_permalink($testimonial->ID)
         );
     }
-    
+
     return $testimonial_list;
 }
 
@@ -199,7 +234,8 @@ function get_testimonials($limit = -1) {
  * @param int $limit Number of brand logos to retrieve
  * @return array Array of brand logos
  */
-function get_brand_logos_posts($limit = -1) {
+function get_brand_logos_posts($limit = -1)
+{
     $args = array(
         'post_type' => 'brand_logo',
         'posts_per_page' => $limit,
@@ -207,10 +243,10 @@ function get_brand_logos_posts($limit = -1) {
         'orderby' => 'date',
         'order' => 'DESC'
     );
-    
+
     $logos = get_posts($args);
     $logo_list = array();
-    
+
     foreach ($logos as $logo) {
         $logo_list[] = array(
             'id' => $logo->ID,
@@ -220,7 +256,7 @@ function get_brand_logos_posts($limit = -1) {
             'permalink' => get_permalink($logo->ID)
         );
     }
-    
+
     return $logo_list;
 }
 
@@ -230,17 +266,18 @@ function get_brand_logos_posts($limit = -1) {
  * @param string $phone Phone number
  * @return string Formatted phone number
  */
-function format_phone_number($phone) {
+function format_phone_number($phone)
+{
     // Remove all non-numeric characters
     $phone = preg_replace('/[^0-9]/', '', $phone);
-    
+
     // Format based on length
     if (strlen($phone) == 10) {
         return '(' . substr($phone, 0, 3) . ') ' . substr($phone, 3, 3) . '-' . substr($phone, 6);
     } elseif (strlen($phone) == 11) {
         return substr($phone, 0, 1) . ' (' . substr($phone, 1, 3) . ') ' . substr($phone, 4, 3) . '-' . substr($phone, 7);
     }
-    
+
     return $phone;
 }
 
@@ -249,10 +286,11 @@ function format_phone_number($phone) {
  *
  * @return array Current region contact information
  */
-function get_current_region_info() {
+function get_current_region_info()
+{
     $default_region = get_theme_mod('header_default_region', 'vietnam');
     $current_region = isset($_SESSION['selected_region']) ? $_SESSION['selected_region'] : $default_region;
-    
+
     return array(
         'region' => $current_region,
         'phone' => get_theme_mod("header_region_{$current_region}_phone"),
@@ -267,7 +305,8 @@ function get_current_region_info() {
  * @param string $content HTML content to sanitize
  * @return string Sanitized content
  */
-function sanitize_html_content($content) {
+function sanitize_html_content($content)
+{
     $allowed_tags = array(
         'a' => array(
             'href' => array(),
@@ -285,11 +324,11 @@ function sanitize_html_content($content) {
             'class' => array()
         )
     );
-    
+
     if (function_exists('wp_kses')) {
         return wp_kses($content, $allowed_tags);
     }
-    
+
     return strip_tags($content, '<a><br><em><strong><p><span><div>');
 }
 
@@ -298,7 +337,8 @@ function sanitize_html_content($content) {
  *
  * @return array Array of social media links
  */
-function get_social_media_links() {
+function get_social_media_links()
+{
     return array(
         'facebook' => get_theme_mod('social_facebook_url'),
         'twitter' => get_theme_mod('social_twitter_url'),

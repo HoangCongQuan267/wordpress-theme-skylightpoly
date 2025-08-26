@@ -427,6 +427,19 @@ if (!function_exists('update_post_meta')) {
 
 if (!function_exists('get_posts')) {
     function get_posts($args = null) {
+        // Only return mock data if WordPress is not loaded (for linting/development)
+        if (!defined('WP_DEBUG') && isset($args['post_type']) && $args['post_type'] === 'product') {
+            $mock_products = array();
+            for ($i = 1; $i <= 3; $i++) {
+                $product = new stdClass();
+                $product->ID = $i;
+                $product->post_title = 'Sản phẩm mẫu ' . $i;
+                $product->post_content = 'Nội dung chi tiết cho sản phẩm mẫu ' . $i . '. Đây là một sản phẩm chất lượng cao với nhiều tính năng ưu việt.';
+                $product->post_excerpt = 'Mô tả ngắn gọn về sản phẩm mẫu ' . $i;
+                $mock_products[] = $product;
+            }
+            return $mock_products;
+        }
         return array();
     }
 }
@@ -460,13 +473,80 @@ if (!function_exists('wp_get_attachment_url')) {
 
 if (!function_exists('get_terms')) {
     function get_terms($args = array()) {
+        // Only return mock data if WordPress is not loaded (for linting/development)
+        if (!defined('WP_DEBUG') && isset($args['taxonomy']) && $args['taxonomy'] === 'product_category') {
+            if (isset($args['fields']) && $args['fields'] === 'ids') {
+                return array(1, 2);
+            }
+            $mock_categories = array();
+            for ($i = 1; $i <= 2; $i++) {
+                $category = new stdClass();
+                $category->term_id = $i;
+                $category->name = 'Danh mục ' . $i;
+                $category->slug = 'danh-muc-' . $i;
+                $category->taxonomy = 'product_category';
+                $mock_categories[] = $category;
+            }
+            return $mock_categories;
+        }
         return array();
     }
 }
 
 if (!function_exists('get_term')) {
     function get_term($term, $taxonomy = '', $output = OBJECT, $filter = 'raw') {
+        // Only return mock data if WordPress is not loaded (for linting/development)
+        if (!defined('WP_DEBUG') && $taxonomy === 'product_category') {
+            $category = new stdClass();
+            $category->term_id = $term;
+            $category->name = 'Danh mục ' . $term;
+            $category->slug = 'danh-muc-' . $term;
+            $category->taxonomy = 'product_category';
+            return $category;
+        }
         return null;
+    }
+}
+
+if (!function_exists('get_term_link')) {
+    function get_term_link($term, $taxonomy = '') {
+        return '#';
+    }
+}
+
+if (!function_exists('get_template_directory')) {
+    function get_template_directory() {
+        return dirname(__FILE__);
+    }
+}
+
+if (!function_exists('get_template_directory_uri')) {
+    function get_template_directory_uri() {
+        return 'http://localhost/wp-content/themes/wordpress-theme-skylightpoly';
+    }
+}
+
+if (!function_exists('register_taxonomy')) {
+    function register_taxonomy($taxonomy, $object_type, $args = array()) {
+        // Stub function for register_taxonomy
+        return true;
+    }
+}
+
+// Define WP_DEBUG if not already defined
+if (!defined('WP_DEBUG')) {
+    define('WP_DEBUG', false);
+}
+
+if (!function_exists('locate_template')) {
+    function locate_template($template_names, $load = false, $require_once = true) {
+        return '';
+    }
+}
+
+if (!function_exists('remove_query_arg')) {
+    function remove_query_arg($key, $query = false) {
+        return '';
     }
 }
 
@@ -709,19 +789,31 @@ if (!function_exists('get_theme_mod')) {
 if (!function_exists('get_post_meta')) {
     function get_post_meta($post_id, $key = '', $single = false)
     {
-        // Mock post meta values
-        $meta_values = array(
-            '_hero_slide_subtitle' => 'Sample slide subtitle',
-            '_hero_slide_button_text' => 'Learn More',
-            '_hero_slide_button_url' => '#',
-            '_customer_name' => 'John Doe',
-            '_customer_company' => 'Sample Company',
-            '_customer_rating' => 5,
-            '_featured_product' => 'yes'
-        );
+        // Only return mock data if WordPress is not loaded (for linting/development)
+        if (!defined('WP_DEBUG')) {
+            // Mock post meta values
+            $meta_values = array(
+                '_hero_slide_subtitle' => 'Sample slide subtitle',
+                '_hero_slide_button_text' => 'Learn More',
+                '_hero_slide_button_url' => '#',
+                '_customer_name' => 'John Doe',
+                '_customer_company' => 'Sample Company',
+                '_customer_rating' => 5,
+                '_featured_product' => 'yes',
+                // Product meta fields
+                'featured_product' => ($post_id % 2 == 0) ? 'yes' : 'no',
+                'product_price' => 1000000 + ($post_id * 500000),
+                'product_discount_price' => 800000 + ($post_id * 400000),
+                'product_discount' => 10 + ($post_id * 5),
+                'product_unit' => 'bộ',
+                'product_custom_badge' => ($post_id == 1) ? 'MỚI' : '',
+                'product_hot_tag' => ($post_id == 2) ? 'yes' : 'no',
+                'product_link' => '#product-' . $post_id
+            );
 
-        if ($key && isset($meta_values[$key])) {
-            return $single ? $meta_values[$key] : array($meta_values[$key]);
+            if ($key && isset($meta_values[$key])) {
+                return $single ? $meta_values[$key] : array($meta_values[$key]);
+            }
         }
 
         return $single ? '' : array();

@@ -15,18 +15,28 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Include WordPress functions stub for linter compatibility
-require_once dirname(__FILE__) . '/wp-functions-stub.php';
+// Include WordPress functions stub for linter compatibility only when WordPress functions aren't available
+if (!function_exists('wp_enqueue_style')) {
+    require_once dirname(__FILE__) . '/wp-functions-stub.php';
+}
 
 // Define theme constants
 define('THEME_VERSION', '1.0.0');
 
-// WordPress functions are available in theme context
+// Define theme directory constants conditionally
 if (!defined('THEME_DIR')) {
-    define('THEME_DIR', get_template_directory());
+    if (function_exists('get_template_directory')) {
+        define('THEME_DIR', get_template_directory());
+    } else {
+        define('THEME_DIR', dirname(__FILE__));
+    }
 }
 if (!defined('THEME_URL')) {
-    define('THEME_URL', get_template_directory_uri());
+    if (function_exists('get_template_directory_uri')) {
+        define('THEME_URL', get_template_directory_uri());
+    } else {
+        define('THEME_URL', 'http://localhost/wp-content/themes/wordpress-theme-skylightpoly');
+    }
 }
 
 // Include modular files
