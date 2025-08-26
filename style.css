@@ -516,6 +516,10 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .header-top {
+        display: none !important;
+    }
+    
     .header-top .container {
         flex-direction: column;
         gap: 8px;
