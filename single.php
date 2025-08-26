@@ -113,7 +113,7 @@ get_header(); ?>
     .single-post .featured-image {
         max-width: 100%;
         height: auto;
-        border-radius: 8px;
+        border-radius: 4px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
