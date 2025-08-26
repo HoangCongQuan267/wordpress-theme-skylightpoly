@@ -194,12 +194,10 @@
         // Hover effects
         backToTopBtn.addEventListener('mouseenter', function() {
             this.style.backgroundColor = 'var(--light-orange)';
-            this.style.transform = 'scale(1.1)';
         });
         
         backToTopBtn.addEventListener('mouseleave', function() {
             this.style.backgroundColor = 'var(--primary-orange)';
-            this.style.transform = 'scale(1)';
         });
     }
 

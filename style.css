@@ -1301,7 +1301,6 @@ body {
 
 .branding-banner-thin .brand-logo-item:hover .brand-logo {
     filter: opacity(1);
-    transform: scale(1.1);
 }
 
 .branding-banner-thin .brand-logo-item a {
