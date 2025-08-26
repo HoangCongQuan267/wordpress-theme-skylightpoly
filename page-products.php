@@ -169,8 +169,12 @@ $search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : 
                             <div class="products-pagination">
                                 <?php
                                 $max_pages = 1;
-                                if (isset($products_query) && is_object($products_query) && property_exists($products_query, 'max_num_pages')) {
-                                    $max_pages = $products_query->max_num_pages;
+                                if (isset($products_query) && is_a($products_query, 'WP_Query')) {
+                                    try {
+                                        $max_pages = intval($products_query->max_num_pages);
+                                    } catch (Exception $e) {
+                                        $max_pages = 1;
+                                    }
                                 }
 
                                 if (function_exists('paginate_links') && isset($max_pages) && $max_pages > 1) {
@@ -679,11 +683,42 @@ $search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : 
             flex-direction: column;
             text-align: center;
             gap: 0.5rem;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+
+        .category-title {
+            font-size: 1.2rem;
+            white-space: normal;
+            text-align: center;
         }
 
         .category-line {
             width: 100px;
             margin: 0 auto;
+        }
+
+        .view-category-link {
+            white-space: normal;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .category-header {
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .category-title {
+            font-size: 1rem;
+            line-height: 1.3;
+        }
+
+        .category-line {
+            width: 80px;
+        }
+
+        .view-category-link {
+            font-size: 0.9rem;
         }
     }
 </style>
