@@ -791,35 +791,7 @@ if (!function_exists('get_products')) {
     }
 }
 
-if (!function_exists('get_certificates')) {
-    function get_certificates()
-    {
-        // Mock certificates data
-        return array(
-            array(
-                'id' => 1,
-                'title' => 'ISO 9001:2015',
-                'content' => 'Chứng nhận Hệ thống Quản lý Chất lượng đảm bảo tiêu chuẩn chất lượng nhất quán.',
-                'image' => '',
-                'image_url' => ''
-            ),
-            array(
-                'id' => 2,
-                'title' => 'Chứng Nhận CE',
-                'content' => 'Dấu hiệu Tuân thủ Châu Âu cho thấy sự tuân thủ các tiêu chuẩn an toàn của EU.',
-                'image' => '',
-                'image_url' => ''
-            ),
-            array(
-                'id' => 3,
-                'title' => 'Xuất Sắc Ngành',
-                'content' => 'Được công nhận về hiệu suất xuất sắc và đổi mới trong lĩnh vực ngành của chúng tôi.',
-                'image' => '',
-                'image_url' => ''
-            )
-        );
-    }
-}
+
 
 if (!function_exists('get_testimonials')) {
     function get_testimonials()

@@ -821,7 +821,6 @@ body {
     }
 
     .products-section,
-    .certificates-section,
     .testimonials-section {
         padding: 15px 0;
     }
@@ -862,7 +861,6 @@ body {
     }
 
     .products-section,
-    .certificates-section,
     .testimonials-section {
         padding: 15px 0;
     }
@@ -900,12 +898,7 @@ body {
     background: var(--off-white);
 }
 
-/* Certificates Section */
-.certificates-section {
-    padding: 20px 0;
-    background: var(--primary-sky-blue);
-    color: var(--off-white) !important;
-}
+
 
 .section-header {
     text-align: center;
@@ -2008,197 +2001,9 @@ body {
     }
 }
 
-/* Certificates Carousel */
-.certificates-carousel {
-    position: relative;
-}
 
-.certificates-container {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
-    border-radius: 12px;
-}
 
-.certificates-track {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-}
 
-.certificate-slide {
-    position: absolute;
-    width: auto;
-    height: 350px;
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    cursor: default;
-}
-
-.certificate-slide.active {
-    cursor: default;
-}
-
-/* Positioning for carousel effect - first slide centered */
-.certificate-slide:nth-child(1) { transform: translateX(0); z-index: 3; filter: blur(0); opacity: 1; }
-.certificate-slide:nth-child(2) { transform: translateX(120px); z-index: 2; filter: blur(1px); opacity: 0.8; }
-.certificate-slide:nth-child(3) { transform: translateX(240px); z-index: 1; filter: blur(2px); opacity: 0.6; }
-.certificate-slide:nth-child(4) { transform: translateX(360px); z-index: 0; filter: blur(3px); opacity: 0.4; }
-.certificate-slide:nth-child(5) { transform: translateX(480px); z-index: 0; filter: blur(3px); opacity: 0.4; }
-.certificate-slide:nth-child(n+6) { transform: translateX(600px); z-index: 0; filter: blur(3px); opacity: 0.4; }
-
-/* Active slide (centered) */
-.certificate-slide.active {
-    transform: translateX(0) !important;
-    z-index: 3 !important;
-    filter: blur(0) !important;
-    opacity: 1 !important;
-}
-
-.certificate-slide.active:hover {
-    transform: translateY(-5px) !important;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-}
-
-.certificate-image {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
-.certificate-image img {
-    border-radius: 4px;
-    width: auto;
-    height: 100%;
-    object-fit: contain;
-    transition: transform 0.3s ease;
-}
-
-.certificate-slide.active:hover .certificate-image img {
-    border-radius: 4px;
-
-}
-
-.certificate-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-    padding: 30px 20px 20px;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-}
-
-.certificate-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: white;
-    margin: 0;
-    letter-spacing: 0.3px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* Chevron Navigation Buttons */
-.carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: all 0.3s ease;
-    color: var(--primary-sky-blue);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.carousel-nav-prev {
-    left: 20px;
-}
-
-.carousel-nav-next {
-    right: 20px;
-}
-
-/* Certificate Tooltip */
-.certificate-tooltip {
-    position: absolute;
-    bottom: -40px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 20;
-    pointer-events: none;
-}
-
-.certificate-tooltip::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 5px solid rgba(0, 0, 0, 0.9);
-}
-
-.certificate-slide.active .certificate-image:hover .certificate-tooltip {
-    opacity: 1;
-    visibility: visible;
-    bottom: -35px;
-}
-
-/* Navigation Indicators */
-.certificate-indicators {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 30px;
-}
-
-.indicator-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.4);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.indicator-dot:hover {
-    background: rgba(255, 255, 255, 0.7);
-
-}
-
-.indicator-dot.active {
-    background: white;
-
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
-}
 
 /* Testimonials Section */
 .testimonials-section {
@@ -2555,62 +2360,8 @@ body {
     }
     
     .products-section,
-    .certificates-section,
     .testimonials-section {
         padding: 12px 0;
-    }
-    
-    .certificates-container {
-        height: 300px;
-    }
-    
-    .certificate-slide {
-        width: auto;
-        height: 280px;
-    }
-    
-    .certificate-slide:nth-child(1) { transform: translateX(0); }
-.certificate-slide:nth-child(2) { transform: translateX(100px); }
-.certificate-slide:nth-child(3) { transform: translateX(200px); }
-.certificate-slide:nth-child(4) { transform: translateX(300px); }
-.certificate-slide:nth-child(5) { transform: translateX(400px); }
-.certificate-slide:nth-child(n+6) { transform: translateX(500px); }
-    
-    .certificate-overlay {
-        padding: 20px 15px 15px;
-    }
-    
-    .certificate-title {
-        font-size: 0.9rem;
-    }
-    
-    .certificate-indicators {
-        margin-top: 20px;
-        gap: 10px;
-    }
-    
-    .indicator-dot {
-        width: 10px;
-        height: 10px;
-    }
-    
-    /* Chevron buttons responsive - tablet */
-    .carousel-nav {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .carousel-nav-prev {
-        left: 15px;
-    }
-    
-    .carousel-nav-next {
-        right: 15px;
-    }
-    
-    .certificate-tooltip {
-        font-size: 12px;
-        padding: 6px 10px;
     }
     
     .contact-form-section {
@@ -2673,63 +2424,7 @@ body {
         margin-bottom: 12px;
     }
     
-    .certificates-container {
-        height: 250px;
-    }
-    
-    .certificate-slide {
-        width: auto;
-        height: 230px;
-    }
-    
-    .certificate-slide:nth-child(1) { transform: translateX(0); }
-.certificate-slide:nth-child(2) { transform: translateX(75px); }
-.certificate-slide:nth-child(3) { transform: translateX(150px); }
-.certificate-slide:nth-child(4) { transform: translateX(225px); }
-.certificate-slide:nth-child(5) { transform: translateX(300px); }
-.certificate-slide:nth-child(n+6) { transform: translateX(375px); }
-    
-    .certificate-overlay {
-        padding: 15px 10px 10px;
-    }
-    
-    .certificate-title {
-        font-size: 0.8rem;
-    }
-    
-    .certificate-indicators {
-        margin-top: 15px;
-        gap: 8px;
-    }
-    
-    .indicator-dot {
-        width: 8px;
-        height: 8px;
-    }
-    
-    /* Chevron buttons responsive - mobile */
-    .carousel-nav {
-        width: 35px;
-        height: 35px;
-    }
-    
-    .carousel-nav svg {
-        width: 18px;
-        height: 18px;
-    }
-    
-    .carousel-nav-prev {
-        left: 10px;
-    }
-    
-    .carousel-nav-next {
-        right: 10px;
-    }
-    
-    .certificate-tooltip {
-        font-size: 11px;
-        padding: 4px 8px;
-    }
+
     
     .contact-form-section {
         padding: 15px 0;
@@ -2750,21 +2445,7 @@ body {
         font-size: 0.7rem;
     }
     
-    .certificates-grid {
-        gap: 10px;
-    }
-    
-    .certificate-item {
-        height: 200px;
-    }
-    
-    .certificate-overlay {
-        padding: 15px 10px 10px;
-    }
-    
-    .certificate-title {
-        font-size: 0.8rem;
-    }
+
 }
 
 /* Zalo Floating Button */
