@@ -16,7 +16,7 @@
         <div class="header-top">
             <div class="container">
                 <div class="contact-info">
-                    <?php if (get_theme_mod('show_region_selection', true)) : ?>
+                    <?php if (get_theme_mod('display_region_selection', true)) : ?>
                         <span class="region-selector">
                             <select id="region-select" onchange="updateRegionInfo(this.value)">
                                 <?php
@@ -37,7 +37,7 @@
                         </span>
                     <?php endif; ?>
                     <span class="phone">
-                        <?php 
+                        <?php
                         $default_phone = get_theme_mod('default_phone', '+84 123 456 789');
                         $phone_href = 'tel:' . preg_replace('/[^0-9+]/', '', $default_phone);
                         ?>
@@ -55,46 +55,180 @@
         </div>
 
         <!-- Main Header Row - Logo and Navigation -->
-        <div class="header-main">
+        <?php
+        $header_layout = get_theme_mod('header_layout_style', 'default');
+        $nav_position = get_theme_mod('navigation_position', 'right');
+        $header_classes = 'header-main layout-' . $header_layout . ' nav-' . $nav_position;
+        ?>
+        <div class="<?php echo esc_attr($header_classes); ?>">
             <div class="container">
-                <div class="site-branding">
-                    <?php if (has_custom_logo()) : ?>
-                        <?php the_custom_logo(); ?>
-                    <?php else : ?>
-                        <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo">
-                            <?php bloginfo('name'); ?>
-                        </a>
-                    <?php endif; ?>
+                <?php if ($header_layout === 'centered') : ?>
+                    <!-- Centered Layout: Logo Center, Menu Below -->
+                    <div class="header-centered">
+                        <div class="site-branding centered">
+                            <?php if (has_custom_logo()) : ?>
+                                <?php the_custom_logo(); ?>
+                            <?php else : ?>
+                                <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo">
+                                    <?php bloginfo('name'); ?>
+                                </a>
+                            <?php endif; ?>
 
-                    <div class="site-text">
-                        <h1 class="site-title">
-                            <a href="<?php echo esc_url(home_url('/')); ?>"><?php bloginfo('name'); ?></a>
-                        </h1>
-                        <?php
-                        $site_slogan = get_theme_mod('site_slogan');
-                        if ($site_slogan) : ?>
-                            <p class="site-slogan"><?php echo esc_html($site_slogan); ?></p>
-                        <?php elseif (get_bloginfo('description')) : ?>
-                            <p class="site-slogan"><?php bloginfo('description'); ?></p>
-                        <?php endif; ?>
+                            <div class="site-text">
+                                <h1 class="site-title">
+                                    <a href="<?php echo esc_url(home_url('/')); ?>"><?php bloginfo('name'); ?></a>
+                                </h1>
+                                <?php
+                                $site_slogan = get_theme_mod('site_slogan');
+                                if ($site_slogan) : ?>
+                                    <p class="site-slogan"><?php echo esc_html($site_slogan); ?></p>
+                                <?php elseif (get_bloginfo('description')) : ?>
+                                    <p class="site-slogan"><?php bloginfo('description'); ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <nav class="main-navigation centered" role="navigation" aria-label="Primary Menu">
+                            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
+                                ☰
+                            </button>
+
+                            <?php
+                            wp_nav_menu(array(
+                                'theme_location' => 'primary',
+                                'menu_id'        => 'primary-menu',
+                                'menu_class'     => 'primary-menu',
+                                'container'      => false,
+                                'fallback_cb'    => 'wp_page_menu',
+                            ));
+                            ?>
+                        </nav>
                     </div>
-                </div>
+                <?php elseif ($header_layout === 'stacked') : ?>
+                    <!-- Stacked Layout: Logo Top, Menu Bottom -->
+                    <div class="header-stacked">
+                        <div class="site-branding stacked">
+                            <?php if (has_custom_logo()) : ?>
+                                <?php the_custom_logo(); ?>
+                            <?php else : ?>
+                                <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo">
+                                    <?php bloginfo('name'); ?>
+                                </a>
+                            <?php endif; ?>
 
-                <nav class="main-navigation" role="navigation" aria-label="Primary Menu">
-                    <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
-                        ☰
-                    </button>
+                            <div class="site-text">
+                                <h1 class="site-title">
+                                    <a href="<?php echo esc_url(home_url('/')); ?>"><?php bloginfo('name'); ?></a>
+                                </h1>
+                                <?php
+                                $site_slogan = get_theme_mod('site_slogan');
+                                if ($site_slogan) : ?>
+                                    <p class="site-slogan"><?php echo esc_html($site_slogan); ?></p>
+                                <?php elseif (get_bloginfo('description')) : ?>
+                                    <p class="site-slogan"><?php bloginfo('description'); ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
 
-                    <?php
-                    wp_nav_menu(array(
-                        'theme_location' => 'primary',
-                        'menu_id'        => 'primary-menu',
-                        'menu_class'     => 'primary-menu',
-                        'container'      => false,
-                        'fallback_cb'    => 'wp_page_menu',
-                    ));
-                    ?>
-                </nav>
+                        <nav class="main-navigation stacked" role="navigation" aria-label="Primary Menu">
+                            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
+                                ☰
+                            </button>
+
+                            <?php
+                            wp_nav_menu(array(
+                                'theme_location' => 'primary',
+                                'menu_id'        => 'primary-menu',
+                                'menu_class'     => 'primary-menu',
+                                'container'      => false,
+                                'fallback_cb'    => 'wp_page_menu',
+                            ));
+                            ?>
+                        </nav>
+                    </div>
+                <?php else : ?>
+                    <!-- Default Layout: Logo Left/Right, Menu Right/Left -->
+                    <?php if ($nav_position === 'left') : ?>
+                        <nav class="main-navigation" role="navigation" aria-label="Primary Menu">
+                            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
+                                ☰
+                            </button>
+
+                            <?php
+                            wp_nav_menu(array(
+                                'theme_location' => 'primary',
+                                'menu_id'        => 'primary-menu',
+                                'menu_class'     => 'primary-menu',
+                                'container'      => false,
+                                'fallback_cb'    => 'wp_page_menu',
+                            ));
+                            ?>
+                        </nav>
+
+                        <div class="site-branding">
+                            <?php if (has_custom_logo()) : ?>
+                                <?php the_custom_logo(); ?>
+                            <?php else : ?>
+                                <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo">
+                                    <?php bloginfo('name'); ?>
+                                </a>
+                            <?php endif; ?>
+
+                            <div class="site-text">
+                                <h1 class="site-title">
+                                    <a href="<?php echo esc_url(home_url('/')); ?>"><?php bloginfo('name'); ?></a>
+                                </h1>
+                                <?php
+                                $site_slogan = get_theme_mod('site_slogan');
+                                if ($site_slogan) : ?>
+                                    <p class="site-slogan"><?php echo esc_html($site_slogan); ?></p>
+                                <?php elseif (get_bloginfo('description')) : ?>
+                                    <p class="site-slogan"><?php bloginfo('description'); ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php else : ?>
+                        <!-- Default: Logo Left, Menu Right -->
+                        <div class="site-branding">
+                            <?php if (has_custom_logo()) : ?>
+                                <?php the_custom_logo(); ?>
+                            <?php else : ?>
+                                <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo">
+                                    <?php bloginfo('name'); ?>
+                                </a>
+                            <?php endif; ?>
+
+                            <div class="site-text">
+                                <h1 class="site-title">
+                                    <a href="<?php echo esc_url(home_url('/')); ?>"><?php bloginfo('name'); ?></a>
+                                </h1>
+                                <?php
+                                $site_slogan = get_theme_mod('site_slogan');
+                                if ($site_slogan) : ?>
+                                    <p class="site-slogan"><?php echo esc_html($site_slogan); ?></p>
+                                <?php elseif (get_bloginfo('description')) : ?>
+                                    <p class="site-slogan"><?php bloginfo('description'); ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <nav class="main-navigation" role="navigation" aria-label="Primary Menu">
+                            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
+                                ☰
+                            </button>
+
+                            <?php
+                            wp_nav_menu(array(
+                                'theme_location' => 'primary',
+                                'menu_id'        => 'primary-menu',
+                                'menu_class'     => 'primary-menu',
+                                'container'      => false,
+                                'fallback_cb'    => 'wp_page_menu',
+                            ));
+                            ?>
+                        </nav>
+                    <?php endif; ?>
+                <?php endif; ?>
             </div>
         </div>
     </header>
@@ -143,7 +277,7 @@
         });
 
         // Region selector functionality
-        <?php if (get_theme_mod('show_region_selection', true)) : ?>
+        <?php if (get_theme_mod('display_region_selection', true)) : ?>
 
             function updateRegionInfo(region) {
                 const phoneLink = document.getElementById('phone-link');
@@ -152,15 +286,22 @@
 
                 const regionData = {
                     <?php
-                    $regions = array('vietnam', 'usa', 'uk', 'singapore', 'japan');
-                    foreach ($regions as $index => $region) :
-                        $phone = get_theme_mod("region_{$region}_phone", '');
-                        $email = get_theme_mod("region_{$region}_email", '');
-                        $address = get_theme_mod("region_{$region}_address", '');
+                    $regions = array(
+                        array('value' => 'vietnam', 'label' => 'Vietnam'),
+                        array('value' => 'usa', 'label' => 'USA'),
+                        array('value' => 'uk', 'label' => 'UK'),
+                        array('value' => 'singapore', 'label' => 'Singapore'),
+                        array('value' => 'japan', 'label' => 'Japan')
+                    );
+                    foreach ($regions as $index => $region_data) :
+                        $region_key = $region_data['value'];
+                        $phone = get_theme_mod("region_{$region_key}_phone", '');
+                        $email = get_theme_mod("region_{$region_key}_email", '');
+                        $address = get_theme_mod("region_{$region_key}_address", '');
 
                         // Fallback to default values if region-specific customizer is empty
                         if (empty($phone) && empty($email) && empty($address)) {
-                            switch ($region) {
+                            switch ($region_key) {
                                 case 'vietnam':
                                     $phone = get_theme_mod('default_phone', '+84 123 456 789');
                                     $email = get_theme_mod('default_email', 'info@yoursite.com');
@@ -190,8 +331,7 @@
                         }
 
                         $phone_href = 'tel:' . preg_replace('/[^0-9+]/', '', $phone);
-                    ?>
-                        <?php echo esc_attr($region); ?>: {
+                    ?> '<?php echo esc_attr($region_key); ?>': {
                             phone: '<?php echo esc_attr($phone); ?>',
                             phoneHref: '<?php echo esc_attr($phone_href); ?>',
                             email: '<?php echo esc_attr($email); ?>',
@@ -210,4 +350,5 @@
                 }
             }
         <?php endif; ?>
+        });
     </script>

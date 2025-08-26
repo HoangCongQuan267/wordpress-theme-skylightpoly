@@ -24,7 +24,7 @@ function get_hero_slides() {
         'post_type' => 'hero_slide',
         'posts_per_page' => -1,
         'post_status' => 'publish',
-        'meta_key' => 'slide_order',
+        'meta_key' => '_hero_slide_order',
         'orderby' => 'meta_value_num',
         'order' => 'ASC'
     );
@@ -38,10 +38,10 @@ function get_hero_slides() {
             'title' => $slide->post_title,
             'content' => $slide->post_content,
             'image' => get_the_post_thumbnail_url($slide->ID, 'full'),
-            'subtitle' => get_post_meta($slide->ID, 'subtitle', true),
-            'button_text' => get_post_meta($slide->ID, 'button_text', true),
-            'button_url' => get_post_meta($slide->ID, 'button_url', true),
-            'slide_order' => get_post_meta($slide->ID, 'slide_order', true)
+            'subtitle' => get_post_meta($slide->ID, '_hero_slide_subtitle', true),
+            'button_text' => get_post_meta($slide->ID, '_hero_slide_button_text', true),
+            'button_url' => get_post_meta($slide->ID, '_hero_slide_button_url', true),
+            'slide_order' => get_post_meta($slide->ID, '_hero_slide_order', true)
         );
     }
     

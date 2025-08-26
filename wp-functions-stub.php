@@ -452,6 +452,36 @@ if (!function_exists('wp_get_attachment_image')) {
     }
 }
 
+if (!function_exists('wp_get_attachment_url')) {
+    function wp_get_attachment_url($attachment_id) {
+        return 'https://via.placeholder.com/800x400';
+    }
+}
+
+if (!function_exists('get_terms')) {
+    function get_terms($args = array()) {
+        return array();
+    }
+}
+
+if (!function_exists('get_term')) {
+    function get_term($term, $taxonomy = '', $output = OBJECT, $filter = 'raw') {
+        return null;
+    }
+}
+
+if (!function_exists('is_wp_error')) {
+    function is_wp_error($thing) {
+        return false;
+    }
+}
+
+if (!function_exists('wp_kses')) {
+    function wp_kses($string, $allowed_html, $allowed_protocols = array()) {
+        return strip_tags($string);
+    }
+}
+
 if (!function_exists('get_post_thumbnail_id')) {
     function get_post_thumbnail_id($post = null) {
         return 0;
@@ -543,6 +573,10 @@ if (!function_exists('_nx')) {
 // Define constants if not defined
 if (!defined('ARRAY_A')) {
     define('ARRAY_A', 'ARRAY_A');
+}
+
+if (!defined('OBJECT')) {
+    define('OBJECT', 'OBJECT');
 }
 
 if (!defined('ABSPATH')) {

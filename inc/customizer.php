@@ -1405,6 +1405,51 @@ function header_customizer($wp_customize)
         'priority' => 10,
     ));
 
+    // Header Layout Section
+    $wp_customize->add_section('header_layout_section', array(
+        'title'    => __('Header Layout Section', 'custom-blue-orange'),
+        'panel'    => 'header_customizer_panel',
+        'priority' => 15,
+    ));
+
+    // Navigation Position
+    $wp_customize->add_setting('navigation_position', array(
+        'default'           => 'right',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('navigation_position', array(
+        'label'    => __('Navigation Position', 'custom-blue-orange'),
+        'section'  => 'header_layout_section',
+        'type'     => 'select',
+        'choices'  => array(
+            'left'   => __('Left Side', 'custom-blue-orange'),
+            'right'  => __('Right Side', 'custom-blue-orange'),
+            'center' => __('Center', 'custom-blue-orange'),
+        ),
+        'priority' => 10,
+    ));
+
+    // Header Layout Style
+    $wp_customize->add_setting('header_layout_style', array(
+        'default'           => 'default',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('header_layout_style', array(
+        'label'    => __('Header Layout Style', 'custom-blue-orange'),
+        'section'  => 'header_layout_section',
+        'type'     => 'select',
+        'choices'  => array(
+            'default'  => __('Logo Left, Menu Right', 'custom-blue-orange'),
+            'centered' => __('Logo Center, Menu Below', 'custom-blue-orange'),
+            'stacked'  => __('Logo Top, Menu Bottom', 'custom-blue-orange'),
+        ),
+        'priority' => 20,
+    ));
+
     // Region Selection Section
     $wp_customize->add_section('region_selection_section', array(
         'title'    => __('Region Selection Section', 'custom-blue-orange'),

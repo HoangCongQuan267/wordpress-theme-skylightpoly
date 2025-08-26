@@ -304,6 +304,62 @@ body {
     box-shadow: 0 3px 12px rgba(135, 206, 235, 0.4);
 }
 
+/* Header Layout Variations */
+.header-main.layout-centered .container {
+    flex-direction: column;
+    text-align: center;
+}
+
+.header-main.layout-stacked .container {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.header-main.nav-left .container {
+    flex-direction: row-reverse;
+}
+
+.header-main.nav-center .container {
+    justify-content: center;
+}
+
+/* Centered Layout Styles */
+.header-centered {
+    width: 100%;
+}
+
+.site-branding.centered {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.main-navigation.centered {
+    width: 100%;
+    text-align: center;
+}
+
+.main-navigation.centered .primary-menu {
+    justify-content: center;
+}
+
+/* Stacked Layout Styles */
+.header-stacked {
+    width: 100%;
+}
+
+.site-branding.stacked {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.main-navigation.stacked {
+    width: 100%;
+}
+
+.main-navigation.stacked .primary-menu {
+    justify-content: flex-start;
+}
+
 /* Main Content */
 .site-main {
     /* max-width: 1200px; */
