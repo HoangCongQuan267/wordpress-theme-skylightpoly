@@ -165,7 +165,7 @@ if ($section_spacing !== 'normal') {
     <!-- Thin Branding Banner Section -->
     <?php if (get_theme_mod('branding_banner_enable', true)) :
         // Get branding banner styling options
-        $branding_bg_color = get_theme_mod('branding_banner_bg_color', '#f8f9fa');
+        $branding_bg_color = get_theme_mod('branding_banner_bg_color', '#ffffff');
         $branding_text_color = get_theme_mod('branding_banner_text_color', '#333333');
     ?>
         <section class="branding-banner-thin" style="background-color: <?php echo esc_attr($branding_bg_color); ?>; color: <?php echo esc_attr($branding_text_color); ?>;">
