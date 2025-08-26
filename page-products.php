@@ -171,7 +171,9 @@ $search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : 
                                 $max_pages = 1;
                                 if (isset($products_query) && is_a($products_query, 'WP_Query')) {
                                     try {
-                                        $max_pages = intval($products_query->max_num_pages);
+                                        // Safely access max_num_pages property with null coalescing
+                                        $query_max_pages = $products_query->max_num_pages ?? 0;
+                                        $max_pages = max(1, intval($query_max_pages));
                                     } catch (Exception $e) {
                                         $max_pages = 1;
                                     }
@@ -246,7 +248,7 @@ $search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : 
                                     <!-- Products Grid for this Category -->
                                     <div class="products-grid">
                                         <?php foreach (array_slice($category_data['products'], 0, 6) as $product) : ?>
-                                            <div class="product-card horizontal-card">
+                                            <div class="product-card vertical-card">
                                                 <?php
                                                 // Determine which badge to show
                                                 $badge_text = '';
@@ -365,56 +367,56 @@ $search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : 
 
                             <!-- Demo Products Grid -->
                             <div class="products-grid demo-products">
-                                <div class="product-card horizontal-card">
-                                    <div class="product-badge discount-badge">-20%</div>
-                                    <div class="product-content">
-                                        <h4 class="product-title">Sản Phẩm Demo A</h4>
-                                        <p class="product-excerpt">Đây là mô tả ngắn cho sản phẩm demo. Sản phẩm chất lượng cao với tính năng ưu việt.</p>
-                                        <div class="product-pricing">
-                                            <span class="original-price">2.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
-                                            <span class="discount-price">1.999.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
-                                        </div>
-                                    </div>
-                                    <div class="product-image">
-                                        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Demo Product A">
-                                    </div>
+                                <div class="product-card vertical-card">
+                                <div class="product-badge discount-badge">-20%</div>
+                                <div class="product-image">
+                                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Demo Product A">
                                     <div class="product-overlay">
                                         <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
                                     </div>
                                 </div>
+                                <div class="product-content">
+                                    <h4 class="product-title">Sản Phẩm Demo A</h4>
+                                    <p class="product-excerpt">Đây là mô tả ngắn cho sản phẩm demo. Sản phẩm chất lượng cao với tính năng ưu việt.</p>
+                                    <div class="product-pricing">
+                                        <span class="original-price">2.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                        <span class="discount-price">1.999.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div class="product-card horizontal-card">
-                                    <div class="product-badge hot-badge">HOT</div>
-                                    <div class="product-content">
-                                        <h4 class="product-title">Sản Phẩm Demo B</h4>
-                                        <p class="product-excerpt">Sản phẩm bán chạy nhất với công nghệ tiên tiến và thiết kế hiện đại.</p>
-                                        <div class="product-pricing">
-                                            <span class="current-price">3.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
-                                        </div>
-                                    </div>
-                                    <div class="product-image">
-                                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Demo Product B">
-                                    </div>
+                                <div class="product-card vertical-card">
+                                <div class="product-badge hot-badge">HOT</div>
+                                <div class="product-image">
+                                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Demo Product B">
                                     <div class="product-overlay">
                                         <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
                                     </div>
                                 </div>
+                                <div class="product-content">
+                                    <h4 class="product-title">Sản Phẩm Demo B</h4>
+                                    <p class="product-excerpt">Sản phẩm bán chạy nhất với công nghệ tiên tiến và thiết kế hiện đại.</p>
+                                    <div class="product-pricing">
+                                        <span class="current-price">3.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div class="product-card horizontal-card">
-                                    <div class="product-content">
-                                        <h4 class="product-title">Sản Phẩm Demo C</h4>
-                                        <p class="product-excerpt">Giải pháp tối ưu cho doanh nghiệp với hiệu suất cao và độ bền vượt trội.</p>
-                                        <div class="product-pricing">
-                                            <span class="current-price">1.850.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
-                                        </div>
-                                    </div>
-                                    <div class="product-image">
-                                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Demo Product C">
-                                    </div>
+                                <div class="product-card vertical-card">
+                                <div class="product-image">
+                                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Demo Product C">
                                     <div class="product-overlay">
                                         <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
                                     </div>
                                 </div>
+                                <div class="product-content">
+                                    <h4 class="product-title">Sản Phẩm Demo C</h4>
+                                    <p class="product-excerpt">Giải pháp tối ưu cho doanh nghiệp với hiệu suất cao và độ bền vượt trội.</p>
+                                    <div class="product-pricing">
+                                        <span class="current-price">1.850.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
                     <?php
                         endif;

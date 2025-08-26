@@ -233,7 +233,7 @@ if ($section_spacing !== 'normal') {
                 <?php
                 // Get products grouped by categories
                 $grouped_products = get_products_by_categories();
-                
+
                 // Products are now loading from customizer data
 
                 if (!empty($grouped_products)) :
@@ -249,7 +249,7 @@ if ($section_spacing !== 'normal') {
                             <!-- Products Grid for this Category -->
                             <div class="products-grid">
                                 <?php foreach ($category_data['products'] as $product) : ?>
-                                    <div class="product-card horizontal-card">
+                                    <div class="product-card vertical-card">
                                         <?php
                                         // Determine which badge to show (priority: custom_badge > discount > hot_tag)
                                         $badge_text = '';
@@ -272,6 +272,11 @@ if ($section_spacing !== 'normal') {
                                                 <?php echo esc_html($badge_text); ?>
                                             </div>
                                         <?php endif; ?>
+                                        <?php if (!empty($product['image'])) : ?>
+                                            <div class="product-image">
+                                                <img src="<?php echo esc_url($product['image']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
+                                            </div>
+                                        <?php endif; ?>
 
                                         <div class="product-content">
                                             <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
@@ -292,11 +297,6 @@ if ($section_spacing !== 'normal') {
                                                 </div>
                                             <?php endif; ?>
                                         </div>
-                                        <?php if (!empty($product['image'])) : ?>
-                                            <div class="product-image">
-                                                <img src="<?php echo esc_url($product['image']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
-                                            </div>
-                                        <?php endif; ?>
                                         <div class="product-overlay">
                                             <?php if (!empty($product['link'])) : ?>
                                                 <a href="<?php echo esc_url($product['link']); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
@@ -334,7 +334,13 @@ if ($section_spacing !== 'normal') {
                     ?>
                     <!-- Demo products when no products are available -->
                     <div class="products-grid">
-                        <div class="product-card horizontal-card">
+                        <div class="product-card vertical-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 1">
+                                <div class="product-overlay">
+                                    <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
+                                </div>
+                            </div>
                             <div class="product-content">
                                 <h4 class="product-title">Sản Phẩm Cao Cấp A</h4>
                                 <p class="product-excerpt">Giải pháp chất lượng cao được thiết kế cho các doanh nghiệp hiện đại với tính năng tiên tiến.</p>
@@ -343,14 +349,14 @@ if ($section_spacing !== 'normal') {
                                     <span class="discount-price">1.999.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
                                 </div>
                             </div>
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 1">
-                            </div>
-                            <div class="product-overlay">
-                                <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
-                            </div>
                         </div>
-                        <div class="product-card horizontal-card">
+                        <div class="product-card vertical-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 2">
+                                <div class="product-overlay">
+                                    <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
+                                </div>
+                            </div>
                             <div class="product-content">
                                 <h4 class="product-title">Dòng Sản Phẩm Đổi Mới B</h4>
                                 <p class="product-excerpt">Công nghệ tiên tiến mang lại hiệu suất và độ tin cậy vượt trội.</p>
@@ -358,14 +364,14 @@ if ($section_spacing !== 'normal') {
                                     <span class="current-price">3.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
                                 </div>
                             </div>
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 2">
-                            </div>
-                            <div class="product-overlay">
-                                <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
-                            </div>
                         </div>
-                        <div class="product-card horizontal-card">
+                        <div class="product-card vertical-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 3">
+                                <div class="product-overlay">
+                                    <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
+                                </div>
+                            </div>
                             <div class="product-content">
                                 <h4 class="product-title">Bộ Giải Pháp Chuyên Nghiệp C</h4>
                                 <p class="product-excerpt">Giải pháp toàn diện cho các yêu cầu cấp doanh nghiệp và khả năng mở rộng.</p>
@@ -374,26 +380,20 @@ if ($section_spacing !== 'normal') {
                                     <span class="discount-price">4.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
                                 </div>
                             </div>
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 3">
-                            </div>
-                            <div class="product-overlay">
-                                <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
-                            </div>
                         </div>
-                        <div class="product-card horizontal-card">
+                        <div class="product-card vertical-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 4">
+                                <div class="product-overlay">
+                                    <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
+                                </div>
+                            </div>
                             <div class="product-content">
                                 <h4 class="product-title">Giải Pháp Thông Minh D</h4>
                                 <p class="product-excerpt">Công nghệ AI tiên tiến giúp tối ưu hóa quy trình làm việc và nâng cao hiệu quả.</p>
                                 <div class="product-pricing">
                                     <span class="current-price">7.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
                                 </div>
-                            </div>
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 4">
-                            </div>
-                            <div class="product-overlay">
-                                <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
                             </div>
                         </div>
                     </div>

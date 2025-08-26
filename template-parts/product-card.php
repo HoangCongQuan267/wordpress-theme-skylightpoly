@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Product Card Template Part
  * 
@@ -34,12 +35,12 @@ if (isset($product) && is_array($product)) {
     $product_custom_badge = '';
     $product_discount = 0;
     $product_hot_tag = false;
-    
+
     // Get featured image
     if (function_exists('get_the_post_thumbnail_url')) {
         $product_image = get_the_post_thumbnail_url(get_the_ID(), 'medium');
     }
-    
+
     // Get meta fields if they exist
     if (function_exists('get_post_meta')) {
         $product_price = get_post_meta(get_the_ID(), '_product_price', true);
@@ -83,12 +84,12 @@ if (!empty($product_custom_badge)) {
                 <span class="dashicons dashicons-format-image"></span>
             </div>
         <?php endif; ?>
-        
+
         <div class="product-overlay">
             <a href="<?php echo esc_url($product_link); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
         </div>
     </div>
-    
+
     <!-- Product Info Below -->
     <div class="product-content">
         <h4 class="product-title"><?php echo esc_html($product_title); ?></h4>
