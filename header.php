@@ -345,13 +345,13 @@
                         }
 
                         $phone_href = 'tel:' . preg_replace('/[^0-9+]/', '', $phone);
-                    ?>
-                    '<?php echo esc_attr($region_key); ?>': {
-                        phone: '<?php echo esc_attr($phone); ?>',
-                        phoneHref: '<?php echo esc_attr($phone_href); ?>',
-                        email: '<?php echo esc_attr($email); ?>',
-                        address: '<?php echo esc_attr($address); ?>'
-                    }<?php echo ($index < count($regions) - 1) ? ',' : ''; ?>
+                    ?> '<?php echo esc_attr($region_key); ?>': {
+                            phone: '<?php echo esc_attr($phone); ?>',
+                            phoneHref: '<?php echo esc_attr($phone_href); ?>',
+                            email: '<?php echo esc_attr($email); ?>',
+                            address: '<?php echo esc_attr($address); ?>'
+                        }
+                        <?php echo ($index < count($regions) - 1) ? ',' : ''; ?>
                     <?php endforeach; ?>
                 };
 
