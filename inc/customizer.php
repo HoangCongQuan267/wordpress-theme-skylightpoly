@@ -1633,3 +1633,153 @@ function get_brand_logos()
 
     return $logos;
 }
+
+/**
+ * Add Products Management to WordPress Customizer
+ */
+function products_management_customizer($wp_customize)
+{
+    // Add Products Section
+    $wp_customize->add_section('products_section', array(
+        'title' => __('Products Management', 'skylightpoly'),
+        'priority' => 50,
+        'description' => __('Manage product categories and products for the products page', 'skylightpoly'),
+    ));
+
+    // Product Categories
+    $wp_customize->add_setting('product_categories', array(
+        'default' => json_encode(array(
+            array('name' => 'Tấm Lợp Lấy Sáng', 'slug' => 'tam-lop-lay-sang'),
+            array('name' => 'Tấm Polycarbonate', 'slug' => 'tam-polycarbonate'),
+            array('name' => 'Tấm Nhựa Thông Minh', 'slug' => 'tam-nhua-thong-minh'),
+            array('name' => 'Phụ Kiện', 'slug' => 'phu-kien')
+        )),
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+
+    $wp_customize->add_control('product_categories', array(
+        'label' => __('Product Categories (JSON format)', 'skylightpoly'),
+        'description' => __('Format: [{"name":"Category Name","slug":"category-slug"}]', 'skylightpoly'),
+        'section' => 'products_section',
+        'type' => 'textarea',
+        'input_attrs' => array(
+            'rows' => 5
+        )
+    ));
+
+    // Products Data
+    $wp_customize->add_setting('products_data', array(
+        'default' => json_encode(array(
+            array(
+                'title' => 'Tấm Lợp Lấy Sáng Polycarbonate',
+                'description' => 'Tấm lợp lấy sáng chất lượng cao, chống tia UV, độ bền vượt trội.',
+                'price' => '150,000 VNĐ/m²',
+                'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-1.jpg' : '',
+                'category' => 'tam-lop-lay-sang',
+                'badge' => 'Bán Chạy'
+            ),
+            array(
+                'title' => 'Tấm Polycarbonate Rỗng',
+                'description' => 'Tấm polycarbonate rỗng cách nhiệt tốt, tiết kiệm năng lượng.',
+                'price' => '200,000 VNĐ/m²',
+                'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-2.jpg' : '',
+                'category' => 'tam-polycarbonate',
+                'badge' => 'Mới'
+            ),
+            array(
+                'title' => 'Tấm Nhựa Thông Minh PVC',
+                'description' => 'Tấm nhựa thông minh chống thấm, chống mối mọt.',
+                'price' => '120,000 VNĐ/m²',
+                'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-3.jpg' : '',
+                'category' => 'tam-nhua-thong-minh',
+                'badge' => 'Khuyến Mãi'
+            ),
+            array(
+                'title' => 'Phụ Kiện Lắp Đặt',
+                'description' => 'Bộ phụ kiện lắp đặt hoàn chỉnh cho tấm lợp.',
+                'price' => '50,000 VNĐ/bộ',
+                'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-4.jpg' : '',
+                'category' => 'phu-kien',
+                'badge' => ''
+            )
+        )),
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+
+    $wp_customize->add_control('products_data', array(
+        'label' => __('Products Data (JSON format)', 'skylightpoly'),
+        'description' => __('Format: [{"title":"","description":"","price":"","image":"","category":"","badge":""}]', 'skylightpoly'),
+        'section' => 'products_section',
+        'type' => 'textarea',
+        'input_attrs' => array(
+            'rows' => 15
+        )
+    ));
+}
+add_action('customize_register', 'products_management_customizer');
+
+/**
+ * Helper function to get product categories
+ */
+function get_product_categories()
+{
+    $categories_json = get_theme_mod('product_categories', '');
+    if (empty($categories_json)) {
+        return array(
+            array('name' => 'Tấm Lợp Lấy Sáng', 'slug' => 'tam-lop-lay-sang'),
+            array('name' => 'Tấm Polycarbonate', 'slug' => 'tam-polycarbonate'),
+            array('name' => 'Tấm Nhựa Thông Minh', 'slug' => 'tam-nhua-thong-minh'),
+            array('name' => 'Phụ Kiện', 'slug' => 'phu-kien')
+        );
+    }
+    
+    $categories = json_decode($categories_json, true);
+    return is_array($categories) ? $categories : array();
+}
+
+/**
+ * Helper function to get products data
+ */
+function get_products_data()
+{
+    $products_json = get_theme_mod('products_data', '');
+    if (empty($products_json)) {
+        return array(
+            array(
+                'title' => 'Tấm Lợp Lấy Sáng Polycarbonate',
+                'description' => 'Tấm lợp lấy sáng chất lượng cao, chống tia UV, độ bền vượt trội.',
+                'price' => '150,000 VNĐ/m²',
+                'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-1.jpg' : '',
+                'category' => 'tam-lop-lay-sang',
+                'badge' => 'Bán Chạy'
+            ),
+            array(
+                'title' => 'Tấm Polycarbonate Rỗng',
+                'description' => 'Tấm polycarbonate rỗng cách nhiệt tốt, tiết kiệm năng lượng.',
+                'price' => '200,000 VNĐ/m²',
+                'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-2.jpg' : '',
+                'category' => 'tam-polycarbonate',
+                'badge' => 'Mới'
+            ),
+            array(
+                'title' => 'Tấm Nhựa Thông Minh PVC',
+                'description' => 'Tấm nhựa thông minh chống thấm, chống mối mọt.',
+                'price' => '120,000 VNĐ/m²',
+                'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-3.jpg' : '',
+                'category' => 'tam-nhua-thong-minh',
+                'badge' => 'Khuyến Mãi'
+            ),
+            array(
+                'title' => 'Phụ Kiện Lắp Đặt',
+                'description' => 'Bộ phụ kiện lắp đặt hoàn chỉnh cho tấm lợp.',
+                'price' => '50,000 VNĐ/bộ',
+                'image' => function_exists('get_template_directory_uri') ? get_template_directory_uri() . '/assets/images/product-4.jpg' : '',
+                 'category' => 'phu-kien',
+                'badge' => ''
+            )
+        );
+    }
+    
+    $products = json_decode($products_json, true);
+    return is_array($products) ? $products : array();
+}

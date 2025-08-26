@@ -94,11 +94,15 @@ function get_products_by_categories($categories = array(), $limit = 5) {
     $products_by_category = array();
     
     if (empty($categories)) {
-        $categories = get_terms(array(
-            'taxonomy' => 'product_category',
-            'hide_empty' => false,
-            'fields' => 'ids'
-        ));
+        if (function_exists('get_terms')) {
+            $categories = get_terms(array(
+                'taxonomy' => 'product_category',
+                'hide_empty' => false,
+                'fields' => 'ids'
+            ));
+        } else {
+            $categories = array();
+        }
     }
     
     foreach ($categories as $category_id) {
@@ -115,8 +119,16 @@ function get_products_by_categories($categories = array(), $limit = 5) {
             )
         );
         
-        $products = get_posts($args);
-        $category = function_exists('get_term') ? get_term($category_id, 'product_category') : null;
+        if (function_exists('get_posts')) {
+            $products = get_posts($args);
+        } else {
+            $products = array();
+        }
+        
+        $category = null;
+        if (function_exists('get_term')) {
+            $category = get_term($category_id, 'product_category');
+        }
         
         if ($category && (!function_exists('is_wp_error') || !is_wp_error($category))) {
             $products_by_category[$category_id] = array(
@@ -143,38 +155,7 @@ function get_products_by_categories($categories = array(), $limit = 5) {
     return $products_by_category;
 }
 
-/**
- * Get product categories
- *
- * @return array Array of product categories
- */
-function get_product_categories() {
-    if (function_exists('get_terms') && function_exists('is_wp_error') && function_exists('get_term_link')) {
-        $categories = get_terms(array(
-            'taxonomy' => 'product_category',
-            'hide_empty' => false
-        ));
-        
-        $category_list = array();
-        
-        if (!empty($categories) && !is_wp_error($categories)) {
-            foreach ($categories as $category) {
-                $category_list[] = array(
-                    'id' => $category->term_id,
-                    'name' => $category->name,
-                    'slug' => $category->slug,
-                    'description' => $category->description,
-                    'count' => $category->count,
-                    'link' => get_term_link($category)
-                );
-            }
-        }
-        
-        return $category_list;
-    }
-    
-    return array();
-}
+// get_product_categories function removed to avoid redeclaration with customizer.php
 
 // get_sales_contacts function removed to avoid redeclaration with customizer.php
 
