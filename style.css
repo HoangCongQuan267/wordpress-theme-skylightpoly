@@ -1749,7 +1749,7 @@ body {
 
 @media (max-width: 768px) {
     .floating-message-btn {
-        bottom: 150px;
+        bottom: 140px;
         right: 20px;
     }
     
@@ -1775,10 +1775,15 @@ body {
     
     .back-to-top {
         bottom: 20px !important;
-        right: 20px !important;
+        right: 80px !important;
     }
     
     .contact-btn {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .contact-btn-container {
         width: 50px;
         height: 50px;
     }
@@ -2551,12 +2556,15 @@ body {
 @media (max-width: 768px) {
     .zalo-floating-btn {
         bottom: 20px;
-        left: 20px;
+        right: 20px;
+        left: auto;
     }
     
     .zalo-btn {
         padding: 10px 14px;
         font-size: 13px;
+        width: auto;
+        max-width: 120px;
     }
     
     .zalo-text {
