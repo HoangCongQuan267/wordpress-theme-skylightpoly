@@ -553,7 +553,162 @@ if ($section_spacing !== 'normal') {
         </section>
     <?php endif; ?>
 
+    <!-- Articles Section -->
+    <?php if (get_theme_mod('articles_section_enable', true)) :
+        // Get articles section styling options
+        $articles_bg_color = get_theme_mod('articles_section_bg_color', '#ffffff');
+        $articles_text_color = get_theme_mod('articles_section_text_color', '#333333');
+        $articles_layout = get_theme_mod('articles_grid_layout', 'grid');
+    ?>
+        <section class="articles-section layout-<?php echo esc_attr($articles_layout); ?>" style="background-color: <?php echo esc_attr($articles_bg_color); ?>; color: <?php echo esc_attr($articles_text_color); ?>;">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title"><?php echo esc_html(get_theme_mod('articles_section_title', 'Bài Viết Mới Nhất')); ?></h2>
+                    <div class="title-ribbon">
+                        <div class="ribbon-line"></div>
+                        <div class="ribbon-diamond"></div>
+                        <div class="ribbon-line"></div>
+                    </div>
+                    <p class="section-subtitle"><?php echo esc_html(get_theme_mod('articles_section_subtitle', 'Khám phá những thông tin và kiến thức hữu ích từ chúng tôi')); ?></p>
+                </div>
 
+                <?php
+                // Get recent articles/posts
+                $articles_query = new WP_Query(array(
+                    'post_type' => 'post',
+                    'posts_per_page' => get_theme_mod('articles_posts_per_page', 6),
+                    'post_status' => 'publish',
+                    'orderby' => 'date',
+                    'order' => 'DESC'
+                ));
 
+                if ($articles_query->have_posts()) :
+                ?>
+                    <div class="articles-grid">
+                        <?php while ($articles_query->have_posts()) : $articles_query->the_post(); ?>
+                            <article class="article-card vertical-card">
+                                <?php if (has_post_thumbnail()) : ?>
+                                    <div class="article-image">
+                                        <a href="<?php the_permalink(); ?>">
+                                            <?php the_post_thumbnail('medium', array('alt' => get_the_title())); ?>
+                                        </a>
+                                        <div class="article-overlay">
+                                            <a href="<?php the_permalink(); ?>" class="article-link-btn">Đọc Bài Viết</a>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <div class="article-content">
+                                    <div class="article-meta">
+                                        <span class="article-date"><?php echo get_the_date('d/m/Y'); ?></span>
+                                        <?php if (get_the_category()) : ?>
+                                            <span class="article-category">
+                                                <?php echo get_the_category()[0]->name; ?>
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <h4 class="article-title">
+                                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                    </h4>
+                                    <p class="article-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 20); ?></p>
+                                    <div class="article-author">
+                                        <span class="author-name">Bởi <?php the_author(); ?></span>
+                                    </div>
+                                </div>
+                            </article>
+                        <?php endwhile; ?>
+                    </div>
+
+                    <!-- See All Articles Button -->
+                    <div class="section-footer">
+                        <a href="<?php echo get_permalink(get_option('page_for_posts')); ?>" class="btn btn-outline-primary btn-see-all">
+                            <?php _e('Xem Tất Cả Bài Viết', 'custom-blue-orange'); ?>
+                        </a>
+                    </div>
+                <?php
+                    wp_reset_postdata();
+                else :
+                ?>
+                    <!-- Demo articles when no articles are available -->
+                    <div class="articles-grid">
+                        <article class="article-card vertical-card">
+                            <div class="article-image">
+                                <a href="#">
+                                    <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Demo Article 1">
+                                </a>
+                                <div class="article-overlay">
+                                    <a href="#" class="article-link-btn">Đọc Bài Viết</a>
+                                </div>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta">
+                                    <span class="article-date"><?php echo date('d/m/Y'); ?></span>
+                                    <span class="article-category">Công nghệ</span>
+                                </div>
+                                <h4 class="article-title">
+                                    <a href="#">Xu Hướng Công Nghệ Mới Trong Năm 2024</a>
+                                </h4>
+                                <p class="article-excerpt">Khám phá những xu hướng công nghệ đột phá sẽ định hình tương lai và tác động đến cuộc sống hàng ngày của chúng ta.</p>
+                                <div class="article-author">
+                                    <span class="author-name">Bởi Admin</span>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="article-card vertical-card">
+                            <div class="article-image">
+                                <a href="#">
+                                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Demo Article 2">
+                                </a>
+                                <div class="article-overlay">
+                                    <a href="#" class="article-link-btn">Đọc Bài Viết</a>
+                                </div>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta">
+                                    <span class="article-date"><?php echo date('d/m/Y', strtotime('-2 days')); ?></span>
+                                    <span class="article-category">Kinh doanh</span>
+                                </div>
+                                <h4 class="article-title">
+                                    <a href="#">Chiến Lược Phát Triển Doanh Nghiệp Bền Vững</a>
+                                </h4>
+                                <p class="article-excerpt">Tìm hiểu các phương pháp và chiến lược giúp doanh nghiệp phát triển bền vững trong thời đại số hóa hiện nay.</p>
+                                <div class="article-author">
+                                    <span class="author-name">Bởi Admin</span>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="article-card vertical-card">
+                            <div class="article-image">
+                                <a href="#">
+                                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Demo Article 3">
+                                </a>
+                                <div class="article-overlay">
+                                    <a href="#" class="article-link-btn">Đọc Bài Viết</a>
+                                </div>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta">
+                                    <span class="article-date"><?php echo date('d/m/Y', strtotime('-5 days')); ?></span>
+                                    <span class="article-category">Đổi mới</span>
+                                </div>
+                                <h4 class="article-title">
+                                    <a href="#">Đổi Mới Sáng Tạo Trong Thời Đại Số</a>
+                                </h4>
+                                <p class="article-excerpt">Khám phá cách các doanh nghiệp có thể tận dụng công nghệ để tạo ra những giải pháp sáng tạo và hiệu quả.</p>
+                                <div class="article-author">
+                                    <span class="author-name">Bởi Admin</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Show All Articles Button -->
+                    <div class="section-footer">
+                        <a href="#" class="btn btn-outline-primary btn-see-all">Xem Tất Cả Bài Viết</a>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
+    <?php endif; ?>
 
     <?php get_footer(); ?>

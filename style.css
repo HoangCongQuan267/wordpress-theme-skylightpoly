@@ -3086,3 +3086,224 @@ body {
         flex-direction: column;
     }
 }
+
+/* ===== ARTICLES SECTION ===== */
+
+/* Articles Section */
+.articles-section {
+    padding: 20px 0;
+    background: var(--off-white);
+}
+
+/* Articles Grid */
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 0px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 1024px) {
+    .articles-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .articles-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* Article Card Styles */
+.article-card {
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+}
+
+.article-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    border-color: #e0e0e0;
+}
+
+.article-image {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+}
+
+.article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.article-card:hover .article-image img {
+}
+
+.article-content {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.article-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 0.7rem;
+    color: #666;
+}
+
+.article-date {
+    color: var(--primary-sky-blue);
+    font-weight: 500;
+}
+
+.article-category {
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: #495057;
+}
+
+.article-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.2px;
+}
+
+.article-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.article-title a:hover {
+    color: var(--primary-sky-blue);
+}
+
+.article-excerpt {
+    color: #666;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    flex: 1;
+}
+
+.article-author {
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.author-name {
+    font-size: 0.7rem;
+    color: #999;
+    font-style: italic;
+}
+
+/* Article Overlay */
+.article-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.article-card:hover .article-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+.article-link-btn {
+    display: inline-block;
+    background: var(--primary-sky-blue);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    transform: translateY(10px);
+}
+
+.article-card:hover .article-link-btn {
+    transform: translateY(0);
+}
+
+.article-link-btn:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+/* Responsive adjustments for articles */
+@media (max-width: 768px) {
+    .article-image {
+        height: 180px;
+    }
+    
+    .article-content {
+        padding: 15px;
+    }
+    
+    .article-title {
+        font-size: 0.85rem;
+    }
+    
+    .article-excerpt {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .article-image {
+        height: 160px;
+    }
+    
+    .article-content {
+        padding: 12px;
+    }
+    
+    .article-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .article-title {
+        font-size: 0.8rem;
+    }
+}
