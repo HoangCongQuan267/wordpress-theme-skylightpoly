@@ -37,63 +37,14 @@
     });
 
     /**
-     * Mobile Menu Toggle Functionality
+     * Mobile Menu Toggle Functionality - Disabled
+     * Side navigation panel is handled in header.php inline script
      */
     function initMobileMenu() {
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navigation = document.querySelector('.main-navigation');
-        
-        if (menuToggle && navigation) {
-            menuToggle.addEventListener('click', function() {
-                const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-                
-                menuToggle.setAttribute('aria-expanded', !isExpanded);
-                navigation.classList.toggle('active');
-                
-                // Add animation class
-                navigation.style.transition = 'all 0.3s ease';
-                
-                if (window.innerWidth <= 768) {
-                    if (!isExpanded) {
-                        navigation.style.display = 'flex';
-                        navigation.style.flexDirection = 'column';
-                        setTimeout(() => {
-                            navigation.style.opacity = '1';
-                            navigation.style.transform = 'translateY(0)';
-                        }, 10);
-                    } else {
-                        navigation.style.opacity = '0';
-                        navigation.style.transform = 'translateY(-10px)';
-                        setTimeout(() => {
-                            navigation.style.display = 'none';
-                        }, 300);
-                    }
-                }
-            });
-            
-            // Close menu when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!menuToggle.contains(event.target) && !navigation.contains(event.target)) {
-                    menuToggle.setAttribute('aria-expanded', 'false');
-                    navigation.classList.remove('active');
-                    if (window.innerWidth <= 768) {
-                        navigation.style.display = 'none';
-                    }
-                }
-            });
-            
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 768) {
-                    navigation.style.display = 'flex';
-                    navigation.style.flexDirection = 'row';
-                    navigation.style.opacity = '1';
-                    navigation.style.transform = 'translateY(0)';
-                    menuToggle.setAttribute('aria-expanded', 'false');
-                    navigation.classList.remove('active');
-                }
-            });
-        }
+        // This function is disabled to prevent conflicts with side navigation panel
+        // The mobile menu functionality is now handled by the side navigation panel
+        // in header.php inline JavaScript
+        console.log('Mobile menu handled by side navigation panel');
     }
 
     /**

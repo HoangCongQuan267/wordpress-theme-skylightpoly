@@ -60,6 +60,11 @@
         $nav_position = get_theme_mod('navigation_position', 'right');
         $header_classes = 'header-main layout-' . $header_layout . ' nav-' . $nav_position;
         ?>
+        <!-- Single Mobile Menu Toggle Button -->
+        <button class="menu-toggle" aria-controls="side-nav-panel" aria-expanded="false">
+            ☰
+        </button>
+
         <div class="<?php echo esc_attr($header_classes); ?>">
             <div class="container">
                 <?php if ($header_layout === 'centered') : ?>
@@ -89,10 +94,6 @@
                         </div>
 
                         <nav class="main-navigation centered" role="navigation" aria-label="Primary Menu">
-                            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
-                                ☰
-                            </button>
-
                             <?php
                             wp_nav_menu(array(
                                 'theme_location' => 'primary',
@@ -131,10 +132,6 @@
                         </div>
 
                         <nav class="main-navigation stacked" role="navigation" aria-label="Primary Menu">
-                            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
-                                ☰
-                            </button>
-
                             <?php
                             wp_nav_menu(array(
                                 'theme_location' => 'primary',
@@ -150,10 +147,6 @@
                     <!-- Default Layout: Logo Left/Right, Menu Right/Left -->
                     <?php if ($nav_position === 'left') : ?>
                         <nav class="main-navigation" role="navigation" aria-label="Primary Menu">
-                            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
-                                ☰
-                            </button>
-
                             <?php
                             wp_nav_menu(array(
                                 'theme_location' => 'primary',
@@ -213,10 +206,6 @@
                         </div>
 
                         <nav class="main-navigation" role="navigation" aria-label="Primary Menu">
-                            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
-                                ☰
-                            </button>
-
                             <?php
                             wp_nav_menu(array(
                                 'theme_location' => 'primary',
@@ -233,47 +222,72 @@
         </div>
     </header>
 
+    <!-- Side Navigation Panel -->
+    <div class="nav-overlay" id="nav-overlay"></div>
+    <div class="side-nav-panel" id="side-nav-panel">
+        <div class="side-nav-header">
+            <h3><?php bloginfo('name'); ?></h3>
+            <button class="side-nav-close" id="side-nav-close">&times;</button>
+        </div>
+        <nav class="side-nav-content">
+            <?php
+            wp_nav_menu(array(
+                'theme_location' => 'primary',
+                'menu_id'        => 'side-nav-menu',
+                'menu_class'     => 'side-nav-menu',
+                'container'      => false,
+                'fallback_cb'    => 'wp_page_menu',
+            ));
+            ?>
+        </nav>
+    </div>
+
     <script>
-        // Mobile menu toggle functionality
+        // Side navigation toggle functionality
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.querySelector('.menu-toggle');
-            const navigation = document.querySelector('.main-navigation ul');
+            const sideNavPanel = document.getElementById('side-nav-panel');
+            const navOverlay = document.getElementById('nav-overlay');
+            const sideNavClose = document.getElementById('side-nav-close');
 
-            if (menuToggle && navigation) {
-                menuToggle.addEventListener('click', function() {
-                    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+            function openSideNav() {
+                sideNavPanel.classList.add('active');
+                navOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
 
-                    menuToggle.setAttribute('aria-expanded', !isExpanded);
-                    navigation.style.display = isExpanded ? 'none' : 'flex';
+            function closeSideNav() {
+                sideNavPanel.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
 
-                    if (window.innerWidth <= 768) {
-                        navigation.style.flexDirection = 'column';
-                    }
-                });
-
-                // Close menu when clicking outside
-                document.addEventListener('click', function(event) {
-                    if (!menuToggle.contains(event.target) && !navigation.contains(event.target)) {
-                        menuToggle.setAttribute('aria-expanded', 'false');
-                        if (window.innerWidth <= 768) {
-                            navigation.style.display = 'none';
-                        }
-                    }
-                });
-
-                // Handle window resize
-                window.addEventListener('resize', function() {
-                    if (window.innerWidth > 768) {
-                        navigation.style.display = 'flex';
-                        navigation.style.flexDirection = 'row';
-                        menuToggle.setAttribute('aria-expanded', 'false');
-                    } else {
-                        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-                        navigation.style.display = isExpanded ? 'flex' : 'none';
-                        navigation.style.flexDirection = 'column';
-                    }
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openSideNav();
                 });
             }
+
+            if (sideNavClose) {
+                sideNavClose.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    closeSideNav();
+                });
+            }
+
+            if (navOverlay) {
+                navOverlay.addEventListener('click', function() {
+                    closeSideNav();
+                });
+            }
+
+            // Close side nav on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeSideNav();
+                }
+            });
         });
 
         // Region selector functionality
@@ -331,13 +345,13 @@
                         }
 
                         $phone_href = 'tel:' . preg_replace('/[^0-9+]/', '', $phone);
-                    ?> '<?php echo esc_attr($region_key); ?>': {
-                            phone: '<?php echo esc_attr($phone); ?>',
-                            phoneHref: '<?php echo esc_attr($phone_href); ?>',
-                            email: '<?php echo esc_attr($email); ?>',
-                            address: '<?php echo esc_attr($address); ?>'
-                        }
-                        <?php echo ($index < count($regions) - 1) ? ',' : ''; ?>
+                    ?>
+                    '<?php echo esc_attr($region_key); ?>': {
+                        phone: '<?php echo esc_attr($phone); ?>',
+                        phoneHref: '<?php echo esc_attr($phone_href); ?>',
+                        email: '<?php echo esc_attr($email); ?>',
+                        address: '<?php echo esc_attr($address); ?>'
+                    }<?php echo ($index < count($regions) - 1) ? ',' : ''; ?>
                     <?php endforeach; ?>
                 };
 
@@ -350,5 +364,4 @@
                 }
             }
         <?php endif; ?>
-        });
     </script>
