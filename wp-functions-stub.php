@@ -399,11 +399,7 @@ if (!function_exists('register_post_type')) {
     }
 }
 
-if (!function_exists('add_meta_box')) {
-    function add_meta_box($id, $title, $callback, $screen = null, $context = 'advanced', $priority = 'default', $callback_args = null) {
-        return true;
-    }
-}
+// add_meta_box() function removed - WordPress core function should not be redeclared
 
 if (!function_exists('wp_nonce_field')) {
     function wp_nonce_field($action = -1, $name = '_wpnonce', $referer = true, $echo = true) {
@@ -462,11 +458,7 @@ if (!function_exists('get_post_thumbnail_id')) {
     }
 }
 
-if (!function_exists('get_current_screen')) {
-    function get_current_screen() {
-        return null;
-    }
-}
+// get_current_screen() function removed - WordPress core function should not be redeclared
 
 if (!function_exists('checked')) {
     function checked($checked, $current = true, $echo = true) {
@@ -710,117 +702,11 @@ if (!function_exists('esc_html')) {
 }
 
 // Helper functions for slideshow functionality
-if (!function_exists('get_customizer_hero_slides')) {
-    function get_customizer_hero_slides()
-    {
-        // Mock customizer slides
-        return array(
-            array(
-                'image_url' => 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-                'title' => 'Welcome to Our Company',
-                'subtitle' => 'Innovation and Excellence',
-                'button_text' => 'Discover More',
-                'button_url' => '#products'
-            ),
-            array(
-                'image_url' => 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-                'title' => 'Quality Products',
-                'subtitle' => 'Trusted by Professionals',
-                'button_text' => 'View Products',
-                'button_url' => '#products'
-            )
-        );
-    }
-}
 
-if (!function_exists('get_hero_slides')) {
-    function get_hero_slides()
-    {
-        // Mock hero slides from custom post type
-        return array(
-            (object) array(
-                'ID' => 1,
-                'post_title' => 'Hero Slide 1',
-                'post_content' => 'Sample slide content'
-            ),
-            (object) array(
-                'ID' => 2,
-                'post_title' => 'Hero Slide 2',
-                'post_content' => 'Another slide content'
-            )
-        );
-    }
-}
-
-if (!function_exists('get_products')) {
-    function get_products()
-    {
-        // Mock products data
-        return array(
-            array(
-                'id' => 1,
-                'title' => 'Dòng Sản Phẩm Đổi Mới A',
-                'content' => 'Giải pháp chất lượng cao được thiết kế cho các doanh nghiệp hiện đại với tính năng tiên tiến.',
-                'image' => '',
-                'image_url' => 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-                'featured' => true,
-                'price' => '$299',
-                'link' => '#'
-            ),
-            array(
-                'id' => 2,
-                'title' => 'Dòng Sản Phẩm Đổi Mới B',
-                'content' => 'Công nghệ tiên tiến mang lại hiệu suất và độ tin cậy vượt trội.',
-                'image' => '',
-                'image_url' => 'https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-                'featured' => false,
-                'price' => '$499',
-                'link' => '#'
-            ),
-            array(
-                'id' => 3,
-                'title' => 'Bộ Giải Pháp Chuyên Nghiệp C',
-                'content' => 'Giải pháp toàn diện cho các yêu cầu cấp doanh nghiệp và khả năng mở rộng.',
-                'image' => '',
-                'image_url' => 'https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-                'featured' => false,
-                'price' => '$799',
-                'link' => '#'
-            )
-        );
-    }
-}
+// get_products function removed to avoid redeclaration with helper-functions.php
 
 
 
-if (!function_exists('get_testimonials')) {
-    function get_testimonials()
-    {
-        // Mock testimonials data
-        return array(
-            array(
-                'id' => 1,
-                'content' => 'Dịch vụ xuất sắc và sản phẩm chất lượng cao. Đội ngũ chuyên nghiệp và hỗ trợ tuyệt vời.',
-                'customer_name' => 'Nguyễn Văn A',
-                'customer_company' => 'Công ty ABC',
-                'rating' => 5
-            ),
-            array(
-                'id' => 2,
-                'content' => 'Rất hài lòng với giải pháp được cung cấp. Hiệu quả và đáng tin cậy.',
-                'customer_name' => 'Trần Thị B',
-                'customer_company' => 'Doanh nghiệp XYZ',
-                'rating' => 5
-            ),
-            array(
-                'id' => 3,
-                'content' => 'Đối tác tuyệt vời với cam kết chất lượng và dịch vụ khách hàng xuất sắc.',
-                'customer_name' => 'Lê Văn C',
-                'customer_company' => 'Tập đoàn DEF',
-                'rating' => 4
-            )
-        );
-    }
-}
+// get_testimonials function removed to avoid redeclaration with helper-functions.php
 
 // Additional WordPress functions can be added here as needed
