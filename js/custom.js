@@ -689,9 +689,11 @@ function closeContactPanel() {
             // Optional: scroll to contact section if exists
             const contactSection = document.querySelector('.contact-form-section');
             if (contactSection) {
-                contactSection.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
+                const elementTop = contactSection.offsetTop;
+                const offset = 80; // Adjust this value to show more content above
+                window.scrollTo({
+                    top: elementTop - offset,
+                    behavior: 'smooth'
                 });
             }
         });
@@ -704,9 +706,11 @@ function closeContactPanel() {
     window.scrollToContact = function() {
         const contactSection = document.querySelector('.contact-form-section');
         if (contactSection) {
-            contactSection.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+            const elementTop = contactSection.offsetTop;
+            const offset = 80; // Adjust this value to show more content above
+            window.scrollTo({
+                top: elementTop - offset,
+                behavior: 'smooth'
             });
         }
     };
