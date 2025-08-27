@@ -9,104 +9,61 @@
 
 get_header(); ?>
 
-<main id="main" class="site-main single-quote-article">
-    <div class="container">
-        <?php while (have_posts()) : the_post(); 
-            // Get meta data
-            $author_name = get_post_meta(get_the_ID(), '_quote_author_name', true);
-            $author_company = get_post_meta(get_the_ID(), '_quote_author_company', true);
-            $author_position = get_post_meta(get_the_ID(), '_quote_author_position', true);
-            $quote_date = get_post_meta(get_the_ID(), '_quote_date', true);
-            $quote_rating = get_post_meta(get_the_ID(), '_quote_rating', true);
-            $featured_quote = get_post_meta(get_the_ID(), '_featured_quote', true);
-            
-            // Get price table data
-            $price_table_data = get_post_meta(get_the_ID(), '_price_table_data', true);
-            $currency_symbol = get_post_meta(get_the_ID(), '_currency_symbol', true) ?: 'đ';
-            $price_table_title = get_post_meta(get_the_ID(), '_price_table_title', true);
-            
-            // Format date
-            $formatted_date = $quote_date ? date('F j, Y', strtotime($quote_date)) : get_the_date('F j, Y');
-            
-            // Breadcrumb navigation
-            $quotes_url = home_url('/quotes/');
-        ?>
-        
-        <article class="quote-article-content">
-            <!-- Breadcrumb Navigation -->
-            <nav class="quote-breadcrumb">
-                <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
-                <span class="separator">→</span>
-                <a href="<?php echo esc_url($quotes_url); ?>">Quotes</a>
-                <span class="separator">→</span>
-                <span class="current"><?php the_title(); ?></span>
-            </nav>
-            
-            <!-- Quote Header -->
-            <header class="quote-header">
-                <?php if ($featured_quote === 'yes') : ?>
-                    <div class="featured-badge">
-                        <span>⭐ Featured Quote</span>
-                    </div>
-                <?php endif; ?>
+<main class="site-main">
+    <div class="content-area">
+        <div class="posts-container full-width">
+            <?php while (have_posts()) : the_post(); 
+                // Get meta data
+                $author_name = get_post_meta(get_the_ID(), '_quote_author_name', true);
+                $author_company = get_post_meta(get_the_ID(), '_quote_author_company', true);
+                $author_position = get_post_meta(get_the_ID(), '_quote_author_position', true);
+                $quote_date = get_post_meta(get_the_ID(), '_quote_date', true);
+                $quote_rating = get_post_meta(get_the_ID(), '_quote_rating', true);
+                $featured_quote = get_post_meta(get_the_ID(), '_featured_quote', true);
                 
-                <h1 class="quote-title"><?php the_title(); ?></h1>
+                // Get price table data
+                $price_table_data = get_post_meta(get_the_ID(), '_price_table_data', true);
+                $currency_symbol = get_post_meta(get_the_ID(), '_currency_symbol', true) ?: 'đ';
+                $price_table_title = get_post_meta(get_the_ID(), '_price_table_title', true);
                 
-                <div class="quote-meta-info">
-                    <div class="quote-author-section">
-                        <?php if (has_post_thumbnail()) : ?>
-                            <div class="author-photo">
-                                <?php the_post_thumbnail('medium', array('alt' => $author_name ? $author_name : get_the_title())); ?>
-                            </div>
-                        <?php endif; ?>
-                        
-                        <div class="author-details">
-                            <?php if ($author_name) : ?>
-                                <h3 class="author-name"><?php echo esc_html($author_name); ?></h3>
-                            <?php endif; ?>
-                            
-                            <?php if ($author_position || $author_company) : ?>
-                                <p class="author-position">
-                                    <?php if ($author_position && $author_company) : ?>
-                                        <?php echo esc_html($author_position); ?> at <strong><?php echo esc_html($author_company); ?></strong>
-                                    <?php elseif ($author_position) : ?>
-                                        <?php echo esc_html($author_position); ?>
-                                    <?php elseif ($author_company) : ?>
-                                        <strong><?php echo esc_html($author_company); ?></strong>
-                                    <?php endif; ?>
-                                </p>
-                            <?php endif; ?>
-                            
-                            <?php if ($quote_rating && $quote_rating > 0) : ?>
-                                <div class="quote-rating">
-                                    <span class="rating-label">Rating:</span>
-                                    <div class="stars">
-                                        <?php for ($i = 1; $i <= 5; $i++) : ?>
-                                            <span class="star <?php echo ($i <= $quote_rating) ? 'filled' : 'empty'; ?>">★</span>
-                                        <?php endfor; ?>
-                                    </div>
-                                    <span class="rating-text">(<?php echo esc_html($quote_rating); ?>/5)</span>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                    
-                    <div class="quote-date-info">
-                        <span class="date-label">Quote Date:</span>
-                        <time datetime="<?php echo esc_attr($quote_date ? $quote_date : get_the_date('Y-m-d')); ?>">
+                // Format date
+                $formatted_date = $quote_date ? date('F j, Y', strtotime($quote_date)) : get_the_date('F j, Y');
+                
+                // Breadcrumb navigation
+                $quotes_url = home_url('/quotes/');
+            ?>
+                <nav class="breadcrumbs">
+                    <a href="<?php echo esc_url(home_url('/')); ?>">Trang chủ</a>
+                    <span class="breadcrumb-separator">›</span>
+                    <a href="<?php echo esc_url($quotes_url); ?>">Quotes</a>
+                    <span class="breadcrumb-separator">›</span>
+                    <span class="current-page"><?php the_title(); ?></span>
+                </nav>
+                <article id="post-<?php the_ID(); ?>" <?php post_class('post single-quote'); ?>>
+            
+                    <header class="post-header">
+                        <h1 class="post-title"><?php the_title(); ?></h1>
+                        <div class="post-date-minimal">
                             <?php echo esc_html($formatted_date); ?>
-                        </time>
-                    </div>
-                </div>
-            </header>
+                        </div>
+                    </header>
             
-            <!-- Quote Content -->
-            <div class="quote-content-wrapper">
-                <div class="quote-icon">"</div>
-                <div class="quote-content">
-                    <?php the_content(); ?>
-                </div>
-            </div>
+                    <?php if (has_post_thumbnail()) : ?>
+                        <div class="post-thumbnail">
+                            <?php the_post_thumbnail('large', array('class' => 'featured-image')); ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="post-content">
+                        <?php the_content(); ?>
+
+                        <?php
+                        wp_link_pages(array(
+                            'before' => '<div class="page-links">Trang: ',
+                            'after'  => '</div>',
+                        ));
+                        ?>
+                    </div>
             
             <!-- Price Table Section -->
             <?php if ($price_table_data) : 
@@ -158,271 +115,229 @@ get_header(); ?>
                 </div>
             <?php endif; endif; ?>
             
-            <!-- Quote Footer -->
-            <footer class="quote-footer">
-                <div class="quote-actions">
-                    <a href="<?php echo esc_url($quotes_url); ?>" class="back-to-quotes">
-                        ← Back to All Quotes
-                    </a>
-                    
-                    <div class="share-quote">
-                        <span class="share-label">Share:</span>
-                        <a href="https://twitter.com/intent/tweet?text=<?php echo urlencode('"' . wp_trim_words(get_the_content(), 20) . '" - ' . $author_name); ?>&url=<?php echo urlencode(get_permalink()); ?>" target="_blank" class="share-twitter" title="Share on Twitter">
-                            🐦 Twitter
-                        </a>
-                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo urlencode(get_permalink()); ?>" target="_blank" class="share-linkedin" title="Share on LinkedIn">
-                            💼 LinkedIn
-                        </a>
-                        <a href="mailto:?subject=<?php echo urlencode('Great Quote: ' . get_the_title()); ?>&body=<?php echo urlencode('I thought you might find this quote interesting: ' . get_permalink()); ?>" class="share-email" title="Share via Email">
-                            ✉️ Email
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Related Quotes -->
-                <?php
-                $related_quotes = new WP_Query(array(
-                    'post_type' => 'quote_article',
-                    'posts_per_page' => 3,
-                    'post__not_in' => array(get_the_ID()),
-                    'orderby' => 'rand',
-                    'post_status' => 'publish'
-                ));
-                
-                if ($related_quotes->have_posts()) :
-                ?>
-                    <div class="related-quotes">
-                        <h3>More Customer Quotes</h3>
-                        <div class="related-quotes-grid">
-                            <?php while ($related_quotes->have_posts()) : $related_quotes->the_post(); 
-                                $rel_author = get_post_meta(get_the_ID(), '_quote_author_name', true);
-                                $rel_company = get_post_meta(get_the_ID(), '_quote_author_company', true);
+                    <footer class="post-footer">
+                        <div class="related-posts">
+                            <h3>Quotes mới nhất</h3>
+                            <?php
+                            $current_post_id = get_the_ID();
+                            $recent_quotes = get_posts(array(
+                                'numberposts' => 3,
+                                'post_type' => 'quote_article',
+                                'post_status' => 'publish',
+                                'exclude' => array($current_post_id),
+                                'orderby' => 'date',
+                                'order' => 'DESC'
+                            ));
+
+                            if ($recent_quotes) :
                             ?>
-                                <div class="related-quote-card" onclick="window.location.href='<?php echo esc_url(get_permalink()); ?>'">
-                                    <h4><?php the_title(); ?></h4>
-                                    <p class="related-excerpt"><?php echo esc_html(wp_trim_words(get_the_content(), 15, '...')); ?></p>
-                                    <?php if ($rel_author) : ?>
-                                        <p class="related-author">— <?php echo esc_html($rel_author); ?><?php echo $rel_company ? ', ' . esc_html($rel_company) : ''; ?></p>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endwhile; ?>
+                                <ul class="recent-posts-list">
+                                    <?php foreach ($recent_quotes as $recent_quote) : ?>
+                                        <li>
+                                            <a href="<?php echo get_permalink($recent_quote->ID); ?>">
+                                                <?php echo get_the_title($recent_quote->ID); ?>
+                                            </a>
+                                            <span class="post-date"><?php echo get_the_date('F j, Y', $recent_quote->ID); ?></span>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
                         </div>
-                    </div>
-                <?php 
-                    wp_reset_postdata();
-                endif; 
-                ?>
-            </footer>
-        </article>
-        
-        <?php endwhile; ?>
+                    </footer>
+                </article>
+            <?php endwhile; ?>
+        </div>
     </div>
 </main>
 
 <style>
-/* Single Quote Article Styles */
-.single-quote-article {
-    padding: 40px 0 60px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-    min-height: 80vh;
-}
+    /* Minimal and flat quote design */
+    .single-quote {
+        max-width: none;
+        margin: 0 auto;
+        padding: 0px;
+        background: #ffffff;
+        font-family: 'Helvetica Neue', 'Arial', sans-serif;
+    }
 
-.quote-article-content {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
+    .single-quote .post-title {
+        font-size: 1.25rem;
+        line-height: 1.4;
+        margin-bottom: 0px;
+        color: #1a1a1a;
+        font-weight: 600;
+        border: none;
+        background: none;
+    }
 
-/* Breadcrumb */
-.quote-breadcrumb {
-    margin-bottom: 30px;
-    font-size: 0.9rem;
-    color: #6c757d;
-}
+    .single-quote .post-meta {
+        display: none;
+    }
 
-.quote-breadcrumb a {
-    color: #007cba;
-    text-decoration: none;
-}
+    .single-quote .post-date-minimal {
+        font-size: 0.875rem;
+        color: #666666;
+        margin-bottom: 20px;
+        font-weight: 400;
+    }
 
-.quote-breadcrumb a:hover {
-    text-decoration: underline;
-}
+    .single-quote .post-thumbnail {
+        margin-bottom: 20px;
+    }
 
-.quote-breadcrumb .separator {
-    margin: 0 10px;
-    color: #adb5bd;
-}
+    .single-quote .post-thumbnail img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
 
-.quote-breadcrumb .current {
-    color: #495057;
-    font-weight: 500;
-}
+    .single-quote .post-content {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #333333;
+        margin-bottom: 0;
+    }
 
-/* Quote Header */
-.quote-header {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 40px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-    border: 1px solid #e9ecef;
-    position: relative;
-}
+    .single-quote .post-content h1,
+    .single-quote .post-content h2,
+    .single-quote .post-content h3,
+    .single-quote .post-content h4,
+    .single-quote .post-content h5,
+    .single-quote .post-content h6 {
+        color: #1a1a1a;
+        margin: 20px 0 10px 0;
+        font-weight: 600;
+        border: none;
+        background: none;
+        padding: 0;
+    }
 
-.featured-badge {
-    position: absolute;
-    top: -12px;
-    right: 20px;
-    background: #ffc107;
-    color: #212529;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+    .single-quote .post-content h2 {
+        font-size: 1.25rem;
+    }
 
-.quote-title {
-    font-size: 2.2rem;
-    color: #2c3e50;
-    margin: 0 0 30px 0;
-    font-weight: 700;
-    line-height: 1.3;
-    text-align: center;
-}
+    .single-quote .post-content h3 {
+        font-size: 1.125rem;
+    }
 
-.quote-meta-info {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
+    .single-quote .post-content h4 {
+        font-size: 1rem;
+    }
 
-.quote-author-section {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
+    .single-quote .post-content p {
+        margin-bottom: 16px;
+        color: #333333;
+    }
 
-.author-photo {
-    flex-shrink: 0;
-}
+    .single-quote .post-content blockquote {
+        margin: 20px 0;
+        padding: 0 20px;
+        color: #666666;
+        font-style: italic;
+        border: none;
+        background: none;
+        border-radius: 0;
+    }
 
-.author-photo img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #e9ecef;
-}
+    .single-quote .post-content ul,
+    .single-quote .post-content ol {
+        margin-bottom: 16px;
+        padding-left: 20px;
+    }
 
-.author-details {
-    flex: 1;
-}
+    .single-quote .post-content li {
+        margin-bottom: 4px;
+        color: #333333;
+    }
 
-.author-name {
-    font-size: 1.4rem;
-    color: #2c3e50;
-    margin: 0 0 8px 0;
-    font-weight: 600;
-}
+    .single-quote .post-content a {
+        color: #1a1a1a;
+        text-decoration: underline;
+    }
 
-.author-position {
-    color: #6c757d;
-    font-size: 1rem;
-    margin: 0 0 15px 0;
-    line-height: 1.4;
-}
+    .single-quote .post-content a:hover {
+        color: #666666;
+    }
 
-.quote-rating {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+    .single-quote .post-footer {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+    }
 
-.rating-label {
-    color: #495057;
-    font-weight: 500;
-    font-size: 0.9rem;
-}
+    .single-quote .related-posts h3 {
+        font-size: 1.125rem;
+        color: #1a1a1a;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
 
-.stars {
-    display: flex;
-    gap: 2px;
-}
+    .single-quote .recent-posts-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
 
-.star {
-    font-size: 1.2rem;
-    color: #ffc107;
-}
+    .single-quote .recent-posts-list li {
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #f0f0f0;
+    }
 
-.star.empty {
-    color: #dee2e6;
-}
+    .single-quote .recent-posts-list li:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
 
-.rating-text {
-    color: #6c757d;
-    font-size: 0.9rem;
-}
+    .single-quote .recent-posts-list a {
+        color: #1a1a1a;
+        text-decoration: none;
+        font-weight: 500;
+        display: block;
+        margin-bottom: 4px;
+    }
 
-.quote-date-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-top: 20px;
-    border-top: 1px solid #e9ecef;
-}
+    .single-quote .recent-posts-list a:hover {
+        color: #666666;
+        text-decoration: underline;
+    }
 
-.date-label {
-    color: #495057;
-    font-weight: 500;
-    font-size: 0.9rem;
-}
+    .single-quote .recent-posts-list .post-date {
+        font-size: 0.875rem;
+        color: #888888;
+        font-weight: 400;
+    }
 
-.quote-date-info time {
-    color: #6c757d;
-    font-size: 0.9rem;
-}
+    .page-links {
+        display: none;
+    }
 
-/* Quote Content */
-.quote-content-wrapper {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 40px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-    border: 1px solid #e9ecef;
-    position: relative;
-}
+    .breadcrumbs {
+        margin-bottom: 5px;
+        font-size: 0.8rem;
+        color: #666666;
+        padding: 20px 0px;
+    }
 
-.quote-icon {
-    position: absolute;
-    top: -10px;
-    left: 30px;
-    font-size: 4rem;
-    color: #007cba;
-    font-family: Georgia, serif;
-    line-height: 1;
-    background: #ffffff;
-    padding: 0 10px;
-}
+    .breadcrumbs a {
+        color: #1a1a1a;
+        text-decoration: none;
+    }
 
-.quote-content {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: #2c3e50;
-    font-style: italic;
-    text-align: center;
-    margin-top: 20px;
-}
+    .breadcrumbs a:hover {
+        color: #666666;
+        text-decoration: underline;
+    }
 
-.quote-content p {
-    margin-bottom: 20px;
-}
+    .breadcrumb-separator {
+        margin: 0 8px;
+        color: #999999;
+    }
 
-.quote-content p:last-child {
-    margin-bottom: 0;
-}
+    .breadcrumbs .current-page {
+        color: #666666;
+        font-weight: 500;
+    }
 
 /* Price Table Section */
 .price-table-section {
