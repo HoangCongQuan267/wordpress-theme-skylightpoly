@@ -11,7 +11,7 @@ get_header(); ?>
     <div class="content-area">
         <div class="posts-container full-width">
             <header class="page-header manuals-page-header">
-                <h1 class="page-title">Hướng Dẫn Sử Dụng</h1>
+                <h1 class="page-title">Hỗ Trợ Kĩ Thuật</h1>
                 <p class="page-subtitle">Tài liệu hướng dẫn chi tiết giúp bạn sử dụng sản phẩm một cách hiệu quả và an toàn</p>
             </header>
 

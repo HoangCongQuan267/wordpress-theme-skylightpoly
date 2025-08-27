@@ -99,8 +99,11 @@ get_header(); ?>
                             </div>
 
                             <div class="quote-meta">
-                                <div class="quote-date">
-                                    <strong><?php echo esc_html($formatted_date); ?></strong>
+                                <div class="article-meta">
+                                    <div class="article-date"><?php echo esc_html($formatted_date); ?></div>
+                                    <?php if ($has_price_table) : ?>
+                                        <div class="article-category">Bảng Giá</div>
+                                    <?php endif; ?>
                                 </div>
 
                                 <h3 class="quote-title">
@@ -117,7 +120,10 @@ get_header(); ?>
                     endwhile;
 
                     // Lưu thông tin phân trang trước khi reset
-                    $max_pages = max(1, $quote_query->max_num_pages);
+                    $max_pages = 1;
+                    if ($quote_query instanceof WP_Query) {
+                        $max_pages = $quote_query->max_num_pages;
+                    }
                     wp_reset_postdata();
 
                     // Phân trang
@@ -206,30 +212,30 @@ get_header(); ?>
         margin-right: auto;
     }
 
-    /* Quote Cards - Flat Style */
+    /* Quote Cards - Article Card Style */
     .quote-card {
-        background: #ffffff;
+        background: white;
+        border-radius: 4px;
         overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
         display: flex;
         flex-direction: column;
         cursor: pointer;
         position: relative;
-        border: none;
-        box-shadow: none;
-        transition: none;
     }
 
     .quote-card:hover {
-        transform: none;
-        box-shadow: none;
-        border-color: transparent;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        border-color: #e0e0e0;
     }
 
     .quote-card.featured-quote {
         grid-column: span 2;
         grid-row: span 2;
-        border: none;
-        background: #ffffff;
+        border: 1px solid #f0f0f0;
+        background: white;
     }
 
     .featured-badge {
@@ -278,6 +284,13 @@ get_header(); ?>
         margin-bottom: 0;
     }
 
+    .quote-card-header img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
     .featured-quote .quote-card-header {
         height: 300px;
     }
@@ -295,26 +308,36 @@ get_header(); ?>
     }
 
     .quote-meta {
-        padding: 16px;
+        padding: 20px;
         flex: 1;
         display: flex;
         flex-direction: column;
     }
 
     .quote-title {
-        font-size: 1rem;
-        font-weight: 500;
-        line-height: 1.4;
-        margin-bottom: 8px;
+        font-size: 0.9rem;
+        font-weight: 700;
         color: #1a1a1a;
-        font-family: 'Helvetica Neue', 'Arial', sans-serif;
+        margin-bottom: 12px;
+        line-height: 1.4;
+        letter-spacing: 0.2px;
+    }
+
+    .quote-title a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .quote-title a:hover {
+        color: var(--primary-sky-blue);
     }
 
     .featured-quote .quote-title {
-        font-size: 1rem;
-        font-weight: 600;
+        font-size: 1.1rem;
+        font-weight: 700;
         line-height: 1.3;
-        margin-bottom: 12px;
+        margin-bottom: 15px;
     }
 
     .quote-author {
@@ -354,27 +377,44 @@ get_header(); ?>
     }
 
     .quote-excerpt {
-        color: #666666;
-        line-height: 1.5;
-        margin: 0;
+        color: #666;
+        font-size: 0.75rem;
+        line-height: 1.6;
+        margin-bottom: 15px;
         flex: 1;
-        font-weight: 400;
-        font-size: 0.85rem;
-        font-style: normal;
     }
 
     .featured-quote .quote-excerpt {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
         line-height: 1.6;
-        margin-bottom: 16px;
+        margin-bottom: 20px;
     }
 
     .quote-card-footer {
         display: none;
     }
 
-    .quote-date {
-        display: none;
+    .article-meta {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+        font-size: 0.7rem;
+        color: #666;
+    }
+
+    .article-date {
+        color: var(--primary-sky-blue);
+        font-weight: 500;
+    }
+
+    .article-category {
+        background: #f8f9fa;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.65rem;
+        font-weight: 500;
+        color: #495057;
     }
 
     .read-more {
