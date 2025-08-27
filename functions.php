@@ -291,11 +291,13 @@ function add_seo_customizer_options($wp_customize) {
         'sanitize_callback' => 'esc_url_raw',
     ));
     
-    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'site_og_image', array(
-        'label' => 'Default Open Graph Image',
-        'section' => 'seo_settings',
-        'description' => 'Default image for social media sharing (1200x630px recommended)',
-    )));
+    if (class_exists('WP_Customize_Image_Control')) {
+        $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'site_og_image', array(
+            'label' => 'Default Open Graph Image',
+            'section' => 'seo_settings',
+            'description' => 'Default image for social media sharing (1200x630px recommended)',
+        )));
+    }
 }
 if (function_exists('add_action')) {
     add_action('customize_register', 'add_seo_customizer_options');
@@ -346,8 +348,8 @@ function add_products_menu_active_class($classes, $item, $args) {
             $item->url === rtrim($products_url, '/') ||
             $item->url === $products_url_alt || 
             $item->url === rtrim($products_url_alt, '/') ||
-            strpos($item->url, '/products') !== false ||
-            strpos($item->url, '/san-pham') !== false
+            (is_string($item->url) && strpos($item->url, '/products') !== false) ||
+            (is_string($item->url) && strpos($item->url, '/san-pham') !== false)
         )) {
             $classes[] = 'current-menu-item';
         }
@@ -369,7 +371,7 @@ function manual_permalink_flush() {
             // Redirect to remove the parameter from URL
             if (function_exists('remove_query_arg')) {
                 $redirect_url = remove_query_arg('flush_permalinks');
-                if (function_exists('wp_redirect')) {
+                if (function_exists('wp_redirect') && $redirect_url) {
                     wp_redirect($redirect_url);
                     exit;
                 }
