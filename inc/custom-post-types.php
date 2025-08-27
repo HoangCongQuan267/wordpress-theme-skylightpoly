@@ -204,6 +204,53 @@ function register_brand_logo_post_type()
 add_action('init', 'register_brand_logo_post_type');
 
 /**
+ * Register Manual Custom Post Type
+ */
+function register_manual_post_type()
+{
+    $labels = array(
+        'name'                  => _x('Manuals', 'Post type general name', 'custom-blue-orange'),
+        'singular_name'         => _x('Manual', 'Post type singular name', 'custom-blue-orange'),
+        'menu_name'             => _x('Manuals', 'Admin Menu text', 'custom-blue-orange'),
+        'name_admin_bar'        => _x('Manual', 'Add New on Toolbar', 'custom-blue-orange'),
+        'add_new'               => __('Add New', 'custom-blue-orange'),
+        'add_new_item'          => __('Add New Manual', 'custom-blue-orange'),
+        'new_item'              => __('New Manual', 'custom-blue-orange'),
+        'edit_item'             => __('Edit Manual', 'custom-blue-orange'),
+        'view_item'             => __('View Manual', 'custom-blue-orange'),
+        'all_items'             => __('All Manuals', 'custom-blue-orange'),
+        'search_items'          => __('Search Manuals', 'custom-blue-orange'),
+        'parent_item_colon'     => __('Parent Manuals:', 'custom-blue-orange'),
+        'not_found'             => __('No manuals found.', 'custom-blue-orange'),
+        'not_found_in_trash'    => __('No manuals found in Trash.', 'custom-blue-orange'),
+        'featured_image'        => _x('Manual Image', 'Overrides the "Featured Image" phrase', 'custom-blue-orange'),
+        'set_featured_image'    => _x('Set manual image', 'Overrides the "Set featured image" phrase', 'custom-blue-orange'),
+        'remove_featured_image' => _x('Remove manual image', 'Overrides the "Remove featured image" phrase', 'custom-blue-orange'),
+        'use_featured_image'    => _x('Use as manual image', 'Overrides the "Use as featured image" phrase', 'custom-blue-orange'),
+    );
+
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => array('slug' => 'manual'),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => 24,
+        'menu_icon'          => 'dashicons-book-alt',
+        'supports'           => array('title', 'editor', 'excerpt', 'thumbnail', 'page-attributes'),
+        'show_in_rest'       => true,
+    );
+
+    register_post_type('manual', $args);
+}
+add_action('init', 'register_manual_post_type');
+
+/**
  * Register Product Category Taxonomy
  */
 function register_product_category_taxonomy()
