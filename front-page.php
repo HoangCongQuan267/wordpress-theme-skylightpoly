@@ -711,4 +711,134 @@ if ($section_spacing !== 'normal') {
         </section>
     <?php endif; ?>
 
+    <!-- FAQ Section -->
+    <?php if (get_theme_mod('faq_section_enable', true)) : ?>
+        <section class="faq-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title"><?php echo esc_html(get_theme_mod('faq_section_title', 'Câu Hỏi Thường Gặp')); ?></h2>
+                    <div class="title-ribbon">
+                        <div class="ribbon-line"></div>
+                        <div class="ribbon-diamond"></div>
+                        <div class="ribbon-line"></div>
+                    </div>
+                    <p class="section-subtitle"><?php echo esc_html(get_theme_mod('faq_section_subtitle', 'Tìm câu trả lời cho những thắc mắc phổ biến')); ?></p>
+                </div>
+
+                <div class="faq-container">
+                    <?php
+                    // Get FAQ items from customizer
+                    $faq_items = array();
+                    for ($i = 1; $i <= 10; $i++) {
+                        $question = get_theme_mod("faq_question_{$i}", '');
+                        $answer = get_theme_mod("faq_answer_{$i}", '');
+                        if (!empty($question) && !empty($answer)) {
+                            $faq_items[] = array(
+                                'question' => $question,
+                                'answer' => $answer
+                            );
+                        }
+                    }
+
+                    if (!empty($faq_items)) :
+                        foreach ($faq_items as $index => $faq) :
+                    ?>
+                            <div class="faq-item">
+                                <div class="faq-question" data-faq="<?php echo $index; ?>">
+                                    <h4><?php echo esc_html($faq['question']); ?></h4>
+                                    <span class="faq-toggle">+</span>
+                                </div>
+                                <div class="faq-answer" id="faq-answer-<?php echo $index; ?>">
+                                    <div class="faq-answer-content">
+                                        <p><?php echo nl2br(esc_html($faq['answer'])); ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        endforeach;
+                    else :
+                        // Demo FAQ items when no FAQs are configured
+                        $demo_faqs = array(
+                            array(
+                                'question' => 'Sản phẩm của bạn có chất lượng như thế nào?',
+                                'answer' => 'Chúng tôi cam kết cung cấp sản phẩm chất lượng cao với tiêu chuẩn quốc tế. Tất cả sản phẩm đều được kiểm tra nghiêm ngặt trước khi xuất xưởng và có chế độ bảo hành đầy đủ.'
+                            ),
+                            array(
+                                'question' => 'Thời gian giao hàng là bao lâu?',
+                                'answer' => 'Thời gian giao hàng thông thường là 3-5 ngày làm việc đối với khu vực nội thành và 5-7 ngày làm việc đối với các tỉnh thành khác. Chúng tôi sẽ thông báo cụ thể khi xác nhận đơn hàng.'
+                            ),
+                            array(
+                                'question' => 'Tôi có thể đổi trả sản phẩm không?',
+                                'answer' => 'Có, chúng tôi hỗ trợ đổi trả sản phẩm trong vòng 30 ngày kể từ ngày mua hàng. Sản phẩm cần còn nguyên vẹn, chưa sử dụng và có đầy đủ hóa đơn, phụ kiện đi kèm.'
+                            ),
+                            array(
+                                'question' => 'Làm thế nào để liên hệ hỗ trợ khách hàng?',
+                                'answer' => 'Bạn có thể liên hệ với chúng tôi qua hotline, email hoặc chat trực tuyến trên website. Đội ngũ hỗ trợ khách hàng của chúng tôi sẵn sàng phục vụ từ 8:00 - 18:00 hàng ngày.'
+                            ),
+                            array(
+                                'question' => 'Có những hình thức thanh toán nào?',
+                                'answer' => 'Chúng tôi hỗ trợ nhiều hình thức thanh toán: tiền mặt khi nhận hàng (COD), chuyển khoản ngân hàng, thanh toán qua ví điện tử và thẻ tín dụng/ghi nợ.'
+                            )
+                        );
+
+                        foreach ($demo_faqs as $index => $faq) :
+                        ?>
+                            <div class="faq-item">
+                                <div class="faq-question" data-faq="<?php echo $index; ?>">
+                                    <h4><?php echo esc_html($faq['question']); ?></h4>
+                                    <span class="faq-toggle">+</span>
+                                </div>
+                                <div class="faq-answer" id="faq-answer-<?php echo $index; ?>">
+                                    <div class="faq-answer-content">
+                                        <p><?php echo nl2br(esc_html($faq['answer'])); ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                    <?php
+                        endforeach;
+                    endif;
+                    ?>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const faqQuestions = document.querySelectorAll('.faq-question');
+
+                faqQuestions.forEach(function(question) {
+                    question.addEventListener('click', function() {
+                        const faqIndex = this.getAttribute('data-faq');
+                        const answer = document.getElementById('faq-answer-' + faqIndex);
+                        const toggle = this.querySelector('.faq-toggle');
+
+                        // Close all other FAQ items
+                        faqQuestions.forEach(function(otherQuestion) {
+                            if (otherQuestion !== question) {
+                                const otherIndex = otherQuestion.getAttribute('data-faq');
+                                const otherAnswer = document.getElementById('faq-answer-' + otherIndex);
+                                const otherToggle = otherQuestion.querySelector('.faq-toggle');
+
+                                otherAnswer.classList.remove('active');
+                                otherQuestion.classList.remove('active');
+                                otherToggle.textContent = '+';
+                            }
+                        });
+
+                        // Toggle current FAQ item
+                        if (answer.classList.contains('active')) {
+                            answer.classList.remove('active');
+                            question.classList.remove('active');
+                            toggle.textContent = '+';
+                        } else {
+                            answer.classList.add('active');
+                            question.classList.add('active');
+                            toggle.textContent = '−';
+                        }
+                    });
+                });
+            });
+        </script>
+    <?php endif; ?>
+
     <?php get_footer(); ?>

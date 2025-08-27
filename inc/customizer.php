@@ -1900,3 +1900,115 @@ function get_products_data()
     
     return $products;
 }
+
+/**
+ * Add FAQ Section to WordPress Customizer
+ */
+function faq_section_customizer($wp_customize)
+{
+    // Add FAQ Section
+    $wp_customize->add_section('faq_section', array(
+        'title'    => __('FAQ Section', 'skylightpoly'),
+        'priority' => 160,
+        'description' => __('Manage your FAQ section settings and questions', 'skylightpoly'),
+    ));
+
+    // Enable/Disable FAQ Section
+    $wp_customize->add_setting('faq_section_enable', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('faq_section_enable', array(
+        'label'    => __('Enable FAQ Section', 'skylightpoly'),
+        'section'  => 'faq_section',
+        'type'     => 'checkbox',
+        'priority' => 10,
+    ));
+
+    // FAQ Section Title
+    $wp_customize->add_setting('faq_section_title', array(
+        'default'           => 'Câu Hỏi Thường Gặp',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('faq_section_title', array(
+        'label'    => __('FAQ Section Title', 'skylightpoly'),
+        'section'  => 'faq_section',
+        'type'     => 'text',
+        'priority' => 20,
+    ));
+
+    // FAQ Section Subtitle
+    $wp_customize->add_setting('faq_section_subtitle', array(
+        'default'           => 'Tìm câu trả lời cho những thắc mắc phổ biến',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('faq_section_subtitle', array(
+        'label'    => __('FAQ Section Subtitle', 'skylightpoly'),
+        'section'  => 'faq_section',
+        'type'     => 'textarea',
+        'priority' => 30,
+    ));
+
+    // Add up to 10 FAQ items
+    for ($i = 1; $i <= 10; $i++) {
+        // FAQ Question
+        $wp_customize->add_setting("faq_question_{$i}", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("faq_question_{$i}", array(
+            'label'    => sprintf(__('FAQ %d - Question', 'skylightpoly'), $i),
+            'section'  => 'faq_section',
+            'type'     => 'text',
+            'priority' => 40 + ($i * 10),
+        ));
+
+        // FAQ Answer
+        $wp_customize->add_setting("faq_answer_{$i}", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("faq_answer_{$i}", array(
+            'label'    => sprintf(__('FAQ %d - Answer', 'skylightpoly'), $i),
+            'section'  => 'faq_section',
+            'type'     => 'textarea',
+            'input_attrs' => array(
+                'rows' => 4
+            ),
+            'priority' => 41 + ($i * 10),
+        ));
+    }
+}
+add_action('customize_register', 'faq_section_customizer');
+
+/**
+ * Helper function to get FAQ items
+ */
+function get_faq_items()
+{
+    $faq_items = array();
+    
+    for ($i = 1; $i <= 10; $i++) {
+        $question = get_theme_mod("faq_question_{$i}", '');
+        $answer = get_theme_mod("faq_answer_{$i}", '');
+        
+        if (!empty($question) && !empty($answer)) {
+            $faq_items[] = array(
+                'question' => $question,
+                'answer' => $answer
+            );
+        }
+    }
+    
+    return $faq_items;
+}
