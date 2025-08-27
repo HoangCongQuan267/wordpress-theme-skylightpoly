@@ -1242,6 +1242,20 @@ function footer_contact_customizer($wp_customize)
         'type'     => 'url',
         'priority' => 50,
     ));
+
+    // YouTube URL
+    $wp_customize->add_setting('social_youtube_url', array(
+        'default'           => '#',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('social_youtube_url', array(
+        'label'    => __('YouTube URL', 'custom-blue-orange'),
+        'section'  => 'social_media_section',
+        'type'     => 'url',
+        'priority' => 60,
+    ));
 }
 add_action('customize_register', 'footer_contact_customizer');
 
@@ -1769,18 +1783,18 @@ add_action('customize_register', 'products_management_customizer');
 function get_product_categories()
 {
     $categories = array();
-    
+
     // Get categories from individual customizer fields
     $categories_count = get_theme_mod('product_categories_count', 3);
-    
+
     for ($i = 1; $i <= $categories_count; $i++) {
         $category_title = get_theme_mod("product_category_{$i}_title", '');
         $category_link = get_theme_mod("product_category_{$i}_link", '');
-        
+
         if (!empty($category_title)) {
             // Create category slug from title
             $category_slug = strtolower(str_replace(' ', '-', trim($category_title)));
-            
+
             $categories[] = array(
                 'name' => $category_title,
                 'slug' => $category_slug,
@@ -1788,7 +1802,7 @@ function get_product_categories()
             );
         }
     }
-    
+
     // If no categories found, return demo data
     if (empty($categories)) {
         return array(
@@ -1798,7 +1812,7 @@ function get_product_categories()
             array('name' => 'Phụ Kiện', 'slug' => 'phu-kien', 'link' => '')
         );
     }
-    
+
     return $categories;
 }
 
@@ -1808,19 +1822,19 @@ function get_product_categories()
 function get_products_data()
 {
     $products = array();
-    
+
     // Get products from individual customizer fields
     $categories_count = get_theme_mod('product_categories_count', 3);
-    
+
     for ($i = 1; $i <= $categories_count; $i++) {
         $category_title = get_theme_mod("product_category_{$i}_title", '');
         if (empty($category_title)) continue;
-        
+
         // Create category slug from title
-         $category_slug = strtolower(str_replace(' ', '-', trim($category_title)));
-        
+        $category_slug = strtolower(str_replace(' ', '-', trim($category_title)));
+
         $products_count = get_theme_mod("product_category_{$i}_product_count", 3);
-        
+
         for ($j = 1; $j <= $products_count; $j++) {
             $title = get_theme_mod("category_{$i}_product_{$j}_title", '');
             $description = get_theme_mod("category_{$i}_product_{$j}_description", '');
@@ -1830,13 +1844,13 @@ function get_products_data()
             $link = get_theme_mod("category_{$i}_product_{$j}_link", '');
             $badge = get_theme_mod("category_{$i}_product_{$j}_badge", '');
             $unit = get_theme_mod("category_{$i}_product_{$j}_unit", 'đơn vị');
-            
+
             if (!empty($title)) {
                 $image_url = '';
                 if (!empty($image_id) && function_exists('wp_get_attachment_url')) {
                     $image_url = wp_get_attachment_url($image_id);
                 }
-                
+
                 $products[] = array(
                     'title' => $title,
                     'description' => $description,
@@ -1851,7 +1865,7 @@ function get_products_data()
             }
         }
     }
-    
+
     // If no products found, return demo data with numeric prices
     if (empty($products)) {
         return array(
@@ -1897,7 +1911,7 @@ function get_products_data()
             )
         );
     }
-    
+
     return $products;
 }
 
@@ -1981,8 +1995,6 @@ function quotes_section_customizer($wp_customize)
         'description' => __('Number of quote articles to display per page', 'skylightpoly'),
         'priority'    => 40,
     ));
-
-
 }
 add_action('customize_register', 'quotes_section_customizer');
 
@@ -2085,11 +2097,11 @@ add_action('customize_register', 'faq_section_customizer');
 function get_faq_items()
 {
     $faq_items = array();
-    
+
     for ($i = 1; $i <= 10; $i++) {
         $question = get_theme_mod("faq_question_{$i}", '');
         $answer = get_theme_mod("faq_answer_{$i}", '');
-        
+
         if (!empty($question) && !empty($answer)) {
             $faq_items[] = array(
                 'question' => $question,
@@ -2097,6 +2109,6 @@ function get_faq_items()
             );
         }
     }
-    
+
     return $faq_items;
 }

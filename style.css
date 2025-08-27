@@ -63,6 +63,9 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+.header-top-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -71,6 +74,61 @@ body {
 .contact-info {
     display: flex;
     gap: 25px;
+    flex: 1;
+}
+
+/* Media Icons Styling */
+.media-icons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.media-icons .social-icon {
+    color: var(--pure-white);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+.media-icons .social-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.media-icons .social-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* Individual social media icon colors on hover */
+.media-icons .social-icon.facebook:hover {
+    background: #1877f2;
+}
+
+.media-icons .social-icon.twitter:hover {
+    background: #1da1f2;
+}
+
+.media-icons .social-icon.instagram:hover {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.media-icons .social-icon.linkedin:hover {
+    background: #0077b5;
+}
+
+.media-icons .social-icon.youtube:hover {
+    background: #ff0000;
 }
 
 .contact-info span {
@@ -309,6 +367,38 @@ body {
 }
 
 @media (max-width: 768px) {
+    .header-top .container {
+        padding: 0 15px;
+    }
+    
+    .header-top-content {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .contact-info {
+        flex-direction: column;
+        gap: 8px;
+        font-size: 11px;
+    }
+    
+    .media-icons {
+        align-self: flex-end;
+        gap: 8px;
+    }
+    
+    .media-icons .social-icon {
+        width: 28px;
+        height: 28px;
+        padding: 4px;
+    }
+    
+    .media-icons .social-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+    
     .header-main .container {
         padding: 0 60px 0 20px;
     }
