@@ -29,54 +29,54 @@ if ($section_spacing !== 'normal') {
 ?>
 
 <main id="main" class="<?php echo implode(' ', $homepage_classes); ?>" style="background-color: <?php echo esc_attr($homepage_bg_color); ?>;">
-    
+
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "<?php echo esc_html(get_bloginfo('name')); ?>",
-        "url": "<?php echo esc_url(home_url('/')); ?>",
-        "logo": {
-            "@type": "ImageObject",
-            "url": "<?php echo esc_url(get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/logo.png')); ?>"
-        },
-        "description": "<?php echo esc_html(get_theme_mod('site_meta_description', 'Skylight Plastic - Chuyên cung cấp sản phẩm nhựa chất lượng cao, giá cả hợp lý, giao hàng nhanh chóng trên toàn quốc.')); ?>",
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "<?php echo esc_html(get_theme_mod('default_phone_number', '+84 123 456 789')); ?>",
-            "contactType": "customer service",
-            "email": "<?php echo esc_html(get_theme_mod('default_email_address', 'info@yoursite.com')); ?>"
-        },
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "<?php echo esc_html(get_theme_mod('default_physical_address', '123 Đường Chính, Thành phố, Việt Nam')); ?>",
-            "addressCountry": "VN"
-        },
-        "sameAs": [
-            "<?php echo esc_url(get_theme_mod('social_facebook', '#')); ?>",
-            "<?php echo esc_url(get_theme_mod('social_twitter', '#')); ?>",
-            "<?php echo esc_url(get_theme_mod('social_linkedin', '#')); ?>"
-        ]
-    }
-    </script>
-    
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "<?php echo esc_html(get_bloginfo('name')); ?>",
-        "url": "<?php echo esc_url(home_url('/')); ?>",
-        "description": "<?php echo esc_html(get_bloginfo('description')); ?>",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": "<?php echo esc_url(home_url('/')); ?>?s={search_term_string}"
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "<?php echo esc_html(get_bloginfo('name')); ?>",
+            "url": "<?php echo esc_url(home_url('/')); ?>",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "<?php echo esc_url(get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/logo.png')); ?>"
             },
-            "query-input": "required name=search_term_string"
+            "description": "<?php echo esc_html(get_theme_mod('site_meta_description', 'Skylight Plastic - Chuyên cung cấp sản phẩm nhựa chất lượng cao, giá cả hợp lý, giao hàng nhanh chóng trên toàn quốc.')); ?>",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "<?php echo esc_html(get_theme_mod('default_phone_number', '+84 123 456 789')); ?>",
+                "contactType": "customer service",
+                "email": "<?php echo esc_html(get_theme_mod('default_email_address', 'info@yoursite.com')); ?>"
+            },
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "<?php echo esc_html(get_theme_mod('default_physical_address', '123 Đường Chính, Thành phố, Việt Nam')); ?>",
+                "addressCountry": "VN"
+            },
+            "sameAs": [
+                "<?php echo esc_url(get_theme_mod('social_facebook', '#')); ?>",
+                "<?php echo esc_url(get_theme_mod('social_twitter', '#')); ?>",
+                "<?php echo esc_url(get_theme_mod('social_linkedin', '#')); ?>"
+            ]
         }
-    }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "<?php echo esc_html(get_bloginfo('name')); ?>",
+            "url": "<?php echo esc_url(home_url('/')); ?>",
+            "description": "<?php echo esc_html(get_bloginfo('description')); ?>",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                    "@type": "EntryPoint",
+                    "urlTemplate": "<?php echo esc_url(home_url('/')); ?>?s={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+            }
+        }
     </script>
     <?php
     // Check if slideshow is enabled in customizer
@@ -888,9 +888,6 @@ if ($section_spacing !== 'normal') {
                                         <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                                     </h4>
                                     <p class="article-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 20); ?></p>
-                                    <div class="article-author">
-                                        <span class="author-name">Bởi <?php the_author(); ?></span>
-                                    </div>
                                 </div>
                             </article>
                         <?php endwhile; ?>
@@ -926,9 +923,6 @@ if ($section_spacing !== 'normal') {
                                     <a href="#">Xu Hướng Công Nghệ Mới Trong Năm 2024</a>
                                 </h4>
                                 <p class="article-excerpt">Khám phá những xu hướng công nghệ đột phá sẽ định hình tương lai và tác động đến cuộc sống hàng ngày của chúng ta.</p>
-                                <div class="article-author">
-                                    <span class="author-name">Bởi Admin</span>
-                                </div>
                             </div>
                         </article>
                         <article class="article-card vertical-card">
@@ -949,9 +943,6 @@ if ($section_spacing !== 'normal') {
                                     <a href="#">Chiến Lược Phát Triển Doanh Nghiệp Bền Vững</a>
                                 </h4>
                                 <p class="article-excerpt">Tìm hiểu các phương pháp và chiến lược giúp doanh nghiệp phát triển bền vững trong thời đại số hóa hiện nay.</p>
-                                <div class="article-author">
-                                    <span class="author-name">Bởi Admin</span>
-                                </div>
                             </div>
                         </article>
                         <article class="article-card vertical-card">
@@ -972,9 +963,6 @@ if ($section_spacing !== 'normal') {
                                     <a href="#">Đổi Mới Sáng Tạo Trong Thời Đại Số</a>
                                 </h4>
                                 <p class="article-excerpt">Khám phá cách các doanh nghiệp có thể tận dụng công nghệ để tạo ra những giải pháp sáng tạo và hiệu quả.</p>
-                                <div class="article-author">
-                                    <span class="author-name">Bởi Admin</span>
-                                </div>
                             </div>
                         </article>
                     </div>
