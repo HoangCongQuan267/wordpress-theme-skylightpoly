@@ -511,13 +511,13 @@
             }
             
             // Show loading state
-            submitBtn.innerHTML = '<span>Sending...</span>';
+            submitBtn.innerHTML = '<span>Đang gửi...</span>';
             submitBtn.disabled = true;
             
             // Simulate form submission (replace with actual AJAX call)
             setTimeout(function() {
                 // Show success message
-                showFormMessage('Thank you! Your message has been sent successfully.', 'success');
+                showFormMessage('Cảm ơn bạn, chúng tôi sẽ liên hệ với bạn sớm nhất có thể.', 'success');
                 
                 // Reset form
                 contactForm.reset();
