@@ -340,3 +340,9 @@ function register_quote_article_post_type()
     register_post_type('quote_article', $args);
 }
 add_action('init', 'register_quote_article_post_type');
+
+/**
+ * Note: Permalink flush functionality has been removed to avoid undefined function errors
+ * in the development environment. In a live WordPress installation, you can manually
+ * flush permalinks by visiting Settings > Permalinks in the WordPress admin.
+ */

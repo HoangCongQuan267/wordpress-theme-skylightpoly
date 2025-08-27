@@ -49,3 +49,26 @@ require_once THEME_DIR . '/inc/helper-functions.php';
 
 // Additional theme-specific functions can be added here
 // Keep this file minimal and organized
+
+/**
+ * Manual permalink flush function
+ * Add ?flush_permalinks=1 to any page URL to trigger permalink flush
+ */
+function manual_permalink_flush() {
+    if (isset($_GET['flush_permalinks']) && $_GET['flush_permalinks'] == '1') {
+        if (function_exists('flush_rewrite_rules')) {
+            flush_rewrite_rules(true);
+            // Redirect to remove the parameter from URL
+            if (function_exists('remove_query_arg')) {
+                $redirect_url = remove_query_arg('flush_permalinks');
+                if (function_exists('wp_redirect')) {
+                    wp_redirect($redirect_url);
+                    exit;
+                }
+            }
+        }
+    }
+}
+if (function_exists('add_action')) {
+    add_action('init', 'manual_permalink_flush');
+}
