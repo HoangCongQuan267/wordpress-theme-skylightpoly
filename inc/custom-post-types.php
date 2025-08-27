@@ -246,3 +246,50 @@ function register_product_category_taxonomy()
     register_taxonomy('product_category', array('product'), $args);
 }
 add_action('init', 'register_product_category_taxonomy');
+
+/**
+ * Register Quote Article Custom Post Type
+ */
+function register_quote_article_post_type()
+{
+    $labels = array(
+        'name'                  => _x('Quote Articles', 'Post type general name', 'skylightpoly'),
+        'singular_name'         => _x('Quote Article', 'Post type singular name', 'skylightpoly'),
+        'menu_name'             => _x('Quote Articles', 'Admin Menu text', 'skylightpoly'),
+        'name_admin_bar'        => _x('Quote Article', 'Add New on Toolbar', 'skylightpoly'),
+        'add_new'               => __('Add New', 'skylightpoly'),
+        'add_new_item'          => __('Add New Quote Article', 'skylightpoly'),
+        'new_item'              => __('New Quote Article', 'skylightpoly'),
+        'edit_item'             => __('Edit Quote Article', 'skylightpoly'),
+        'view_item'             => __('View Quote Article', 'skylightpoly'),
+        'all_items'             => __('All Quote Articles', 'skylightpoly'),
+        'search_items'          => __('Search Quote Articles', 'skylightpoly'),
+        'parent_item_colon'     => __('Parent Quote Articles:', 'skylightpoly'),
+        'not_found'             => __('No quote articles found.', 'skylightpoly'),
+        'not_found_in_trash'    => __('No quote articles found in Trash.', 'skylightpoly'),
+        'featured_image'        => _x('Quote Image', 'Overrides the "Featured Image" phrase', 'skylightpoly'),
+        'set_featured_image'    => _x('Set quote image', 'Overrides the "Set featured image" phrase', 'skylightpoly'),
+        'remove_featured_image' => _x('Remove quote image', 'Overrides the "Remove featured image" phrase', 'skylightpoly'),
+        'use_featured_image'    => _x('Use as quote image', 'Overrides the "Use as featured image" phrase', 'skylightpoly'),
+    );
+
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => array('slug' => 'quote-article'),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => 24,
+        'menu_icon'          => 'dashicons-format-quote',
+        'supports'           => array('title', 'editor', 'excerpt', 'thumbnail', 'page-attributes'),
+        'show_in_rest'       => true,
+    );
+
+    register_post_type('quote_article', $args);
+}
+add_action('init', 'register_quote_article_post_type');

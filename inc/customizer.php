@@ -1902,25 +1902,25 @@ function get_products_data()
 }
 
 /**
- * Add Advanced Quotes Section to WordPress Customizer
+ * Add Quote Articles Section to WordPress Customizer
  */
 function quotes_section_customizer($wp_customize)
 {
-    // Add Quotes Panel
+    // Add Quote Articles Panel
     $wp_customize->add_panel('quotes_panel', array(
-        'title'    => __('Quotes Management', 'skylightpoly'),
+        'title'    => __('Quote Articles', 'skylightpoly'),
         'priority' => 155,
-        'description' => __('Manage multiple quote tables with customizable columns and unlimited products', 'skylightpoly'),
+        'description' => __('Manage quote articles page settings and display options', 'skylightpoly'),
     ));
 
-    // Main Quotes Section
+    // Main Quote Articles Section
     $wp_customize->add_section('quotes_main_section', array(
         'title'    => __('General Settings', 'skylightpoly'),
         'panel'    => 'quotes_panel',
         'priority' => 10,
     ));
 
-    // Enable/Disable Quotes Section
+    // Enable/Disable Quote Articles Section
     $wp_customize->add_setting('quotes_section_enable', array(
         'default'           => true,
         'sanitize_callback' => 'wp_validate_boolean',
@@ -1928,15 +1928,15 @@ function quotes_section_customizer($wp_customize)
     ));
 
     $wp_customize->add_control('quotes_section_enable', array(
-        'label'    => __('Enable Quotes Section', 'skylightpoly'),
+        'label'    => __('Enable Quote Articles Section', 'skylightpoly'),
         'section'  => 'quotes_main_section',
         'type'     => 'checkbox',
         'priority' => 10,
     ));
 
-    // Quotes Page Title
+    // Quote Articles Page Title
     $wp_customize->add_setting('quotes_page_title', array(
-        'default'           => 'Bảng Giá Sản Phẩm',
+        'default'           => 'Customer Quotes & Testimonials',
         'sanitize_callback' => 'sanitize_text_field',
         'transport'         => 'refresh',
     ));
@@ -1948,225 +1948,45 @@ function quotes_section_customizer($wp_customize)
         'priority' => 20,
     ));
 
-    // Number of Tables
-    $wp_customize->add_setting('quotes_tables_count', array(
-        'default'           => 3,
+    // Quote Articles Page Subtitle
+    $wp_customize->add_setting('quotes_page_subtitle', array(
+        'default'           => 'What our customers say about us',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('quotes_page_subtitle', array(
+        'label'    => __('Page Subtitle', 'skylightpoly'),
+        'section'  => 'quotes_main_section',
+        'type'     => 'textarea',
+        'priority' => 30,
+    ));
+
+    // Posts Per Page
+    $wp_customize->add_setting('quotes_posts_per_page', array(
+        'default'           => 12,
         'sanitize_callback' => 'absint',
         'transport'         => 'refresh',
     ));
 
-    $wp_customize->add_control('quotes_tables_count', array(
-        'label'       => __('Number of Tables', 'skylightpoly'),
+    $wp_customize->add_control('quotes_posts_per_page', array(
+        'label'       => __('Posts Per Page', 'skylightpoly'),
         'section'     => 'quotes_main_section',
         'type'        => 'number',
         'input_attrs' => array(
-            'min' => 1,
-            'max' => 5,
-            'step' => 1,
+            'min' => 6,
+            'max' => 24,
+            'step' => 3,
         ),
-        'description' => __('Maximum 5 tables', 'skylightpoly'),
-        'priority'    => 30,
+        'description' => __('Number of quote articles to display per page', 'skylightpoly'),
+        'priority'    => 40,
     ));
 
-    // Create sections for each table
-    for ($table = 1; $table <= 5; $table++) {
-        // Table Section
-        $wp_customize->add_section("quotes_table_{$table}_section", array(
-            'title'    => sprintf(__('Table %d', 'skylightpoly'), $table),
-            'panel'    => 'quotes_panel',
-            'priority' => 10 + $table,
-            'active_callback' => function () use ($table) {
-                return get_theme_mod('quotes_tables_count', 3) >= $table;
-            },
-        ));
 
-        // Table Title
-        $wp_customize->add_setting("quotes_table_{$table}_title", array(
-            'default'           => sprintf(__('Price Table %d', 'skylightpoly'), $table),
-            'sanitize_callback' => 'sanitize_text_field',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("quotes_table_{$table}_title", array(
-            'label'    => __('Table Title', 'skylightpoly'),
-            'section'  => "quotes_table_{$table}_section",
-            'type'     => 'text',
-            'priority' => 10,
-        ));
-
-        // Number of Columns
-        $wp_customize->add_setting("quotes_table_{$table}_columns_count", array(
-            'default'           => 2,
-            'sanitize_callback' => 'absint',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("quotes_table_{$table}_columns_count", array(
-            'label'       => __('Number of Columns', 'skylightpoly'),
-            'section'     => "quotes_table_{$table}_section",
-            'type'        => 'number',
-            'input_attrs' => array(
-                'min' => 1,
-                'max' => 5,
-                'step' => 1,
-            ),
-            'description' => __('Maximum 5 columns', 'skylightpoly'),
-            'priority'    => 20,
-        ));
-
-        // Column Headers
-        for ($col = 1; $col <= 5; $col++) {
-            $wp_customize->add_setting("quotes_table_{$table}_column_{$col}_header", array(
-                'default'           => $col == 1 ? __('Product Name', 'skylightpoly') : ($col == 2 ? __('Price', 'skylightpoly') : ''),
-                'sanitize_callback' => 'sanitize_text_field',
-                'transport'         => 'refresh',
-            ));
-
-            $wp_customize->add_control("quotes_table_{$table}_column_{$col}_header", array(
-                'label'    => sprintf(__('Column %d Header', 'skylightpoly'), $col),
-                'section'  => "quotes_table_{$table}_section",
-                'type'     => 'text',
-                'priority' => 20 + $col,
-                'active_callback' => function () use ($table, $col) {
-                    return get_theme_mod('quotes_tables_count', 3) >= $table && get_theme_mod("quotes_table_{$table}_columns_count", 2) >= $col;
-                },
-            ));
-        }
-
-        // Number of Products
-        $wp_customize->add_setting("quotes_table_{$table}_products_count", array(
-            'default'           => 5,
-            'sanitize_callback' => 'absint',
-            'transport'         => 'refresh',
-        ));
-
-        $wp_customize->add_control("quotes_table_{$table}_products_count", array(
-            'label'       => __('Number of Products', 'skylightpoly'),
-            'section'     => "quotes_table_{$table}_section",
-            'type'        => 'number',
-            'input_attrs' => array(
-                'min' => 1,
-                'max' => 15,
-                'step' => 1,
-            ),
-            'description' => __('Maximum 15 products per table', 'skylightpoly'),
-            'priority'    => 35,
-        ));
-
-        // Product Data - Limited to prevent memory issues
-        for ($product = 1; $product <= 15; $product++) {
-            for ($col = 1; $col <= 5; $col++) {
-                $wp_customize->add_setting("quotes_table_{$table}_product_{$product}_col_{$col}", array(
-                    'default'           => '',
-                    'sanitize_callback' => 'sanitize_text_field',
-                    'transport'         => 'refresh',
-                ));
-
-                $wp_customize->add_control("quotes_table_{$table}_product_{$product}_col_{$col}", array(
-                    'label'    => sprintf(__('Product %d - Column %d', 'skylightpoly'), $product, $col),
-                    'section'  => "quotes_table_{$table}_section",
-                    'type'     => 'text',
-                    'priority' => 40 + ($product * 5) + $col,
-                    'active_callback' => function () use ($table, $product, $col) {
-                        return get_theme_mod('quotes_tables_count', 3) >= $table && 
-                               get_theme_mod("quotes_table_{$table}_products_count", 5) >= $product &&
-                               get_theme_mod("quotes_table_{$table}_columns_count", 2) >= $col;
-                    },
-                ));
-            }
-        }
-    }
 }
 add_action('customize_register', 'quotes_section_customizer');
 
-/**
- * Helper function to get all quote tables
- */
-function get_quote_tables()
-{
-    $tables = array();
-    $tables_count = get_theme_mod('quotes_tables_count', 3);
-    
-    for ($table = 1; $table <= $tables_count; $table++) {
-        $table_title = get_theme_mod("quotes_table_{$table}_title", sprintf(__('Price Table %d', 'skylightpoly'), $table));
-        $columns_count = get_theme_mod("quotes_table_{$table}_columns_count", 2);
-        $products_count = get_theme_mod("quotes_table_{$table}_products_count", 5);
-        
-        // Get column headers
-        $headers = array();
-        for ($col = 1; $col <= $columns_count; $col++) {
-            $header = get_theme_mod("quotes_table_{$table}_column_{$col}_header", '');
-            if (!empty($header)) {
-                $headers[] = $header;
-            }
-        }
-        
-        // Get products data
-        $products = array();
-        for ($product = 1; $product <= $products_count; $product++) {
-            $product_data = array();
-            $has_data = false;
-            
-            for ($col = 1; $col <= $columns_count; $col++) {
-                $value = get_theme_mod("quotes_table_{$table}_product_{$product}_col_{$col}", '');
-                $product_data[] = $value;
-                if (!empty($value)) {
-                    $has_data = true;
-                }
-            }
-            
-            if ($has_data) {
-                $products[] = $product_data;
-            }
-        }
-        
-        // Only add table if it has headers and products
-        if (!empty($headers) && !empty($products)) {
-            $tables[] = array(
-                'title' => $table_title,
-                'headers' => $headers,
-                'products' => $products
-            );
-        }
-    }
-    
-    // If no custom tables, return default data
-    if (empty($tables)) {
-        return array(
-            array(
-                'title' => 'Túi Nilon & Bao Bì',
-                'headers' => array('Tên Sản Phẩm', 'Giá'),
-                'products' => array(
-                    array('Túi Nilon Siêu Thị', '15.000 VNĐ/kg'),
-                    array('Túi Zip Lock', '25.000 VNĐ/kg'),
-                    array('Túi Đựng Thực Phẩm', '18.000 VNĐ/kg'),
-                    array('Bao Bì Nhựa PE', '12.000 VNĐ/kg'),
-                    array('Túi Nilon Trong Suốt', '16.000 VNĐ/kg')
-                )
-            ),
-            array(
-                'title' => 'Sản Phẩm Cao Cấp',
-                'headers' => array('Tên Sản Phẩm', 'Giá Thường', 'Giá Khuyến Mãi'),
-                'products' => array(
-                    array('Túi Nilon Cao Cấp', '35.000 VNĐ/kg', '30.000 VNĐ/kg'),
-                    array('Bao Bì Xuất Khẩu', '28.000 VNĐ/kg', '25.000 VNĐ/kg'),
-                    array('Túi Nilon Dày', '22.000 VNĐ/kg', '20.000 VNĐ/kg')
-                )
-            ),
-            array(
-                'title' => 'Phụ Kiện & Dịch Vụ',
-                'headers' => array('Dịch Vụ', 'Đơn Vị', 'Giá', 'Ghi Chú'),
-                'products' => array(
-                    array('In Logo', 'Màu', '5.000 VNĐ', 'Tối thiểu 1000 cái'),
-                    array('Cắt theo kích thước', 'm²', '2.000 VNĐ', 'Theo yêu cầu'),
-                    array('Vận chuyển', 'Chuyến', '100.000 VNĐ', 'Trong thành phố')
-                )
-            )
-        );
-    }
-    
-    return $tables;
-}
+
 
 /**
  * Add FAQ Section to WordPress Customizer

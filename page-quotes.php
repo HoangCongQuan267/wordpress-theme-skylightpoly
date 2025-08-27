@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Advanced Quotes Page Template - Multiple Tables
+ * Quote Articles Page Template
  * 
- * This template displays multiple customizable tables with dynamic columns
- * Supports unlimited products and flexible table structures
+ * This template displays a time-ordered list of quote articles
+ * Each quote article contains pricing information and price tables
  */
 
 get_header(); ?>
@@ -13,63 +13,146 @@ get_header(); ?>
     <div class="container">
         <div class="quotes-content">
             <?php
-            // Get customizable page title
-            $page_title = get_theme_mod('quotes_page_title', 'Bảng Giá Sản Phẩm');
+            // Get customizable page title and subtitle
+            $page_title = get_theme_mod('quotes_page_title', 'Báo Giá & Thông Tin Sản Phẩm');
+            $page_subtitle = get_theme_mod('quotes_page_subtitle', 'Thông tin giá cả và thông số kỹ thuật chi tiết');
+            $posts_per_page = get_theme_mod('quotes_posts_per_page', 12);
             ?>
-            <h1 class="page-title"><?php echo esc_html($page_title); ?></h1>
 
-            <div class="quotes-tables-container">
+            <div class="quotes-header">
+                <h1 class="page-title"><?php echo esc_html($page_title); ?></h1>
+                <?php if ($page_subtitle) : ?>
+                    <p class="page-subtitle"><?php echo esc_html($page_subtitle); ?></p>
+                <?php endif; ?>
+            </div>
+
+            <div class="quotes-grid">
                 <?php
-                // Get all quote tables from customizer
-                $quote_tables = function_exists('get_quote_tables') ? get_quote_tables() : array();
+                // Truy vấn các bài viết trích dẫn theo thứ tự ngày (mới nhất trước)
+                $quote_args = array(
+                    'post_type' => 'quote_article',
+                    'posts_per_page' => $posts_per_page,
+                    'post_status' => 'publish',
+                    'orderby' => 'date',
+                    'order' => 'DESC',
+                    'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
+                    'meta_query' => array(
+                        'relation' => 'OR',
+                        array(
+                            'key' => '_featured_quote',
+                            'value' => 'yes',
+                            'compare' => '='
+                        ),
+                        array(
+                            'key' => '_featured_quote',
+                            'value' => 'no',
+                            'compare' => '='
+                        ),
+                        array(
+                            'key' => '_featured_quote',
+                            'compare' => 'NOT EXISTS'
+                        )
+                    )
+                );
 
-                if (!empty($quote_tables)) :
-                    foreach ($quote_tables as $table_index => $table) :
-                        $table_title = $table['title'];
-                        $headers = $table['headers'];
-                        $products = $table['products'];
-                        $columns_count = count($headers);
+                $quote_query = new WP_Query($quote_args);
+
+                if ($quote_query->have_posts()) :
+                    while ($quote_query->have_posts()) : $quote_query->the_post();
+                        // Lấy dữ liệu meta
+                        $quote_date = get_post_meta(get_the_ID(), '_quote_date', true);
+                        $quote_rating = get_post_meta(get_the_ID(), '_quote_rating', true);
+                        $featured_quote = get_post_meta(get_the_ID(), '_featured_quote', true);
+
+                        // Lấy dữ liệu bảng giá
+                        $price_table_data = get_post_meta(get_the_ID(), '_price_table_data', true);
+                        $has_price_table = !empty($price_table_data);
+
+                        // Format date same as article page
+                        $formatted_date = $quote_date ? date('F j, Y', strtotime($quote_date)) : get_the_date('F j, Y');
+
+                        // Lấy đoạn trích hoặc xem trước nội dung
+                        $quote_excerpt = get_the_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 30, '...');
                 ?>
 
-                        <div class="quotes-table-section" data-table="<?php echo esc_attr($table_index + 1); ?>">
-                            <h2 class="table-title"><?php echo esc_html($table_title); ?></h2>
+                        <article class="quote-card <?php echo ($featured_quote === 'yes') ? 'featured-quote' : ''; ?>" onclick="window.location.href='<?php echo esc_url(get_permalink()); ?>'">
+                            <?php if ($featured_quote === 'yes') : ?>
+                                <div class="featured-badge">
+                                    <span>Nổi Bật</span>
+                                </div>
+                            <?php endif; ?>
 
-                            <div class="quotes-table-wrapper">
-                                <table class="quotes-table" data-columns="<?php echo esc_attr($columns_count); ?>">
-                                    <thead>
-                                        <tr>
-                                            <?php foreach ($headers as $header) : ?>
-                                                <th><?php echo esc_html($header); ?></th>
-                                            <?php endforeach; ?>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($products as $product) : ?>
-                                            <tr>
-                                                <?php
-                                                // Ensure we don't exceed the number of headers
-                                                for ($i = 0; $i < $columns_count; $i++) :
-                                                    $cell_value = isset($product[$i]) ? $product[$i] : '';
-                                                ?>
-                                                    <td><?php echo esc_html($cell_value); ?></td>
-                                                <?php endfor; ?>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
+                            <?php if ($has_price_table) : ?>
+                                <div class="price-indicator">
+                                    <span>💰 Bảng Giá</span>
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="quote-card-header">
+                                <?php if (has_post_thumbnail()) : ?>
+                                    <?php the_post_thumbnail('medium', array('alt' => get_the_title())); ?>
+                                <?php else : ?>
+                                    <div class="placeholder-image">
+                                        <span class="placeholder-text">💬</span>
+                                    </div>
+                                <?php endif; ?>
                             </div>
-                        </div>
+
+                            <div class="quote-meta">
+                                <div class="quote-date">
+                                    <strong><?php echo esc_html($formatted_date); ?></strong>
+                                </div>
+
+                                <h3 class="quote-title">
+                                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                </h3>
+
+                                <div class="quote-content">
+                                    <p class="quote-excerpt"><?php echo esc_html($quote_excerpt); ?></p>
+                                </div>
+                            </div>
+                        </article>
 
                     <?php
-                    endforeach;
+                    endwhile;
+
+                    // Lưu thông tin phân trang trước khi reset
+                    $max_pages = max(1, $quote_query->max_num_pages);
+                    wp_reset_postdata();
+
+                    // Phân trang
+                    if ($max_pages > 1) :
+                    ?>
+                        <div class="quotes-pagination">
+                            <?php
+                            echo paginate_links(array(
+                                'total' => $max_pages,
+                                'current' => max(1, get_query_var('paged')),
+                                'format' => '?paged=%#%',
+                                'show_all' => false,
+                                'end_size' => 1,
+                                'mid_size' => 2,
+                                'prev_next' => true,
+                                'prev_text' => '← Trước',
+                                'next_text' => 'Tiếp →',
+                                'type' => 'list'
+                            ));
+                            ?>
+                        </div>
+                    <?php
+                    endif;
                 else :
                     ?>
-
                     <div class="no-quotes-message">
-                        <p><?php _e('No quote tables configured. Please set up your quotes in the WordPress Customizer.', 'skylightpoly'); ?></p>
-                        <p><a href="<?php echo esc_url(admin_url('customize.php?autofocus[panel]=quotes_panel')); ?>" class="customize-link"><?php _e('Configure Quotes', 'skylightpoly'); ?></a></p>
+                        <div class="empty-state">
+                            <div class="empty-icon">💬</div>
+                            <h3>Không Tìm Thấy Bài Viết Báo Giá</h3>
+                            <p>Hiện tại chưa có bài viết báo giá nào được xuất bản. Hãy quay lại sau để xem thông tin giá cả và sản phẩm.</p>
+                            <?php if (current_user_can('edit_posts')) : ?>
+                                <p><a href="<?php echo esc_url(admin_url('post-new.php?post_type=quote_article')); ?>" class="add-quote-btn">Thêm Bài Viết Báo Giá Đầu Tiên</a></p>
+                            <?php endif; ?>
+                        </div>
                     </div>
-
                 <?php endif; ?>
             </div>
         </div>
@@ -77,175 +160,381 @@ get_header(); ?>
 </main>
 
 <style>
-    /* Simple Quotes Page Styles - No Effects */
+    /* Minimal Header */
     .quotes-page {
-        padding: 40px 0;
-        background-color: #ffffff;
+        padding: 0px 0;
+        background: transparent;
+        min-height: 70vh;
     }
 
     .quotes-content {
-        max-width: 800px;
+        max-width: 1200px;
         margin: 0 auto;
         padding: 0 20px;
     }
 
-    .page-title {
-        text-align: center;
-        margin-bottom: 40px;
-        font-size: 32px;
+    .quotes-header {
+        text-align: left;
+        margin-bottom: 0px;
+        padding: 10px 0;
+        background: transparent;
         color: #333333;
-        font-weight: 600;
     }
 
-    .quotes-tables-container {
+    .page-title {
+        font-size: 1.25rem;
+        margin: 0;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: none;
+        font-family: 'Helvetica Neue', 'Arial', sans-serif;
+        color: #333333;
+    }
+
+    .page-subtitle {
+        display: none;
+    }
+
+    /* 3-Column Grid Layout */
+    .quotes-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 60px;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Quote Cards - Flat Style */
+    .quote-card {
+        background: #ffffff;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
-        gap: 40px;
+        cursor: pointer;
+        position: relative;
+        border: none;
+        box-shadow: none;
+        transition: none;
     }
 
-    .quotes-table-section {
-        margin-bottom: 20px;
+    .quote-card:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: transparent;
     }
 
-    .table-title {
-        font-size: 24px;
-        color: #333333;
-        margin-bottom: 20px;
-        font-weight: 600;
-        text-align: left;
+    .quote-card.featured-quote {
+        grid-column: span 2;
+        grid-row: span 2;
+        border: none;
+        background: #ffffff;
     }
 
-    .quotes-table-wrapper {
-        margin-bottom: 20px;
-        overflow-x: auto;
-    }
-
-    .quotes-table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: #ffffff;
-        font-family: Arial, sans-serif;
-    }
-
-    .quotes-table th,
-    .quotes-table td {
-        padding: 12px 16px;
-        text-align: left;
-        border: 1px solid #dddddd;
-    }
-
-    .quotes-table th {
-        background-color: #f8f9fa;
-        font-weight: 600;
-        color: #333333;
-        font-size: 16px;
-    }
-
-    .quotes-table td {
-        color: #555555;
-        font-size: 15px;
-    }
-
-    .quotes-table tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    .quotes-table tbody tr:nth-child(odd) {
-        background-color: #ffffff;
-    }
-
-    /* No quotes message */
-    .no-quotes-message {
-        text-align: center;
-        padding: 40px 20px;
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
-    }
-
-    .no-quotes-message p {
-        margin: 0 0 15px 0;
-        color: #666666;
-        font-size: 16px;
-        line-height: 1.5;
-    }
-
-    .customize-link {
-        display: inline-block;
-        background: #007cba;
-        color: white;
-        padding: 10px 20px;
-        text-decoration: none;
+    .featured-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #1a1a1a;
+        color: #ffffff;
+        padding: 4px 8px;
         border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 400;
+        box-shadow: none;
+        font-family: 'Helvetica Neue', 'Arial', sans-serif;
+        z-index: 2;
+    }
+
+    .price-indicator {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #28a745;
+        color: #ffffff;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 400;
+        box-shadow: none;
+        font-family: 'Helvetica Neue', 'Arial', sans-serif;
+        z-index: 2;
+    }
+
+    .quote-card.featured-quote .price-indicator {
+        top: 40px;
+    }
+
+    .quote-card-header {
+        height: 200px;
+        overflow: hidden;
+        background: #f5f5f5;
+        flex-shrink: 0;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0;
+    }
+
+    .featured-quote .quote-card-header {
+        height: 300px;
+    }
+
+    .quote-thumbnail {
+        display: none;
+    }
+
+    .quote-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
+        border: none;
+    }
+
+    .quote-meta {
+        padding: 16px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .quote-title {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.4;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+        font-family: 'Helvetica Neue', 'Arial', sans-serif;
+    }
+
+    .featured-quote .quote-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        line-height: 1.3;
+        margin-bottom: 12px;
+    }
+
+    .quote-author {
+        margin-bottom: 8px;
+    }
+
+    .quote-author strong {
+        color: #888888;
+        font-size: 0.75rem;
+        display: block;
+        margin-bottom: 3px;
+        font-weight: 400;
+        letter-spacing: 0.05em;
+    }
+
+    .author-details {
+        color: #888888;
+        font-size: 0.75rem;
+        font-style: normal;
+        font-weight: 400;
+        letter-spacing: 0.05em;
+    }
+
+    .author-details::before {
+        content: '•';
+        margin-right: 6px;
+        color: #cccccc;
+    }
+
+    .quote-rating {
+        display: none;
+    }
+
+    .quote-content {
+        flex: 1;
+        margin-bottom: 12px;
+    }
+
+    .quote-excerpt {
+        color: #666666;
+        line-height: 1.5;
+        margin: 0;
+        flex: 1;
+        font-weight: 400;
+        font-size: 0.85rem;
+        font-style: normal;
+    }
+
+    .featured-quote .quote-excerpt {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 16px;
+    }
+
+    .quote-card-footer {
+        display: none;
+    }
+
+    .quote-date {
+        display: none;
+    }
+
+    .read-more {
+        display: none;
+    }
+
+    /* Empty State */
+    .no-quotes-message {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 80px 40px;
+    }
+
+    .empty-state {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        color: #1a1a1a;
+        margin-bottom: 16px;
+        font-size: 1.5rem;
         font-weight: 500;
     }
 
-    .customize-link:hover {
-        background: #005a87;
-        color: white;
+    .empty-state p {
+        color: #666666;
+        margin-bottom: 24px;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.6;
     }
 
-    /* Responsive Design */
+    .add-quote-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background: #1a1a1a;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 400;
+        font-size: 0.9rem;
+    }
+
+    .add-quote-btn:hover {
+        background: #333333;
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+    /* Clean Pagination */
+    .quotes-pagination {
+        grid-column: 1 / -1;
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .quotes-pagination .page-numbers {
+        display: inline-block;
+        padding: 12px 16px;
+        margin: 0 4px;
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        color: #666666;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 400;
+        border-radius: 4px;
+    }
+
+    .quotes-pagination .page-numbers:hover,
+    .quotes-pagination .page-numbers.current {
+        background: #1a1a1a;
+        color: #ffffff;
+        border-color: #1a1a1a;
+    }
+
+    /* 3-Column Responsive Design */
+    @media (max-width: 1024px) {
+        .quotes-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .featured-quote {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+    }
+
     @media (max-width: 768px) {
-        .quotes-page {
-            padding: 20px 0;
+        .quotes-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
         }
 
-        .page-title {
-            font-size: 2rem;
-            margin-bottom: 20px;
+        .featured-quote {
+            grid-column: span 2;
+            grid-row: span 1;
         }
 
-        .quotes-tables-container {
-            gap: 0px;
+        .featured-quote .quote-card-header {
+            height: 200px;
         }
 
-        .quotes-table-section {
-            padding: 20px;
-            margin: 0 10px;
+        .featured-quote .quote-title {
+            font-size: 1.4rem;
         }
 
-        .table-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+        .quote-card-header {
+            height: 140px;
         }
 
-        .quotes-table {
-            font-size: 14px;
-            min-width: 500px;
-        }
-
-        .quotes-table th,
-        .quotes-table td {
-            padding: 12px 15px;
-        }
-
-        .quotes-table th {
-            font-size: 12px;
+        .quote-title {
+            font-size: 0.9rem;
         }
     }
 
     @media (max-width: 480px) {
-        .quotes-table-section {
-            margin: 0 5px;
-            padding: 15px;
+        .quotes-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
         }
 
-        .quotes-table {
-            min-width: 400px;
-            font-size: 13px;
+        .featured-quote {
+            grid-column: span 1;
+            grid-row: span 1;
         }
 
-        .quotes-table th,
-        .quotes-table td {
-            padding: 10px 12px;
+        .featured-quote .quote-card-header {
+            height: 180px;
         }
 
-        .page-title {
-            font-size: 1.25rem;
+        .featured-quote .quote-title {
+            font-size: 1.2rem;
         }
 
-        .table-title {
+        .quote-card-header {
+            height: 160px;
+        }
+
+        .quote-title {
             font-size: 1rem;
+        }
+
+        .quotes-pagination .page-numbers {
+            padding: 10px 12px;
+            margin: 0 2px;
+            font-size: 0.8rem;
+        }
+
+        .no-quotes-message {
+            padding: 60px 20px;
         }
     }
 </style>

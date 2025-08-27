@@ -48,6 +48,22 @@ function add_product_meta_boxes()
 add_action('add_meta_boxes', 'add_product_meta_boxes');
 
 /**
+ * Add Meta Boxes for Quote Articles
+ */
+function add_quote_article_meta_boxes()
+{
+    add_meta_box(
+        'quote_article_details',
+        __('Quote Article Details', 'skylightpoly'),
+        'quote_article_meta_box_callback',
+        'quote_article',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'add_quote_article_meta_boxes');
+
+/**
  * Hero Slide Meta Box Callback
  */
 function hero_slide_meta_box_callback($post)
@@ -207,6 +223,165 @@ function save_product_meta_data($post_id)
     }
 }
 add_action('save_post', 'save_product_meta_data');
+
+/**
+ * Quote Article Meta Box Callback
+ */
+function quote_article_meta_box_callback($post)
+{
+    wp_nonce_field('quote_article_details_nonce', 'quote_article_details_nonce');
+
+    $author_name = get_post_meta($post->ID, '_quote_author_name', true);
+    $author_company = get_post_meta($post->ID, '_quote_author_company', true);
+    $author_position = get_post_meta($post->ID, '_quote_author_position', true);
+    $quote_date = get_post_meta($post->ID, '_quote_date', true);
+    $featured_quote = get_post_meta($post->ID, '_featured_quote', true);
+    $quote_rating = get_post_meta($post->ID, '_quote_rating', true);
+    
+    // Price table fields
+    $price_table_data = get_post_meta($post->ID, '_price_table_data', true);
+    $currency_symbol = get_post_meta($post->ID, '_currency_symbol', true) ?: 'đ';
+    $price_table_title = get_post_meta($post->ID, '_price_table_title', true);
+
+    echo '<table class="form-table">';
+
+    echo '<tr>';
+    echo '<th><label for="quote_author_name">' . __('Author Name', 'skylightpoly') . '</label></th>';
+    echo '<td><input type="text" id="quote_author_name" name="quote_author_name" value="' . esc_attr($author_name) . '" class="regular-text" /></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th><label for="quote_author_company">' . __('Company/Organization', 'skylightpoly') . '</label></th>';
+    echo '<td><input type="text" id="quote_author_company" name="quote_author_company" value="' . esc_attr($author_company) . '" class="regular-text" /></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th><label for="quote_author_position">' . __('Position/Title', 'skylightpoly') . '</label></th>';
+    echo '<td><input type="text" id="quote_author_position" name="quote_author_position" value="' . esc_attr($author_position) . '" class="regular-text" /></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th><label for="quote_date">' . __('Quote Date', 'skylightpoly') . '</label></th>';
+    echo '<td><input type="date" id="quote_date" name="quote_date" value="' . esc_attr($quote_date) . '" class="regular-text" /></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th><label for="quote_rating">' . __('Rating (1-5 stars)', 'skylightpoly') . '</label></th>';
+    echo '<td><select id="quote_rating" name="quote_rating">';
+    for ($i = 1; $i <= 5; $i++) {
+        echo '<option value="' . $i . '"' . selected($quote_rating, $i, false) . '>' . $i . ' ' . ($i == 1 ? 'star' : 'stars') . '</option>';
+    }
+    echo '</select></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th><label for="featured_quote">' . __('Featured Quote', 'skylightpoly') . '</label></th>';
+    echo '<td><input type="checkbox" id="featured_quote" name="featured_quote" value="yes"' . checked($featured_quote, 'yes', false) . ' /> ' . __('Mark as featured quote', 'skylightpoly') . '</td>';
+    echo '</tr>';
+
+    echo '</table>';
+    
+    // Price Table Section
+    echo '<h3 style="margin-top: 30px; margin-bottom: 15px; color: #0073aa;">💰 Price Table Information</h3>';
+    echo '<table class="form-table">';
+    
+    echo '<tr>';
+    echo '<th><label for="price_table_title">' . __('Price Table Title', 'skylightpoly') . '</label></th>';
+    echo '<td><input type="text" id="price_table_title" name="price_table_title" value="' . esc_attr($price_table_title) . '" class="regular-text" placeholder="e.g., Product Pricing 2024" /></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="currency_symbol">' . __('Currency Symbol', 'skylightpoly') . '</label></th>';
+    echo '<td><input type="text" id="currency_symbol" name="currency_symbol" value="' . esc_attr($currency_symbol) . '" class="small-text" placeholder="đ" /></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="price_table_data">' . __('Price Table Data (JSON)', 'skylightpoly') . '</label></th>';
+    echo '<td>';
+    echo '<textarea id="price_table_data" name="price_table_data" rows="10" class="large-text code" placeholder="{\n  \"categories\": [\n    {\n      \"name\": \"Category Name\",\n      \"products\": [\n        {\n          \"name\": \"Product Name\",\n          \"price\": \"100,000\",\n          \"unit\": \"per piece\",\n          \"description\": \"Product description\"\n        }\n      ]\n    }\n  ]\n}">' . esc_textarea($price_table_data) . '</textarea>';
+    echo '<p class="description">Enter price table data in JSON format. See placeholder for example structure.</p>';
+    echo '</td>';
+    echo '</tr>';
+    
+    echo '</table>';
+
+    echo '<div style="margin-top: 20px; padding: 15px; background: #f0f8ff; border-left: 4px solid #0073aa; border-radius: 4px;">';
+    echo '<h4 style="margin-top: 0; color: #0073aa;">💬 How to use Quote Articles with Price Tables:</h4>';
+    echo '<ul style="margin: 10px 0; padding-left: 20px;">';
+    echo '<li><strong>Title:</strong> Quote headline or product pricing announcement</li>';
+    echo '<li><strong>Content:</strong> Full quote text, pricing details, and product information</li>';
+    echo '<li><strong>Featured Image:</strong> Product image or company logo (recommended: 300x300px)</li>';
+    echo '<li><strong>Author Details:</strong> Name, company, and position of the person providing the quote</li>';
+    echo '<li><strong>Quote Date:</strong> When the quote/pricing was announced</li>';
+    echo '<li><strong>Price Table:</strong> Structured pricing data that will be displayed as a formatted table</li>';
+    echo '<li><strong>Featured Quote:</strong> Highlight this pricing quote on the quotes page</li>';
+    echo '</ul>';
+    echo '<p style="margin-bottom: 0;"><em>💡 Tip: Use the price table to display structured pricing information alongside the quote content.</em></p>';
+    echo '</div>';
+}
+
+/**
+ * Save Quote Article Meta Data
+ */
+function save_quote_article_meta_data($post_id)
+{
+    if (!isset($_POST['quote_article_details_nonce']) || !wp_verify_nonce($_POST['quote_article_details_nonce'], 'quote_article_details_nonce')) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    if (isset($_POST['quote_author_name'])) {
+        update_post_meta($post_id, '_quote_author_name', sanitize_text_field($_POST['quote_author_name']));
+    }
+
+    if (isset($_POST['quote_author_company'])) {
+        update_post_meta($post_id, '_quote_author_company', sanitize_text_field($_POST['quote_author_company']));
+    }
+
+    if (isset($_POST['quote_author_position'])) {
+        update_post_meta($post_id, '_quote_author_position', sanitize_text_field($_POST['quote_author_position']));
+    }
+
+    if (isset($_POST['quote_date'])) {
+        update_post_meta($post_id, '_quote_date', sanitize_text_field($_POST['quote_date']));
+    }
+
+    if (isset($_POST['quote_rating'])) {
+        update_post_meta($post_id, '_quote_rating', intval($_POST['quote_rating']));
+    }
+
+    if (isset($_POST['featured_quote'])) {
+        update_post_meta($post_id, '_featured_quote', 'yes');
+    } else {
+        update_post_meta($post_id, '_featured_quote', 'no');
+    }
+    
+    // Save price table fields
+    if (isset($_POST['price_table_title'])) {
+        update_post_meta($post_id, '_price_table_title', sanitize_text_field($_POST['price_table_title']));
+    }
+    
+    if (isset($_POST['currency_symbol'])) {
+        update_post_meta($post_id, '_currency_symbol', sanitize_text_field($_POST['currency_symbol']));
+    }
+    
+    if (isset($_POST['price_table_data'])) {
+        $price_data = sanitize_textarea_field($_POST['price_table_data']);
+        // Validate JSON format
+        $decoded = json_decode($price_data, true);
+        if (json_last_error() === JSON_ERROR_NONE) {
+            update_post_meta($post_id, '_price_table_data', $price_data);
+        }
+    }
+}
+add_action('save_post', 'save_quote_article_meta_data');
 
 /**
  * Add admin notice for Hero Slideshow feature
