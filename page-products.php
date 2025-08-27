@@ -221,11 +221,7 @@ $current_category = isset($_GET['category']) ? sanitize_text_field($_GET['catego
                                     <?php endforeach; ?>
                                 </div>
 
-                                <div class="category-footer">
-                                    <a href="?category=<?php echo esc_attr($category_data['category']->slug); ?>" class="btn btn-outline-primary btn-see-all">
-                                        <?php _e('Xem tất cả sản phẩm', 'custom-blue-orange'); ?>
-                                    </a>
-                                </div>
+
                             </div>
                         <?php
                         endforeach;
