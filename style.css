@@ -407,10 +407,10 @@ body {
 
 .side-nav-menu a {
     display: block;
-    padding: 15px 20px;
+    padding: 10px 20px;
     color: var(--dark-gray);
     text-decoration: none;
-    transition: all 0.3s ease;
+    font-size: 18px;
     font-weight: 500;
 }
 
