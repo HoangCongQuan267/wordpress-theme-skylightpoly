@@ -796,15 +796,25 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary-sky-blue), var(--secondary-sky-blue));
-    color: var(--pure-white);
-    box-shadow: 0 4px 15px rgba(135, 206, 235, 0.3);
+    display: inline-block;
+    background: var(--primary-sky-blue);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    border: none;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, var(--accent-sky-blue), var(--light-sky-blue));
+    background: #0056b3;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(135, 206, 235, 0.4);
+    color: white;
+    text-decoration: none;
 }
 
 .btn-secondary {
@@ -1240,21 +1250,22 @@ body {
 
 .btn-see-all {
     display: inline-block;
-    padding: 12px 30px;
-    background: transparent;
-    color: var(--primary-sky-blue);
-    border: 2px solid var(--primary-sky-blue);
+    background: var(--primary-sky-blue);
+    color: white;
+    padding: 12px 24px;
     border-radius: 4px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 0.8rem;
-    text-transform: uppercase;
     letter-spacing: 0.5px;
+    text-transform: uppercase;
     transition: all 0.3s ease;
+    border: none;
 }
 
 .btn-see-all:hover {
-    background: var(--primary-sky-blue);
+    background: #0056b3;
+    transform: translateY(-2px);
     color: white;
     text-decoration: none;
 }
@@ -1352,7 +1363,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    animation: badgePulse 2s infinite;
+
 }
 
 .product-badge.hot-badge {
@@ -1370,18 +1381,10 @@ body {
     color: white;
 }
 
-@keyframes badgePulse {
-    0%, 100% {
-    
-    }
-    50% {
-    
-    }
-}
+
 
 .product-badge:hover {
 
-    animation: none;
 }
 
 /* Thin Branding Banner Section */
@@ -1435,7 +1438,7 @@ body {
 
 /* Pause animation on hover */
 .branding-banner-thin:hover .brand-logos-horizontal {
-    animation-play-state: paused;
+
 }
 
 /* Scrolling animation for logos */
@@ -1659,6 +1662,7 @@ body {
 }
 
 .message-btn:hover {
+    background: #0056b3;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
     background: var(--primary-sky-blue);
@@ -1860,6 +1864,7 @@ body {
 .contact-btn:hover {
     background: #0056b3;
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
     animation-play-state: paused;
 }
 
@@ -2003,7 +2008,7 @@ body {
     display: inline-block;
     background: var(--primary-sky-blue);
     color: white;
-    padding: 12px 30px;
+    padding: 12px 24px;
     border-radius: 4px;
     text-decoration: none;
     font-weight: 500;
@@ -2011,14 +2016,14 @@ body {
     letter-spacing: 0.5px;
     text-transform: uppercase;
     transition: all 0.3s ease;
-    border: 2px solid #2154fe;
+    border: none;
 }
 
 .show-all-btn:hover {
-    background: transparent;
-    color: #2154fe;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(33, 84, 254, 0.2);
+    background: #0056b3;
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
 }
 
 /* Video Section */
