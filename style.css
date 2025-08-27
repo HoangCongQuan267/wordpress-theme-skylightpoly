@@ -1128,25 +1128,39 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 15px 0;
-    gap: 15px;
+    margin: 0 0;
+    gap: 20px;
 }
 
 .ribbon-line {
+    height: 1px;
+    width: 80px;
+    background: linear-gradient(90deg, transparent 0%, var(--primary-sky-blue) 30%, var(--secondary-sky-blue) 70%, transparent 100%);
+    border-radius: 0.5px;
+    position: relative;
+    opacity: 0.8;
+}
+
+.ribbon-line::after {
+    content: '';
+    position: absolute;
+    top: -0.5px;
+    left: 0;
+    right: 0;
     height: 2px;
-    width: 60px;
-    background: linear-gradient(90deg, transparent 0%, var(--primary-sky-blue) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(30, 56, 161, 0.1) 30%, rgba(101, 167, 253, 0.1) 70%, transparent 100%);
     border-radius: 1px;
 }
 
 .ribbon-diamond {
-    width: 12px;
+    width: 24px;
     height: 12px;
-    background: var(--primary-sky-blue);
-    transform: rotate(45deg);
-    border-radius: 2px;
+    background: linear-gradient(135deg, var(--primary-sky-blue) 0%, var(--secondary-sky-blue) 100%);
     position: relative;
-    box-shadow: 0 2px 8px rgba(30, 56, 161, 0.3);
+    border-radius: 1px;
+    box-shadow: 0 1px 4px rgba(30, 56, 161, 0.2), 0 0 8px rgba(30, 56, 161, 0.1);
+    border: 0.5px solid rgba(255, 255, 255, 0.3);
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);
 }
 
 .ribbon-diamond::before {
@@ -1155,26 +1169,76 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 2px;
     background: var(--pure-white);
     border-radius: 1px;
+    opacity: 0.9;
+}
+
+.ribbon-diamond::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 2px;
+    background: var(--secondary-sky-blue);
+    border-radius: 50%;
+    box-shadow: 0 0 2px rgba(101, 167, 253, 0.8);
 }
 
 /* Responsive ribbon adjustments */
 @media (max-width: 768px) {
+    .title-ribbon {
+        margin: 0 0;
+        gap: 15px;
+    }
+    
     .ribbon-line {
-        width: 40px;
+        width: 60px;
     }
     
     .ribbon-diamond {
-        width: 10px;
+        width: 20px;
         height: 10px;
     }
     
     .ribbon-diamond::before {
-        width: 4px;
-        height: 4px;
+        width: 6px;
+        height: 1.5px;
+    }
+    
+    .ribbon-diamond::after {
+        width: 1.5px;
+        height: 1.5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-ribbon {
+        margin: 0 0;
+        gap: 12px;
+    }
+    
+    .ribbon-line {
+        width: 50px;
+    }
+    
+    .ribbon-diamond {
+        width: 18px;
+        height: 9px;
+    }
+    
+    .ribbon-diamond::before {
+        width: 5px;
+        height: 1px;
+    }
+    
+    .ribbon-diamond::after {
+        width: 1px;
+        height: 1px;
     }
 }
 
