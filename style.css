@@ -21,10 +21,10 @@ body {
 
 /* Sky Blue and White Color Palette Variables */
 :root {
-    --primary-sky-blue: #1e38a1;
+    --primary-sky-blue: #007cba;
     --secondary-sky-blue: #65a7fd;
-    --accent-sky-blue: #1e38a1;
-    --light-sky-blue: #1e38a1;
+    --accent-sky-blue: #007cba;
+    --light-sky-blue: #007cba;
     --pure-white: #ffffff;
     --off-white: #fafafa;
     --light-gray: #eceff1;

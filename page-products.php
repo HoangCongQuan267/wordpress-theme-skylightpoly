@@ -1,25 +1,57 @@
 <?php
 
 /**
- * Products Page Template - Simplified
+ * Products Page Template - WordPress Product Posts
  * 
- * This template displays products with:
- * - Left panel: Category list
+ * This template displays products from WordPress product post type with:
+ * - Left panel: Product category list
  * - Right panel: Products of selected category
- * - Same styling as home page products section
- * - Customizer options support
+ * - Single product page styling
+ * - Based on published product posts
  */
 
 get_header(); ?>
 
 <?php
-// Get products page customizer settings (same as home page)
+// Get products page customizer settings
 $products_bg_color = get_theme_mod('products_section_bg_color', '#ffffff');
 $products_text_color = get_theme_mod('products_section_text_color', '#333333');
 $products_layout = get_theme_mod('products_grid_layout', 'grid');
 
 // Get current category filter
 $current_category = isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '';
+
+// Get product categories
+$product_categories = get_terms(array(
+    'taxonomy' => 'product_category',
+    'hide_empty' => false, // Show all categories, even empty ones
+));
+
+// Debug: Check if categories exist
+// Uncomment the line below to debug
+// var_dump($product_categories);
+
+// Get products query
+$products_args = array(
+    'post_type' => 'product',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    'orderby' => 'date',
+    'order' => 'DESC'
+);
+
+// Filter by category if selected
+if (!empty($current_category)) {
+    $products_args['tax_query'] = array(
+        array(
+            'taxonomy' => 'product_category',
+            'field'    => 'slug',
+            'terms'    => $current_category,
+        ),
+    );
+}
+
+$products_query = new WP_Query($products_args);
 ?>
 
 <main id="main" class="site-main products-page" style="background-color: <?php echo esc_attr($products_bg_color); ?>; color: <?php echo esc_attr($products_text_color); ?>;">
@@ -31,20 +63,31 @@ $current_category = isset($_GET['category']) ? sanitize_text_field($_GET['catego
             <aside class="categories-panel">
                 <h3 class="panel-title">Danh Mục Sản Phẩm</h3>
                 <ul class="category-list">
+                    <!-- All Products Link -->
+                    <li class="category-item <?php echo empty($current_category) ? 'active' : ''; ?>">
+                        <a href="<?php echo esc_url(get_permalink()); ?>" class="category-link">
+                            Tất cả sản phẩm
+                        </a>
+                    </li>
+                    
                     <?php
-                    // Get categories from customizer
-                    $categories = function_exists('get_product_categories') ? get_product_categories() : array();
-
-                    if (!empty($categories)) :
-                        foreach ($categories as $category) :
+                    // Debug: Show category information
+                    // echo '<!-- Categories found: ' . count($product_categories) . ' -->';
+                    
+                    if (!empty($product_categories) && !is_wp_error($product_categories)) :
+                        foreach ($product_categories as $category) :
                     ?>
-                            <li class="category-item <?php echo ($current_category === $category['slug']) ? 'active' : ''; ?>">
-                                <a href="?category=<?php echo esc_attr($category['slug']); ?>" class="category-link">
-                                    <?php echo esc_html($category['name']); ?>
+                            <li class="category-item <?php echo ($current_category === $category->slug) ? 'active' : ''; ?>">
+                                <a href="?category=<?php echo esc_attr($category->slug); ?>" class="category-link">
+                                    <?php echo esc_html($category->name); ?>
+                                    <span class="category-count">(<?php echo $category->count; ?>)</span>
                                 </a>
                             </li>
                     <?php
                         endforeach;
+                    else :
+                        // Show message when no categories found
+                        echo '<!-- No product categories found or error occurred -->';
                     endif;
                     ?>
                 </ul>
@@ -53,23 +96,15 @@ $current_category = isset($_GET['category']) ? sanitize_text_field($_GET['catego
             <!-- Right Panel - Products -->
             <div class="products-panel">
                 <?php
-                // Get products data
-                $grouped_products = function_exists('get_products_by_categories') ? get_products_by_categories() : array();
-
-                if (!empty($current_category)) :
-                    // Show products for selected category
-                    $category_products = array();
-                    $category_name = '';
-
-                    foreach ($grouped_products as $category_data) {
-                        if ($category_data['category']->slug === $current_category) {
-                            $category_products = $category_data['products'];
-                            $category_name = $category_data['category']->name;
-                            break;
+                if ($products_query->have_posts()) :
+                    // Get category name for display
+                    $category_name = 'Tất cả sản phẩm';
+                    if (!empty($current_category)) {
+                        $current_term = get_term_by('slug', $current_category, 'product_category');
+                        if ($current_term && !is_wp_error($current_term)) {
+                            $category_name = $current_term->name;
                         }
                     }
-
-                    if (!empty($category_products)) :
                 ?>
                         <div class="category-products-section">
                             <div class="category-header">
@@ -78,30 +113,39 @@ $current_category = isset($_GET['category']) ? sanitize_text_field($_GET['catego
                             </div>
 
                             <div class="products-grid layout-<?php echo esc_attr($products_layout); ?>">
-                                <?php foreach ($category_products as $product) : ?>
+                                <?php while ($products_query->have_posts()) : $products_query->the_post(); ?>
                                     <div class="product-card vertical-card">
                                         <?php
+                                        // Get product meta data
+                                        $custom_badge = get_post_meta(get_the_ID(), 'custom_badge', true);
+                                        $discount = get_post_meta(get_the_ID(), 'discount', true);
+                                        $hot_tag = get_post_meta(get_the_ID(), 'hot_tag', true);
+                                        $product_price = get_post_meta(get_the_ID(), 'product_price', true);
+                                        $discount_price = get_post_meta(get_the_ID(), 'discount_price', true);
+                                        $price_unit = get_post_meta(get_the_ID(), 'price_unit', true);
+                                        $product_link = get_post_meta(get_the_ID(), 'product_link', true);
+                                        
                                         // Determine which badge to show
                                         $badge_text = '';
                                         $badge_class = '';
 
-                                        if (!empty($product['custom_badge'])) {
-                                            $badge_text = $product['custom_badge'];
+                                        if (!empty($custom_badge)) {
+                                            $badge_text = $custom_badge;
                                             $badge_class = 'custom-badge';
-                                        } elseif (!empty($product['discount']) && $product['discount'] > 0) {
-                                            $badge_text = '-' . $product['discount'] . '%';
+                                        } elseif (!empty($discount) && $discount > 0) {
+                                            $badge_text = '-' . $discount . '%';
                                             $badge_class = 'discount-badge';
-                                        } elseif (!empty($product['hot_tag'])) {
+                                        } elseif (!empty($hot_tag)) {
                                             $badge_text = 'HOT';
                                             $badge_class = 'hot-badge';
                                         }
                                         ?>
 
                                         <div class="product-image">
-                                            <?php if (!empty($product['image_url'])) : ?>
-                                                <img src="<?php echo esc_url($product['image_url']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
+                                            <?php if (has_post_thumbnail()) : ?>
+                                                <?php the_post_thumbnail('medium', array('loading' => 'lazy')); ?>
                                             <?php else : ?>
-                                                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="<?php echo esc_attr($product['title']); ?>">
+                                                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="<?php the_title_attribute(); ?>">
                                             <?php endif; ?>
 
                                             <?php if (!empty($badge_text)) : ?>
@@ -109,147 +153,45 @@ $current_category = isset($_GET['category']) ? sanitize_text_field($_GET['catego
                                             <?php endif; ?>
 
                                             <div class="product-overlay">
-                                                <?php if (!empty($product['link'])) : ?>
-                                                    <a href="<?php echo esc_url($product['link']); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
+                                                <?php if (!empty($product_link)) : ?>
+                                                    <a href="<?php echo esc_url($product_link); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
                                                 <?php else : ?>
-                                                    <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
+                                                    <a href="<?php the_permalink(); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
 
                                         <div class="product-content">
-                                            <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
-                                            <p class="product-excerpt"><?php echo esc_html($product['content']); ?></p>
+                                            <h4 class="product-title"><?php the_title(); ?></h4>
+                                            <p class="product-excerpt"><?php echo has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 20); ?></p>
 
-                                            <?php if (!empty($product['price']) || !empty($product['discount_price'])) : ?>
+                                            <?php if (!empty($product_price) || !empty($discount_price)) : ?>
                                                 <div class="product-pricing">
-                                                    <?php if (!empty($product['discount_price'])) : ?>
-                                                        <span class="original-price"><?php echo esc_html($product['price']); ?></span>
-                                                        <span class="current-price"><?php echo esc_html($product['discount_price']); ?></span>
+                                                    <?php if (!empty($discount_price)) : ?>
+                                                        <span class="original-price"><?php echo esc_html($product_price); ?></span>
+                                                        <span class="current-price"><?php echo esc_html($discount_price); ?></span>
                                                     <?php else : ?>
-                                                        <span class="current-price"><?php echo esc_html($product['price']); ?></span>
+                                                        <span class="current-price"><?php echo esc_html($product_price); ?></span>
                                                     <?php endif; ?>
-                                                    <?php if (!empty($product['unit'])) : ?>
-                                                        <span class="price-unit">/<?php echo esc_html($product['unit']); ?></span>
+                                                    <?php if (!empty($price_unit)) : ?>
+                                                        <span class="price-unit">/<?php echo esc_html($price_unit); ?></span>
                                                     <?php endif; ?>
                                                 </div>
                                             <?php endif; ?>
                                         </div>
                                     </div>
-                                <?php endforeach; ?>
+                                <?php endwhile; ?>
+                                <?php wp_reset_postdata(); ?>
                             </div>
                         </div>
                     <?php
-                    else :
+                else :
                     ?>
                         <div class="no-products-found">
                             <h3>Không có sản phẩm</h3>
                             <p>Danh mục này hiện chưa có sản phẩm nào.</p>
                         </div>
                         <?php
-                    endif;
-                else :
-                    // Show all products grouped by categories
-                    if (!empty($grouped_products)) :
-                        foreach ($grouped_products as $category_data) :
-                        ?>
-                            <div class="product-category-section">
-                                <div class="category-header">
-                                    <h3 class="category-title"><?php echo esc_html($category_data['category']->name); ?></h3>
-                                    <div class="category-line"></div>
-                                </div>
-
-                                <div class="products-grid layout-<?php echo esc_attr($products_layout); ?>">
-                                    <?php foreach (array_slice($category_data['products'], 0, 6) as $product) : ?>
-                                        <div class="product-card vertical-card">
-                                            <?php
-                                            // Determine which badge to show
-                                            $badge_text = '';
-                                            $badge_class = '';
-
-                                            if (!empty($product['custom_badge'])) {
-                                                $badge_text = $product['custom_badge'];
-                                                $badge_class = 'custom-badge';
-                                            } elseif (!empty($product['discount']) && $product['discount'] > 0) {
-                                                $badge_text = '-' . $product['discount'] . '%';
-                                                $badge_class = 'discount-badge';
-                                            } elseif (!empty($product['hot_tag'])) {
-                                                $badge_text = 'HOT';
-                                                $badge_class = 'hot-badge';
-                                            }
-                                            ?>
-
-                                            <div class="product-image">
-                                                <?php if (!empty($product['image_url'])) : ?>
-                                                    <img src="<?php echo esc_url($product['image_url']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
-                                                <?php else : ?>
-                                                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="<?php echo esc_attr($product['title']); ?>">
-                                                <?php endif; ?>
-
-                                                <?php if (!empty($badge_text)) : ?>
-                                                    <span class="product-badge <?php echo esc_attr($badge_class); ?>"><?php echo esc_html($badge_text); ?></span>
-                                                <?php endif; ?>
-
-                                                <div class="product-overlay">
-                                                    <?php if (!empty($product['link'])) : ?>
-                                                        <a href="<?php echo esc_url($product['link']); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
-                                                    <?php else : ?>
-                                                        <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
-                                                    <?php endif; ?>
-                                                </div>
-                                            </div>
-
-                                            <div class="product-content">
-                                                <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
-                                                <p class="product-excerpt"><?php echo esc_html($product['content']); ?></p>
-
-                                                <?php if (!empty($product['price']) || !empty($product['discount_price'])) : ?>
-                                                    <div class="product-pricing">
-                                                        <?php if (!empty($product['discount_price'])) : ?>
-                                                            <span class="original-price"><?php echo esc_html($product['price']); ?></span>
-                                                            <span class="current-price"><?php echo esc_html($product['discount_price']); ?></span>
-                                                        <?php else : ?>
-                                                            <span class="current-price"><?php echo esc_html($product['price']); ?></span>
-                                                        <?php endif; ?>
-                                                        <?php if (!empty($product['unit'])) : ?>
-                                                            <span class="price-unit">/<?php echo esc_html($product['unit']); ?></span>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-
-
-                            </div>
-                        <?php
-                        endforeach;
-                    else :
-                        // Demo products when no data available
-                        $default_unit = get_theme_mod('products_default_unit', 'đơn vị');
-                        $demo_unit_text = '/' . $default_unit;
-                        $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
-                        ?>
-                        <div class="products-grid layout-<?php echo esc_attr($products_layout); ?>">
-                            <div class="product-card vertical-card">
-                                <div class="product-image">
-                                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 1">
-                                    <div class="product-overlay">
-                                        <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <h4 class="product-title">Sản Phẩm Demo 1</h4>
-                                    <p class="product-excerpt">Mô tả sản phẩm demo để hiển thị khi chưa có dữ liệu từ customizer.</p>
-                                    <div class="product-pricing">
-                                        <span class="current-price">1.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                <?php
-                    endif;
                 endif;
                 ?>
             </div>

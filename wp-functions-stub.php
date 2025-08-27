@@ -360,6 +360,78 @@ if (!function_exists('is_post_type_archive')) {
     }
 }
 
+if (!function_exists('get_post_type_archive_link')) {
+    function get_post_type_archive_link($post_type) {
+        return '#';
+    }
+}
+
+if (!function_exists('get_the_terms')) {
+    function get_the_terms($post_id, $taxonomy) {
+        return false;
+    }
+}
+
+if (!function_exists('get_term_by')) {
+    function get_term_by($field, $value, $taxonomy) {
+        // Stub for get_term_by function
+        return (object) array(
+            'term_id' => 1,
+            'name' => 'Sample Term',
+            'slug' => 'sample-term',
+            'term_group' => 0,
+            'term_taxonomy_id' => 1,
+            'taxonomy' => $taxonomy,
+            'description' => '',
+            'parent' => 0,
+            'count' => 1
+        );
+    }
+}
+
+if (!function_exists('the_title_attribute')) {
+    function the_title_attribute($args = '') {
+        // Stub for the_title_attribute function
+        echo esc_attr(get_the_title());
+    }
+}
+
+if (!function_exists('has_excerpt')) {
+    function has_excerpt($post = null) {
+        // Stub for has_excerpt function
+        return false;
+    }
+}
+
+if (!function_exists('wp_die')) {
+    function wp_die($message = '', $title = '', $args = array()) {
+        die($message);
+    }
+}
+
+if (!function_exists('term_exists')) {
+    function term_exists($term, $taxonomy = '', $parent = null) {
+        // Stub function - returns false for non-existing terms
+        return false;
+    }
+}
+
+if (!function_exists('wp_insert_term')) {
+    function wp_insert_term($term, $taxonomy, $args = array()) {
+        // Stub function - returns success array
+        return array('term_id' => 1, 'term_taxonomy_id' => 1);
+    }
+}
+
+if (!function_exists('get_page_by_path')) {
+    function get_page_by_path($page_path, $output = OBJECT, $post_type = 'page') {
+        // Stub function - returns mock page object
+        $page = new stdClass();
+        $page->ID = 1;
+        return $page;
+    }
+}
+
 if (!function_exists('flush_rewrite_rules')) {
     function flush_rewrite_rules($hard = true) {
         // Stub function for development
