@@ -307,6 +307,104 @@
     </div>
 </div>
 
+<!-- Scroll to Top Button -->
+<div class="scroll-to-top-btn" id="scrollToTopBtn">
+    <button class="scroll-top-btn" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 15l-6-6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+</div>
+
+<style>
+    /* Scroll to Top Button */
+    .scroll-to-top-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        transform: translateY(20px);
+    }
+
+    .scroll-to-top-btn.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .scroll-top-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--primary-sky-blue, #007acc);
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 122, 204, 0.3);
+        transition: all 0.3s ease;
+        font-size: 0;
+    }
+
+    .scroll-top-btn:hover {
+        background: var(--primary-sky-blue-dark, #005a99);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 122, 204, 0.4);
+    }
+
+    .scroll-top-btn:active {
+        transform: translateY(0);
+    }
+
+    .scroll-top-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .scroll-to-top-btn {
+            bottom: 20px;
+            right: 140px;
+        }
+
+        .scroll-top-btn {
+            width: 45px;
+            height: 45px;
+        }
+
+        .scroll-top-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+</style>
+
+<script>
+    // Scroll to Top functionality
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Show/hide scroll to top button based on scroll position
+    window.addEventListener('scroll', function() {
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.add('show');
+        } else {
+            scrollToTopBtn.classList.remove('show');
+        }
+    });
+</script>
+
 </body>
 
 </html>
