@@ -1,73 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hero Slideshow Test</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Test Hero Section with Custom Styling -->
     <section class="hero-section" data-autoplay="true" data-duration="5000">
         <style>
-        /* Custom styling demo */
-        .hero-section .slide {
-            align-items: center; /* center, flex-start, flex-end */
-        }
-        .hero-section .slide-content {
-            background: rgba(33, 84, 254, 0.8); /* Custom panel background */
-            text-align: center; /* left, center, right */
-        }
-        .hero-section .slide-title {
-            font-family: 'Georgia'; /* Custom font */
-            font-size: 3.5rem; /* Custom size */
-            color: #ffffff; /* Custom color */
-        }
-        .hero-section .slide-subtitle {
-            font-size: 1.8rem; /* Custom size */
-            color: #f0f8ff; /* Custom color */
-        }
-        .hero-section .slide-button {
-            background: #ff6b35; /* Custom button color */
-            color: #ffffff;
-        }
-        .hero-section .slide-button:hover {
-            background: #ff6b35;
-            opacity: 0.9;
-        }
+            /* Custom styling demo */
+            .hero-section .slide {
+                align-items: center;
+                /* center, flex-start, flex-end */
+            }
+
+            .hero-section .slide-content {
+                background: rgba(33, 84, 254, 0.8);
+                /* Custom panel background */
+                text-align: center;
+                /* left, center, right */
+            }
+
+            .hero-section .slide-title {
+                font-family: 'Georgia';
+                /* Custom font */
+                font-size: 3.5rem;
+                /* Custom size */
+                color: #ffffff;
+                /* Custom color */
+            }
+
+            .hero-section .slide-subtitle {
+                font-size: 1.25rem;
+                /* Custom size */
+                color: #f0f8ff;
+                /* Custom color */
+            }
+
+            .hero-section .slide-button {
+                background: #ff6b35;
+                /* Custom button color */
+                color: #ffffff;
+            }
+
+            .hero-section .slide-button:hover {
+                background: #ff6b35;
+                opacity: 0.9;
+            }
         </style>
         <div class="hero-slideshow">
             <!-- Test Slide 1 -->
-            <div class="slide active" style="background-image: url('https://via.placeholder.com/1200x500/2154fe/ffffff?text=Slide+1')">
+            <div class="slide active"
+                style="background-image: url('https://via.placeholder.com/1200x500/2154fe/ffffff?text=Slide+1')">
                 <div class="slide-content">
                     <h1 class="slide-title">Welcome to Our Website</h1>
                     <p class="slide-subtitle">Discover amazing features and services</p>
                     <a href="#" class="slide-button">Get Started</a>
                 </div>
             </div>
-            
+
             <!-- Test Slide 2 -->
-            <div class="slide" style="background-image: url('https://via.placeholder.com/1200x500/4169e1/ffffff?text=Slide+2')">
+            <div class="slide"
+                style="background-image: url('https://via.placeholder.com/1200x500/4169e1/ffffff?text=Slide+2')">
                 <div class="slide-content">
                     <h1 class="slide-title">Premium Quality</h1>
                     <p class="slide-subtitle">Experience the best in class solutions</p>
                     <a href="#" class="slide-button">Learn More</a>
                 </div>
             </div>
-            
+
             <!-- Test Slide 3 -->
-            <div class="slide" style="background-image: url('https://via.placeholder.com/1200x500/87ceeb/000000?text=Slide+3')">
+            <div class="slide"
+                style="background-image: url('https://via.placeholder.com/1200x500/87ceeb/000000?text=Slide+3')">
                 <div class="slide-content">
                     <h1 class="slide-title">Join Us Today</h1>
                     <p class="slide-subtitle">Be part of our growing community</p>
                     <a href="#" class="slide-button">Sign Up</a>
                 </div>
             </div>
-            
+
             <!-- Navigation Arrows -->
             <button class="slideshow-arrows prev-arrow">‹</button>
             <button class="slideshow-arrows next-arrow">›</button>
-            
+
             <!-- Slide Indicators -->
             <div class="slideshow-nav">
                 <span class="nav-dot active" data-slide="0"></span>
@@ -76,13 +95,14 @@
             </div>
         </div>
     </section>
-    
+
     <div style="padding: 50px; text-align: center;">
         <h2>Hero Slideshow Test Page</h2>
         <p>This page tests the hero slideshow functionality with sample images.</p>
         <p>The slideshow should auto-play and respond to navigation controls.</p>
     </div>
-    
+
     <script src="js/custom.js"></script>
 </body>
+
 </html>

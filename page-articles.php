@@ -249,7 +249,7 @@ get_header(); ?>
     }
 
     .featured-article .featured-title {
-        font-size: 1.8rem;
+        font-size: 1.25rem;
         font-weight: 600;
         line-height: 1.3;
         margin-bottom: 12px;
