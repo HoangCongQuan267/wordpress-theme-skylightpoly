@@ -319,6 +319,46 @@ if (function_exists('add_filter')) {
 }
 
 /**
+ * Add active class to products menu item when on products page
+ */
+function add_products_menu_active_class($classes, $item, $args) {
+    // Check if we're on products page (page-products.php) or products archive
+    $is_products_page = false;
+    
+    if (function_exists('is_page_template') && is_page_template('page-products.php')) {
+        $is_products_page = true;
+    } elseif (function_exists('is_post_type_archive') && is_post_type_archive('product')) {
+        $is_products_page = true;
+    } elseif (function_exists('is_page') && is_page() && function_exists('get_page_template_slug')) {
+        $template = get_page_template_slug();
+        if ($template === 'page-products.php') {
+            $is_products_page = true;
+        }
+    }
+    
+    if ($is_products_page && function_exists('home_url')) {
+        // Check if this menu item links to the products page
+        $products_url = home_url('/products/');
+        $products_url_alt = home_url('/san-pham/');
+        
+        if (isset($item->url) && (
+            $item->url === $products_url || 
+            $item->url === rtrim($products_url, '/') ||
+            $item->url === $products_url_alt || 
+            $item->url === rtrim($products_url_alt, '/') ||
+            strpos($item->url, '/products') !== false ||
+            strpos($item->url, '/san-pham') !== false
+        )) {
+            $classes[] = 'current-menu-item';
+        }
+    }
+    return $classes;
+}
+if (function_exists('add_filter')) {
+    add_filter('nav_menu_css_class', 'add_products_menu_active_class', 10, 3);
+}
+
+/**
  * Manual permalink flush function
  * Add ?flush_permalinks=1 to any page URL to trigger permalink flush
  */
