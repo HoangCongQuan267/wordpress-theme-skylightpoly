@@ -428,19 +428,16 @@ get_header(); ?>
         padding: 12px 16px;
         margin: 0 4px;
         background: #ffffff;
-        border: 1px solid #e0e0e0;
         color: #666666;
         text-decoration: none;
         font-size: 0.9rem;
         font-weight: 400;
-        border-radius: 4px;
     }
 
     .articles-pagination .page-numbers:hover,
     .articles-pagination .page-numbers.current {
         background: #1a1a1a;
         color: #ffffff;
-        border-color: #1a1a1a;
     }
 
     /* Clean No Articles */
@@ -470,7 +467,6 @@ get_header(); ?>
         background: #1a1a1a;
         color: #ffffff;
         text-decoration: none;
-        border-radius: 4px;
         font-weight: 400;
         font-size: 0.9rem;
     }

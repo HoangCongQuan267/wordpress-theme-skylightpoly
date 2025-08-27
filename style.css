@@ -3277,18 +3277,9 @@ body {
 /* Article Card Styles */
 .article-card {
     background: white;
-    border-radius: 4px;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    border: 1px solid #f0f0f0;
     display: flex;
     flex-direction: column;
-}
-
-.article-card:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    border-color: #e0e0e0;
 }
 
 .article-image {

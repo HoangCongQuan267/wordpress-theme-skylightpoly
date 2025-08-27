@@ -121,7 +121,7 @@ get_header(); ?>
 
                     // Lưu thông tin phân trang trước khi reset
                     $max_pages = 1;
-                    if ($quote_query instanceof WP_Query) {
+                    if ($quote_query instanceof WP_Query && isset($quote_query->max_num_pages)) {
                         $max_pages = $quote_query->max_num_pages;
                     }
                     wp_reset_postdata();
@@ -215,26 +215,16 @@ get_header(); ?>
     /* Quote Cards - Article Card Style */
     .quote-card {
         background: white;
-        border-radius: 4px;
         overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease;
-        border: 1px solid #f0f0f0;
         display: flex;
         flex-direction: column;
         cursor: pointer;
         position: relative;
     }
 
-    .quote-card:hover {
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        border-color: #e0e0e0;
-    }
-
     .quote-card.featured-quote {
         grid-column: span 2;
         grid-row: span 2;
-        border: 1px solid #f0f0f0;
         background: white;
     }
 
@@ -245,10 +235,8 @@ get_header(); ?>
         background: #1a1a1a;
         color: #ffffff;
         padding: 4px 8px;
-        border-radius: 4px;
         font-size: 0.7rem;
         font-weight: 400;
-        box-shadow: none;
         font-family: 'Helvetica Neue', 'Arial', sans-serif;
         z-index: 2;
     }
@@ -260,10 +248,8 @@ get_header(); ?>
         background: #28a745;
         color: #ffffff;
         padding: 4px 8px;
-        border-radius: 4px;
         font-size: 0.7rem;
         font-weight: 400;
-        box-shadow: none;
         font-family: 'Helvetica Neue', 'Arial', sans-serif;
         z-index: 2;
     }
@@ -288,7 +274,6 @@ get_header(); ?>
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.4s ease;
     }
 
     .featured-quote .quote-card-header {
@@ -326,11 +311,10 @@ get_header(); ?>
     .quote-title a {
         color: inherit;
         text-decoration: none;
-        transition: color 0.3s ease;
     }
 
     .quote-title a:hover {
-        color: var(--primary-sky-blue);
+        color: #666666;
     }
 
     .featured-quote .quote-title {
@@ -409,12 +393,15 @@ get_header(); ?>
     }
 
     .article-category {
-        background: #f8f9fa;
-        padding: 4px 8px;
-        border-radius: 12px;
         font-size: 0.65rem;
         font-weight: 500;
-        color: #495057;
+        color: #888888;
+    }
+
+    .article-category::before {
+        content: '•';
+        margin-right: 6px;
+        color: #cccccc;
     }
 
     .read-more {
@@ -459,7 +446,6 @@ get_header(); ?>
         background: #1a1a1a;
         color: #ffffff;
         text-decoration: none;
-        border-radius: 4px;
         font-weight: 400;
         font-size: 0.9rem;
     }
@@ -484,19 +470,16 @@ get_header(); ?>
         padding: 12px 16px;
         margin: 0 4px;
         background: #ffffff;
-        border: 1px solid #e0e0e0;
         color: #666666;
         text-decoration: none;
         font-size: 0.9rem;
         font-weight: 400;
-        border-radius: 4px;
     }
 
     .quotes-pagination .page-numbers:hover,
     .quotes-pagination .page-numbers.current {
         background: #1a1a1a;
         color: #ffffff;
-        border-color: #1a1a1a;
     }
 
     /* 3-Column Responsive Design */
