@@ -36,20 +36,20 @@
                             </select>
                         </span>
                     <?php endif; ?>
-                    <span class="phone">
-                        <?php
-                        $default_phone = get_theme_mod('default_phone', '+84 123 456 789');
-                        $phone_href = 'tel:' . preg_replace('/[^0-9+]/', '', $default_phone);
-                        ?>
+                    <b class="phone">
+                        SĐT: <?php
+                                $default_phone = get_theme_mod('default_phone', '+84 123 456 789');
+                                $phone_href = 'tel:' . preg_replace('/[^0-9+]/', '', $default_phone);
+                                ?>
                         <a href="<?php echo esc_attr($phone_href); ?>" id="phone-link"><?php echo esc_html($default_phone); ?></a>
-                    </span>
-                    <span class="email">
+                    </b>
+                    <b class="email">
                         <?php $default_email = get_theme_mod('default_email', 'info@yoursite.com'); ?>
                         <a href="mailto:<?php echo esc_attr($default_email); ?>" id="email-link"><?php echo esc_html($default_email); ?></a>
-                    </span>
-                    <span class="address" id="address-text">
+                    </b>
+                    <b class="address" id="address-text">
                         <?php echo esc_html(get_theme_mod('default_address', '123 Đường Chính, Thành phố, Việt Nam')); ?>
-                    </span>
+                    </b>
                 </div>
             </div>
         </div>

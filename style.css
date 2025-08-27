@@ -259,7 +259,7 @@ body {
     text-decoration: none;
     font-weight: 400;
     padding: 8px 10px;
-    border-radius: 20px;
+    border-radius: 4px;
     transition: all 0.3s ease;
     font-size: 14px;
     letter-spacing: 0.3px;
@@ -273,14 +273,14 @@ body {
 }
 
 .main-navigation a:hover {
-    background: linear-gradient(135deg, var(--primary-sky-blue), var(--secondary-sky-blue));
+    background: var(--primary-sky-blue);
     color: var(--pure-white);
     transform: translateY(-1px);
     box-shadow: 0 3px 12px rgba(135, 206, 235, 0.4);
 }
 
 .main-navigation .current-menu-item a {
-    background: linear-gradient(135deg, var(--primary-sky-blue), var(--secondary-sky-blue));
+    background: var(--primary-sky-blue);
     color: var(--pure-white);
     transform: translateY(-1px);
     box-shadow: 0 3px 12px rgba(135, 206, 235, 0.4);
@@ -369,7 +369,7 @@ body {
 .side-nav-header {
     padding: 10px 10px;
     border-bottom: 1px solid var(--light-gray);
-    background: linear-gradient(135deg, var(--primary-sky-blue), var(--secondary-sky-blue));
+    background: var(--primary-sky-blue);
     color: var(--pure-white);
 }
 
@@ -573,7 +573,7 @@ body {
     display: inline-block;
     margin-top: 20px;
     padding: 12px 25px;
-    background: linear-gradient(135deg, var(--primary-sky-blue), var(--secondary-sky-blue));
+    background: var(--primary-sky-blue);
     color: var(--pure-white);
     text-decoration: none;
     border-radius: 25px;
@@ -816,7 +816,7 @@ body {
 }
 
 .btn-secondary:hover {
-    background: linear-gradient(135deg, var(--primary-sky-blue), var(--secondary-sky-blue));
+    background: var(--primary-sky-blue);
     color: var(--pure-white);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(135, 206, 235, 0.3);
