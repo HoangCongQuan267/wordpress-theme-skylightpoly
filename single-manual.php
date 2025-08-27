@@ -37,6 +37,7 @@ get_header(); ?>
 
                     <footer class="post-footer">
                         <div class="related-posts">
+                            <h3>Hướng dẫn liên quan</h3>
                             <?php
                             // Get related manuals
                             $related_manuals = new WP_Query(array(
@@ -47,9 +48,9 @@ get_header(); ?>
                                 'order' => 'DESC'
                             ));
 
-                            if ($related_manuals->have_posts()) : ?>
-                                <h3>Hướng dẫn liên quan</h3>
-                                <ul class="related-posts-list">
+                            if ($related_manuals->have_posts()) :
+                            ?>
+                                <ul class="recent-posts-list">
                                     <?php while ($related_manuals->have_posts()) : $related_manuals->the_post(); ?>
                                         <li>
                                             <a href="<?php the_permalink(); ?>">
@@ -59,8 +60,8 @@ get_header(); ?>
                                         </li>
                                     <?php endwhile; ?>
                                 </ul>
-                                <?php wp_reset_postdata(); ?>
                             <?php endif; ?>
+                            <?php wp_reset_postdata(); ?>
                         </div>
                     </footer>
                 </article>

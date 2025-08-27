@@ -141,15 +141,17 @@ $products_query = new WP_Query($products_args);
                                         }
                                         ?>
 
+                                        <?php if (!empty($badge_text)) : ?>
+                                            <div class="product-badge <?php echo esc_attr($badge_class); ?>">
+                                                <?php echo esc_html($badge_text); ?>
+                                            </div>
+                                        <?php endif; ?>
+
                                         <div class="product-image">
                                             <?php if (has_post_thumbnail()) : ?>
                                                 <?php the_post_thumbnail('medium', array('loading' => 'lazy')); ?>
                                             <?php else : ?>
                                                 <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="<?php the_title_attribute(); ?>">
-                                            <?php endif; ?>
-
-                                            <?php if (!empty($badge_text)) : ?>
-                                                <span class="product-badge <?php echo esc_attr($badge_class); ?>"><?php echo esc_html($badge_text); ?></span>
                                             <?php endif; ?>
 
                                             <div class="product-overlay">
@@ -163,18 +165,19 @@ $products_query = new WP_Query($products_args);
 
                                         <div class="product-content">
                                             <h4 class="product-title"><?php the_title(); ?></h4>
-                                            <p class="product-excerpt"><?php echo has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 20); ?></p>
+                                            <p class="product-excerpt"><?php echo has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 15); ?></p>
 
                                             <?php if (!empty($product_price) || !empty($discount_price)) : ?>
                                                 <div class="product-pricing">
-                                                    <?php if (!empty($discount_price)) : ?>
-                                                        <span class="original-price"><?php echo esc_html($product_price); ?></span>
-                                                        <span class="current-price"><?php echo esc_html($discount_price); ?></span>
-                                                    <?php else : ?>
-                                                        <span class="current-price"><?php echo esc_html($product_price); ?></span>
-                                                    <?php endif; ?>
-                                                    <?php if (!empty($price_unit)) : ?>
-                                                        <span class="price-unit">/<?php echo esc_html($price_unit); ?></span>
+                                                    <?php
+                                                    $unit_text = !empty($price_unit) ? '/' . $price_unit : '/đơn vị';
+                                                    $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
+                                                    ?>
+                                                    <?php if (!empty($discount_price) && !empty($product_price)) : ?>
+                                                        <span class="original-price"><?php echo number_format($product_price, 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                        <span class="discount-price"><?php echo number_format($discount_price, 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                    <?php elseif (!empty($product_price)) : ?>
+                                                        <span class="current-price"><?php echo number_format($product_price, 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
                                                     <?php endif; ?>
                                                 </div>
                                             <?php endif; ?>
@@ -199,105 +202,6 @@ $products_query = new WP_Query($products_args);
     </div>
 </main>
 
-<style>
-    /* Products Page Layout */
-    .products-layout-wrapper {
-        display: flex;
-        gap: 30px;
-        margin-top: 40px;
-    }
 
-    /* Left Panel - Categories */
-    .categories-panel {
-        flex: 0 0 250px;
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 4px;
-        height: fit-content;
-        position: sticky;
-        top: 20px;
-    }
-
-    .categories-panel .panel-title {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 15px;
-        color: #333;
-        border-bottom: 2px solid #007cba;
-        padding-bottom: 8px;
-    }
-
-    .category-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .category-item {
-        margin-bottom: 8px;
-    }
-
-    .category-link {
-        display: block;
-        padding: 10px 15px;
-        color: #666;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-        font-size: 14px;
-    }
-
-    .category-link:hover,
-    .category-item.active .category-link {
-        background: #007cba;
-        color: white;
-        text-decoration: none;
-    }
-
-    /* Right Panel - Products */
-    .products-panel {
-        flex: 1;
-    }
-
-    /* No products found */
-    .no-products-found {
-        text-align: center;
-        padding: 60px 20px;
-        background: #f8f9fa;
-        border-radius: 4px;
-    }
-
-    .no-products-found h3 {
-        color: #666;
-        margin-bottom: 10px;
-    }
-
-    .no-products-found p {
-        color: #888;
-        margin-bottom: 20px;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .products-layout-wrapper {
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .categories-panel {
-            flex: none;
-            position: static;
-        }
-
-        .categories-panel .panel-title {
-            font-size: 16px;
-        }
-
-        .category-link {
-            font-size: 13px;
-            padding: 8px 12px;
-        }
-    }
-</style>
 
 <?php get_footer(); ?>
