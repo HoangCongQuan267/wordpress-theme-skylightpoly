@@ -280,14 +280,14 @@ function format_phone_number($phone)
  */
 function get_current_region_info()
 {
-    $default_region = get_theme_mod('header_default_region', 'vietnam');
+    $default_region = get_theme_mod('default_region', 'vietnam');
     $current_region = isset($_SESSION['selected_region']) ? $_SESSION['selected_region'] : $default_region;
 
     return array(
         'region' => $current_region,
-        'phone' => get_theme_mod("header_region_{$current_region}_phone"),
-        'email' => get_theme_mod("header_region_{$current_region}_email"),
-        'address' => get_theme_mod("header_region_{$current_region}_address")
+        'phone' => get_theme_mod("{$current_region}_phone"),
+        'email' => get_theme_mod("{$current_region}_email"),
+        'address' => get_theme_mod("{$current_region}_address")
     );
 }
 

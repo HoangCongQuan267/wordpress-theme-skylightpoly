@@ -44,13 +44,13 @@ if ($section_spacing !== 'normal') {
         "description": "<?php echo esc_js(get_theme_mod('site_meta_description', 'Skylight Plastic - Chuyên cung cấp sản phẩm nhựa chất lượng cao, giá cả hợp lý, giao hàng nhanh chóng trên toàn quốc.')); ?>",
         "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "<?php echo esc_js(get_theme_mod('default_phone', '+84 123 456 789')); ?>",
+            "telephone": "<?php echo esc_js(get_theme_mod('default_phone_number', '+84 123 456 789')); ?>",
             "contactType": "customer service",
-            "email": "<?php echo esc_js(get_theme_mod('default_email', 'info@yoursite.com')); ?>"
+            "email": "<?php echo esc_js(get_theme_mod('default_email_address', 'info@yoursite.com')); ?>"
         },
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "<?php echo esc_js(get_theme_mod('default_address', '123 Đường Chính, Thành phố, Việt Nam')); ?>",
+            "streetAddress": "<?php echo esc_js(get_theme_mod('default_physical_address', '123 Đường Chính, Thành phố, Việt Nam')); ?>",
             "addressCountry": "VN"
         },
         "sameAs": [

@@ -143,17 +143,17 @@
                     <?php endif; ?>
                     <b class="phone">
                         SĐT: <?php
-                                $default_phone = get_theme_mod('default_phone', '+84 123 456 789');
+                                $default_phone = get_theme_mod('default_phone_number', '+84 123 456 789');
                                 $phone_href = 'tel:' . preg_replace('/[^0-9+]/', '', $default_phone);
                                 ?>
                         <a href="<?php echo esc_attr($phone_href); ?>" id="phone-link"><?php echo esc_html($default_phone); ?></a>
                     </b>
                     <b class="email">
-                        <?php $default_email = get_theme_mod('default_email', 'info@yoursite.com'); ?>
+                        <?php $default_email = get_theme_mod('default_email_address', 'info@yoursite.com'); ?>
                         <a href="mailto:<?php echo esc_attr($default_email); ?>" id="email-link"><?php echo esc_html($default_email); ?></a>
                     </b>
                     <b class="address" id="address-text">
-                        <?php echo esc_html(get_theme_mod('default_address', '123 Đường Chính, Thành phố, Việt Nam')); ?>
+                        <?php echo esc_html(get_theme_mod('default_physical_address', '123 Đường Chính, Thành phố, Việt Nam')); ?>
                     </b>
                 </div>
             </div>
@@ -414,17 +414,17 @@
                     );
                     foreach ($regions as $index => $region_data) :
                         $region_key = $region_data['value'];
-                        $phone = get_theme_mod("region_{$region_key}_phone", '');
-                        $email = get_theme_mod("region_{$region_key}_email", '');
-                        $address = get_theme_mod("region_{$region_key}_address", '');
+                        $phone = get_theme_mod("{$region_key}_phone", '');
+                        $email = get_theme_mod("{$region_key}_email", '');
+                        $address = get_theme_mod("{$region_key}_address", '');
 
                         // Fallback to default values if region-specific customizer is empty
                         if (empty($phone) && empty($email) && empty($address)) {
                             switch ($region_key) {
                                 case 'vietnam':
-                                    $phone = get_theme_mod('default_phone', '+84 123 456 789');
-                                    $email = get_theme_mod('default_email', 'info@yoursite.com');
-                                    $address = get_theme_mod('default_address', '123 Đường Chính, Thành phố, Việt Nam');
+                                    $phone = get_theme_mod('default_phone_number', '+84 123 456 789');
+                                    $email = get_theme_mod('default_email_address', 'info@yoursite.com');
+                                    $address = get_theme_mod('default_physical_address', '123 Đường Chính, Thành phố, Việt Nam');
                                     break;
                                 case 'usa':
                                     $phone = '+1 555 123 4567';
@@ -450,13 +450,13 @@
                         }
 
                         $phone_href = 'tel:' . preg_replace('/[^0-9+]/', '', $phone);
-                    ?> '<?php echo esc_attr($region_key); ?>': {
-                            phone: '<?php echo esc_attr($phone); ?>',
-                            phoneHref: '<?php echo esc_attr($phone_href); ?>',
-                            email: '<?php echo esc_attr($email); ?>',
-                            address: '<?php echo esc_attr($address); ?>'
-                        }
-                        <?php echo ($index < count($regions) - 1) ? ',' : ''; ?>
+                    ?>
+                    '<?php echo esc_js($region_key); ?>': {
+                        phone: '<?php echo esc_js($phone); ?>',
+                        phoneHref: '<?php echo esc_js($phone_href); ?>',
+                        email: '<?php echo esc_js($email); ?>',
+                        address: '<?php echo esc_js($address); ?>'
+                    }<?php echo ($index < count($regions) - 1) ? ',' : ''; ?>
                     <?php endforeach; ?>
                 };
 
