@@ -1616,7 +1616,7 @@ function get_customizer_hero_slides()
 
         if ($image || $title) {
             $slides[] = array(
-                'image' => $image && function_exists('wp_get_attachment_url') ? wp_get_attachment_url($image) : '',
+                'image_url' => $image && function_exists('wp_get_attachment_url') ? wp_get_attachment_url($image) : '',
                 'title' => $title,
                 'subtitle' => $subtitle,
                 'button_text' => $button_text,
@@ -2176,7 +2176,8 @@ function faq_section_customizer($wp_customize)
     // Add FAQ Section
     $wp_customize->add_section('faq_section', array(
         'title'    => __('FAQ Section', 'skylightpoly'),
-        'priority' => 160,
+        'panel'    => 'homepage_sections_panel',
+        'priority' => 50,
         'description' => __('Manage your FAQ section settings and questions', 'skylightpoly'),
     ));
 
