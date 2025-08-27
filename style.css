@@ -249,16 +249,16 @@ body {
 .main-navigation ul {
     list-style: none;
     display: flex;
-    gap: 25px;
+    gap: 10px;
     margin: 0;
     padding: 0;
 }
 
 .main-navigation a {
-    color: var(--accent-sky-blue);
+    color: var(--dark-gray);
     text-decoration: none;
-    font-weight: 500;
-    padding: 8px 16px;
+    font-weight: 400;
+    padding: 8px 10px;
     border-radius: 20px;
     transition: all 0.3s ease;
     font-size: 14px;
