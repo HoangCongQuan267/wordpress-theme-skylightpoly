@@ -120,8 +120,13 @@ function product_meta_box_callback($post)
     wp_nonce_field('product_details_nonce', 'product_details_nonce');
 
     $featured = get_post_meta($post->ID, '_featured_product', true);
-    $price = get_post_meta($post->ID, '_product_price', true);
-    $link = get_post_meta($post->ID, '_product_link', true);
+    $price = get_post_meta($post->ID, 'product_price', true);
+    $discount_price = get_post_meta($post->ID, 'discount_price', true);
+    $price_unit = get_post_meta($post->ID, 'price_unit', true);
+    $custom_badge = get_post_meta($post->ID, 'custom_badge', true);
+    $discount = get_post_meta($post->ID, 'discount', true);
+    $hot_tag = get_post_meta($post->ID, 'hot_tag', true);
+    $link = get_post_meta($post->ID, 'product_link', true);
 
     echo '<table class="form-table">';
 
@@ -132,7 +137,32 @@ function product_meta_box_callback($post)
 
     echo '<tr>';
     echo '<th><label for="product_price">' . __('Product Price', 'custom-blue-orange') . '</label></th>';
-    echo '<td><input type="text" id="product_price" name="product_price" value="' . esc_attr($price) . '" class="regular-text" placeholder="e.g., 100,000" /></td>';
+    echo '<td><input type="number" id="product_price" name="product_price" value="' . esc_attr($price) . '" class="regular-text" placeholder="100000" step="1000" /></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th><label for="discount_price">' . __('Discount Price', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="number" id="discount_price" name="discount_price" value="' . esc_attr($discount_price) . '" class="regular-text" placeholder="80000" step="1000" /></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th><label for="price_unit">' . __('Price Unit', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="text" id="price_unit" name="price_unit" value="' . esc_attr($price_unit) . '" class="regular-text" placeholder="đơn vị" /></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th><label for="custom_badge">' . __('Custom Badge', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="text" id="custom_badge" name="custom_badge" value="' . esc_attr($custom_badge) . '" class="regular-text" placeholder="NEW" /></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th><label for="discount">' . __('Discount Percentage', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="number" id="discount" name="discount" value="' . esc_attr($discount) . '" class="regular-text" placeholder="20" min="0" max="100" step="1" /></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th><label for="hot_tag">' . __('Hot Tag', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="checkbox" id="hot_tag" name="hot_tag" value="yes"' . checked($hot_tag, 'yes', false) . ' /> ' . __('Mark as hot product', 'custom-blue-orange') . '</td>';
     echo '</tr>';
 
     echo '<tr>';
@@ -148,11 +178,16 @@ function product_meta_box_callback($post)
     echo '<li><strong>Title:</strong> Product name</li>';
     echo '<li><strong>Content:</strong> Product description</li>';
     echo '<li><strong>Featured Image:</strong> Product image (recommended: 400x400px)</li>';
+    echo '<li><strong>Product Categories:</strong> Assign categories using the Product Categories panel on the right</li>';
     echo '<li><strong>Featured Product:</strong> Highlight this product on the homepage</li>';
-    echo '<li><strong>Price:</strong> Product price (numbers only, currency symbol added automatically)</li>';
-    echo '<li><strong>Link:</strong> External link to product page or purchase page</li>';
+    echo '<li><strong>Price & Discount Price:</strong> Regular and sale prices (numbers only)</li>';
+    echo '<li><strong>Price Unit:</strong> Unit of measurement (e.g., "đơn vị", "kg", "piece")</li>';
+    echo '<li><strong>Custom Badge:</strong> Custom text badge (e.g., "NEW", "SALE")</li>';
+    echo '<li><strong>Discount Percentage:</strong> Discount percentage for automatic badge</li>';
+    echo '<li><strong>Hot Tag:</strong> Mark as trending/hot product</li>';
+    echo '<li><strong>Product Link:</strong> External link to product page or purchase page</li>';
     echo '</ul>';
-    echo '<p style="margin-bottom: 0;"><em>💡 Tip: Use high-quality images for better visual appeal.</em></p>';
+    echo '<p style="margin-bottom: 0;"><em>💡 Tip: Badge priority: Custom Badge > Discount % > Hot Tag. Only one badge will be displayed.</em></p>';
     echo '</div>';
 }
 
@@ -208,6 +243,11 @@ function save_product_meta_data($post_id)
         return;
     }
 
+    // Only save for product post type
+    if (get_post_type($post_id) !== 'product') {
+        return;
+    }
+
     if (isset($_POST['featured_product'])) {
         update_post_meta($post_id, '_featured_product', 'yes');
     } else {
@@ -215,11 +255,33 @@ function save_product_meta_data($post_id)
     }
 
     if (isset($_POST['product_price'])) {
-        update_post_meta($post_id, '_product_price', sanitize_text_field($_POST['product_price']));
+        update_post_meta($post_id, 'product_price', intval($_POST['product_price']));
+    }
+
+    if (isset($_POST['discount_price'])) {
+        update_post_meta($post_id, 'discount_price', intval($_POST['discount_price']));
+    }
+
+    if (isset($_POST['price_unit'])) {
+        update_post_meta($post_id, 'price_unit', sanitize_text_field($_POST['price_unit']));
+    }
+
+    if (isset($_POST['custom_badge'])) {
+        update_post_meta($post_id, 'custom_badge', sanitize_text_field($_POST['custom_badge']));
+    }
+
+    if (isset($_POST['discount'])) {
+        update_post_meta($post_id, 'discount', intval($_POST['discount']));
+    }
+
+    if (isset($_POST['hot_tag'])) {
+        update_post_meta($post_id, 'hot_tag', 'yes');
+    } else {
+        update_post_meta($post_id, 'hot_tag', 'no');
     }
 
     if (isset($_POST['product_link'])) {
-        update_post_meta($post_id, '_product_link', esc_url_raw($_POST['product_link']));
+        update_post_meta($post_id, 'product_link', esc_url_raw($_POST['product_link']));
     }
 }
 add_action('save_post', 'save_product_meta_data');

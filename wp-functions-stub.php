@@ -419,16 +419,34 @@ if (!function_exists('term_exists')) {
 if (!function_exists('wp_insert_term')) {
     function wp_insert_term($term, $taxonomy, $args = array()) {
         // Stub function - returns success array
-        return array('term_id' => 1, 'term_taxonomy_id' => 1);
-    }
-}
-
-if (!function_exists('get_page_by_path')) {
+         return array('term_id' => 1, 'term_taxonomy_id' => 1);
+     }
+ }
+ 
+ if (!function_exists('get_page_by_path')) {
     function get_page_by_path($page_path, $output = OBJECT, $post_type = 'page') {
         // Stub function - returns mock page object
         $page = new stdClass();
         $page->ID = 1;
         return $page;
+    }
+}
+
+if (!function_exists('add_meta_box')) {
+    function add_meta_box($id, $title, $callback, $screen = null, $context = 'advanced', $priority = 'default', $callback_args = null) {
+        return true;
+    }
+}
+
+if (!function_exists('esc_textarea')) {
+    function esc_textarea($text) {
+        return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    }
+}
+
+if (!function_exists('get_current_screen')) {
+    function get_current_screen() {
+        return (object) array('id' => 'edit-product', 'post_type' => 'product');
     }
 }
 

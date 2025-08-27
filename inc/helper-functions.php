@@ -87,100 +87,92 @@ function get_products($limit = -1)
 }
 
 /**
- * Get products by categories
+ * Get products by categories from WordPress product post type
  *
- * @param array $categories Array of category IDs
- * @param int $limit Number of products per category
+ * @param array $categories Array of category slugs (optional)
+ * @param int $limit Number of products per category (default: 4)
  * @return array Array of products grouped by category
  */
-function get_products_by_categories($categories = array(), $limit = 5)
+function get_products_by_categories($categories = array(), $limit = 4)
 {
     $products_by_category = array();
 
-    // Get categories and products from customizer data
-    if (function_exists('get_product_categories')) {
-        $all_categories = get_product_categories();
-    } else {
-        $all_categories = array();
+    // Get product categories from WordPress taxonomy
+    $category_terms = get_terms(array(
+        'taxonomy' => 'product_category',
+        'hide_empty' => false,
+        'orderby' => 'name',
+        'order' => 'ASC'
+    ));
+
+    if (is_wp_error($category_terms) || empty($category_terms)) {
+        return $products_by_category;
     }
 
-    if (function_exists('get_products_data')) {
-        $all_products = get_products_data();
-    } else {
-        $all_products = array();
+    // If specific categories are requested, filter the terms
+    if (!empty($categories)) {
+        $category_terms = array_filter($category_terms, function($term) use ($categories) {
+            return in_array($term->slug, $categories);
+        });
     }
 
-    // If no categories specified, use all available categories
-    if (empty($categories)) {
-        $categories = $all_categories;
-    }
+    foreach ($category_terms as $category_term) {
+        // Get products for this category
+        $products_query = new WP_Query(array(
+            'post_type' => 'product',
+            'post_status' => 'publish',
+            'posts_per_page' => $limit,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'tax_query' => array(
+                array(
+                    'taxonomy' => 'product_category',
+                    'field' => 'term_id',
+                    'terms' => $category_term->term_id,
+                ),
+            ),
+        ));
 
-    foreach ($all_categories as $category) {
-        if (empty($category['slug']) || empty($category['name'])) {
-            continue;
-        }
-
-        // Filter products for this category
         $category_products = array();
-        $product_count = 0;
 
-        foreach ($all_products as $product) {
-            if ($product_count >= $limit) {
-                break;
-            }
+        if ($products_query->have_posts()) {
+            while ($products_query->have_posts()) {
+                $products_query->the_post();
+                $product_id = get_the_ID();
 
-            if (isset($product['category']) && $product['category'] === $category['slug']) {
-                // Extract numeric price from formatted string
-                $price_numeric = '';
-                $discount_price_numeric = '';
+                // Get product meta data
+                $custom_badge = get_post_meta($product_id, 'custom_badge', true);
+                $discount = get_post_meta($product_id, 'discount', true);
+                $hot_tag = get_post_meta($product_id, 'hot_tag', true);
+                $product_price = get_post_meta($product_id, 'product_price', true);
+                $discount_price = get_post_meta($product_id, 'discount_price', true);
+                $price_unit = get_post_meta($product_id, 'price_unit', true);
+                $product_link = get_post_meta($product_id, 'product_link', true);
 
-                if (isset($product['price']) && !empty($product['price'])) {
-                    // Remove currency symbols, units, and formatting to get numeric value
-                    $price_numeric = preg_replace('/[^0-9]/', '', $product['price']);
-                    $price_numeric = !empty($price_numeric) ? intval($price_numeric) : '';
-                }
-
-                if (isset($product['discount_price']) && !empty($product['discount_price'])) {
-                    $discount_price_numeric = preg_replace('/[^0-9]/', '', $product['discount_price']);
-                    $discount_price_numeric = !empty($discount_price_numeric) ? intval($discount_price_numeric) : '';
-                }
-
-                // Convert customizer product data to expected format
+                // Format product data
                 $category_products[] = array(
-                    'id' => uniqid(), // Generate unique ID for customizer products
-                    'title' => isset($product['title']) ? $product['title'] : '',
-                    'content' => isset($product['description']) ? $product['description'] : '',
-                    'excerpt' => isset($product['description']) ? wp_trim_words($product['description'], 20) : '',
-                    'image' => isset($product['image']) ? $product['image'] : '',
-                    'featured' => false,
-                    'price' => $price_numeric,
-                    'discount_price' => $discount_price_numeric,
-                    'discount' => '',
-                    'unit' => isset($product['unit']) ? $product['unit'] : '',
-                    'custom_badge' => isset($product['badge']) ? $product['badge'] : '',
-                    'hot_tag' => '',
-                    'link' => isset($product['link']) ? $product['link'] : '#',
-                    'permalink' => isset($product['link']) ? $product['link'] : '#'
+                    'id' => $product_id,
+                    'title' => get_the_title(),
+                    'content' => get_the_content(),
+                    'excerpt' => get_the_excerpt(),
+                    'image' => get_the_post_thumbnail_url($product_id, 'full'),
+                    'custom_badge' => $custom_badge,
+                    'discount' => $discount,
+                    'hot_tag' => $hot_tag,
+                    'price' => $product_price,
+                    'discount_price' => $discount_price,
+                    'unit' => $price_unit ?: 'đơn vị',
+                    'link' => $product_link ?: get_permalink($product_id),
+                    'permalink' => get_permalink($product_id)
                 );
-                $product_count++;
             }
+            wp_reset_postdata();
         }
 
         // Only add category if it has products
         if (!empty($category_products)) {
-            // Create a mock category object with required WordPress taxonomy properties
-            $category_obj = (object) array(
-                'term_id' => uniqid(),
-                'name' => $category['name'],
-                'slug' => $category['slug'],
-                'description' => '',
-                'taxonomy' => 'product_category',
-                'parent' => 0,
-                'count' => count($category_products)
-            );
-
-            $products_by_category[$category['slug']] = array(
-                'category' => $category_obj,
+            $products_by_category[$category_term->slug] = array(
+                'category' => $category_term,
                 'products' => $category_products
             );
         }

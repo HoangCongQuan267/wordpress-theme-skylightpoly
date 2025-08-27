@@ -43,12 +43,13 @@ if (isset($product) && is_array($product)) {
 
     // Get meta fields if they exist
     if (function_exists('get_post_meta')) {
-        $product_price = get_post_meta(get_the_ID(), '_product_price', true);
-        $product_discount_price = get_post_meta(get_the_ID(), '_product_discount_price', true);
-        $product_unit = get_post_meta(get_the_ID(), '_product_unit', true);
-        $product_custom_badge = get_post_meta(get_the_ID(), '_product_custom_badge', true);
-        $product_discount = get_post_meta(get_the_ID(), '_product_discount', true);
-        $product_hot_tag = get_post_meta(get_the_ID(), '_product_hot_tag', true);
+        $product_price = get_post_meta(get_the_ID(), 'product_price', true);
+        $product_discount_price = get_post_meta(get_the_ID(), 'discount_price', true);
+        $product_unit = get_post_meta(get_the_ID(), 'price_unit', true);
+        $product_custom_badge = get_post_meta(get_the_ID(), 'custom_badge', true);
+        $product_discount = get_post_meta(get_the_ID(), 'discount', true);
+        $product_hot_tag = get_post_meta(get_the_ID(), 'hot_tag', true);
+        $product_link = get_post_meta(get_the_ID(), 'product_link', true) ?: get_permalink();
     }
 }
 
