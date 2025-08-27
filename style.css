@@ -519,26 +519,9 @@ body {
     padding: 40px;
     margin-bottom: 40px;
     border-radius: 15px;
-    box-shadow: 0 8px 30px rgba(135, 206, 235, 0.1);
-    border: 1px solid rgba(135, 206, 235, 0.05);
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
-}
-
-.post::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary-sky-blue), var(--accent-sky-blue), var(--secondary-sky-blue));
-}
-
-.post:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(135, 206, 235, 0.15);
 }
 
 .post-title {
