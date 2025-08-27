@@ -46,7 +46,7 @@ get_header(); ?>
                                 'orderby' => 'date',
                                 'order' => 'DESC'
                             ));
-                            
+
                             if ($related_manuals->have_posts()) : ?>
                                 <h3>Hướng dẫn liên quan</h3>
                                 <ul class="related-posts-list">
@@ -229,7 +229,7 @@ get_header(); ?>
 
     /* Breadcrumbs styling */
     .breadcrumbs {
-        margin-bottom: 20px;
+        margin: 20px 0;
         font-size: 0.875rem;
         color: #666666;
     }

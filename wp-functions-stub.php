@@ -354,6 +354,24 @@ if (!function_exists('wp_list_categories')) {
     function wp_list_categories($args = '') {}
 }
 
+if (!function_exists('is_post_type_archive')) {
+    function is_post_type_archive($post_types = '') {
+        return false;
+    }
+}
+
+if (!function_exists('flush_rewrite_rules')) {
+    function flush_rewrite_rules($hard = true) {
+        // Stub function for development
+    }
+}
+
+if (!function_exists('wp_redirect')) {
+    function wp_redirect($location, $status = 302, $x_redirect_by = 'WordPress') {
+        return false;
+    }
+}
+
 // WordPress translation functions
 if (!function_exists('__')) {
     function __($text, $domain = 'default') {

@@ -51,6 +51,23 @@ require_once THEME_DIR . '/inc/helper-functions.php';
 // Keep this file minimal and organized
 
 /**
+ * Add active class to manual menu item when on manual archive page
+ */
+function add_manual_menu_active_class($classes, $item, $args) {
+    if (function_exists('is_post_type_archive') && function_exists('home_url') && is_post_type_archive('manual')) {
+        // Check if this menu item links to the manual page
+        $manual_url = home_url('/manual/');
+        if (isset($item->url) && ($item->url === $manual_url || $item->url === rtrim($manual_url, '/'))) {
+            $classes[] = 'current-menu-item';
+        }
+    }
+    return $classes;
+}
+if (function_exists('add_filter')) {
+    add_filter('nav_menu_css_class', 'add_manual_menu_active_class', 10, 3);
+}
+
+/**
  * Manual permalink flush function
  * Add ?flush_permalinks=1 to any page URL to trigger permalink flush
  */
