@@ -1456,8 +1456,7 @@ body {
     height: 80px;
     display: flex;
     align-items: center;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
     overflow: hidden;
     width: 100%;
     justify-content: flex-start;

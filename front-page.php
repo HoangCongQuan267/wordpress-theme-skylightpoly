@@ -162,6 +162,222 @@ if ($section_spacing !== 'normal') {
         <?php endif; ?>
     <?php endif; ?>
 
+    <!-- Commitments Section -->
+    <section class="commitments-section">
+        <div class="container">
+            <div class="commitments-grid">
+                <div class="commitment-item">
+                    <div class="commitment-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" stroke="#007cba" stroke-width="2" fill="none" />
+                        </svg>
+                    </div>
+                    <h3 class="commitment-title">Chất Lượng Cao</h3>
+                    <p class="commitment-description">Cam kết cung cấp sản phẩm chất lượng cao với tiêu chuẩn quốc tế</p>
+                </div>
+                <div class="commitment-item">
+                    <div class="commitment-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2V22M17 5H9.5C8.11929 5 7 6.11929 7 7.5C7 8.88071 8.11929 10 9.5 10H14.5C15.8807 10 17 11.1193 17 12.5C17 13.8807 15.8807 15 14.5 15H7" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="commitment-title">Giá Cả Hợp Lý</h3>
+                    <p class="commitment-description">Mức giá cạnh tranh và phù hợp với mọi ngân sách</p>
+                </div>
+                <div class="commitment-item">
+                    <div class="commitment-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 3H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="9" cy="20" r="1" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="20" cy="20" r="1" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="commitment-title">Giao Hàng Nhanh</h3>
+                    <p class="commitment-description">Hệ thống logistics hiện đại, giao hàng nhanh chóng</p>
+                </div>
+                <div class="commitment-item">
+                    <div class="commitment-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="12" cy="7" r="4" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="commitment-title">Hỗ Trợ Tận Tâm</h3>
+                    <p class="commitment-description">Đội ngũ chăm sóc khách hàng chuyên nghiệp 24/7</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        /* Commitments Section Styles */
+        .commitments-section {
+            padding: 40px 0;
+            background: var(--pure-white);
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .commitments-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .commitment-item {
+            text-align: center;
+            padding: 20px 15px;
+        }
+
+        .commitment-icon {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .commitment-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin: 0 0 10px 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .commitment-description {
+            font-size: 0.8rem;
+            color: var(--medium-gray);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        @media (max-width: 1024px) {
+            .commitments-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .commitments-section {
+                padding: 30px 0;
+            }
+
+            .commitments-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .commitment-item {
+                padding: 15px 10px;
+            }
+
+            .commitment-title {
+                font-size: 0.9rem;
+            }
+
+            .commitment-description {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .commitments-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .commitment-item {
+                padding: 20px 15px;
+            }
+        }
+
+        /* Brand Banner Height Adjustment */
+        .branding-banner-thin {
+            height: 160px !important;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 0 30px 0;
+        }
+
+        .branding-banner-thin .section-header {
+            margin-bottom: 25px;
+        }
+
+        .branding-banner-thin .section-title {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .branding-banner-thin .title-ribbon {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .branding-banner-thin {
+                height: 120px !important;
+                padding: 20px 15px 25px 15px;
+            }
+
+            .branding-banner-thin .container {
+                max-width: 100%;
+                padding: 0 10px;
+            }
+
+            .branding-banner-thin .section-header {
+                margin-bottom: 25px;
+                text-align: center;
+            }
+
+            .branding-banner-thin .section-title {
+                font-size: 0.85rem;
+                line-height: 1.3;
+                margin-top: 10px;
+                margin-bottom: 8px;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .branding-banner-thin {
+                height: 130px !important;
+                padding: 0px 10px 30px 10px;
+            }
+
+            .branding-banner-thin .container {
+                max-width: 100%;
+                padding: 0 5px;
+            }
+
+            .branding-banner-thin .section-header {
+                margin-bottom: 25px;
+                text-align: center;
+            }
+
+            .branding-banner-thin .section-title {
+                font-size: 0.75rem;
+                margin-top: 8px;
+                margin-bottom: 8px;
+                line-height: 1.4;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
+                max-width: 100%;
+                white-space: normal;
+            }
+
+            .branding-banner-thin .title-ribbon {
+                transform: scale(0.8);
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+
     <!-- Thin Branding Banner Section -->
     <?php if (get_theme_mod('branding_banner_enable', true)) :
         // Get branding banner styling options
@@ -170,6 +386,9 @@ if ($section_spacing !== 'normal') {
     ?>
         <section class="branding-banner-thin" style="background-color: <?php echo esc_attr($branding_bg_color); ?>; color: <?php echo esc_attr($branding_text_color); ?>;">
             <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Đối Tác Kinh Doanh Của Chúng Tôi</h2>
+                </div>
                 <div class="brand-logos-horizontal">
                     <?php
                     $brand_logos = get_brand_logos();
