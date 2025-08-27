@@ -161,7 +161,7 @@ get_header(); ?>
     }
 
     .single-quote .post-title {
-        font-size: 1.25rem;
+        font-size: 1rem;
         line-height: 1.4;
         margin-bottom: 0px;
         color: #1a1a1a;
@@ -213,7 +213,7 @@ get_header(); ?>
     }
 
     .single-quote .post-content h2 {
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
 
     .single-quote .post-content h3 {

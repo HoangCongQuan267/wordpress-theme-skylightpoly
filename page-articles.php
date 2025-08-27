@@ -202,7 +202,7 @@ get_header(); ?>
     }
 
     .articles-page-header .page-title {
-        font-size: 1.25rem;
+        font-size: 1rem;
         margin: 0;
         font-weight: 600;
         letter-spacing: 0.02em;
@@ -249,7 +249,7 @@ get_header(); ?>
     }
 
     .featured-article .featured-title {
-        font-size: 1.25rem;
+        font-size: 1rem;
         font-weight: 600;
         line-height: 1.3;
         margin-bottom: 12px;

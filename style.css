@@ -3521,7 +3521,7 @@ body {
     }
     
     .faq-section .section-title {
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
     
     .faq-question {
@@ -3547,7 +3547,7 @@ body {
 }
 
 .single-post .post-title {
-    font-size: 1.25rem;
+    font-size: 1rem;
     line-height: 1.4;
     margin-bottom: 0px;
     color: #1a1a1a;
@@ -3593,7 +3593,7 @@ body {
 }
 
 .single-post .post-content h2 {
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 
 .single-post .post-content h3 {
@@ -3734,7 +3734,7 @@ body {
     }
 
     .single-post .post-title {
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
 
     .single-post .post-content {
@@ -3751,7 +3751,7 @@ body {
 }
 
 .single-product .post-title {
-    font-size: 1.25rem;
+    font-size: 1rem;
     line-height: 1.4;
     margin-bottom: 0px;
     color: #1a1a1a;
@@ -3797,7 +3797,7 @@ body {
 }
 
 .single-product .post-content h2 {
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 
 .single-product .post-content h3 {
@@ -3932,7 +3932,7 @@ body {
 }
 
 .single-manual .post-title {
-    font-size: 1.25rem;
+    font-size: 1rem;
     line-height: 1.4;
     margin-bottom: 0px;
     color: #1a1a1a;
@@ -3978,7 +3978,7 @@ body {
 }
 
 .single-manual .post-content h2 {
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 
 .single-manual .post-content h3 {
@@ -4123,7 +4123,7 @@ body {
 
     .single-product .post-title,
     .single-manual .post-title {
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
 
     .single-product .post-content,
