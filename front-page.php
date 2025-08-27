@@ -35,22 +35,22 @@ if ($section_spacing !== 'normal') {
     {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "<?php echo esc_js(get_bloginfo('name')); ?>",
+        "name": "<?php echo esc_html(get_bloginfo('name')); ?>",
         "url": "<?php echo esc_url(home_url('/')); ?>",
         "logo": {
             "@type": "ImageObject",
             "url": "<?php echo esc_url(get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/logo.png')); ?>"
         },
-        "description": "<?php echo esc_js(get_theme_mod('site_meta_description', 'Skylight Plastic - Chuyên cung cấp sản phẩm nhựa chất lượng cao, giá cả hợp lý, giao hàng nhanh chóng trên toàn quốc.')); ?>",
+        "description": "<?php echo esc_html(get_theme_mod('site_meta_description', 'Skylight Plastic - Chuyên cung cấp sản phẩm nhựa chất lượng cao, giá cả hợp lý, giao hàng nhanh chóng trên toàn quốc.')); ?>",
         "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "<?php echo esc_js(get_theme_mod('default_phone_number', '+84 123 456 789')); ?>",
+            "telephone": "<?php echo esc_html(get_theme_mod('default_phone_number', '+84 123 456 789')); ?>",
             "contactType": "customer service",
-            "email": "<?php echo esc_js(get_theme_mod('default_email_address', 'info@yoursite.com')); ?>"
+            "email": "<?php echo esc_html(get_theme_mod('default_email_address', 'info@yoursite.com')); ?>"
         },
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "<?php echo esc_js(get_theme_mod('default_physical_address', '123 Đường Chính, Thành phố, Việt Nam')); ?>",
+            "streetAddress": "<?php echo esc_html(get_theme_mod('default_physical_address', '123 Đường Chính, Thành phố, Việt Nam')); ?>",
             "addressCountry": "VN"
         },
         "sameAs": [
@@ -65,9 +65,9 @@ if ($section_spacing !== 'normal') {
     {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "<?php echo esc_js(get_bloginfo('name')); ?>",
+        "name": "<?php echo esc_html(get_bloginfo('name')); ?>",
         "url": "<?php echo esc_url(home_url('/')); ?>",
-        "description": "<?php echo esc_js(get_bloginfo('description')); ?>",
+        "description": "<?php echo esc_html(get_bloginfo('description')); ?>",
         "potentialAction": {
             "@type": "SearchAction",
             "target": {
@@ -579,13 +579,9 @@ if ($section_spacing !== 'normal') {
                             <!-- See All Products Button for this Category -->
                             <div class="category-footer">
                                 <?php
-                                $category_link = '#';
-                                if (function_exists('get_term_link') && isset($category_data['category']->taxonomy)) {
-                                    $term_link = get_term_link($category_data['category']);
-                                    if (!is_wp_error($term_link)) {
-                                        $category_link = $term_link;
-                                    }
-                                }
+                                // Link to products page with category parameter
+                                $products_page_url = home_url('/products/');
+                                $category_link = $products_page_url . '?category=' . $category_data['category']->slug;
                                 ?>
                                 <a href="<?php echo esc_url($category_link); ?>" class="btn btn-outline-primary btn-see-all">
                                     <?php _e('Xem tất cả sản phẩm', 'custom-blue-orange'); ?>
@@ -668,7 +664,20 @@ if ($section_spacing !== 'normal') {
 
                     <!-- Show All Products Button -->
                     <div class="section-footer">
-                        <a href="#" class="show-all-btn">Xem Tất Cả Sản Phẩm</a>
+                        <?php
+                        // Link to products page with first category
+                        $products_page_url = home_url('/products/');
+                        $product_categories = get_terms(array(
+                            'taxonomy' => 'product_category',
+                            'hide_empty' => false,
+                            'number' => 1
+                        ));
+                        $first_category_link = $products_page_url;
+                        if (!empty($product_categories) && !is_wp_error($product_categories)) {
+                            $first_category_link = $products_page_url . '?category=' . $product_categories[0]->slug;
+                        }
+                        ?>
+                        <a href="<?php echo esc_url($first_category_link); ?>" class="show-all-btn">Xem Tất Cả Sản Phẩm</a>
                     </div>
                 <?php endif; ?>
             </div>
