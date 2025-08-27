@@ -740,13 +740,19 @@ if ($section_spacing !== 'normal') {
                                             preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $video['url'], $matches);
                                             $youtube_id = isset($matches[1]) ? $matches[1] : '';
                                             if ($youtube_id) :
+                                                $thumbnail_url = "https://img.youtube.com/vi/{$youtube_id}/maxresdefault.jpg";
                                     ?>
                                                 <div class="video-wrapper youtube-video">
-                                                    <iframe src="https://www.youtube.com/embed/<?php echo esc_attr($youtube_id); ?>?rel=0&showinfo=0"
-                                                        frameborder="0"
-                                                        allowfullscreen
-                                                        title="<?php echo esc_attr($video['title']); ?>">
-                                                    </iframe>
+                                                    <a href="<?php echo esc_url($video['url']); ?>" target="_blank" class="video-thumbnail-link">
+                                                        <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr($video['title']); ?>" class="video-thumbnail">
+                                                        <div class="video-play-overlay">
+                                                            <div class="play-button">
+                                                                <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+                                                                    <path d="M8 5v14l11-7z" />
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </a>
                                                 </div>
                                             <?php
                                             endif;
@@ -757,11 +763,17 @@ if ($section_spacing !== 'normal') {
                                             if ($vimeo_id) :
                                             ?>
                                                 <div class="video-wrapper vimeo-video">
-                                                    <iframe src="https://player.vimeo.com/video/<?php echo esc_attr($vimeo_id); ?>"
-                                                        frameborder="0"
-                                                        allowfullscreen
-                                                        title="<?php echo esc_attr($video['title']); ?>">
-                                                    </iframe>
+                                                    <a href="<?php echo esc_url($video['url']); ?>" target="_blank" class="video-thumbnail-link">
+                                                        <div class="vimeo-thumbnail-placeholder">
+                                                            <div class="video-play-overlay">
+                                                                <div class="play-button">
+                                                                    <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+                                                                        <path d="M8 5v14l11-7z" />
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
                                                 </div>
                                             <?php
                                             endif;
