@@ -907,7 +907,7 @@ if ($section_spacing !== 'normal') {
 
                     <!-- See All Articles Button -->
                     <div class="section-footer">
-                        <a href="<?php echo get_permalink(get_option('page_for_posts')); ?>" class="btn btn-outline-primary btn-see-all">
+                        <a href="<?php echo esc_url(home_url('/articles/')); ?>" class="btn btn-outline-primary btn-see-all">
                             <?php _e('Xem Tất Cả Bài Viết', 'custom-blue-orange'); ?>
                         </a>
                     </div>
@@ -981,7 +981,7 @@ if ($section_spacing !== 'normal') {
 
                     <!-- Show All Articles Button -->
                     <div class="section-footer">
-                        <a href="#" class="btn btn-outline-primary btn-see-all">Xem Tất Cả Bài Viết</a>
+                        <a href="<?php echo esc_url(home_url('/articles/')); ?>" class="btn btn-outline-primary btn-see-all">Xem Tất Cả Bài Viết</a>
                     </div>
                 <?php endif; ?>
             </div>

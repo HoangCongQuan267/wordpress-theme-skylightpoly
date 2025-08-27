@@ -10,37 +10,36 @@ get_header(); ?>
 <main class="site-main">
     <!-- Structured Data for Articles Page -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "Bài Viết",
-        "description": "Khám phá những thông tin và kiến thức hữu ích từ chúng tôi",
-        "url": "<?php echo esc_url(get_permalink()); ?>",
-        "mainEntity": {
-            "@type": "ItemList",
-            "name": "Danh sách bài viết",
-            "description": "Tổng hợp các bài viết về nhựa và sản phẩm nhựa"
-        },
-        "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Trang chủ",
-                    "item": "<?php echo esc_url(home_url('/')); ?>"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "Bài Viết",
-                    "item": "<?php echo esc_url(get_permalink()); ?>"
-                }
-            ]
+        {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Bài Viết",
+            "description": "Khám phá những thông tin và kiến thức hữu ích từ chúng tôi",
+            "url": "<?php echo esc_url(get_permalink()); ?>",
+            "mainEntity": {
+                "@type": "ItemList",
+                "name": "Danh sách bài viết",
+                "description": "Tổng hợp các bài viết về nhựa và sản phẩm nhựa"
+            },
+            "breadcrumb": {
+                "@type": "BreadcrumbList",
+                "itemListElement": [{
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Trang chủ",
+                        "item": "<?php echo esc_url(home_url('/')); ?>"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Bài Viết",
+                        "item": "<?php echo esc_url(get_permalink()); ?>"
+                    }
+                ]
+            }
         }
-    }
     </script>
-    
+
     <div class="content-area">
         <div class="posts-container full-width">
             <header class="page-header articles-page-header">

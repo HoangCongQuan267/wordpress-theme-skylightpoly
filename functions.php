@@ -53,7 +53,8 @@ require_once THEME_DIR . '/inc/helper-functions.php';
 /**
  * Add SEO meta boxes to posts and pages
  */
-function add_seo_meta_boxes() {
+function add_seo_meta_boxes()
+{
     add_meta_box(
         'seo_meta_box',
         'SEO Settings',
@@ -74,7 +75,8 @@ if (function_exists('remove_action')) {
 }
 
 // Add XML Sitemap support
-function enable_xml_sitemap() {
+function enable_xml_sitemap()
+{
     if (function_exists('add_theme_support')) {
         add_theme_support('wp-sitemap');
     }
@@ -84,14 +86,15 @@ if (function_exists('add_action')) {
 }
 
 // Optimize robots.txt
-function custom_robots_txt($output, $public) {
+function custom_robots_txt($output, $public)
+{
     if ('0' == $public) {
         return $output;
     }
-    
+
     $site_url = parse_url(site_url());
     $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
-    
+
     $output = "User-agent: *\n";
     $output .= "Disallow: {$path}/wp-admin/\n";
     $output .= "Disallow: {$path}/wp-includes/\n";
@@ -105,7 +108,7 @@ function custom_robots_txt($output, $public) {
     $output .= "Allow: {$path}/wp-content/uploads/*.webp\n";
     $output .= "\n";
     $output .= "Sitemap: " . site_url('/wp-sitemap.xml') . "\n";
-    
+
     return $output;
 }
 if (function_exists('add_filter')) {
@@ -113,7 +116,8 @@ if (function_exists('add_filter')) {
 }
 
 // Add canonical URL support
-function add_canonical_url() {
+function add_canonical_url()
+{
     if (function_exists('is_singular') && is_singular()) {
         echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '" />' . "\n";
     } elseif ((function_exists('is_home') && is_home()) || (function_exists('is_front_page') && is_front_page())) {
@@ -131,11 +135,12 @@ if (function_exists('add_action')) {
 }
 
 // Optimize image loading with lazy loading
-function add_lazy_loading_to_images($content) {
+function add_lazy_loading_to_images($content)
+{
     if ((function_exists('is_admin') && is_admin()) || (function_exists('is_feed') && is_feed()) || (function_exists('is_preview') && is_preview())) {
         return $content;
     }
-    
+
     $content = preg_replace('/<img(.*?)src=/', '<img$1loading="lazy" src=', $content);
     return $content;
 }
@@ -144,11 +149,12 @@ if (function_exists('add_filter')) {
 }
 
 // Add structured data for breadcrumbs
-function add_breadcrumb_structured_data() {
+function add_breadcrumb_structured_data()
+{
     if (function_exists('is_front_page') && is_front_page()) {
         return;
     }
-    
+
     $breadcrumbs = array();
     $breadcrumbs[] = array(
         '@type' => 'ListItem',
@@ -156,16 +162,16 @@ function add_breadcrumb_structured_data() {
         'name' => 'Trang chủ',
         'item' => home_url('/')
     );
-    
+
     $position = 2;
-    
+
     if (function_exists('is_single') && is_single()) {
         if (function_exists('get_post_type') && get_post_type() === 'post') {
             $breadcrumbs[] = array(
                 '@type' => 'ListItem',
                 'position' => $position++,
                 'name' => 'Bài viết',
-                'item' => home_url('/bai-viet/')
+                'item' => home_url('/articles/')
             );
         } elseif (function_exists('get_post_type') && get_post_type() === 'product') {
             $breadcrumbs[] = array(
@@ -175,7 +181,7 @@ function add_breadcrumb_structured_data() {
                 'item' => get_post_type_archive_link('product')
             );
         }
-        
+
         $breadcrumbs[] = array(
             '@type' => 'ListItem',
             'position' => $position,
@@ -183,7 +189,7 @@ function add_breadcrumb_structured_data() {
             'item' => get_permalink()
         );
     }
-    
+
     if (!empty($breadcrumbs)) {
         echo '<script type="application/ld+json">';
         echo json_encode(array(
@@ -201,12 +207,13 @@ if (function_exists('add_action')) {
 /**
  * SEO meta box callback
  */
-function seo_meta_box_callback($post) {
+function seo_meta_box_callback($post)
+{
     wp_nonce_field('seo_meta_box_nonce', 'seo_meta_box_nonce');
-    
+
     $meta_description = get_post_meta($post->ID, '_meta_description', true);
     $meta_keywords = get_post_meta($post->ID, '_meta_keywords', true);
-    
+
     echo '<table class="form-table">';
     echo '<tr>';
     echo '<th><label for="meta_description">Meta Description</label></th>';
@@ -224,23 +231,24 @@ function seo_meta_box_callback($post) {
 /**
  * Save SEO meta box data
  */
-function save_seo_meta_box($post_id) {
+function save_seo_meta_box($post_id)
+{
     if (!isset($_POST['seo_meta_box_nonce']) || !wp_verify_nonce($_POST['seo_meta_box_nonce'], 'seo_meta_box_nonce')) {
         return;
     }
-    
+
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
     }
-    
+
     if (!current_user_can('edit_post', $post_id)) {
         return;
     }
-    
+
     if (isset($_POST['meta_description'])) {
         update_post_meta($post_id, '_meta_description', sanitize_textarea_field($_POST['meta_description']));
     }
-    
+
     if (isset($_POST['meta_keywords'])) {
         update_post_meta($post_id, '_meta_keywords', sanitize_text_field($_POST['meta_keywords']));
     }
@@ -252,45 +260,46 @@ if (function_exists('add_action')) {
 /**
  * Add SEO options to customizer
  */
-function add_seo_customizer_options($wp_customize) {
+function add_seo_customizer_options($wp_customize)
+{
     // SEO Section
     $wp_customize->add_section('seo_settings', array(
         'title' => 'SEO Settings',
         'priority' => 30,
     ));
-    
+
     // Site Meta Description
     $wp_customize->add_setting('site_meta_description', array(
         'default' => 'Skylight Plastic - Chuyên cung cấp sản phẩm nhựa chất lượng cao, giá cả hợp lý, giao hàng nhanh chóng trên toàn quốc.',
         'sanitize_callback' => 'sanitize_textarea_field',
     ));
-    
+
     $wp_customize->add_control('site_meta_description', array(
         'label' => 'Site Meta Description',
         'section' => 'seo_settings',
         'type' => 'textarea',
         'description' => 'Default meta description for your site (150-160 characters recommended)',
     ));
-    
+
     // Site Meta Keywords
     $wp_customize->add_setting('site_meta_keywords', array(
         'default' => 'nhựa, sản phẩm nhựa, skylight plastic, chất lượng cao',
         'sanitize_callback' => 'sanitize_text_field',
     ));
-    
+
     $wp_customize->add_control('site_meta_keywords', array(
         'label' => 'Site Meta Keywords',
         'section' => 'seo_settings',
         'type' => 'text',
         'description' => 'Default meta keywords for your site (separate with commas)',
     ));
-    
+
     // Open Graph Image
     $wp_customize->add_setting('site_og_image', array(
         'default' => '',
         'sanitize_callback' => 'esc_url_raw',
     ));
-    
+
     if (class_exists('WP_Customize_Image_Control')) {
         $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'site_og_image', array(
             'label' => 'Default Open Graph Image',
@@ -306,7 +315,8 @@ if (function_exists('add_action')) {
 /**
  * Add active class to manual menu item when on manual archive page
  */
-function add_manual_menu_active_class($classes, $item, $args) {
+function add_manual_menu_active_class($classes, $item, $args)
+{
     if (function_exists('is_post_type_archive') && function_exists('home_url') && is_post_type_archive('manual')) {
         // Check if this menu item links to the manual page
         $manual_url = home_url('/manual/');
@@ -323,10 +333,11 @@ if (function_exists('add_filter')) {
 /**
  * Add active class to products menu item when on products page
  */
-function add_products_menu_active_class($classes, $item, $args) {
+function add_products_menu_active_class($classes, $item, $args)
+{
     // Check if we're on products page (page-products.php) or products archive
     $is_products_page = false;
-    
+
     if (function_exists('is_page_template') && is_page_template('page-products.php')) {
         $is_products_page = true;
     } elseif (function_exists('is_post_type_archive') && is_post_type_archive('product')) {
@@ -337,16 +348,16 @@ function add_products_menu_active_class($classes, $item, $args) {
             $is_products_page = true;
         }
     }
-    
+
     if ($is_products_page && function_exists('home_url')) {
         // Check if this menu item links to the products page
         $products_url = home_url('/products/');
         $products_url_alt = home_url('/san-pham/');
-        
+
         if (isset($item->url) && (
-            $item->url === $products_url || 
+            $item->url === $products_url ||
             $item->url === rtrim($products_url, '/') ||
-            $item->url === $products_url_alt || 
+            $item->url === $products_url_alt ||
             $item->url === rtrim($products_url_alt, '/') ||
             (is_string($item->url) && strpos($item->url, '/products') !== false) ||
             (is_string($item->url) && strpos($item->url, '/san-pham') !== false)
@@ -364,7 +375,8 @@ if (function_exists('add_filter')) {
  * Manual permalink flush function
  * Add ?flush_permalinks=1 to any page URL to trigger permalink flush
  */
-function manual_permalink_flush() {
+function manual_permalink_flush()
+{
     if (isset($_GET['flush_permalinks']) && $_GET['flush_permalinks'] == '1') {
         if (function_exists('flush_rewrite_rules')) {
             flush_rewrite_rules(true);
