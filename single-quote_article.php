@@ -35,7 +35,7 @@ get_header(); ?>
                 <nav class="breadcrumbs">
                     <a href="<?php echo esc_url(home_url('/')); ?>">Trang chủ</a>
                     <span class="breadcrumb-separator">›</span>
-                    <a href="<?php echo esc_url($quotes_url); ?>">Quotes</a>
+                    <a href="<?php echo esc_url($quotes_url); ?>">Báo Giá</a>
                     <span class="breadcrumb-separator">›</span>
                     <span class="current-page"><?php the_title(); ?></span>
                 </nav>
