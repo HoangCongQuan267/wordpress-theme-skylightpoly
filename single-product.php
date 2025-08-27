@@ -23,6 +23,48 @@ get_header(); ?>
                     <span class="breadcrumb-separator">›</span>
                     <span class="current-page"><?php the_title(); ?></span>
                 </nav>
+                <!-- Structured Data for Product -->
+                <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "Product",
+                    "name": "<?php echo esc_attr(get_the_title()); ?>",
+                    "description": "<?php echo esc_attr(wp_trim_words(get_the_excerpt() ? get_the_excerpt() : get_the_content(), 25)); ?>",
+                    "image": {
+                        "@type": "ImageObject",
+                        "url": "<?php echo esc_url(has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'large') : get_template_directory_uri() . '/assets/images/placeholder-product.jpg'); ?>"
+                    },
+                    "brand": {
+                        "@type": "Brand",
+                        "name": "<?php echo esc_attr(get_bloginfo('name')); ?>"
+                    },
+                    "manufacturer": {
+                        "@type": "Organization",
+                        "name": "<?php echo esc_attr(get_bloginfo('name')); ?>"
+                    },
+                    "url": "<?php echo esc_url(get_permalink()); ?>",
+                    "datePublished": "<?php echo esc_attr(get_the_date('c')); ?>",
+                    "dateModified": "<?php echo esc_attr(get_the_modified_date('c')); ?>"
+                    <?php
+                    $product_price = get_post_meta(get_the_ID(), 'product_price', true);
+                    $discount_price = get_post_meta(get_the_ID(), 'discount_price', true);
+                    $price_unit = get_post_meta(get_the_ID(), 'price_unit', true);
+                    $currency = get_theme_mod('products_currency_symbol', 'VND');
+                    
+                    if (!empty($discount_price) || !empty($product_price)) :
+                        $final_price = !empty($discount_price) ? $discount_price : $product_price;
+                    ?>,
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "<?php echo esc_attr($final_price); ?>",
+                        "priceCurrency": "<?php echo esc_attr($currency === 'đ' ? 'VND' : $currency); ?>",
+                        "availability": "https://schema.org/InStock",
+                        "url": "<?php echo esc_url(get_permalink()); ?>"
+                    }
+                    <?php endif; ?>
+                }
+                </script>
+                
                 <article id="post-<?php the_ID(); ?>" <?php post_class('post single-product'); ?>>
                     <header class="post-header">
                         <h1 class="post-title"><?php the_title(); ?></h1>

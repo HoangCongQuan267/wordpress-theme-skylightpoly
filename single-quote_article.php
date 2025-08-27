@@ -9,6 +9,37 @@
 
 get_header(); ?>
 
+<!-- Article Schema Markup for Quote Article -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "<?php echo esc_js(get_the_title()); ?>",
+    "description": "<?php echo esc_js(generate_meta_description()); ?>",
+    "image": "<?php echo esc_js(get_the_post_thumbnail_url(get_the_ID(), 'large')); ?>",
+    "datePublished": "<?php echo esc_js(get_the_date('c')); ?>",
+    "dateModified": "<?php echo esc_js(get_the_modified_date('c')); ?>",
+    "author": {
+        "@type": "Organization",
+        "name": "<?php echo esc_js(get_bloginfo('name')); ?>"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "<?php echo esc_js(get_bloginfo('name')); ?>",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "<?php echo esc_js(get_og_image()); ?>"
+        }
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "<?php echo esc_js(get_permalink()); ?>"
+    },
+    "articleSection": "Báo giá",
+    "keywords": "<?php echo esc_js(generate_meta_keywords()); ?>"
+}
+</script>
+
 <main class="site-main">
     <div class="content-area">
         <div class="posts-container full-width">

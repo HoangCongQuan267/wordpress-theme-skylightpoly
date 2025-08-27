@@ -6,6 +6,37 @@
 
 get_header(); ?>
 
+<!-- WebPage Schema Markup for 404 Page -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Trang không tìm thấy - 404",
+    "description": "Trang bạn đang tìm kiếm không tồn tại. Vui lòng kiểm tra lại đường dẫn hoặc quay về trang chủ.",
+    "url": "<?php echo esc_js(home_url($_SERVER['REQUEST_URI'])); ?>",
+    "mainEntity": {
+        "@type": "WebPage",
+        "@id": "<?php echo esc_js(home_url($_SERVER['REQUEST_URI'])); ?>"
+    },
+    "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Trang chủ",
+                "item": "<?php echo esc_js(home_url('/')); ?>"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "404 - Trang không tìm thấy"
+            }
+        ]
+    }
+}
+</script>
+
 <main class="site-main">
     <div class="content-area">
         <div class="posts-container">

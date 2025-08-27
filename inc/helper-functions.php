@@ -339,3 +339,215 @@ function get_social_media_links()
         'zalo' => get_theme_mod('social_zalo_url')
     );
 }
+
+/**
+ * SEO Helper Functions
+ */
+
+/**
+ * Generate SEO-friendly title
+ *
+ * @param string $title Page title
+ * @param string $separator Title separator
+ * @return string SEO optimized title
+ */
+function generate_seo_title($title = '', $separator = '|')
+{
+    $site_name = get_bloginfo('name');
+    $site_description = get_bloginfo('description');
+    
+    if (empty($title)) {
+        if (is_front_page()) {
+            return $site_name . ' ' . $separator . ' ' . $site_description;
+        } elseif (is_single()) {
+            return get_the_title() . ' ' . $separator . ' ' . $site_name;
+        } elseif (is_page()) {
+            return get_the_title() . ' ' . $separator . ' ' . $site_name;
+        } elseif (is_category()) {
+            return single_cat_title('', false) . ' ' . $separator . ' ' . $site_name;
+        } elseif (is_tag()) {
+            return single_tag_title('', false) . ' ' . $separator . ' ' . $site_name;
+        } elseif (is_archive()) {
+            return get_the_archive_title() . ' ' . $separator . ' ' . $site_name;
+        }
+    }
+    
+    return $title . ' ' . $separator . ' ' . $site_name;
+}
+
+/**
+ * Generate meta description
+ *
+ * @param string $description Custom description
+ * @return string Meta description
+ */
+function generate_meta_description($description = '')
+{
+    if (!empty($description)) {
+        return wp_trim_words($description, 25, '...');
+    }
+    
+    if (is_front_page()) {
+        $default_desc = get_theme_mod('seo_default_meta_description', get_bloginfo('description'));
+        return wp_trim_words($default_desc, 25, '...');
+    } elseif (is_single() || is_page()) {
+        $custom_desc = get_post_meta(get_the_ID(), '_meta_description', true);
+        if (!empty($custom_desc)) {
+            return wp_trim_words($custom_desc, 25, '...');
+        }
+        
+        $excerpt = get_the_excerpt();
+        if (!empty($excerpt)) {
+            return wp_trim_words($excerpt, 25, '...');
+        }
+        
+        $content = get_the_content();
+        return wp_trim_words(strip_tags($content), 25, '...');
+    } elseif (is_category()) {
+        $desc = category_description();
+        if (!empty($desc)) {
+            return wp_trim_words(strip_tags($desc), 25, '...');
+        }
+    } elseif (is_tag()) {
+        $desc = tag_description();
+        if (!empty($desc)) {
+            return wp_trim_words(strip_tags($desc), 25, '...');
+        }
+    }
+    
+    return wp_trim_words(get_bloginfo('description'), 25, '...');
+}
+
+/**
+ * Generate meta keywords
+ *
+ * @return string Meta keywords
+ */
+function generate_meta_keywords()
+{
+    $keywords = array();
+    
+    if (is_single() || is_page()) {
+        $custom_keywords = get_post_meta(get_the_ID(), '_meta_keywords', true);
+        if (!empty($custom_keywords)) {
+            return $custom_keywords;
+        }
+        
+        // Get tags as keywords
+        $tags = get_the_tags();
+        if ($tags) {
+            foreach ($tags as $tag) {
+                $keywords[] = $tag->name;
+            }
+        }
+        
+        // Get categories as keywords
+        $categories = get_the_category();
+        if ($categories) {
+            foreach ($categories as $category) {
+                $keywords[] = $category->name;
+            }
+        }
+    }
+    
+    // Add default keywords
+    $default_keywords = get_theme_mod('seo_default_meta_keywords', '');
+    if (!empty($default_keywords)) {
+        $default_array = explode(',', $default_keywords);
+        $keywords = array_merge($keywords, array_map('trim', $default_array));
+    }
+    
+    return implode(', ', array_unique($keywords));
+}
+
+/**
+ * Get Open Graph image
+ *
+ * @return string OG image URL
+ */
+function get_og_image()
+{
+    if (is_single() || is_page()) {
+        $featured_image = get_the_post_thumbnail_url(get_the_ID(), 'large');
+        if ($featured_image) {
+            return $featured_image;
+        }
+    }
+    
+    $default_og_image = get_theme_mod('seo_default_og_image');
+    if ($default_og_image) {
+        return $default_og_image;
+    }
+    
+    $custom_logo = get_theme_mod('custom_logo');
+    if ($custom_logo) {
+        return wp_get_attachment_image_url($custom_logo, 'large');
+    }
+    
+    return '';
+}
+
+/**
+ * Generate canonical URL
+ *
+ * @return string Canonical URL
+ */
+function get_canonical_url()
+{
+    if (is_front_page()) {
+        return home_url('/');
+    } elseif (is_single() || is_page()) {
+        return get_permalink();
+    } elseif (is_category()) {
+        return get_category_link(get_queried_object_id());
+    } elseif (is_tag()) {
+        return get_tag_link(get_queried_object_id());
+    } elseif (is_archive()) {
+        return get_post_type_archive_link(get_post_type());
+    }
+    
+    return home_url('/');
+}
+
+/**
+ * Check if current page should be indexed
+ *
+ * @return bool Whether page should be indexed
+ */
+function should_index_page()
+{
+    // Don't index admin, login, or search pages
+    if (is_admin() || is_search() || is_404()) {
+        return false;
+    }
+    
+    // Check if page has noindex meta
+    if (is_single() || is_page()) {
+        $noindex = get_post_meta(get_the_ID(), '_meta_noindex', true);
+        if ($noindex === '1') {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+/**
+ * Generate robots meta tag
+ *
+ * @return string Robots meta content
+ */
+function generate_robots_meta()
+{
+    $robots = array();
+    
+    if (should_index_page()) {
+        $robots[] = 'index';
+        $robots[] = 'follow';
+    } else {
+        $robots[] = 'noindex';
+        $robots[] = 'nofollow';
+    }
+    
+    return implode(', ', $robots);
+}

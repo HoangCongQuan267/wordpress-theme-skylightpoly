@@ -55,6 +55,39 @@ $products_query = new WP_Query($products_args);
 ?>
 
 <main id="main" class="site-main products-page" style="background-color: <?php echo esc_attr($products_bg_color); ?>; color: <?php echo esc_attr($products_text_color); ?>;">
+    
+    <!-- Structured Data for Products Page -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Sản Phẩm",
+        "description": "Danh sách sản phẩm nhựa chất lượng cao từ Skylight Plastic",
+        "url": "<?php echo esc_url(get_permalink()); ?>",
+        "mainEntity": {
+            "@type": "ItemList",
+            "name": "Danh sách sản phẩm",
+            "description": "Tổng hợp các sản phẩm nhựa chất lượng cao"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Trang chủ",
+                    "item": "<?php echo esc_url(home_url('/')); ?>"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Sản Phẩm",
+                    "item": "<?php echo esc_url(get_permalink()); ?>"
+                }
+            ]
+        }
+    }
+    </script>
     <div class="container">
 
         <!-- Products Layout -->

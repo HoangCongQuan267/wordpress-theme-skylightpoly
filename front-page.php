@@ -29,6 +29,55 @@ if ($section_spacing !== 'normal') {
 ?>
 
 <main id="main" class="<?php echo implode(' ', $homepage_classes); ?>" style="background-color: <?php echo esc_attr($homepage_bg_color); ?>;">
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "<?php echo esc_js(get_bloginfo('name')); ?>",
+        "url": "<?php echo esc_url(home_url('/')); ?>",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "<?php echo esc_url(get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/logo.png')); ?>"
+        },
+        "description": "<?php echo esc_js(get_theme_mod('site_meta_description', 'Skylight Plastic - Chuyên cung cấp sản phẩm nhựa chất lượng cao, giá cả hợp lý, giao hàng nhanh chóng trên toàn quốc.')); ?>",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "<?php echo esc_js(get_theme_mod('default_phone', '+84 123 456 789')); ?>",
+            "contactType": "customer service",
+            "email": "<?php echo esc_js(get_theme_mod('default_email', 'info@yoursite.com')); ?>"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "<?php echo esc_js(get_theme_mod('default_address', '123 Đường Chính, Thành phố, Việt Nam')); ?>",
+            "addressCountry": "VN"
+        },
+        "sameAs": [
+            "<?php echo esc_url(get_theme_mod('social_facebook', '#')); ?>",
+            "<?php echo esc_url(get_theme_mod('social_twitter', '#')); ?>",
+            "<?php echo esc_url(get_theme_mod('social_linkedin', '#')); ?>"
+        ]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "<?php echo esc_js(get_bloginfo('name')); ?>",
+        "url": "<?php echo esc_url(home_url('/')); ?>",
+        "description": "<?php echo esc_js(get_bloginfo('description')); ?>",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "<?php echo esc_url(home_url('/')); ?>?s={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
     <?php
     // Check if slideshow is enabled in customizer
     $slideshow_enabled = get_theme_mod('hero_slideshow_enable', true);

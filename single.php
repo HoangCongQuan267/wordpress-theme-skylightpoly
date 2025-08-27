@@ -21,6 +21,38 @@ get_header(); ?>
                     <span class="breadcrumb-separator">›</span>
                     <span class="current-page"><?php the_title(); ?></span>
                 </nav>
+                <!-- Structured Data for Article -->
+                <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "Article",
+                    "headline": "<?php echo esc_js(get_the_title()); ?>",
+                    "description": "<?php echo esc_js(wp_trim_words(get_the_excerpt() ? get_the_excerpt() : get_the_content(), 25)); ?>",
+                    "image": {
+                        "@type": "ImageObject",
+                        "url": "<?php echo esc_url(has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'large') : get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/logo.png')); ?>"
+                    },
+                    "author": {
+                        "@type": "Person",
+                        "name": "<?php echo esc_js(get_the_author()); ?>"
+                    },
+                    "publisher": {
+                        "@type": "Organization",
+                        "name": "<?php echo esc_js(get_bloginfo('name')); ?>",
+                        "logo": {
+                            "@type": "ImageObject",
+                            "url": "<?php echo esc_url(get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/logo.png')); ?>"
+                        }
+                    },
+                    "datePublished": "<?php echo esc_js(get_the_date('c')); ?>",
+                    "dateModified": "<?php echo esc_js(get_the_modified_date('c')); ?>",
+                    "mainEntityOfPage": {
+                        "@type": "WebPage",
+                        "@id": "<?php echo esc_url(get_permalink()); ?>"
+                    }
+                }
+                </script>
+                
                 <article id="post-<?php the_ID(); ?>" <?php post_class('post single-post'); ?>>
                     <header class="post-header">
                         <h1 class="post-title"><?php the_title(); ?></h1>

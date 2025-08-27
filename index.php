@@ -8,6 +8,49 @@
 
 get_header(); ?>
 
+<!-- WebPage Schema Markup for Blog Index -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "<?php echo esc_js(get_bloginfo('name')); ?> - Blog",
+    "description": "<?php echo esc_js(get_bloginfo('description')); ?>",
+    "url": "<?php echo esc_js(home_url('/')); ?>",
+    "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": "<?php echo esc_js(wp_count_posts()->publish); ?>",
+        "itemListElement": [
+            <?php
+            $posts_query = new WP_Query(array('posts_per_page' => 10));
+            $position = 1;
+            while ($posts_query->have_posts()) : $posts_query->the_post();
+            ?>
+            {
+                "@type": "ListItem",
+                "position": <?php echo $position; ?>,
+                "item": {
+                    "@type": "Article",
+                    "name": "<?php echo esc_js(get_the_title()); ?>",
+                    "url": "<?php echo esc_js(get_permalink()); ?>"
+                }
+            }<?php echo ($position < $posts_query->post_count) ? ',' : ''; ?>
+            <?php $position++; endwhile; wp_reset_postdata(); ?>
+        ]
+    },
+    "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Trang chủ",
+                "item": "<?php echo esc_js(home_url('/')); ?>"
+            }
+        ]
+    }
+}
+</script>
+
 <!-- Hero Section with Dynamic Slideshow -->
 <?php
 // Check if slideshow is enabled in customizer

@@ -5,6 +5,111 @@
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    <?php
+    // SEO Meta Tags
+    $page_title = '';
+    $meta_description = '';
+    $meta_keywords = '';
+    $canonical_url = '';
+    $og_image = '';
+    
+    if (is_front_page()) {
+        $page_title = get_bloginfo('name') . ' - ' . get_bloginfo('description');
+        $meta_description = get_theme_mod('site_meta_description', 'Skylight Plastic - Chuyên cung cấp sản phẩm nhựa chất lượng cao, giá cả hợp lý, giao hàng nhanh chóng trên toàn quốc.');
+        $meta_keywords = get_theme_mod('site_meta_keywords', 'nhựa, sản phẩm nhựa, skylight plastic, chất lượng cao');
+        $canonical_url = home_url('/');
+        $og_image = get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/og-default.jpg');
+    } elseif (is_single()) {
+        $page_title = get_the_title() . ' - ' . get_bloginfo('name');
+        $meta_description = get_post_meta(get_the_ID(), '_meta_description', true);
+        if (empty($meta_description)) {
+            $meta_description = wp_trim_words(get_the_excerpt(), 25, '...');
+        }
+        $meta_keywords = get_post_meta(get_the_ID(), '_meta_keywords', true);
+        $canonical_url = get_permalink();
+        $og_image = get_the_post_thumbnail_url(get_the_ID(), 'large');
+        if (empty($og_image)) {
+            $og_image = get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/og-default.jpg');
+        }
+    } elseif (is_page()) {
+        $page_title = get_the_title() . ' - ' . get_bloginfo('name');
+        $meta_description = get_post_meta(get_the_ID(), '_meta_description', true);
+        if (empty($meta_description)) {
+            $meta_description = wp_trim_words(get_the_content(), 25, '...');
+        }
+        $meta_keywords = get_post_meta(get_the_ID(), '_meta_keywords', true);
+        $canonical_url = get_permalink();
+        $og_image = get_the_post_thumbnail_url(get_the_ID(), 'large');
+        if (empty($og_image)) {
+            $og_image = get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/og-default.jpg');
+        }
+    } elseif (is_category()) {
+        $category = get_queried_object();
+        $page_title = $category->name . ' - ' . get_bloginfo('name');
+        $meta_description = $category->description ? wp_trim_words($category->description, 25, '...') : 'Danh mục ' . $category->name . ' tại ' . get_bloginfo('name');
+        $canonical_url = get_category_link($category->term_id);
+        $og_image = get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/og-default.jpg');
+    } elseif (is_tag()) {
+        $tag = get_queried_object();
+        $page_title = $tag->name . ' - ' . get_bloginfo('name');
+        $meta_description = $tag->description ? wp_trim_words($tag->description, 25, '...') : 'Thẻ ' . $tag->name . ' tại ' . get_bloginfo('name');
+        $canonical_url = get_tag_link($tag->term_id);
+        $og_image = get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/og-default.jpg');
+    } elseif (is_archive()) {
+        $page_title = get_the_archive_title() . ' - ' . get_bloginfo('name');
+        $meta_description = get_the_archive_description() ? wp_trim_words(get_the_archive_description(), 25, '...') : 'Lưu trữ tại ' . get_bloginfo('name');
+        $canonical_url = get_permalink();
+        $og_image = get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/og-default.jpg');
+    } else {
+        $page_title = get_bloginfo('name') . ' - ' . get_bloginfo('description');
+        $meta_description = get_bloginfo('description');
+        $canonical_url = home_url($_SERVER['REQUEST_URI']);
+        $og_image = get_theme_mod('site_og_image', get_template_directory_uri() . '/assets/images/og-default.jpg');
+    }
+    
+    // Clean up description
+    $meta_description = strip_tags($meta_description);
+    $meta_description = str_replace(array("\r", "\n", "\t"), ' ', $meta_description);
+    $meta_description = trim(preg_replace('/\s+/', ' ', $meta_description));
+    ?>
+    
+    <!-- SEO Meta Tags -->
+    <?php if (!empty($meta_description)) : ?>
+    <meta name="description" content="<?php echo esc_attr($meta_description); ?>">
+    <?php endif; ?>
+    
+    <?php if (!empty($meta_keywords)) : ?>
+    <meta name="keywords" content="<?php echo esc_attr($meta_keywords); ?>">
+    <?php endif; ?>
+    
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="author" content="<?php echo esc_attr(get_bloginfo('name')); ?>">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="<?php echo esc_url($canonical_url); ?>">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:locale" content="vi_VN">
+    <meta property="og:type" content="<?php echo is_single() ? 'article' : 'website'; ?>">
+    <meta property="og:title" content="<?php echo esc_attr($page_title); ?>">
+    <meta property="og:description" content="<?php echo esc_attr($meta_description); ?>">
+    <meta property="og:url" content="<?php echo esc_url($canonical_url); ?>">
+    <meta property="og:site_name" content="<?php echo esc_attr(get_bloginfo('name')); ?>">
+    <meta property="og:image" content="<?php echo esc_url($og_image); ?>">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php echo esc_attr($page_title); ?>">
+    <meta name="twitter:description" content="<?php echo esc_attr($meta_description); ?>">
+    <meta name="twitter:image" content="<?php echo esc_url($og_image); ?>">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#2c5aa0">
+    <meta name="msapplication-TileColor" content="#2c5aa0">
+    
     <?php wp_head(); ?>
 </head>
 

@@ -8,6 +8,39 @@
 get_header(); ?>
 
 <main class="site-main">
+    <!-- Structured Data for About Page -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "<?php echo esc_attr(get_the_title()); ?>",
+        "description": "<?php echo esc_attr(wp_trim_words(get_the_excerpt() ? get_the_excerpt() : get_the_content(), 25)); ?>",
+        "url": "<?php echo esc_url(get_permalink()); ?>",
+        "mainEntity": {
+            "@type": "AboutPage",
+            "name": "<?php echo esc_attr(get_the_title()); ?>",
+            "description": "<?php echo esc_attr(wp_trim_words(get_the_excerpt() ? get_the_excerpt() : get_the_content(), 25)); ?>"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Trang chủ",
+                    "item": "<?php echo esc_url(home_url('/')); ?>"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "<?php echo esc_attr(get_the_title()); ?>",
+                    "item": "<?php echo esc_url(get_permalink()); ?>"
+                }
+            ]
+        }
+    }
+    </script>
+    
     <div class="content-area">
         <div class="posts-container full-width">
             <?php while (have_posts()) : the_post(); ?>

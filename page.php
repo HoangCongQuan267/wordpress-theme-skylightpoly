@@ -6,6 +6,53 @@
 
 get_header(); ?>
 
+<!-- WebPage Schema Markup -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "<?php echo esc_js(get_the_title()); ?>",
+    "description": "<?php echo esc_js(generate_meta_description()); ?>",
+    "url": "<?php echo esc_js(get_permalink()); ?>",
+    "mainEntity": {
+        "@type": "Article",
+        "headline": "<?php echo esc_js(get_the_title()); ?>",
+        "description": "<?php echo esc_js(generate_meta_description()); ?>",
+        "datePublished": "<?php echo esc_js(get_the_date('c')); ?>",
+        "dateModified": "<?php echo esc_js(get_the_modified_date('c')); ?>",
+        "author": {
+            "@type": "Organization",
+            "name": "<?php echo esc_js(get_bloginfo('name')); ?>"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "<?php echo esc_js(get_bloginfo('name')); ?>",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "<?php echo esc_js(get_og_image()); ?>"
+            }
+        }
+    },
+    "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Trang chủ",
+                "item": "<?php echo esc_js(home_url('/')); ?>"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "<?php echo esc_js(get_the_title()); ?>",
+                "item": "<?php echo esc_js(get_permalink()); ?>"
+            }
+        ]
+    }
+}
+</script>
+
 <main class="site-main">
     <div class="content-area">
         <div class="posts-container full-width">
