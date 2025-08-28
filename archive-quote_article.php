@@ -126,7 +126,7 @@ get_header(); ?>
     .quotes-content {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 20px 20px;
     }
 
     .quotes-header {
