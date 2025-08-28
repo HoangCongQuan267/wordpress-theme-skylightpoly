@@ -13,12 +13,12 @@ get_header(); ?>
 {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "<?php echo esc_js(get_bloginfo('name')); ?> - Blog",
-    "description": "<?php echo esc_js(get_bloginfo('description')); ?>",
-    "url": "<?php echo esc_js(home_url('/')); ?>",
+    "name": "<?php echo esc_attr(get_bloginfo('name')); ?> - Blog",
+    "description": "<?php echo esc_attr(get_bloginfo('description')); ?>",
+    "url": "<?php echo esc_attr(home_url('/')); ?>",
     "mainEntity": {
         "@type": "ItemList",
-        "numberOfItems": "<?php echo esc_js(wp_count_posts()->publish); ?>",
+        "numberOfItems": "<?php $post_counts = wp_count_posts(); echo esc_attr($post_counts ? $post_counts->publish : 0); ?>",
         "itemListElement": [
             <?php
             $posts_query = new WP_Query(array('posts_per_page' => 10));
@@ -30,10 +30,10 @@ get_header(); ?>
                 "position": <?php echo $position; ?>,
                 "item": {
                     "@type": "Article",
-                    "name": "<?php echo esc_js(get_the_title()); ?>",
-                    "url": "<?php echo esc_js(get_permalink()); ?>"
+                    "name": "<?php echo esc_attr(get_the_title()); ?>",
+                    "url": "<?php echo esc_attr(get_permalink()); ?>"
                 }
-            }<?php echo ($position < $posts_query->post_count) ? ',' : ''; ?>
+            }<?php echo ($position < $posts_query->found_posts) ? ',' : ''; ?>
             <?php $position++; endwhile; wp_reset_postdata(); ?>
         ]
     },
@@ -44,7 +44,7 @@ get_header(); ?>
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Trang chủ",
-                "item": "<?php echo esc_js(home_url('/')); ?>"
+                "item": "<?php echo esc_attr(home_url('/')); ?>"
             }
         ]
     }
@@ -198,7 +198,7 @@ endif; // End hero slides check
                             </h2>
                             <div class="post-meta">
                                 <span class="post-date">
-                                    📅 <?php echo get_the_date(); ?>
+                                    📅 <?php echo get_the_date('d/m/Y'); ?>
                                 </span>
                                 <span class="post-author">
                                     👤 Bởi <?php the_author(); ?>

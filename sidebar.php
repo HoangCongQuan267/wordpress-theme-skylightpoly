@@ -31,15 +31,17 @@ if (!is_active_sidebar('sidebar-1')) {
                     'post_status' => 'publish'
                 ));
 
-                foreach ($recent_posts as $post) :
+                if ($recent_posts) :
+                    foreach ($recent_posts as $post) :
                 ?>
                     <li>
                         <a href="<?php echo get_permalink($post['ID']); ?>">
                             <?php echo $post['post_title']; ?>
                         </a>
-                        <span class="post-date"><?php echo get_the_date('M j, Y', $post['ID']); ?></span>
+                        <span class="post-date"><?php echo get_the_date('d/m/Y', $post['ID']); ?></span>
                     </li>
                 <?php endforeach;
+                endif;
                 wp_reset_query(); ?>
             </ul>
         </section>

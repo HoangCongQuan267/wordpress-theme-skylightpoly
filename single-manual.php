@@ -11,29 +11,27 @@ get_header(); ?>
 {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "<?php echo esc_js(get_the_title()); ?>",
-    "description": "<?php echo esc_js(generate_meta_description()); ?>",
-    "image": "<?php echo esc_js(get_the_post_thumbnail_url(get_the_ID(), 'large')); ?>",
-    "datePublished": "<?php echo esc_js(get_the_date('c')); ?>",
-    "dateModified": "<?php echo esc_js(get_the_modified_date('c')); ?>",
+    "headline": "<?php echo esc_attr(get_the_title()); ?>",
+    "description": "<?php echo esc_attr(wp_trim_words(get_the_excerpt() ? get_the_excerpt() : get_the_content(), 25)); ?>",
+    "image": "<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID(), 'large')); ?>",
+    "datePublished": "<?php echo esc_attr(get_the_date('c')); ?>",
     "author": {
         "@type": "Organization",
-        "name": "<?php echo esc_js(get_bloginfo('name')); ?>"
+        "name": "<?php echo esc_attr(get_bloginfo('name')); ?>"
     },
     "publisher": {
         "@type": "Organization",
-        "name": "<?php echo esc_js(get_bloginfo('name')); ?>",
+        "name": "<?php echo esc_attr(get_bloginfo('name')); ?>",
         "logo": {
             "@type": "ImageObject",
-            "url": "<?php echo esc_js(get_og_image()); ?>"
+            "url": "<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.png'); ?>"
         }
     },
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "<?php echo esc_js(get_permalink()); ?>"
+        "@id": "<?php echo esc_url(get_permalink()); ?>"
     },
-    "articleSection": "Hướng dẫn kỹ thuật",
-    "keywords": "<?php echo esc_js(generate_meta_keywords()); ?>"
+    "articleSection": "Hướng dẫn kỹ thuật"
 }
 </script>
 
@@ -52,7 +50,7 @@ get_header(); ?>
                     <header class="post-header">
                         <h1 class="post-title"><?php the_title(); ?></h1>
                         <div class="post-date-minimal">
-                            <?php echo get_the_date('F j, Y'); ?>
+                            <?php echo get_the_date('d/m/Y'); ?>
                         </div>
                     </header>
 
@@ -81,16 +79,14 @@ get_header(); ?>
 
                             if ($related_manuals->have_posts()) :
                             ?>
-                                <ul class="recent-posts-list">
-                                    <?php while ($related_manuals->have_posts()) : $related_manuals->the_post(); ?>
-                                        <li>
-                                            <a href="<?php the_permalink(); ?>">
-                                                <?php the_title(); ?>
-                                            </a>
-                                            <span class="post-date"><?php echo get_the_date('F j, Y'); ?></span>
-                                        </li>
-                                    <?php endwhile; ?>
-                                </ul>
+                                <div class="manuals-page-grid">
+                                    <?php 
+                                    while ($related_manuals->have_posts()) : 
+                                        $related_manuals->the_post();
+                                        include(get_template_directory() . '/template-parts/manual-card.php');
+                                    endwhile;
+                                    ?>
+                                </div>
                             <?php endif; ?>
                             <?php wp_reset_postdata(); ?>
                         </div>

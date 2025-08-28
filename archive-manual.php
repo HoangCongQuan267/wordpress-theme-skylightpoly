@@ -9,37 +9,36 @@ get_header(); ?>
 <main class="site-main">
     <!-- Structured Data for Manuals Archive -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "Hỗ Trợ Kĩ Thuật",
-        "description": "Tài liệu hướng dẫn chi tiết giúp bạn sử dụng sản phẩm một cách hiệu quả và an toàn",
-        "url": "<?php echo esc_url(get_post_type_archive_link('manual')); ?>",
-        "mainEntity": {
-            "@type": "ItemList",
-            "name": "Danh sách hướng dẫn kỹ thuật",
-            "description": "Tổng hợp các tài liệu hướng dẫn sử dụng sản phẩm nhựa"
-        },
-        "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Trang chủ",
-                    "item": "<?php echo esc_url(home_url('/')); ?>"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "Hỗ Trợ Kĩ Thuật",
-                    "item": "<?php echo esc_url(get_post_type_archive_link('manual')); ?>"
-                }
-            ]
+        {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Hỗ Trợ Kĩ Thuật",
+            "description": "Tài liệu hướng dẫn chi tiết giúp bạn sử dụng sản phẩm một cách hiệu quả và an toàn",
+            "url": "<?php echo esc_url(get_post_type_archive_link('manual')); ?>",
+            "mainEntity": {
+                "@type": "ItemList",
+                "name": "Danh sách hướng dẫn kỹ thuật",
+                "description": "Tổng hợp các tài liệu hướng dẫn sử dụng sản phẩm nhựa"
+            },
+            "breadcrumb": {
+                "@type": "BreadcrumbList",
+                "itemListElement": [{
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Trang chủ",
+                        "item": "<?php echo esc_url(home_url('/')); ?>"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Hỗ Trợ Kĩ Thuật",
+                        "item": "<?php echo esc_url(get_post_type_archive_link('manual')); ?>"
+                    }
+                ]
+            }
         }
-    }
     </script>
-    
+
     <div class="content-area">
         <div class="posts-container full-width">
             <header class="page-header manuals-page-header">

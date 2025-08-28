@@ -58,7 +58,7 @@ get_header(); ?>
                 $price_table_title = get_post_meta(get_the_ID(), '_price_table_title', true);
                 
                 // Format date
-                $formatted_date = $quote_date ? date('F j, Y', strtotime($quote_date)) : get_the_date('F j, Y');
+                $formatted_date = $quote_date ? date('d/m/Y', strtotime($quote_date)) : get_the_date('d/m/Y');
                 
                 // Breadcrumb navigation
                 $quotes_url = home_url('/quotes/');
@@ -162,16 +162,16 @@ get_header(); ?>
 
                             if ($recent_quotes) :
                             ?>
-                                <ul class="recent-posts-list">
-                                    <?php foreach ($recent_quotes as $recent_quote) : ?>
-                                        <li>
-                                            <a href="<?php echo get_permalink($recent_quote->ID); ?>">
-                                                <?php echo get_the_title($recent_quote->ID); ?>
-                                            </a>
-                                            <span class="post-date"><?php echo get_the_date('F j, Y', $recent_quote->ID); ?></span>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
+                                <div class="quotes-grid">
+                                    <?php 
+                                    global $post;
+                                    foreach ($recent_quotes as $recent_quote) :
+                                        $post = $recent_quote;
+                                        include(get_template_directory() . '/template-parts/quote-card.php');
+                                    endforeach;
+                                    wp_reset_postdata();
+                                    ?>
+                                </div>
                             <?php endif; ?>
                         </div>
                     </footer>

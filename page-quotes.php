@@ -69,7 +69,7 @@ get_header(); ?>
                         $has_price_table = !empty($price_table_data);
 
                         // Format date same as article page
-                        $formatted_date = $quote_date ? date('F j, Y', strtotime($quote_date)) : get_the_date('F j, Y');
+                        $formatted_date = $quote_date ? date('d/m/Y', strtotime($quote_date)) : get_the_date('d/m/Y');
 
                         // Lấy đoạn trích hoặc xem trước nội dung
                         $quote_excerpt = get_the_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 30, '...');

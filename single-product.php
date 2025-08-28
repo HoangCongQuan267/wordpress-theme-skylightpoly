@@ -117,7 +117,7 @@ get_header(); ?>
                                     $product_categories[] = $term->term_id;
                                 }
                             }
-                            
+
                             $query_args = array(
                                 'post_type' => 'product',
                                 'posts_per_page' => 3,
@@ -125,7 +125,7 @@ get_header(); ?>
                                 'orderby' => 'date',
                                 'order' => 'DESC'
                             );
-                            
+
                             // If product has categories, filter by them
                             if (!empty($product_categories)) {
                                 $query_args['tax_query'] = array(
@@ -137,7 +137,7 @@ get_header(); ?>
                                     )
                                 );
                             }
-                            
+
                             $related_products = new WP_Query($query_args);
 
                             if ($related_products->have_posts()) :

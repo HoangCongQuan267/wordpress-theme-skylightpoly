@@ -93,7 +93,7 @@ function custom_blue_orange_comment($comment, $args, $depth)
                     <a href="<?php echo esc_url(get_comment_link($comment, $args)); ?>">
                         <time datetime="<?php comment_time('c'); ?>">
                             <?php
-                            printf('%1$s at %2$s', get_comment_date('', $comment), get_comment_time());
+                            printf('%1$s at %2$s', get_comment_date('d/m/Y', $comment), get_comment_time());
                             ?>
                         </time>
                     </a>
