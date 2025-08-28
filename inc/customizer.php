@@ -338,6 +338,200 @@ function hero_slideshow_customizer($wp_customize)
 add_action('customize_register', 'hero_slideshow_customizer');
 
 /**
+ * Add Theme Colors to WordPress Customizer
+ */
+function theme_colors_customizer($wp_customize)
+{
+    // Add Theme Colors Section
+    $wp_customize->add_section('theme_colors_section', array(
+        'title'    => __('Theme Colors', 'custom-blue-orange'),
+        'priority' => 20,
+        'description' => __('Customize the main color palette used throughout the theme', 'custom-blue-orange'),
+    ));
+
+    // Primary Sky Blue
+    $wp_customize->add_setting('primary_sky_blue', array(
+        'default'           => '#1431bb',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'primary_sky_blue', array(
+        'label'    => __('Primary Sky Blue', 'custom-blue-orange'),
+        'section'  => 'theme_colors_section',
+        'priority' => 10,
+    )));
+
+    // Secondary Sky Blue
+    $wp_customize->add_setting('secondary_sky_blue', array(
+        'default'           => '#65a7fd',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'secondary_sky_blue', array(
+        'label'    => __('Secondary Sky Blue', 'custom-blue-orange'),
+        'section'  => 'theme_colors_section',
+        'priority' => 20,
+    )));
+
+    // Accent Sky Blue
+    $wp_customize->add_setting('accent_sky_blue', array(
+        'default'           => '#1431bb',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'accent_sky_blue', array(
+        'label'    => __('Accent Sky Blue', 'custom-blue-orange'),
+        'section'  => 'theme_colors_section',
+        'priority' => 30,
+    )));
+
+    // Light Sky Blue
+    $wp_customize->add_setting('light_sky_blue', array(
+        'default'           => '#1431bb',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'light_sky_blue', array(
+        'label'    => __('Light Sky Blue', 'custom-blue-orange'),
+        'section'  => 'theme_colors_section',
+        'priority' => 40,
+    )));
+
+    // Pure White
+    $wp_customize->add_setting('pure_white', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'pure_white', array(
+        'label'    => __('Pure White', 'custom-blue-orange'),
+        'section'  => 'theme_colors_section',
+        'priority' => 50,
+    )));
+
+    // Off White
+    $wp_customize->add_setting('off_white', array(
+        'default'           => '#fafafa',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'off_white', array(
+        'label'    => __('Off White', 'custom-blue-orange'),
+        'section'  => 'theme_colors_section',
+        'priority' => 60,
+    )));
+
+    // Light Gray
+    $wp_customize->add_setting('light_gray', array(
+        'default'           => '#eceff1',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'light_gray', array(
+        'label'    => __('Light Gray', 'custom-blue-orange'),
+        'section'  => 'theme_colors_section',
+        'priority' => 70,
+    )));
+
+    // Medium Gray
+    $wp_customize->add_setting('medium_gray', array(
+        'default'           => '#90a4ae',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'medium_gray', array(
+        'label'    => __('Medium Gray', 'custom-blue-orange'),
+        'section'  => 'theme_colors_section',
+        'priority' => 80,
+    )));
+
+    // Dark Gray
+    $wp_customize->add_setting('dark_gray', array(
+        'default'           => '#37474f',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'dark_gray', array(
+        'label'    => __('Dark Gray', 'custom-blue-orange'),
+        'section'  => 'theme_colors_section',
+        'priority' => 90,
+    )));
+
+    // Accent Blue
+    $wp_customize->add_setting('accent_blue', array(
+        'default'           => '#1431bb',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'accent_blue', array(
+        'label'    => __('Accent Blue', 'custom-blue-orange'),
+        'section'  => 'theme_colors_section',
+        'priority' => 100,
+    )));
+
+    // Silver Accent
+    $wp_customize->add_setting('silver_accent', array(
+        'default'           => '#c0c0c0',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'silver_accent', array(
+        'label'    => __('Silver Accent', 'custom-blue-orange'),
+        'section'  => 'theme_colors_section',
+        'priority' => 110,
+    )));
+}
+add_action('customize_register', 'theme_colors_customizer');
+
+/**
+ * Output customized theme colors as CSS variables
+ */
+function output_theme_colors_css()
+{
+    // Get customizer values
+    $primary_sky_blue = get_theme_mod('primary_sky_blue', '#1431bb');
+    $secondary_sky_blue = get_theme_mod('secondary_sky_blue', '#65a7fd');
+    $accent_sky_blue = get_theme_mod('accent_sky_blue', '#1431bb');
+    $light_sky_blue = get_theme_mod('light_sky_blue', '#1431bb');
+    $pure_white = get_theme_mod('pure_white', '#ffffff');
+    $off_white = get_theme_mod('off_white', '#fafafa');
+    $light_gray = get_theme_mod('light_gray', '#eceff1');
+    $medium_gray = get_theme_mod('medium_gray', '#90a4ae');
+    $dark_gray = get_theme_mod('dark_gray', '#37474f');
+    $accent_blue = get_theme_mod('accent_blue', '#1431bb');
+    $silver_accent = get_theme_mod('silver_accent', '#c0c0c0');
+
+    // Output CSS variables
+    echo '<style type="text/css">';
+    echo ':root {';
+    echo '--primary-sky-blue: ' . esc_attr($primary_sky_blue) . ';';
+    echo '--secondary-sky-blue: ' . esc_attr($secondary_sky_blue) . ';';
+    echo '--accent-sky-blue: ' . esc_attr($accent_sky_blue) . ';';
+    echo '--light-sky-blue: ' . esc_attr($light_sky_blue) . ';';
+    echo '--pure-white: ' . esc_attr($pure_white) . ';';
+    echo '--off-white: ' . esc_attr($off_white) . ';';
+    echo '--light-gray: ' . esc_attr($light_gray) . ';';
+    echo '--medium-gray: ' . esc_attr($medium_gray) . ';';
+    echo '--dark-gray: ' . esc_attr($dark_gray) . ';';
+    echo '--accent-blue: ' . esc_attr($accent_blue) . ';';
+    echo '--silver-accent: ' . esc_attr($silver_accent) . ';';
+    echo '}';
+    echo '</style>';
+}
+add_action('wp_head', 'output_theme_colors_css');
+
+/**
  * Add Homepage Sections to WordPress Customizer
  */
 function homepage_sections_customizer($wp_customize)
