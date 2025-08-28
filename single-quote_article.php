@@ -148,7 +148,7 @@ get_header(); ?>
             
                     <footer class="post-footer">
                         <div class="related-posts">
-                            <h3>Quotes mới nhất</h3>
+                            <h3>Báo giá mới nhất</h3>
                             <?php
                             $current_post_id = get_the_ID();
                             $recent_quotes = get_posts(array(
