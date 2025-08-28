@@ -23,16 +23,16 @@ body {
 
 /* Sky Blue and White Color Palette Variables */
 :root {
-    --primary-sky-blue: #007cba;
+    --primary-sky-blue: #1431bb;
     --secondary-sky-blue: #65a7fd;
-    --accent-sky-blue: #007cba;
-    --light-sky-blue: #007cba;
+    --accent-sky-blue: #1431bb;
+    --light-sky-blue: #1431bb;
     --pure-white: #ffffff;
     --off-white: #fafafa;
     --light-gray: #eceff1;
     --medium-gray: #90a4ae;
     --dark-gray: #37474f;
-    --accent-blue: #4169e1;
+    --accent-blue: #1431bb;
     --silver-accent: #c0c0c0;
 }
 
@@ -1996,15 +1996,15 @@ body {
 }
 
 .contact-phone {
-    font-size: 14px;
-    color: #007cba;
+    font-size: 16px;
+    color: var(--primary-sky-blue);
     text-decoration: none;
     font-weight: 400;
     transition: color 0.2s ease;
 }
 
 .contact-phone:hover {
-    color: #005a87;
+    color: var(--primary-sky-blue);
     text-decoration: underline;
 }
 
@@ -4389,7 +4389,7 @@ body {
 
 .category-link:hover,
 .category-item.active .category-link {
-    background: #007cba;
+    background: var(--accent-sky-blue);
     color: white;
     text-decoration: none;
 }
