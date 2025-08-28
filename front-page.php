@@ -219,10 +219,10 @@ if ($section_spacing !== 'normal') {
                 <?php
                 $commitment_items = get_commitment_items();
                 $icons = array(
-                    '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" stroke="#007cba" stroke-width="2" fill="none" /></svg>',
-                    '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 3H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><circle cx="9" cy="20" r="1" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><circle cx="20" cy="20" r="1" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>',
-                    '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><circle cx="12" cy="7" r="4" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>',
-                    '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2V22M17 5H9.5C8.11929 5 7 6.11929 7 7.5C7 8.88071 8.11929 10 9.5 10H14.5C15.8807 10 17 11.1193 17 12.5C17 13.8807 15.8807 15 14.5 15H7" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>'
+                    '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="#2154fe" stroke="#1a44d9" stroke-width="2"/><g transform="translate(12,12)"><path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" fill="white" stroke="white" stroke-width="1" stroke-linejoin="round"/></g></svg>',
+                    '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="#2154fe" stroke="#1a44d9" stroke-width="2"/><g transform="translate(12,12)"><rect x="4" y="4" width="16" height="16" rx="2" stroke="white" stroke-width="2" fill="none"/><path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g></svg>',
+                    '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="#2154fe" stroke="#1a44d9" stroke-width="2"/><g transform="translate(12,12)"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/><path d="M12 6V12L16 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g></svg>',
+                    '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="#2154fe" stroke="#1a44d9" stroke-width="2"/><text x="24" y="32" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">$</text></svg>'
                 );
 
                 foreach ($commitment_items as $index => $item) :
@@ -242,7 +242,7 @@ if ($section_spacing !== 'normal') {
     <style>
         /* Commitments Section Styles */
         .commitments-section {
-            padding: 40px 0;
+            padding: 0 0;
             background: var(--pure-white);
             border-bottom: 1px solid #f0f0f0;
         }

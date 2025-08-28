@@ -642,14 +642,14 @@ body {
 }
 
 .content-area {
-    padding-top: 20px;
+    padding: 20px 40px 0 40px;
     display: block;
     width: 100%;
 }
 
 .posts-container.full-width {
     width: 100%;
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -3629,7 +3629,7 @@ body {
 }
 
 .faq-section .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
