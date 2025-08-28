@@ -104,12 +104,14 @@
                     <li><a href="<?php echo esc_url(home_url('/chinh-sach-bao-hanh')); ?>">Chính sách bảo hành</a></li>
                     <li><a href="<?php echo esc_url(home_url('/chinh-sach-doi-tra')); ?>">Chính sách đổi trả</a></li>
                     <li><a href="<?php echo esc_url(home_url('/chinh-sach-bao-mat')); ?>">Chính sách bảo mật</a></li>
-                    <li><a href="<?php echo esc_url(home_url('/dieu-khoan-su-dung')); ?>">Điều khoản sử dụng</a></li>
+                    <li><a href="<?php echo esc_url(home_url('/chinh-sach-giao-hang')); ?>">Chính sách giao hàng</a></li>
+                    <li><a href="<?php echo esc_url(home_url('/chinh-sach-thanh-toan')); ?>">Chính sách thanh toán</a></li>
                 </ul>
             </div>
             <div class="subfooter-links">
                 <h4>Hỗ trợ khách hàng</h4>
                 <ul class="support-links">
+                    <li><a href="<?php echo esc_url(home_url('/huong-dan-su-dung')); ?>">Hướng dẫn sử dụng</a></li>
                     <li><a href="<?php echo esc_url(home_url('/tai-lieu-ky-thuat')); ?>">Tài liệu kỹ thuật</a></li>
                 </ul>
             </div>
