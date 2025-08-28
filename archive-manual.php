@@ -242,20 +242,21 @@ get_header(); ?>
     }
 
     .featured-manual .manual-image {
-        height: 300px;
+        height: 75%;
         overflow: hidden;
         background: #f5f5f5;
         flex-shrink: 0;
     }
 
     .featured-manual .manual-content {
-        flex: 1;
+        height: 25%;
         display: flex;
         flex-direction: column;
+        padding: 15px;
     }
 
     .featured-manual .featured-title {
-        font-size: 0.8rem;
+        font-size: 1rem;
         font-weight: 600;
         line-height: 1.3;
         margin-bottom: 12px;
@@ -307,7 +308,7 @@ get_header(); ?>
     }
 
     .regular-manual .manual-title {
-        font-size: 0.8rem;
+        font-size: 1rem;
         font-weight: 500;
         line-height: 1.4;
         margin-bottom: 8px;
@@ -447,7 +448,7 @@ get_header(); ?>
         }
 
         .featured-manual .featured-title {
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         .regular-manual .manual-image {
@@ -455,7 +456,7 @@ get_header(); ?>
         }
 
         .regular-manual .manual-title {
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
     }
 
@@ -475,7 +476,7 @@ get_header(); ?>
         }
 
         .featured-manual .featured-title {
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         .regular-manual .manual-image {
@@ -483,7 +484,7 @@ get_header(); ?>
         }
 
         .regular-manual .manual-title {
-            font-size: 0.8rem;
+            font-size: 1rem;
         }
 
         .manuals-pagination .page-numbers {

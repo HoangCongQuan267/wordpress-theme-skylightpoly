@@ -242,7 +242,7 @@ get_header(); ?>
     }
 
     .featured-manual .featured-title {
-        font-size: 0.8rem;
+        font-size: 1rem;
         font-weight: 600;
         line-height: 1.3;
         margin-bottom: 12px;
@@ -294,7 +294,7 @@ get_header(); ?>
     }
 
     .regular-manual .manual-title {
-        font-size: 0.8rem;
+        font-size: 1rem;
         font-weight: 500;
         line-height: 1.4;
         margin-bottom: 8px;
@@ -434,7 +434,7 @@ get_header(); ?>
         }
 
         .featured-manual .featured-title {
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         .regular-manual .manual-image {
@@ -442,7 +442,7 @@ get_header(); ?>
         }
 
         .regular-manual .manual-title {
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
     }
 
@@ -462,7 +462,7 @@ get_header(); ?>
         }
 
         .featured-manual .featured-title {
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         .regular-manual .manual-image {
@@ -470,7 +470,7 @@ get_header(); ?>
         }
 
         .regular-manual .manual-title {
-            font-size: 0.8rem;
+            font-size: 1rem;
         }
 
         .manuals-pagination .page-numbers {

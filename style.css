@@ -4529,7 +4529,7 @@ body {
 .featured-article .featured-title,
 .featured-manual .featured-title,
 .featured-quote .featured-title {
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: 600;
     line-height: 1.3;
     margin-bottom: 12px;
@@ -4595,7 +4595,7 @@ body {
 .regular-article .article-title,
 .regular-manual .manual-title,
 .regular-quote .quote-title {
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: 500;
     line-height: 1.4;
     margin-bottom: 8px;
@@ -4741,7 +4741,7 @@ body {
     .featured-article .featured-title,
     .featured-manual .featured-title,
     .featured-quote .featured-title {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 
     .regular-article .article-image,
@@ -4753,7 +4753,7 @@ body {
     .regular-article .article-title,
     .regular-manual .manual-title,
     .regular-quote .quote-title {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 }
 
@@ -4781,7 +4781,7 @@ body {
     .featured-article .featured-title,
     .featured-manual .featured-title,
     .featured-quote .featured-title {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 
     .regular-article .article-image,
@@ -4793,6 +4793,6 @@ body {
     .regular-article .article-title,
     .regular-manual .manual-title,
     .regular-quote .quote-title {
-        font-size: 0.8rem;
+        font-size: 1rem;
     }
 }
