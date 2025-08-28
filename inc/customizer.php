@@ -1450,6 +1450,20 @@ function footer_contact_customizer($wp_customize)
         'type'     => 'url',
         'priority' => 60,
     ));
+
+    // TikTok URL
+    $wp_customize->add_setting('social_tiktok_url', array(
+        'default'           => '#',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('social_tiktok_url', array(
+        'label'    => __('TikTok URL', 'custom-blue-orange'),
+        'section'  => 'social_media_section',
+        'type'     => 'url',
+        'priority' => 70,
+    ));
 }
 add_action('customize_register', 'footer_contact_customizer');
 
