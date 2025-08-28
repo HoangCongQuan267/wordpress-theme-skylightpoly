@@ -18,8 +18,8 @@ $products_bg_color = get_theme_mod('products_section_bg_color', '#ffffff');
 $products_text_color = get_theme_mod('products_section_text_color', '#333333');
 $products_layout = get_theme_mod('products_grid_layout', 'grid');
 
-// Get current category filter
-$current_category = isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '';
+// Get current category filter (Vietnamese slug)
+$current_category = isset($_GET['danh-muc']) ? sanitize_text_field($_GET['danh-muc']) : '';
 
 // If no category is selected, auto-select the first category
 if (empty($current_category)) {
@@ -118,7 +118,7 @@ $products_query = new WP_Query($products_args);
                         foreach ($product_categories as $category) :
                     ?>
                             <li class="category-item <?php echo ($current_category === $category->slug) ? 'active' : ''; ?>">
-                                <a href="?category=<?php echo esc_attr($category->slug); ?>" class="category-link">
+                                <a href="?danh-muc=<?php echo esc_attr($category->slug); ?>" class="category-link">
                                     <?php echo esc_html($category->name); ?>
                                     <span class="category-count">(<?php echo $category->count; ?>)</span>
                                 </a>

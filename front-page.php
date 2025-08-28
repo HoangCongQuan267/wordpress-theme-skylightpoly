@@ -579,9 +579,9 @@ if ($section_spacing !== 'normal') {
                             <!-- See All Products Button for this Category -->
                             <div class="category-footer">
                                 <?php
-                                // Link to products page with category parameter
+                                // Link to products page with Vietnamese category parameter
                                 $products_page_url = home_url('/san-pham/');
-                                $category_link = $products_page_url . '?category=' . $category_data['category']->slug;
+                                $category_link = $products_page_url . '?danh-muc=' . $category_data['category']->slug;
                                 ?>
                                 <a href="<?php echo esc_url($category_link); ?>" class="btn btn-outline-primary btn-see-all">
                                     <?php _e('Xem tất cả sản phẩm', 'custom-blue-orange'); ?>
@@ -674,7 +674,7 @@ if ($section_spacing !== 'normal') {
                         ));
                         $first_category_link = $products_page_url;
                         if (!empty($product_categories) && !is_wp_error($product_categories)) {
-                            $first_category_link = $products_page_url . '?category=' . $product_categories[0]->slug;
+                            $first_category_link = $products_page_url . '?danh-muc=' . $product_categories[0]->slug;
                         }
                         ?>
                         <a href="<?php echo esc_url($first_category_link); ?>" class="show-all-btn">Xem Tất Cả Sản Phẩm</a>
