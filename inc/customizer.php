@@ -2371,6 +2371,121 @@ function commitments_section_customizer($wp_customize)
 add_action('customize_register', 'commitments_section_customizer');
 
 /**
+ * Add Contact Form API Configuration to WordPress Customizer
+ */
+function contact_form_api_customizer($wp_customize)
+{
+    // Add Contact Form API Section
+    $wp_customize->add_section('contact_form_api_section', array(
+        'title'    => __('Contact Form API Settings', 'skylightpoly'),
+        'priority' => 200,
+        'description' => __('Configure API settings for contact form submissions', 'skylightpoly'),
+    ));
+
+    // Enable/Disable API Integration
+    $wp_customize->add_setting('contact_form_api_enable', array(
+        'default'           => false,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_form_api_enable', array(
+        'label'    => __('Enable API Integration', 'skylightpoly'),
+        'description' => __('Enable this to send form data to external API instead of saving to database', 'skylightpoly'),
+        'section'  => 'contact_form_api_section',
+        'type'     => 'checkbox',
+        'priority' => 10,
+    ));
+
+    // API URL Setting
+    $wp_customize->add_setting('contact_form_api_url', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_form_api_url', array(
+        'label'       => __('API Endpoint URL', 'skylightpoly'),
+        'description' => __('Enter the complete API URL where form data will be sent (e.g., https://api.example.com/contact)', 'skylightpoly'),
+        'section'     => 'contact_form_api_section',
+        'type'        => 'url',
+        'priority'    => 20,
+    ));
+
+    // API Method Setting
+    $wp_customize->add_setting('contact_form_api_method', array(
+        'default'           => 'POST',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_form_api_method', array(
+        'label'    => __('HTTP Method', 'skylightpoly'),
+        'section'  => 'contact_form_api_section',
+        'type'     => 'select',
+        'choices'  => array(
+            'POST' => 'POST',
+            'PUT'  => 'PUT',
+        ),
+        'priority' => 30,
+    ));
+
+    // API Headers Setting
+    $wp_customize->add_setting('contact_form_api_headers', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_form_api_headers', array(
+        'label'       => __('Custom Headers (JSON)', 'skylightpoly'),
+        'description' => __('Optional: Add custom headers in JSON format, e.g., {"Authorization": "Bearer token", "Content-Type": "application/json"}', 'skylightpoly'),
+        'section'     => 'contact_form_api_section',
+        'type'        => 'textarea',
+        'input_attrs' => array(
+            'rows' => 4,
+            'placeholder' => '{"Authorization": "Bearer your-token", "Content-Type": "application/json"}'
+        ),
+        'priority'    => 40,
+    ));
+
+    // API Documentation
+    $wp_customize->add_setting('contact_form_api_docs', array(
+        'sanitize_callback' => 'wp_kses_post',
+    ));
+
+    if (class_exists('WP_Customize_Control')) {
+        $wp_customize->add_control(new WP_Customize_Control($wp_customize, 'contact_form_api_docs', array(
+            'label'       => __('API Data Format', 'skylightpoly'),
+            'description' => __('<strong>Required Columns/Fields that will be sent to your API:</strong><br><br>
+                               • <code>name</code> - Contact person name (string)<br>
+                               • <code>email</code> - Contact email address (string)<br>
+                               • <code>phone</code> - Phone number (string)<br>
+                               • <code>company</code> - Company name (string, optional)<br>
+                               • <code>message</code> - Contact message (text)<br>
+                               • <code>submitted_at</code> - Submission timestamp (datetime)<br>
+                               • <code>ip_address</code> - User IP address (string)<br>
+                               • <code>user_agent</code> - Browser user agent (string)<br><br>
+                               <strong>Data will be sent as JSON:</strong><br>
+                               <code>{
+                                 "name": "John Doe",
+                                 "email": "john@example.com",
+                                 "phone": "+1234567890",
+                                 "company": "Example Corp",
+                                 "message": "Hello...",
+                                 "submitted_at": "2024-01-01 12:00:00",
+                                 "ip_address": "192.168.1.1",
+                                 "user_agent": "Mozilla/5.0..."
+                               }</code>', 'skylightpoly'),
+            'section'     => 'contact_form_api_section',
+            'type'        => 'hidden',
+            'priority'    => 50,
+        )));
+    }
+}
+add_action('customize_register', 'contact_form_api_customizer');
+
+/**
  * Helper function to get commitment items
  */
 function get_commitment_items()

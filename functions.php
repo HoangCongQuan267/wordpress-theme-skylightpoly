@@ -15,6 +15,20 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Ensure WordPress functions are available
+if (!function_exists('wp_enqueue_script')) {
+    require_once(ABSPATH . 'wp-includes/script-loader.php');
+}
+if (!function_exists('wp_localize_script')) {
+    require_once(ABSPATH . 'wp-includes/functions.wp-scripts.php');
+}
+if (!function_exists('wp_send_json_error')) {
+    require_once(ABSPATH . 'wp-includes/functions.php');
+}
+if (!function_exists('dbDelta')) {
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+}
+
 // Include WordPress functions stub for linter compatibility only when WordPress functions aren't available
 if (!function_exists('wp_enqueue_style')) {
     require_once dirname(__FILE__) . '/wp-functions-stub.php';
@@ -92,6 +106,10 @@ function custom_robots_txt($output, $public)
         return $output;
     }
 
+    if (!function_exists('site_url')) {
+        return $output;
+    }
+
     $site_url = parse_url(site_url());
     $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
 
@@ -122,9 +140,9 @@ function add_canonical_url()
         echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '" />' . "\n";
     } elseif ((function_exists('is_home') && is_home()) || (function_exists('is_front_page') && is_front_page())) {
         echo '<link rel="canonical" href="' . esc_url(home_url('/')) . '" />' . "\n";
-    } elseif (function_exists('is_category') && is_category()) {
+    } elseif (function_exists('is_category') && function_exists('get_queried_object_id') && is_category()) {
         echo '<link rel="canonical" href="' . esc_url(get_category_link(get_queried_object_id())) . '" />' . "\n";
-    } elseif (function_exists('is_tag') && is_tag()) {
+    } elseif (function_exists('is_tag') && function_exists('get_queried_object_id') && is_tag()) {
         echo '<link rel="canonical" href="' . esc_url(get_tag_link(get_queried_object_id())) . '" />' . "\n";
     } elseif (function_exists('is_archive') && is_archive()) {
         echo '<link rel="canonical" href="' . esc_url(get_post_type_archive_link(get_post_type())) . '" />' . "\n";
@@ -380,7 +398,7 @@ function add_quotes_menu_active_class($classes, $item, $args)
         // Check if this menu item links to the quotes page
         $quotes_url = home_url('/bao-gia/');
         $quotes_url_alt = home_url('/quotes/');
-        
+
         if (isset($item->url) && (
             $item->url === $quotes_url ||
             $item->url === rtrim($quotes_url, '/') ||
@@ -418,6 +436,309 @@ function manual_permalink_flush()
         }
     }
 }
+if (function_exists('add_action')) {
+    add_action('init', 'manual_permalink_flush');
+}
+
+/**
+ * Contact Form Handler
+ * Process contact form submissions and save to database
+ */
+function handle_contact_form_submission()
+{
+    // Check if this is a contact form submission
+    if (!isset($_POST['action']) || $_POST['action'] !== 'submit_contact_form') {
+        return;
+    }
+
+    // Check if WordPress functions are available
+    if (!function_exists('wp_verify_nonce') || !function_exists('sanitize_text_field')) {
+        wp_die('WordPress functions not available.');
+    }
+
+    // Verify nonce for security
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'contact_form_nonce')) {
+        if (function_exists('wp_send_json_error')) {
+            wp_send_json_error(array('message' => 'Security check failed'));
+        }
+        return;
+    }
+
+    // Sanitize and validate form data
+    $first_name = function_exists('sanitize_text_field') ? sanitize_text_field($_POST['first_name'] ?? '') : '';
+    $last_name = function_exists('sanitize_text_field') ? sanitize_text_field($_POST['last_name'] ?? '') : '';
+    $email = function_exists('sanitize_email') ? sanitize_email($_POST['email'] ?? '') : '';
+    $phone = function_exists('sanitize_text_field') ? sanitize_text_field($_POST['phone'] ?? '') : '';
+    $company = function_exists('sanitize_text_field') ? sanitize_text_field($_POST['company'] ?? '') : '';
+    $message = function_exists('sanitize_textarea_field') ? sanitize_textarea_field($_POST['message'] ?? '') : '';
+
+    // Validate required fields
+    $errors = array();
+    if (empty($first_name)) $errors[] = 'Tên là bắt buộc';
+    if (empty($last_name)) $errors[] = 'Họ là bắt buộc';
+    if (empty($email) || (function_exists('is_email') && !is_email($email))) $errors[] = 'Email hợp lệ là bắt buộc';
+    if (empty($message)) $errors[] = 'Tin nhắn là bắt buộc';
+
+    if (!empty($errors)) {
+        if (function_exists('wp_send_json_error')) {
+            wp_send_json_error(array('message' => implode(', ', $errors)));
+        }
+        return;
+    }
+
+    // Check if API integration is enabled
+    $api_enabled = function_exists('get_theme_mod') ? get_theme_mod('contact_form_api_enable', false) : false;
+    $api_url = function_exists('get_theme_mod') ? get_theme_mod('contact_form_api_url', '') : '';
+
+    if ($api_enabled && !empty($api_url)) {
+        // Send data to external API
+        $current_time_value = function_exists('current_time') ? current_time('Y-m-d H:i:s') : date('Y-m-d H:i:s');
+        $api_data = array(
+            'name' => $first_name . ' ' . $last_name,
+            'email' => $email,
+            'phone' => $phone,
+            'company' => $company,
+            'message' => $message,
+            'submitted_at' => $current_time_value,
+            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? '',
+            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? ''
+        );
+
+        // Get API settings
+        $api_method = function_exists('get_theme_mod') ? get_theme_mod('contact_form_api_method', 'POST') : 'POST';
+        $api_headers_json = function_exists('get_theme_mod') ? get_theme_mod('contact_form_api_headers', '') : '';
+
+        // Parse custom headers
+        $headers = array('Content-Type' => 'application/json');
+        if (!empty($api_headers_json)) {
+            $custom_headers = json_decode($api_headers_json, true);
+            if (is_array($custom_headers)) {
+                $headers = array_merge($headers, $custom_headers);
+            }
+        }
+
+        // Send API request
+        if (function_exists('wp_remote_request')) {
+            $response = wp_remote_request($api_url, array(
+                'method' => $api_method,
+                'headers' => $headers,
+                'body' => json_encode($api_data),
+                'timeout' => 30
+            ));
+
+            if (is_wp_error($response)) {
+                if (function_exists('wp_send_json_error')) {
+                    wp_send_json_error(array('message' => 'Có lỗi xảy ra khi gửi dữ liệu đến API: ' . $response->get_error_message()));
+                }
+                return;
+            }
+
+            $response_code = function_exists('wp_remote_retrieve_response_code') ? wp_remote_retrieve_response_code($response) : 0;
+            if ($response_code < 200 || $response_code >= 300) {
+                if (function_exists('wp_send_json_error')) {
+                    wp_send_json_error(array('message' => 'API trả về lỗi: ' . $response_code));
+                }
+                return;
+            }
+
+            // API success - send success response
+            if (function_exists('wp_send_json_success')) {
+                wp_send_json_success(array('message' => 'Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.'));
+            }
+            return;
+        }
+    }
+
+    // Default behavior: Save to database
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'contact_submissions';
+
+    // Create table if it doesn't exist
+    $charset_collate = $wpdb->get_charset_collate();
+    $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        first_name tinytext NOT NULL,
+        last_name tinytext NOT NULL,
+        email varchar(100) NOT NULL,
+        phone varchar(20),
+        company tinytext,
+        message text NOT NULL,
+        submission_date datetime DEFAULT CURRENT_TIMESTAMP,
+        status varchar(20) DEFAULT 'new',
+        PRIMARY KEY (id)
+    ) $charset_collate;";
+
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    if (function_exists('dbDelta')) {
+        dbDelta($sql);
+    }
+
+    // Insert the contact submission
+    $current_time_mysql = function_exists('current_time') ? current_time('mysql') : date('Y-m-d H:i:s');
+    $result = $wpdb->insert(
+        $table_name,
+        array(
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'phone' => $phone,
+            'company' => $company,
+            'message' => $message,
+            'submission_date' => $current_time_mysql,
+            'status' => 'new'
+        ),
+        array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')
+    );
+
+    if ($result === false) {
+        if (function_exists('wp_send_json_error')) {
+            wp_send_json_error(array('message' => 'Có lỗi xảy ra khi lưu thông tin. Vui lòng thử lại.'));
+        }
+        return;
+    }
+
+    // Send email notification to admin
+    if (function_exists('get_option') && function_exists('get_bloginfo') && function_exists('wp_mail')) {
+        $admin_email = get_option('admin_email');
+        $subject = 'Liên hệ mới từ website ' . get_bloginfo('name');
+        $email_message = "Bạn có một liên hệ mới từ website:\n\n";
+        $email_message .= "Tên: $first_name $last_name\n";
+        $email_message .= "Email: $email\n";
+        $email_message .= "Điện thoại: $phone\n";
+        $email_message .= "Công ty: $company\n";
+        $email_message .= "Tin nhắn:\n$message\n\n";
+        $current_time_display = function_exists('current_time') ? current_time('d/m/Y H:i:s') : date('d/m/Y H:i:s');
+        $email_message .= "Thời gian: " . $current_time_display;
+
+        $headers = array('Content-Type: text/plain; charset=UTF-8');
+        wp_mail($admin_email, $subject, $email_message, $headers);
+    }
+
+    // Send success response
+    if (function_exists('wp_send_json_success')) {
+        wp_send_json_success(array('message' => 'Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.'));
+    }
+}
+
+// Handle AJAX requests for both logged in and non-logged in users
+if (function_exists('add_action')) {
+    add_action('wp_ajax_submit_contact_form', 'handle_contact_form_submission');
+    add_action('wp_ajax_nopriv_submit_contact_form', 'handle_contact_form_submission');
+}
+
+/**
+ * Enqueue contact form scripts
+ */
+function enqueue_contact_form_scripts()
+{
+    if (function_exists('wp_localize_script') && function_exists('wp_create_nonce') && function_exists('admin_url')) {
+        wp_localize_script('custom-blue-orange-script', 'contact_ajax', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('contact_form_nonce')
+        ));
+    }
+}
+if (function_exists('add_action')) {
+    add_action('wp_enqueue_scripts', 'enqueue_contact_form_scripts');
+}
+
+/**
+ * Add contact submissions admin menu
+ */
+function add_contact_submissions_menu()
+{
+    if (function_exists('add_menu_page')) {
+        add_menu_page(
+            'Liên Hệ',
+            'Liên Hệ',
+            'manage_options',
+            'contact-submissions',
+            'display_contact_submissions',
+            'dashicons-email-alt',
+            30
+        );
+    }
+}
+if (function_exists('add_action')) {
+    add_action('admin_menu', 'add_contact_submissions_menu');
+}
+
+/**
+ * Display contact submissions in admin
+ */
+function display_contact_submissions()
+{
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'contact_submissions';
+
+    // Handle status updates
+    if (isset($_POST['update_status']) && isset($_POST['submission_id']) && isset($_POST['new_status'])) {
+        $submission_id = intval($_POST['submission_id']);
+        $new_status = sanitize_text_field($_POST['new_status']);
+        $wpdb->update(
+            $table_name,
+            array('status' => $new_status),
+            array('id' => $submission_id),
+            array('%s'),
+            array('%d')
+        );
+        echo '<div class="notice notice-success"><p>Trạng thái đã được cập nhật!</p></div>';
+    }
+
+    // Get all submissions
+    $submissions = $wpdb->get_results("SELECT * FROM $table_name ORDER BY submission_date DESC");
+
+    echo '<div class="wrap">';
+    echo '<h1>Liên Hệ Từ Website</h1>';
+
+    if (empty($submissions)) {
+        echo '<p>Chưa có liên hệ nào.</p>';
+    } else {
+        echo '<table class="wp-list-table widefat fixed striped">';
+        echo '<thead><tr>';
+        echo '<th>ID</th><th>Tên</th><th>Email</th><th>Điện thoại</th><th>Công ty</th><th>Tin nhắn</th><th>Ngày gửi</th><th>Trạng thái</th><th>Hành động</th>';
+        echo '</tr></thead><tbody>';
+
+        foreach ($submissions as $submission) {
+            echo '<tr>';
+            echo '<td>' . esc_html($submission->id) . '</td>';
+            echo '<td>' . esc_html($submission->first_name . ' ' . $submission->last_name) . '</td>';
+            echo '<td><a href="mailto:' . esc_attr($submission->email) . '">' . esc_html($submission->email) . '</a></td>';
+            echo '<td>' . esc_html($submission->phone) . '</td>';
+            echo '<td>' . esc_html($submission->company) . '</td>';
+            echo '<td>' . esc_html(wp_trim_words($submission->message, 10)) . '</td>';
+            echo '<td>' . esc_html(date('d/m/Y H:i', strtotime($submission->submission_date))) . '</td>';
+            echo '<td>';
+            $status_class = $submission->status === 'new' ? 'status-new' : ($submission->status === 'replied' ? 'status-replied' : 'status-closed');
+            echo '<span class="' . $status_class . '">' . esc_html(ucfirst($submission->status)) . '</span>';
+            echo '</td>';
+            echo '<td>';
+            echo '<form method="post" style="display:inline;">';
+            echo '<input type="hidden" name="submission_id" value="' . esc_attr($submission->id) . '">';
+            echo '<select name="new_status">';
+            echo '<option value="new"' . selected($submission->status, 'new', false) . '>New</option>';
+            echo '<option value="replied"' . selected($submission->status, 'replied', false) . '>Replied</option>';
+            echo '<option value="closed"' . selected($submission->status, 'closed', false) . '>Closed</option>';
+            echo '</select>';
+            echo '<input type="submit" name="update_status" value="Cập nhật" class="button button-small">';
+            echo '</form>';
+            echo '</td>';
+            echo '</tr>';
+        }
+
+        echo '</tbody></table>';
+    }
+
+    echo '</div>';
+
+    // Add some basic styling
+    echo '<style>';
+    echo '.status-new { color: #d63384; font-weight: bold; }';
+    echo '.status-replied { color: #198754; font-weight: bold; }';
+    echo '.status-closed { color: #6c757d; }';
+    echo '</style>';
+}
+
 if (function_exists('add_action')) {
     add_action('init', 'manual_permalink_flush');
 }

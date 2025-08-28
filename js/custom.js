@@ -491,19 +491,30 @@
     }
 
     /**
-     * Contact Form Functionality
+     * Contact Form Functionality with AJAX
      */
     function initContactForm() {
         const contactForm = document.getElementById('contact-form');
-        if (!contactForm) return;
+        if (!contactForm) {
+            console.log('Contact form not found');
+            return;
+        }
+        
+        // Check if contact_ajax is available
+        if (typeof contact_ajax === 'undefined') {
+            console.error('contact_ajax object not found. Make sure wp_localize_script is working.');
+        } else {
+            console.log('Contact form initialized successfully');
+        }
         
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form data
-            const formData = new FormData(contactForm);
+            // Get form elements
             const submitBtn = contactForm.querySelector('.submit-btn');
-            const originalText = submitBtn.innerHTML;
+            const submitText = submitBtn.querySelector('.btn-text');
+            const loadingText = submitBtn.querySelector('.btn-loading');
+            const messageDiv = document.querySelector('#form-message');
             
             // Validate form
             if (!validateContactForm(contactForm)) {
@@ -511,21 +522,60 @@
             }
             
             // Show loading state
-            submitBtn.innerHTML = '<span>Đang gửi...</span>';
+            submitText.style.display = 'none';
+            loadingText.style.display = 'inline';
             submitBtn.disabled = true;
             
-            // Simulate form submission (replace with actual AJAX call)
-            setTimeout(function() {
-                // Show success message
-                showFormMessage('Cảm ơn bạn, chúng tôi sẽ liên hệ với bạn sớm nhất có thể.', 'success');
-                
-                // Reset form
-                contactForm.reset();
-                
-                // Reset button
-                submitBtn.innerHTML = originalText;
+            // Clear previous messages
+            if (messageDiv) {
+                messageDiv.innerHTML = '';
+                messageDiv.className = 'form-message';
+            }
+            
+            // Prepare form data
+            const formData = new FormData(contactForm);
+            formData.append('action', 'submit_contact_form');
+            
+            // Add nonce from form or AJAX object
+            const nonceField = contactForm.querySelector('input[name="contact_nonce"]');
+            if (nonceField) {
+                formData.append('nonce', nonceField.value);
+            } else if (contact_ajax && contact_ajax.nonce) {
+                formData.append('nonce', contact_ajax.nonce);
+            }
+            
+            // Get AJAX URL with fallback
+            const ajaxUrl = (typeof contact_ajax !== 'undefined' && contact_ajax.ajax_url) 
+                ? contact_ajax.ajax_url 
+                : '/wp-admin/admin-ajax.php';
+            
+            console.log('Sending form data to:', ajaxUrl);
+            
+            // Send AJAX request
+            fetch(ajaxUrl, {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showFormMessage('Cảm ơn bạn! Chúng tôi đã nhận được thông tin và sẽ liên hệ với bạn sớm nhất có thể.', 'success');
+                    contactForm.reset();
+                } else {
+                    showFormMessage(data.data || 'Có lỗi xảy ra. Vui lòng thử lại sau.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showFormMessage('Có lỗi xảy ra khi gửi form. Vui lòng thử lại sau.', 'error');
+            })
+            .finally(() => {
+                // Reset button state
+                submitText.style.display = 'inline';
+                loadingText.style.display = 'none';
                 submitBtn.disabled = false;
-            }, 2000);
+            });
         });
     }
 
@@ -576,17 +626,22 @@
     }
 
     function showFormMessage(message, type) {
-        // Remove existing messages
-        const existingMessage = document.querySelector('.form-message');
-        if (existingMessage) {
-            existingMessage.remove();
+        const messageDiv = document.querySelector('#form-message');
+        if (!messageDiv) return;
+        
+        // Set message content
+        messageDiv.textContent = message;
+        messageDiv.className = 'form-message';
+        
+        // Add type-specific class
+        if (type === 'success') {
+            messageDiv.classList.add('success');
+        } else {
+            messageDiv.classList.add('error');
         }
         
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'form-message';
-        messageDiv.textContent = message;
-        
         // Style the message
+        messageDiv.style.display = 'block';
         messageDiv.style.padding = '15px';
         messageDiv.style.borderRadius = '8px';
         messageDiv.style.marginTop = '20px';
@@ -602,14 +657,11 @@
             messageDiv.style.border = '1px solid #f5c6cb';
         }
         
-        const contactForm = document.getElementById('contact-form');
-        contactForm.appendChild(messageDiv);
-        
-        // Auto-remove message after 5 seconds
+        // Auto-hide message after 5 seconds
         setTimeout(function() {
-            if (messageDiv.parentNode) {
-                messageDiv.remove();
-            }
+            messageDiv.style.display = 'none';
+            messageDiv.innerHTML = '';
+            messageDiv.className = 'form-message';
         }, 5000);
     }
 

@@ -54,6 +54,7 @@
 
                 <div class="contact-form">
                     <form id="contact-form" method="post" action="#">
+                        <?php wp_nonce_field('contact_form_nonce', 'contact_nonce'); ?>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="first-name">Tên *</label>
@@ -80,8 +81,10 @@
                             <label for="message">Tin Nhắn *</label>
                             <textarea id="message" name="message" rows="5" required placeholder="Hãy cho chúng tôi biết về dự án hoặc yêu cầu của bạn..."></textarea>
                         </div>
-                        <button type="submit" class="submit-btn">
-                            <span>Gửi Tin Nhắn</span>
+                        <div id="form-message" class="form-message" style="display: none;"></div>
+                        <button type="submit" class="submit-btn" id="submit-btn">
+                            <span class="btn-text">Gửi Tin Nhắn</span>
+                            <span class="btn-loading" style="display: none;">Đang gửi...</span>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 <polygon points="22,2 15,22 11,13 2,9 22,2" fill="currentColor" />
