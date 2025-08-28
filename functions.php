@@ -372,6 +372,33 @@ if (function_exists('add_filter')) {
 }
 
 /**
+ * Add active class to quotes menu item when on quotes archive page
+ */
+function add_quotes_menu_active_class($classes, $item, $args)
+{
+    if (function_exists('is_post_type_archive') && function_exists('home_url') && is_post_type_archive('quote_article')) {
+        // Check if this menu item links to the quotes page
+        $quotes_url = home_url('/bao-gia/');
+        $quotes_url_alt = home_url('/quotes/');
+        
+        if (isset($item->url) && (
+            $item->url === $quotes_url ||
+            $item->url === rtrim($quotes_url, '/') ||
+            $item->url === $quotes_url_alt ||
+            $item->url === rtrim($quotes_url_alt, '/') ||
+            (is_string($item->url) && strpos($item->url, '/bao-gia') !== false) ||
+            (is_string($item->url) && strpos($item->url, '/quotes') !== false)
+        )) {
+            $classes[] = 'current-menu-item';
+        }
+    }
+    return $classes;
+}
+if (function_exists('add_filter')) {
+    add_filter('nav_menu_css_class', 'add_quotes_menu_active_class', 10, 3);
+}
+
+/**
  * Manual permalink flush function
  * Add ?flush_permalinks=1 to any page URL to trigger permalink flush
  */
