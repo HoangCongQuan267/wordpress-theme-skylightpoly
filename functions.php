@@ -171,7 +171,7 @@ function add_breadcrumb_structured_data()
                 '@type' => 'ListItem',
                 'position' => $position++,
                 'name' => 'Bài viết',
-                'item' => home_url('/articles/')
+                'item' => home_url('/tin-tuc/')
             );
         } elseif (function_exists('get_post_type') && get_post_type() === 'product') {
             $breadcrumbs[] = array(
@@ -319,7 +319,7 @@ function add_manual_menu_active_class($classes, $item, $args)
 {
     if (function_exists('is_post_type_archive') && function_exists('home_url') && is_post_type_archive('manual')) {
         // Check if this menu item links to the manual page
-        $manual_url = home_url('/manual/');
+        $manual_url = home_url('/tai-lieu-ky-thuat/');
         if (isset($item->url) && ($item->url === $manual_url || $item->url === rtrim($manual_url, '/'))) {
             $classes[] = 'current-menu-item';
         }
@@ -351,7 +351,7 @@ function add_products_menu_active_class($classes, $item, $args)
 
     if ($is_products_page && function_exists('home_url')) {
         // Check if this menu item links to the products page
-        $products_url = home_url('/products/');
+        $products_url = home_url('/san-pham/');
         $products_url_alt = home_url('/san-pham/');
 
         if (isset($item->url) && (

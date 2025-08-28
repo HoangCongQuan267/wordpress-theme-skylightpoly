@@ -580,7 +580,7 @@ if ($section_spacing !== 'normal') {
                             <div class="category-footer">
                                 <?php
                                 // Link to products page with category parameter
-                                $products_page_url = home_url('/products/');
+                                $products_page_url = home_url('/san-pham/');
                                 $category_link = $products_page_url . '?category=' . $category_data['category']->slug;
                                 ?>
                                 <a href="<?php echo esc_url($category_link); ?>" class="btn btn-outline-primary btn-see-all">
@@ -666,7 +666,7 @@ if ($section_spacing !== 'normal') {
                     <div class="section-footer">
                         <?php
                         // Link to products page with first category
-                        $products_page_url = home_url('/products/');
+                        $products_page_url = home_url('/san-pham/');
                         $product_categories = get_terms(array(
                             'taxonomy' => 'product_category',
                             'hide_empty' => false,
@@ -907,7 +907,7 @@ if ($section_spacing !== 'normal') {
 
                     <!-- See All Articles Button -->
                     <div class="section-footer">
-                        <a href="<?php echo esc_url(home_url('/articles/')); ?>" class="btn btn-outline-primary btn-see-all">
+                        <a href="<?php echo esc_url(home_url('/tin-tuc/')); ?>" class="btn btn-outline-primary btn-see-all">
                             <?php _e('Xem Tất Cả Bài Viết', 'custom-blue-orange'); ?>
                         </a>
                     </div>
@@ -981,7 +981,7 @@ if ($section_spacing !== 'normal') {
 
                     <!-- Show All Articles Button -->
                     <div class="section-footer">
-                        <a href="<?php echo esc_url(home_url('/articles/')); ?>" class="btn btn-outline-primary btn-see-all">Xem Tất Cả Bài Viết</a>
+                        <a href="<?php echo esc_url(home_url('/tin-tuc/')); ?>" class="btn btn-outline-primary btn-see-all">Xem Tất Cả Bài Viết</a>
                     </div>
                 <?php endif; ?>
             </div>

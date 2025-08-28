@@ -61,7 +61,7 @@ get_header(); ?>
                 $formatted_date = $quote_date ? date('d/m/Y', strtotime($quote_date)) : get_the_date('d/m/Y');
                 
                 // Breadcrumb navigation
-                $quotes_url = home_url('/quotes/');
+                $quotes_url = home_url('/bao-gia/');
             ?>
                 <nav class="breadcrumbs">
                     <a href="<?php echo esc_url(home_url('/')); ?>">Trang chủ</a>

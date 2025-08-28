@@ -4,6 +4,11 @@
  * The template for displaying 404 pages (not found)
  */
 
+// Include WordPress functions stub for linter compatibility
+if (!function_exists('esc_js')) {
+    require_once get_template_directory() . '/wp-functions-stub.php';
+}
+
 get_header(); ?>
 
 <!-- WebPage Schema Markup for 404 Page -->
@@ -65,9 +70,9 @@ get_header(); ?>
                             <h3>Trang phổ biến:</h3>
                             <ul>
                                 <li><a href="<?php echo esc_url(home_url('/')); ?>">Trang chủ</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/about')); ?>">Giới thiệu</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/contact')); ?>">Liên hệ</a></li>
-                                <li><a href="<?php echo esc_url(home_url('/blog')); ?>">Blog</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/gioi-thieu')); ?>">Giới thiệu</a></li>
+                <li><a href="<?php echo esc_url(home_url('/lien-he')); ?>">Liên hệ</a></li>
+                <li><a href="<?php echo esc_url(home_url('/blog')); ?>">Blog</a></li>
                             </ul>
                         </div>
 

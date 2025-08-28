@@ -15,7 +15,7 @@ get_header(); ?>
                     <span class="breadcrumb-separator">›</span>
                     <?php
                     // Use a simple approach to link to articles page
-                    $articles_url = home_url('/articles/');
+                    $articles_url = home_url('/tin-tuc/');
                     ?>
                     <a href="<?php echo esc_url($articles_url); ?>">Bài viết</a>
                     <span class="breadcrumb-separator">›</span>
@@ -93,7 +93,7 @@ get_header(); ?>
                             if ($recent_posts) :
                             ?>
                                 <div class="articles-page-grid">
-                                    <?php 
+                                    <?php
                                     global $post;
                                     foreach ($recent_posts as $recent_post) :
                                         $post = $recent_post;

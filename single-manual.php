@@ -42,7 +42,7 @@ get_header(); ?>
                 <nav class="breadcrumbs">
                     <a href="<?php echo esc_url(home_url('/')); ?>">Trang chủ</a>
                     <span class="breadcrumb-separator">›</span>
-                    <a href="<?php echo esc_url(home_url('/manual/')); ?>">Hướng dẫn</a>
+                    <a href="<?php echo esc_url(home_url('/tai-lieu-ky-thuat/')); ?>">Hướng dẫn</a>
                     <span class="breadcrumb-separator">›</span>
                     <span class="current-page"><?php the_title(); ?></span>
                 </nav>
