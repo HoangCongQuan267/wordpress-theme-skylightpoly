@@ -167,7 +167,8 @@ if ($section_spacing !== 'normal') {
                         }
                         $active_class = ($index === 0) ? ' active' : '';
                     ?>
-                        <div class="slide<?php echo $active_class; ?>" style="background-image: url('<?php echo esc_url($slide_image); ?>')">
+                        <div class="slide<?php echo $active_class; ?>">
+                            <img src="<?php echo esc_url($slide_image); ?>" alt="<?php echo esc_attr($slide_title); ?>" />
                             <div class="slide-content">
                                 <h1 class="slide-title"><?php echo esc_html($slide_title); ?></h1>
                                 <?php if ($slide_subtitle) : ?>
@@ -223,16 +224,16 @@ if ($section_spacing !== 'normal') {
                     '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><circle cx="12" cy="7" r="4" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>',
                     '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2V22M17 5H9.5C8.11929 5 7 6.11929 7 7.5C7 8.88071 8.11929 10 9.5 10H14.5C15.8807 10 17 11.1193 17 12.5C17 13.8807 15.8807 15 14.5 15H7" stroke="#007cba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>'
                 );
-                
+
                 foreach ($commitment_items as $index => $item) :
                 ?>
-                <div class="commitment-item">
-                    <div class="commitment-icon">
-                        <?php echo $icons[$index] ?? $icons[0]; ?>
+                    <div class="commitment-item">
+                        <div class="commitment-icon">
+                            <?php echo $icons[$index] ?? $icons[0]; ?>
+                        </div>
+                        <h3 class="commitment-title"><?php echo esc_html($item['title']); ?></h3>
+                        <p class="commitment-description"><?php echo esc_html($item['description']); ?></p>
                     </div>
-                    <h3 class="commitment-title"><?php echo esc_html($item['title']); ?></h3>
-                    <p class="commitment-description"><?php echo esc_html($item['description']); ?></p>
-                </div>
                 <?php endforeach; ?>
             </div>
         </div>
