@@ -2112,3 +2112,108 @@ function get_faq_items()
 
     return $faq_items;
 }
+
+/**
+ * Add Commitments Section to WordPress Customizer
+ */
+function commitments_section_customizer($wp_customize)
+{
+    // Add Commitments Section
+    $wp_customize->add_section('commitments_section', array(
+        'title'    => __('Commitments Section', 'skylightpoly'),
+        'panel'    => 'homepage_sections_panel',
+        'priority' => 60,
+        'description' => __('Manage your commitments section settings and content', 'skylightpoly'),
+    ));
+
+    // Enable/Disable Commitments Section
+    $wp_customize->add_setting('commitments_section_enable', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('commitments_section_enable', array(
+        'label'    => __('Enable Commitments Section', 'skylightpoly'),
+        'section'  => 'commitments_section',
+        'type'     => 'checkbox',
+        'priority' => 10,
+    ));
+
+    // Add up to 4 commitment items
+    for ($i = 1; $i <= 4; $i++) {
+        // Commitment Title
+        $wp_customize->add_setting("commitment_{$i}_title", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("commitment_{$i}_title", array(
+            'label'    => sprintf(__('Commitment %d - Title', 'skylightpoly'), $i),
+            'section'  => 'commitments_section',
+            'type'     => 'text',
+            'priority' => 20 + ($i * 10),
+        ));
+
+        // Commitment Description
+        $wp_customize->add_setting("commitment_{$i}_description", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("commitment_{$i}_description", array(
+            'label'    => sprintf(__('Commitment %d - Description', 'skylightpoly'), $i),
+            'section'  => 'commitments_section',
+            'type'     => 'textarea',
+            'input_attrs' => array(
+                'rows' => 3
+            ),
+            'priority' => 21 + ($i * 10),
+        ));
+    }
+}
+add_action('customize_register', 'commitments_section_customizer');
+
+/**
+ * Helper function to get commitment items
+ */
+function get_commitment_items()
+{
+    $commitment_items = array();
+
+    // Default values for the 4 commitments
+    $defaults = array(
+        1 => array(
+            'title' => 'Chất Lượng Cao',
+            'description' => 'Cam kết cung cấp sản phẩm chất lượng cao với tiêu chuẩn quốc tế'
+        ),
+        2 => array(
+            'title' => 'Giao Hàng Nhanh',
+            'description' => 'Đảm bảo giao hàng nhanh chóng và đúng thời gian cam kết'
+        ),
+        3 => array(
+            'title' => 'Hỗ Trợ 24/7',
+            'description' => 'Đội ngũ hỗ trợ khách hàng luôn sẵn sàng phục vụ 24/7'
+        ),
+        4 => array(
+            'title' => 'Giá Cả Hợp Lý',
+            'description' => 'Cam kết mang đến giá cả cạnh tranh và hợp lý nhất thị trường'
+        )
+    );
+
+    for ($i = 1; $i <= 4; $i++) {
+        $title = get_theme_mod("commitment_{$i}_title", $defaults[$i]['title']);
+        $description = get_theme_mod("commitment_{$i}_description", $defaults[$i]['description']);
+
+        if (!empty($title) && !empty($description)) {
+            $commitment_items[] = array(
+                'title' => $title,
+                'description' => $description
+            );
+        }
+    }
+
+    return $commitment_items;
+}
