@@ -69,27 +69,24 @@ if (!empty($product_custom_badge)) {
 }
 ?>
 
-<div class="product-card vertical-card">
-    <?php if (!empty($badge_text)) : ?>
-        <div class="product-badge <?php echo esc_attr($badge_class); ?>">
-            <?php echo esc_html($badge_text); ?>
-        </div>
-    <?php endif; ?>
-
-    <!-- Product Image on Top -->
-    <div class="product-image">
-        <?php if (!empty($product_image)) : ?>
-            <img src="<?php echo esc_url($product_image); ?>" alt="<?php echo esc_attr($product_title); ?>">
-        <?php else : ?>
-            <div class="product-image-placeholder">
-                <span class="dashicons dashicons-format-image"></span>
+<a href="<?php echo esc_url($product_link); ?>" class="product-card-link">
+    <div class="product-card vertical-card">
+        <?php if (!empty($badge_text)) : ?>
+            <div class="product-badge <?php echo esc_attr($badge_class); ?>">
+                <?php echo esc_html($badge_text); ?>
             </div>
         <?php endif; ?>
 
-        <div class="product-overlay">
-            <a href="<?php echo esc_url($product_link); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
+        <!-- Product Image on Top -->
+        <div class="product-image">
+            <?php if (!empty($product_image)) : ?>
+                <img src="<?php echo esc_url($product_image); ?>" alt="<?php echo esc_attr($product_title); ?>">
+            <?php else : ?>
+                <div class="product-image-placeholder">
+                    <span class="dashicons dashicons-format-image"></span>
+                </div>
+            <?php endif; ?>
         </div>
-    </div>
 
     <!-- Product Info Below -->
     <div class="product-content">
@@ -112,3 +109,4 @@ if (!empty($product_custom_badge)) {
         <?php endif; ?>
     </div>
 </div>
+</a>

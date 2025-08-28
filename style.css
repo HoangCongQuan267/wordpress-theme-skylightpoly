@@ -3295,6 +3295,18 @@ body {
     color: white;
 }
 
+/* Product Card Link Styling */
+.product-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.product-card-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
 /* Responsive Design for Products Page */
 @media (max-width: 1024px) {
     .products-layout {

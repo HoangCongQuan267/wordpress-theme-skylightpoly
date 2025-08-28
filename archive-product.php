@@ -154,75 +154,69 @@ $products_query = new WP_Query($products_args);
 
                         <div class="products-grid layout-<?php echo esc_attr($products_layout); ?>">
                             <?php while ($products_query->have_posts()) : $products_query->the_post(); ?>
-                                <div class="product-card vertical-card">
-                                    <?php
-                                    // Get product meta data
-                                    $custom_badge = get_post_meta(get_the_ID(), 'custom_badge', true);
-                                    $discount = get_post_meta(get_the_ID(), 'discount', true);
-                                    $hot_tag = get_post_meta(get_the_ID(), 'hot_tag', true);
-                                    $product_price = get_post_meta(get_the_ID(), 'product_price', true);
-                                    $discount_price = get_post_meta(get_the_ID(), 'discount_price', true);
-                                    $price_unit = get_post_meta(get_the_ID(), 'price_unit', true);
-                                    $product_link = get_post_meta(get_the_ID(), 'product_link', true);
+                                <?php
+                                // Get product meta data
+                                $custom_badge = get_post_meta(get_the_ID(), 'custom_badge', true);
+                                $discount = get_post_meta(get_the_ID(), 'discount', true);
+                                $hot_tag = get_post_meta(get_the_ID(), 'hot_tag', true);
+                                $product_price = get_post_meta(get_the_ID(), 'product_price', true);
+                                $discount_price = get_post_meta(get_the_ID(), 'discount_price', true);
+                                $price_unit = get_post_meta(get_the_ID(), 'price_unit', true);
+                                $product_link = get_post_meta(get_the_ID(), 'product_link', true);
+                                $final_link = !empty($product_link) ? $product_link : get_permalink();
 
-                                    // Determine which badge to show
-                                    $badge_text = '';
-                                    $badge_class = '';
+                                // Determine which badge to show
+                                $badge_text = '';
+                                $badge_class = '';
 
-                                    if (!empty($custom_badge)) {
-                                        $badge_text = $custom_badge;
-                                        $badge_class = 'custom-badge';
-                                    } elseif (!empty($discount) && $discount > 0) {
-                                        $badge_text = '-' . $discount . '%';
-                                        $badge_class = 'discount-badge';
-                                    } elseif (!empty($hot_tag)) {
-                                        $badge_text = 'HOT';
-                                        $badge_class = 'hot-badge';
-                                    }
-                                    ?>
-
-                                    <?php if (!empty($badge_text)) : ?>
-                                        <div class="product-badge <?php echo esc_attr($badge_class); ?>">
-                                            <?php echo esc_html($badge_text); ?>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <div class="product-image">
-                                        <?php if (has_post_thumbnail()) : ?>
-                                            <?php the_post_thumbnail('medium', array('loading' => 'lazy')); ?>
-                                        <?php else : ?>
-                                            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="<?php the_title_attribute(); ?>">
+                                if (!empty($custom_badge)) {
+                                    $badge_text = $custom_badge;
+                                    $badge_class = 'custom-badge';
+                                } elseif (!empty($discount) && $discount > 0) {
+                                    $badge_text = '-' . $discount . '%';
+                                    $badge_class = 'discount-badge';
+                                } elseif (!empty($hot_tag)) {
+                                    $badge_text = 'HOT';
+                                    $badge_class = 'hot-badge';
+                                }
+                                ?>
+                                <a href="<?php echo esc_url($final_link); ?>" class="product-card-link">
+                                    <div class="product-card vertical-card">
+                                        <?php if (!empty($badge_text)) : ?>
+                                            <div class="product-badge <?php echo esc_attr($badge_class); ?>">
+                                                <?php echo esc_html($badge_text); ?>
+                                            </div>
                                         <?php endif; ?>
 
-                                        <div class="product-overlay">
-                                            <?php if (!empty($product_link)) : ?>
-                                                <a href="<?php echo esc_url($product_link); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
+                                        <div class="product-image">
+                                            <?php if (has_post_thumbnail()) : ?>
+                                                <?php the_post_thumbnail('medium', array('loading' => 'lazy')); ?>
                                             <?php else : ?>
-                                                <a href="<?php the_permalink(); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
+                                                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="<?php the_title_attribute(); ?>">
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <div class="product-content">
+                                            <h4 class="product-title"><?php the_title(); ?></h4>
+                                            <p class="product-excerpt"><?php echo has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 15); ?></p>
+
+                                            <?php if (!empty($product_price) || !empty($discount_price)) : ?>
+                                                <div class="product-pricing">
+                                                    <?php
+                                                    $unit_text = !empty($price_unit) ? '/' . $price_unit : '/đơn vị';
+                                                    $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
+                                                    ?>
+                                                    <?php if (!empty($discount_price) && !empty($product_price)) : ?>
+                                                        <span class="original-price"><?php echo number_format($product_price, 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                        <span class="discount-price"><?php echo number_format($discount_price, 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                    <?php elseif (!empty($product_price)) : ?>
+                                                        <span class="current-price"><?php echo number_format($product_price, 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                    <?php endif; ?>
+                                                </div>
                                             <?php endif; ?>
                                         </div>
                                     </div>
-
-                                    <div class="product-content">
-                                        <h4 class="product-title"><?php the_title(); ?></h4>
-                                        <p class="product-excerpt"><?php echo has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 15); ?></p>
-
-                                        <?php if (!empty($product_price) || !empty($discount_price)) : ?>
-                                            <div class="product-pricing">
-                                                <?php
-                                                $unit_text = !empty($price_unit) ? '/' . $price_unit : '/đơn vị';
-                                                $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
-                                                ?>
-                                                <?php if (!empty($discount_price) && !empty($product_price)) : ?>
-                                                    <span class="original-price"><?php echo number_format($product_price, 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
-                                                    <span class="discount-price"><?php echo number_format($discount_price, 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
-                                                <?php elseif (!empty($product_price)) : ?>
-                                                    <span class="current-price"><?php echo number_format($product_price, 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
-                                                <?php endif; ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
+                                </a>
                             <?php endwhile; ?>
                             <?php wp_reset_postdata(); ?>
                         </div>

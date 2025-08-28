@@ -498,62 +498,58 @@ if ($section_spacing !== 'normal') {
                             <!-- Products Grid for this Category -->
                             <div class="products-grid">
                                 <?php foreach ($category_data['products'] as $product) : ?>
-                                    <div class="product-card vertical-card">
-                                        <?php
-                                        // Determine which badge to show (priority: custom_badge > discount > hot_tag)
-                                        $badge_text = '';
-                                        $badge_class = '';
+                                    <?php $product_link = !empty($product['link']) ? $product['link'] : '#'; ?>
+                                    <a href="<?php echo esc_url($product_link); ?>" class="product-card-link">
+                                        <div class="product-card vertical-card">
+                                            <?php
+                                            // Determine which badge to show (priority: custom_badge > discount > hot_tag)
+                                            $badge_text = '';
+                                            $badge_class = '';
 
-                                        if (!empty($product['custom_badge'])) {
-                                            $badge_text = $product['custom_badge'];
-                                            $badge_class = 'custom-badge';
-                                        } elseif (!empty($product['discount']) && $product['discount'] > 0) {
-                                            $badge_text = '-' . $product['discount'] . '%';
-                                            $badge_class = 'discount-badge';
-                                        } elseif (!empty($product['hot_tag'])) {
-                                            $badge_text = 'HOT';
-                                            $badge_class = 'hot-badge';
-                                        }
-                                        ?>
+                                            if (!empty($product['custom_badge'])) {
+                                                $badge_text = $product['custom_badge'];
+                                                $badge_class = 'custom-badge';
+                                            } elseif (!empty($product['discount']) && $product['discount'] > 0) {
+                                                $badge_text = '-' . $product['discount'] . '%';
+                                                $badge_class = 'discount-badge';
+                                            } elseif (!empty($product['hot_tag'])) {
+                                                $badge_text = 'HOT';
+                                                $badge_class = 'hot-badge';
+                                            }
+                                            ?>
 
-                                        <?php if (!empty($badge_text)) : ?>
-                                            <div class="product-badge <?php echo esc_attr($badge_class); ?>">
-                                                <?php echo esc_html($badge_text); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                        <?php if (!empty($product['image'])) : ?>
-                                            <div class="product-image">
-                                                <img src="<?php echo esc_url($product['image']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
-                                            </div>
-                                        <?php endif; ?>
-
-                                        <div class="product-content">
-                                            <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
-                                            <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>
-
-                                            <?php if (!empty($product['price']) || !empty($product['discount_price'])) : ?>
-                                                <div class="product-pricing">
-                                                    <?php
-                                                    $unit_text = !empty($product['unit']) ? '/' . $product['unit'] : '/đơn vị';
-                                                    $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
-                                                    ?>
-                                                    <?php if (!empty($product['discount_price']) && !empty($product['price'])) : ?>
-                                                        <span class="original-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
-                                                        <span class="discount-price"><?php echo number_format($product['discount_price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
-                                                    <?php elseif (!empty($product['price'])) : ?>
-                                                        <span class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
-                                                    <?php endif; ?>
+                                            <?php if (!empty($badge_text)) : ?>
+                                                <div class="product-badge <?php echo esc_attr($badge_class); ?>">
+                                                    <?php echo esc_html($badge_text); ?>
                                                 </div>
                                             <?php endif; ?>
-                                        </div>
-                                        <div class="product-overlay">
-                                            <?php if (!empty($product['link'])) : ?>
-                                                <a href="<?php echo esc_url($product['link']); ?>" class="product-link-btn">Tìm Hiểu Thêm</a>
-                                            <?php else : ?>
-                                                <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
+                                            <?php if (!empty($product['image'])) : ?>
+                                                <div class="product-image">
+                                                    <img src="<?php echo esc_url($product['image']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
+                                                </div>
                                             <?php endif; ?>
+
+                                            <div class="product-content">
+                                                <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
+                                                <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>
+
+                                                <?php if (!empty($product['price']) || !empty($product['discount_price'])) : ?>
+                                                    <div class="product-pricing">
+                                                        <?php
+                                                        $unit_text = !empty($product['unit']) ? '/' . $product['unit'] : '/đơn vị';
+                                                        $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
+                                                        ?>
+                                                        <?php if (!empty($product['discount_price']) && !empty($product['price'])) : ?>
+                                                            <span class="original-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                            <span class="discount-price"><?php echo number_format($product['discount_price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                        <?php elseif (!empty($product['price'])) : ?>
+                                                            <span class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 <?php endforeach; ?>
                             </div>
 
@@ -579,68 +575,64 @@ if ($section_spacing !== 'normal') {
                     ?>
                     <!-- Demo products when no products are available -->
                     <div class="products-grid">
-                        <div class="product-card vertical-card">
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 1">
-                                <div class="product-overlay">
-                                    <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
+                        <a href="#" class="product-card-link">
+                            <div class="product-card vertical-card">
+                                <div class="product-image">
+                                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 1">
+                                </div>
+                                <div class="product-content">
+                                    <h4 class="product-title">Sản Phẩm Cao Cấp A</h4>
+                                    <p class="product-excerpt">Giải pháp chất lượng cao được thiết kế cho các doanh nghiệp hiện đại với tính năng tiên tiến.</p>
+                                    <div class="product-pricing">
+                                        <span class="original-price">2.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                        <span class="discount-price">1.999.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="product-content">
-                                <h4 class="product-title">Sản Phẩm Cao Cấp A</h4>
-                                <p class="product-excerpt">Giải pháp chất lượng cao được thiết kế cho các doanh nghiệp hiện đại với tính năng tiên tiến.</p>
-                                <div class="product-pricing">
-                                    <span class="original-price">2.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
-                                    <span class="discount-price">1.999.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                        </a>
+                        <a href="#" class="product-card-link">
+                            <div class="product-card vertical-card">
+                                <div class="product-image">
+                                    <img src="https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 2">
+                                </div>
+                                <div class="product-content">
+                                    <h4 class="product-title">Dòng Sản Phẩm Đổi Mới B</h4>
+                                    <p class="product-excerpt">Công nghệ tiên tiến mang lại hiệu suất và độ tin cậy vượt trội.</p>
+                                    <div class="product-pricing">
+                                        <span class="current-price">3.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="product-card vertical-card">
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 2">
-                                <div class="product-overlay">
-                                    <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
+                        </a>
+                        <a href="#" class="product-card-link">
+                            <div class="product-card vertical-card">
+                                <div class="product-image">
+                                    <img src="https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 3">
+                                </div>
+                                <div class="product-content">
+                                    <h4 class="product-title">Bộ Giải Pháp Chuyên Nghiệp C</h4>
+                                    <p class="product-excerpt">Giải pháp toàn diện cho các yêu cầu cấp doanh nghiệp và khả năng mở rộng.</p>
+                                    <div class="product-pricing">
+                                        <span class="original-price">5.000.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                        <span class="discount-price">4.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="product-content">
-                                <h4 class="product-title">Dòng Sản Phẩm Đổi Mới B</h4>
-                                <p class="product-excerpt">Công nghệ tiên tiến mang lại hiệu suất và độ tin cậy vượt trội.</p>
-                                <div class="product-pricing">
-                                    <span class="current-price">3.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                        </a>
+                        <a href="#" class="product-card-link">
+                            <div class="product-card vertical-card">
+                                <div class="product-image">
+                                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 4">
+                                </div>
+                                <div class="product-content">
+                                    <h4 class="product-title">Giải Pháp Thông Minh D</h4>
+                                    <p class="product-excerpt">Công nghệ AI tiên tiến giúp tối ưu hóa quy trình làm việc và nâng cao hiệu quả.</p>
+                                    <div class="product-pricing">
+                                        <span class="current-price">7.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="product-card vertical-card">
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1560472354-981537c68e96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 3">
-                                <div class="product-overlay">
-                                    <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <h4 class="product-title">Bộ Giải Pháp Chuyên Nghiệp C</h4>
-                                <p class="product-excerpt">Giải pháp toàn diện cho các yêu cầu cấp doanh nghiệp và khả năng mở rộng.</p>
-                                <div class="product-pricing">
-                                    <span class="original-price">5.000.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
-                                    <span class="discount-price">4.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-card vertical-card">
-                            <div class="product-image">
-                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Product 4">
-                                <div class="product-overlay">
-                                    <a href="#" class="product-link-btn">Tìm Hiểu Thêm</a>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <h4 class="product-title">Giải Pháp Thông Minh D</h4>
-                                <p class="product-excerpt">Công nghệ AI tiên tiến giúp tối ưu hóa quy trình làm việc và nâng cao hiệu quả.</p>
-                                <div class="product-pricing">
-                                    <span class="current-price">7.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
-                                </div>
-                            </div>
-                        </div>
+                        </a>
                     </div>
 
                     <!-- Show All Products Button -->
