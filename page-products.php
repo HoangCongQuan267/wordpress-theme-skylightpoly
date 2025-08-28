@@ -18,8 +18,23 @@ $products_bg_color = get_theme_mod('products_section_bg_color', '#ffffff');
 $products_text_color = get_theme_mod('products_section_text_color', '#333333');
 $products_layout = get_theme_mod('products_grid_layout', 'grid');
 
-// Get current category filter
-$current_category = isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '';
+// Get current category filter (Vietnamese slug)
+$current_category = isset($_GET['danh-muc']) ? sanitize_text_field($_GET['danh-muc']) : '';
+
+// If no category is selected, auto-select the first category
+if (empty($current_category)) {
+    $product_categories = get_terms(array(
+        'taxonomy' => 'product_category',
+        'hide_empty' => false,
+        'number' => 1,
+        'orderby' => 'name',
+        'order' => 'ASC'
+    ));
+    
+    if (!empty($product_categories) && !is_wp_error($product_categories)) {
+        $current_category = $product_categories[0]->slug;
+    }
+}
 
 // Get product categories
 $product_categories = get_terms(array(
@@ -95,13 +110,6 @@ $products_query = new WP_Query($products_args);
             <aside class="categories-panel">
                 <h3 class="panel-title">Danh Mục Sản Phẩm</h3>
                 <ul class="category-list">
-                    <!-- All Products Link -->
-                    <li class="category-item <?php echo empty($current_category) ? 'active' : ''; ?>">
-                        <a href="<?php echo esc_url(get_permalink()); ?>" class="category-link">
-                            TẤT CẢ SẢN PHẨM
-                        </a>
-                    </li>
-
                     <?php
                     // Debug: Show category information
                     // echo '<!-- Categories found: ' . count($product_categories) . ' -->';
@@ -110,7 +118,7 @@ $products_query = new WP_Query($products_args);
                         foreach ($product_categories as $category) :
                     ?>
                             <li class="category-item <?php echo ($current_category === $category->slug) ? 'active' : ''; ?>">
-                                <a href="?category=<?php echo esc_attr($category->slug); ?>" class="category-link">
+                                <a href="?danh-muc=<?php echo esc_attr($category->slug); ?>" class="category-link">
                                     <?php echo esc_html($category->name); ?>
                                     <span class="category-count">(<?php echo $category->count; ?>)</span>
                                 </a>
