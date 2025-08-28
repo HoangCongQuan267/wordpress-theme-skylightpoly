@@ -390,7 +390,6 @@
 <div class="phone-number-panel" id="phonePanel">
     <div class="panel-header">
         <h4>Liên Hệ Đội Ngũ Bán Hàng</h4>
-        <button class="close-panel-btn" onclick="closeContactPanel()">&times;</button>
     </div>
     <div class="contact-list">
         <?php
