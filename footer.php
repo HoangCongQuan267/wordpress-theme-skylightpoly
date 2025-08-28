@@ -111,17 +111,33 @@
                 <div class="footer-social">
                     <h3>Theo dõi chúng tôi</h3>
                     <div class="social-links">
-                        <?php if (get_theme_mod('social_facebook_url', '#') !== '#') : ?>
-                            <a href="<?php echo esc_url(get_theme_mod('social_facebook_url', '#')); ?>" class="social-link" target="_blank">Facebook</a>
+                        <?php
+                        // Get social media links from customizer (same as header)
+                        $facebook_url = get_theme_mod('social_facebook_url', '');
+                        $twitter_url = get_theme_mod('social_twitter_url', '');
+                        $instagram_url = get_theme_mod('social_instagram_url', '');
+                        $linkedin_url = get_theme_mod('social_linkedin_url', '');
+                        $youtube_url = get_theme_mod('social_youtube_url', '');
+                        ?>
+                        
+                        <?php if ($facebook_url) : ?>
+                            <a href="<?php echo esc_url($facebook_url); ?>" class="social-link" target="_blank" rel="noopener noreferrer">Facebook</a>
                         <?php endif; ?>
-                        <?php if (get_theme_mod('social_twitter_url', '#') !== '#') : ?>
-                            <a href="<?php echo esc_url(get_theme_mod('social_twitter_url', '#')); ?>" class="social-link" target="_blank">Twitter</a>
+                        
+                        <?php if ($twitter_url) : ?>
+                            <a href="<?php echo esc_url($twitter_url); ?>" class="social-link" target="_blank" rel="noopener noreferrer">Twitter</a>
                         <?php endif; ?>
-                        <?php if (get_theme_mod('social_instagram_url', '#') !== '#') : ?>
-                            <a href="<?php echo esc_url(get_theme_mod('social_instagram_url', '#')); ?>" class="social-link" target="_blank">Instagram</a>
+                        
+                        <?php if ($instagram_url) : ?>
+                            <a href="<?php echo esc_url($instagram_url); ?>" class="social-link" target="_blank" rel="noopener noreferrer">Instagram</a>
                         <?php endif; ?>
-                        <?php if (get_theme_mod('social_linkedin_url', '#') !== '#') : ?>
-                            <a href="<?php echo esc_url(get_theme_mod('social_linkedin_url', '#')); ?>" class="social-link" target="_blank">LinkedIn</a>
+                        
+                        <?php if ($linkedin_url) : ?>
+                            <a href="<?php echo esc_url($linkedin_url); ?>" class="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <?php endif; ?>
+                        
+                        <?php if ($youtube_url) : ?>
+                            <a href="<?php echo esc_url($youtube_url); ?>" class="social-link" target="_blank" rel="noopener noreferrer">YouTube</a>
                         <?php endif; ?>
                     </div>
                 </div>
