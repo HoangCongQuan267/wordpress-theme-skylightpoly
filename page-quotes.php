@@ -188,8 +188,9 @@ get_header(); ?>
     }
 
     .page-title {
-        font-size: 1rem;
+        font-size: 1.3rem;
         margin: 0;
+        text-align: center;
         font-weight: 600;
         letter-spacing: 0.02em;
         text-transform: none;
@@ -235,7 +236,7 @@ get_header(); ?>
         background: #1a1a1a;
         color: #ffffff;
         padding: 4px 8px;
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         font-weight: 400;
         font-family: 'Helvetica Neue', 'Arial', sans-serif;
         z-index: 2;
@@ -248,7 +249,7 @@ get_header(); ?>
         background: #28a745;
         color: #ffffff;
         padding: 4px 8px;
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         font-weight: 400;
         font-family: 'Helvetica Neue', 'Arial', sans-serif;
         z-index: 2;
@@ -318,7 +319,7 @@ get_header(); ?>
     }
 
     .featured-quote .quote-title {
-        font-size: 1.1rem;
+        font-size: 1.0.8rem;
         font-weight: 700;
         line-height: 1.3;
         margin-bottom: 15px;
@@ -330,7 +331,7 @@ get_header(); ?>
 
     .quote-author strong {
         color: #888888;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         display: block;
         margin-bottom: 3px;
         font-weight: 400;
@@ -339,7 +340,7 @@ get_header(); ?>
 
     .author-details {
         color: #888888;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         font-style: normal;
         font-weight: 400;
         letter-spacing: 0.05em;
@@ -362,7 +363,7 @@ get_header(); ?>
 
     .quote-excerpt {
         color: #666;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         line-height: 1.6;
         margin-bottom: 15px;
         flex: 1;
@@ -383,7 +384,7 @@ get_header(); ?>
         align-items: center;
         gap: 15px;
         margin-bottom: 15px;
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         color: #666;
     }
 
@@ -435,7 +436,7 @@ get_header(); ?>
     .empty-state p {
         color: #666666;
         margin-bottom: 24px;
-        font-size: 1rem;
+        font-size: 0.8rem;
         font-weight: 400;
         line-height: 1.6;
     }
@@ -511,7 +512,7 @@ get_header(); ?>
         }
 
         .featured-quote .quote-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
         }
 
         .quote-card-header {
@@ -547,7 +548,7 @@ get_header(); ?>
         }
 
         .quote-title {
-            font-size: 1rem;
+            font-size: 0.8rem;
         }
 
         .quotes-pagination .page-numbers {

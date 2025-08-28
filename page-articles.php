@@ -43,7 +43,7 @@ get_header(); ?>
     <div class="content-area">
         <div class="posts-container full-width">
             <header class="page-header articles-page-header">
-                <h1 class="page-title">Bài Viết</h1>
+                <h1 class="page-title">TIN TỨC</h1>
                 <p class="page-subtitle">Khám phá những thông tin và kiến thức hữu ích từ chúng tôi</p>
             </header>
 
@@ -234,12 +234,13 @@ get_header(); ?>
     }
 
     .articles-page-header .page-title {
-        font-size: 1rem;
-        margin: 0;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-        text-transform: none;
-        font-family: 'Helvetica Neue', 'Arial', sans-serif;
+        font-size: 1.3rem;
+        line-height: 1.3;
+        color: var(--primary-blue);
+        text-align: center;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+        border-bottom: 2px solid lightgrey;
     }
 
     .articles-page-header .page-subtitle {
@@ -281,7 +282,7 @@ get_header(); ?>
     }
 
     .featured-article .featured-title {
-        font-size: 1rem;
+        font-size: 0.8rem;
         font-weight: 600;
         line-height: 1.3;
         margin-bottom: 12px;
@@ -290,7 +291,7 @@ get_header(); ?>
     }
 
     .featured-article .article-excerpt {
-        font-size: 0.95rem;
+        font-size: 0.8rem;
         line-height: 1.6;
         color: #666666;
         margin-bottom: 16px;
@@ -304,7 +305,7 @@ get_header(); ?>
     }
 
     .featured-article .article-meta span {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         font-weight: 400;
         letter-spacing: 0.05em;
         color: #888888;
@@ -333,7 +334,7 @@ get_header(); ?>
     }
 
     .regular-article .article-title {
-        font-size: 1rem;
+        font-size: 0.8rem;
         font-weight: 500;
         line-height: 1.4;
         margin-bottom: 8px;
@@ -375,7 +376,7 @@ get_header(); ?>
         align-items: center;
         gap: 12px;
         margin-bottom: 8px;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         color: #888888;
         font-weight: 400;
     }
@@ -455,7 +456,7 @@ get_header(); ?>
     .no-articles p {
         color: #666666;
         margin-bottom: 24px;
-        font-size: 1rem;
+        font-size: 0.8rem;
         font-weight: 400;
         line-height: 1.6;
     }
@@ -508,7 +509,7 @@ get_header(); ?>
         }
 
         .featured-article .featured-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
         }
 
         .regular-article .article-image {
@@ -544,7 +545,7 @@ get_header(); ?>
         }
 
         .regular-article .article-title {
-            font-size: 1rem;
+            font-size: 0.8rem;
         }
 
         .articles-pagination .page-numbers {

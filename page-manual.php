@@ -195,7 +195,7 @@ get_header(); ?>
     }
 
     .manuals-page-header .page-title {
-        font-size: 1rem;
+        font-size: 1.3rem;
         margin: 0;
         font-weight: 600;
         letter-spacing: 0.02em;
@@ -242,7 +242,7 @@ get_header(); ?>
     }
 
     .featured-manual .featured-title {
-        font-size: 1rem;
+        font-size: 0.8rem;
         font-weight: 600;
         line-height: 1.3;
         margin-bottom: 12px;
@@ -251,7 +251,7 @@ get_header(); ?>
     }
 
     .featured-manual .manual-excerpt {
-        font-size: 0.95rem;
+        font-size: 0.8rem;
         line-height: 1.6;
         color: #666666;
         margin-bottom: 16px;
@@ -265,7 +265,7 @@ get_header(); ?>
     }
 
     .featured-manual .manual-meta span {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         font-weight: 400;
         letter-spacing: 0.05em;
         color: #888888;
@@ -294,7 +294,7 @@ get_header(); ?>
     }
 
     .regular-manual .manual-title {
-        font-size: 1rem;
+        font-size: 0.8rem;
         font-weight: 500;
         line-height: 1.4;
         margin-bottom: 8px;
@@ -336,7 +336,7 @@ get_header(); ?>
         align-items: center;
         gap: 12px;
         margin-bottom: 8px;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         color: #888888;
         font-weight: 400;
     }
@@ -434,7 +434,7 @@ get_header(); ?>
         }
 
         .featured-manual .featured-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
         }
 
         .regular-manual .manual-image {
@@ -470,7 +470,7 @@ get_header(); ?>
         }
 
         .regular-manual .manual-title {
-            font-size: 1rem;
+            font-size: 0.8rem;
         }
 
         .manuals-pagination .page-numbers {

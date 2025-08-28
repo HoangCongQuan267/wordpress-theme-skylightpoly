@@ -14,7 +14,7 @@ get_header(); ?>
         <div class="quotes-content">
             <?php
             // Get customizable page title and subtitle
-            $page_title = get_theme_mod('quotes_page_title', 'Báo Giá & Thông Tin Sản Phẩm');
+            $page_title = get_theme_mod('quotes_page_title', 'BÁO GIÁ VÀ THÔNG TIN SẢN PHẨM');
             $page_subtitle = get_theme_mod('quotes_page_subtitle', 'Thông tin giá cả và thông số kỹ thuật chi tiết');
             $posts_per_page = get_theme_mod('quotes_posts_per_page', 12);
             ?>
@@ -138,13 +138,13 @@ get_header(); ?>
     }
 
     .page-title {
-        font-size: 1rem;
-        margin: 0;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-        text-transform: none;
-        font-family: 'Helvetica Neue', 'Arial', sans-serif;
-        color: #333333;
+        font-size: 1.3rem;
+        line-height: 1.3;
+        color: var(--primary-blue);
+        text-align: center;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+        border-bottom: 2px solid lightgrey;
     }
 
     .page-subtitle {
@@ -185,7 +185,7 @@ get_header(); ?>
         background: #1a1a1a;
         color: #ffffff;
         padding: 4px 8px;
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         font-weight: 400;
         font-family: 'Helvetica Neue', 'Arial', sans-serif;
         z-index: 2;
@@ -198,7 +198,7 @@ get_header(); ?>
         background: #28a745;
         color: #ffffff;
         padding: 4px 8px;
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         font-weight: 400;
         font-family: 'Helvetica Neue', 'Arial', sans-serif;
         z-index: 2;
@@ -265,13 +265,13 @@ get_header(); ?>
         color: white;
         padding: 2px 8px;
         border-radius: 12px;
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         font-weight: 500;
     }
 
     .quote-title {
         margin: 0 0 12px 0;
-        font-size: 1.1rem;
+        font-size: 1.0.8rem;
         line-height: 1.4;
         font-weight: 600;
     }

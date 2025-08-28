@@ -10,37 +10,36 @@ get_header(); ?>
 <main class="site-main">
     <!-- Structured Data for About Page -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "<?php echo esc_attr(get_the_title()); ?>",
-        "description": "<?php echo esc_attr(wp_trim_words(get_the_excerpt() ? get_the_excerpt() : get_the_content(), 25)); ?>",
-        "url": "<?php echo esc_url(get_permalink()); ?>",
-        "mainEntity": {
-            "@type": "AboutPage",
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
             "name": "<?php echo esc_attr(get_the_title()); ?>",
-            "description": "<?php echo esc_attr(wp_trim_words(get_the_excerpt() ? get_the_excerpt() : get_the_content(), 25)); ?>"
-        },
-        "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Trang chủ",
-                    "item": "<?php echo esc_url(home_url('/')); ?>"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "<?php echo esc_attr(get_the_title()); ?>",
-                    "item": "<?php echo esc_url(get_permalink()); ?>"
-                }
-            ]
+            "description": "<?php echo esc_attr(wp_trim_words(get_the_excerpt() ? get_the_excerpt() : get_the_content(), 25)); ?>",
+            "url": "<?php echo esc_url(get_permalink()); ?>",
+            "mainEntity": {
+                "@type": "AboutPage",
+                "name": "<?php echo esc_attr(get_the_title()); ?>",
+                "description": "<?php echo esc_attr(wp_trim_words(get_the_excerpt() ? get_the_excerpt() : get_the_content(), 25)); ?>"
+            },
+            "breadcrumb": {
+                "@type": "BreadcrumbList",
+                "itemListElement": [{
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Trang chủ",
+                        "item": "<?php echo esc_url(home_url('/')); ?>"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "<?php echo esc_attr(get_the_title()); ?>",
+                        "item": "<?php echo esc_url(get_permalink()); ?>"
+                    }
+                ]
+            }
         }
-    }
     </script>
-    
+
     <div class="content-area">
         <div class="posts-container full-width">
             <?php while (have_posts()) : the_post(); ?>
@@ -83,13 +82,14 @@ get_header(); ?>
     }
 
     .about-page .page-title {
-        font-size: 32px;
+        font-size: 1.3rem;
         line-height: 1.3;
-        margin: 25px 0;
         color: var(--primary-blue);
         text-align: center;
         padding-bottom: 15px;
-        border-bottom: 3px solid lightgrey;
+        margin-bottom: 25px;
+        margin-top: 15px;
+        border-bottom: 2px solid lightgrey;
     }
 
     .about-page .page-thumbnail {
@@ -105,7 +105,7 @@ get_header(); ?>
     }
 
     .about-page .page-content {
-        font-size: 16px;
+        font-size: 1.2rem;
         line-height: 1.8;
         margin-bottom: 30px;
     }
@@ -119,7 +119,7 @@ get_header(); ?>
     }
 
     .about-page .page-content h2 {
-        font-size: 24px;
+        font-size: 1.2rem;
         border-bottom: 2px solid var(--primary-orange);
         padding-bottom: 5px;
     }
@@ -129,7 +129,7 @@ get_header(); ?>
     }
 
     .about-page .page-content h4 {
-        font-size: 18px;
+        font-size: 1rem;
     }
 
     .about-page .page-content p {
@@ -196,7 +196,7 @@ get_header(); ?>
 
     @media (max-width: 768px) {
         .about-page .page-title {
-            font-size: 24px;
+            font-size: 1.2rem;
         }
 
         .about-page .page-content .values-grid {

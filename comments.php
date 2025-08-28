@@ -137,7 +137,7 @@ function custom_blue_orange_comment($comment, $args, $depth)
 
         .comments-title {
             color: var(--primary-blue);
-            font-size: 24px;
+            font-size: 1.2rem;
             margin-bottom: 25px;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--primary-orange);
@@ -207,7 +207,7 @@ function custom_blue_orange_comment($comment, $args, $depth)
         }
 
         .comment-metadata {
-            font-size: 12px;
+            font-size: 0.7rem;
             color: var(--medium-gray);
         }
 
@@ -247,7 +247,7 @@ function custom_blue_orange_comment($comment, $args, $depth)
             color: var(--white);
             text-decoration: none;
             border-radius: 3px;
-            font-size: 12px;
+            font-size: 0.7rem;
             transition: background-color 0.3s ease;
         }
 
@@ -289,7 +289,7 @@ function custom_blue_orange_comment($comment, $args, $depth)
             padding: 12px;
             border: 2px solid #ddd;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 0.8rem;
             transition: border-color 0.3s ease;
         }
 
@@ -313,7 +313,7 @@ function custom_blue_orange_comment($comment, $args, $depth)
             padding: 12px 25px;
             border: none;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 0.8rem;
             font-weight: 500;
             cursor: pointer;
             transition: background-color 0.3s ease;

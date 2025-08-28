@@ -54,7 +54,7 @@ body {
     background: var(--primary-sky-blue);
     color: var(--pure-white);
     padding: 4px 0;
-    font-size: 12px;
+    font-size: 0.7rem;
     font-weight: 300;
     letter-spacing: 0.5px;
 }
@@ -165,7 +165,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 4px;
     padding: 4px 8px;
-    font-size: 12px;
+    font-size: 0.7rem;
     font-family: inherit;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -196,7 +196,7 @@ body {
 
 .social-links a {
     color: var(--pure-white);
-    font-size: 14px;
+    font-size: 0.8rem;
     text-decoration: none;
     transition: all 0.3s ease;
     padding: 4px;
@@ -273,7 +273,7 @@ body {
 
 .site-slogan {
     margin: 0;
-    font-size: 12px;
+    font-size: 0.7rem;
     color: var(--text-light);
     font-style: italic;
     line-height: 1.2;
@@ -281,7 +281,7 @@ body {
 }
 
 .site-logo {
-    font-size: 24px;
+    font-size: 1.2rem;
     font-weight: 600;
     color: var(--accent-sky-blue);
     text-decoration: none;
@@ -315,7 +315,7 @@ body {
     padding: 8px 10px;
     border-radius: 4px;
     transition: all 0.3s ease;
-    font-size: 14px;
+    font-size: 0.7rem;
     letter-spacing: 0.3px;
     text-transform: capitalize;
     position: relative;
@@ -346,7 +346,7 @@ body {
     background: var(--primary-sky-blue);
     border: 1px solid var(--accent-sky-blue);
     border-radius: 3px;
-    font-size: 14px;
+    font-size: 0.8rem;
     color: var(--pure-white);
     cursor: pointer;
     padding: 6px 8px;
@@ -438,7 +438,7 @@ body {
     .contact-info {
         flex-direction: column;
         gap: 8px;
-        font-size: 11px;
+        font-size: 0.6rem;
     }
     
     .media-icons {
@@ -506,7 +506,7 @@ body {
 
 .side-nav-header h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: 1rem;
     font-weight: 600;
 }
 
@@ -517,7 +517,7 @@ body {
     background: none;
     border: none;
     color: var(--pure-white);
-    font-size: 24px;
+    font-size: 1.2rem;
     cursor: pointer;
     width: 30px;
     height: 30px;
@@ -547,7 +547,7 @@ body {
     padding: 10px 20px;
     color: var(--dark-gray);
     text-decoration: none;
-    font-size: 18px;
+    font-size: 1rem;
     font-weight: 500;
 }
 
@@ -601,7 +601,7 @@ body {
 }
 
 .site-branding.centered {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     text-align: center;
 }
 
@@ -620,7 +620,7 @@ body {
 }
 
 .site-branding.stacked {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     width: 100%;
 }
 
@@ -687,7 +687,7 @@ body {
 
 .post-meta {
     color: var(--medium-gray);
-    font-size: 13px;
+    font-size: 1rem;
     margin-bottom: 25px;
     padding: 12px 0;
     border-bottom: 1px solid var(--light-gray);
@@ -697,7 +697,7 @@ body {
 
 .post-content {
     line-height: 1.8;
-    font-size: 16px;
+    font-size: 1.2rem;
     color: var(--dark-gray);
 }
 
@@ -711,7 +711,7 @@ body {
     border-radius: 25px;
     transition: all 0.3s ease;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 0.8rem;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     position: relative;
@@ -808,11 +808,11 @@ body {
     }
     
     .site-title {
-        font-size: 18px;
+        font-size: 1rem;
     }
     
     .site-slogan {
-        font-size: 11px;
+        font-size: 0.6rem;
     }
     
     .site-logo {
@@ -874,7 +874,7 @@ body {
     
     .btn {
         padding: 12px 20px;
-        font-size: 13px;
+        font-size: 1rem;
     }
 }
 
@@ -888,7 +888,7 @@ body {
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.8rem;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     position: relative;
@@ -1034,7 +1034,7 @@ body {
 }
 
 .slide-subtitle {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     margin-bottom: 25px;
     opacity: 0.9;
     font-weight: 300;
@@ -1123,7 +1123,7 @@ body {
 /* Responsive Design */
 @media (max-width: 1024px) {
     .slide-title {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
     
     .slide-subtitle {
@@ -1131,7 +1131,7 @@ body {
     }
     
     .section-title {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
 
     .products-section,
@@ -1162,11 +1162,11 @@ body {
     
     .slide-button {
         padding: 10px 25px;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
     
     .section-title {
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
 
     .products-section,
@@ -1181,7 +1181,7 @@ body {
     .slideshow-arrows {
         width: 40px;
         height: 40px;
-        font-size: 16px;
+        font-size: 1.2rem;
     }
     
     .prev-arrow {
@@ -1222,7 +1222,7 @@ body {
 }
 
 .section-title {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -1363,7 +1363,7 @@ body {
 }
 
 .column-title {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #1a1a1a;
     margin-bottom: 30px;
@@ -1429,7 +1429,7 @@ body {
     border-radius: 4px;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.8rem;
+    font-size: 1rem;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     transition: all 0.3s ease;
@@ -1501,7 +1501,7 @@ body {
     
     .btn-see-all {
         padding: 10px 25px;
-        font-size: 0.8rem;
+        font-size: 1rem;
     }
 }
 
@@ -1512,7 +1512,7 @@ body {
     }
     
     .category-title {
-        font-size: 0.8rem;
+        font-size: 1rem;
         line-height: 1.3;
     }
     
@@ -1522,7 +1522,7 @@ body {
     
     .btn-see-all {
         padding: 8px 20px;
-        font-size: 0.75rem;
+        font-size: 1rem;
     }
 }
 
@@ -1554,7 +1554,7 @@ body {
     z-index: 10;
     padding: 6px 12px;
     border-radius: 20px;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -1734,7 +1734,7 @@ body {
 
 .product-excerpt {
     color: #666;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     line-height: 1.6;
     margin-bottom: 15px;
 }
@@ -1749,7 +1749,7 @@ body {
 }
 
 .original-price {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: #999;
     text-decoration: line-through;
     font-weight: 400;
@@ -1774,7 +1774,7 @@ body {
     color: #1a1a1a;
     font-weight: 300;
     text-decoration: none;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     border-bottom: 1px solid transparent;
@@ -1928,7 +1928,7 @@ body {
 
 .panel-header h4 {
     margin: 0;
-    font-size: 16px;
+    font-size: 1.2rem;
     font-weight: 600;
     color: #333;
 }
@@ -1936,7 +1936,7 @@ body {
 .close-panel-btn {
     background: none;
     border: none;
-    font-size: 24px;
+    font-size: 1.2rem;
     color: #666;
     cursor: pointer;
     padding: 0;
@@ -1990,13 +1990,13 @@ body {
 
 .contact-name {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 0.8rem;
     color: #333;
     margin-bottom: 4px;
 }
 
 .contact-phone {
-    font-size: 16px;
+    font-size: 1.2rem;
     color: var(--primary-sky-blue);
     text-decoration: none;
     font-weight: 400;
@@ -2170,7 +2170,7 @@ body {
     }
     
     .panel-header h4 {
-        font-size: 14px;
+        font-size: 0.8rem;
     }
     
     .contact-item {
@@ -2184,11 +2184,11 @@ body {
     }
     
     .contact-name {
-        font-size: 13px;
+        font-size: 1rem;
     }
     
     .contact-phone {
-        font-size: 13px;
+        font-size: 1rem;
     }
 }
 
@@ -2242,7 +2242,7 @@ body {
 }
 
 .video-section .section-title {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -2253,7 +2253,7 @@ body {
 }
 
 .video-section .section-subtitle {
-    font-size: 1.1rem;
+    font-size: 1.0.8rem;
     color: #666;
     max-width: 600px;
     margin: 0 auto;
@@ -2363,7 +2363,7 @@ body {
 }
 
 .video-title {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 600;
     margin-bottom: 10px;
     color: #333;
@@ -2412,7 +2412,7 @@ body {
 }
 
 .demo-video-placeholder h3 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     margin-bottom: 10px;
     font-weight: 600;
 }
@@ -2450,11 +2450,11 @@ body {
     }
     
     .video-section .section-title {
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
     
     .video-section .section-subtitle {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
     
     .videos-grid {
@@ -2467,7 +2467,7 @@ body {
     }
     
     .video-title {
-        font-size: 1rem;
+        font-size: 0.8rem;
         padding: 15px 15px 0 15px;
     }
     
@@ -2498,7 +2498,7 @@ body {
     }
     
     .video-section .section-title {
-        font-size: 0.8rem;
+        font-size: 1.2rem;
     }
     
     .video-title {
@@ -2507,7 +2507,7 @@ body {
     }
     
     .video-description {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         padding: 10px 10px 15px 10px;
     }
     
@@ -2572,7 +2572,7 @@ body {
 
 .star {
     color: #e0e0e0;
-    font-size: 1rem;
+    font-size: 0.8rem;
     margin-right: 2px;
 }
 
@@ -2584,7 +2584,7 @@ body {
     color: #444;
     line-height: 1.8;
     margin-bottom: 30px;
-    font-size: 0.95rem;
+    font-size: 0.8rem;
     font-weight: 300;
     letter-spacing: 0.2px;
 }
@@ -2665,7 +2665,7 @@ body {
     margin-bottom: 5px;
     font-weight: 700;
     color: #1a1a1a;
-    font-size: 0.75rem;
+    font-size: 1rem;
     letter-spacing: 0.2px;
 }
 
@@ -2673,7 +2673,7 @@ body {
     margin: 0;
     color: #666;
     line-height: 1.5;
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 /* Contact Form */
@@ -2701,7 +2701,7 @@ body {
     margin-bottom: 8px;
     font-weight: 400;
     color: #1a1a1a;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     letter-spacing: 0.3px;
     text-transform: uppercase;
 }
@@ -2803,7 +2803,7 @@ body {
 
 .error-message {
     color: #e74c3c;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     margin-top: 8px;
     display: block;
     font-weight: 300;
@@ -2845,7 +2845,7 @@ body {
 
 @media (max-width: 768px) {
     .section-title {
-        font-size: 0.8rem;
+        font-size: 1.2rem;
         font-weight: 700;
     }
     
@@ -2893,7 +2893,7 @@ body {
     .form-group select,
     .form-group textarea {
         height: 32px;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         padding: 6px 10px;
     }
     
@@ -2923,7 +2923,7 @@ body {
 
 @media (max-width: 480px) {
     .section-title {
-        font-size: 0.8rem;
+        font-size: 1.2rem;
         font-weight: 700;
     }
     
@@ -2948,7 +2948,7 @@ body {
     }
     
     .product-excerpt {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         margin-bottom: 12px;
     }
     
@@ -2963,7 +2963,7 @@ body {
     
     .discount-price,
     .current-price {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
     
     .contact-form {
@@ -2974,7 +2974,7 @@ body {
     .form-group select,
     .form-group textarea {
         height: 30px;
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         padding: 5px 8px;
     }
     
@@ -2994,18 +2994,18 @@ body {
     }
     
     .contact-info h3 {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         margin-bottom: 12px;
         font-weight: 700;
     }
     
     .contact-details strong {
-        font-size: 0.7rem;
+        font-size: 1rem;
         font-weight: 700;
     }
     
     .contact-details p {
-        font-size: 0.7rem;
+        font-size: 1rem;
     }
     
 
@@ -3028,7 +3028,7 @@ body {
     padding: 12px 16px;
     border-radius: 25px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 1rem;
     font-weight: 800;
     box-shadow: 0 4px 12px rgba(0, 104, 255, 0.3);
     transition: all 0.3s ease;
@@ -3046,7 +3046,7 @@ body {
 
 .zalo-text {
     font-family: inherit;
-    font-size: 14px;
+    font-size: 0.8rem;
     font-weight: 500;
 }
 
@@ -3060,13 +3060,13 @@ body {
     
     .zalo-btn {
         padding: 10px 14px;
-        font-size: 13px;
+        font-size: 1rem;
         width: auto;
         max-width: 120px;
     }
     
     .zalo-text {
-        font-size: 13px;
+        font-size: 1rem;
     }
 }
 
@@ -3100,10 +3100,10 @@ body {
 }
 
 .sidebar-content h3 {
-    font-size: 1.1rem;
+    font-size: 1.0.8rem;
     font-weight: 600;
     color: #2c3e50;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid #f8f9fa;
 }
@@ -3117,7 +3117,7 @@ body {
     padding: 0.8rem;
     border: 2px solid #e0e0e0;
     border-radius: 4px;
-    font-size: 1rem;
+    font-size: 0.8rem;
     transition: border-color 0.3s ease;
 }
 
@@ -3144,7 +3144,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 0.8rem;
     color: #555;
     text-decoration: none;
     border-radius: 4px;
@@ -3170,7 +3170,7 @@ body {
 }
 
 .layout-toggle {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
 }
 
 .toggle-buttons {
@@ -3180,7 +3180,7 @@ body {
 }
 
 .layout-btn {
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 0.8rem;
     border: 2px solid #e0e0e0;
     background: white;
     border-radius: 4px;
@@ -3201,7 +3201,7 @@ body {
 }
 
 .layout-btn .dashicons {
-    font-size: 1rem;
+    font-size: 0.8rem;
 }
 
 /* Products Main Panel */
@@ -3254,7 +3254,7 @@ body {
 }
 
 .product-card.vertical .product-title {
-    font-size: 1.1rem;
+    font-size: 1.0.8rem;
     font-weight: 600;
     color: #2c3e50;
     margin-bottom: 0.8rem;
@@ -3265,12 +3265,12 @@ body {
     color: #666;
     font-size: 0.8rem;
     line-height: 1.6;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     flex: 1;
 }
 
 .product-card.vertical .product-pricing {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
 }
 
 .product-card.vertical .product-link {
@@ -3365,7 +3365,7 @@ body {
 
 @media (max-width: 768px) {
     .products-page {
-        padding: 1rem 0;
+        padding: 0.8rem 0;
     }
     
     .products-grid.vertical {
@@ -3374,26 +3374,26 @@ body {
     }
     
     .sidebar-content {
-        padding: 1rem;
+        padding: 0.8rem;
     }
     
     .product-card.vertical .product-content {
-        padding: 1rem;
+        padding: 0.8rem;
     }
     
     .product-card.vertical .product-title {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 }
 
 @media (max-width: 480px) {
     .products-grid.vertical {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 0.8rem;
     }
     
     .products-layout {
-        gap: 1rem;
+        gap: 0.8rem;
     }
     
     .toggle-buttons {
@@ -3476,7 +3476,7 @@ body {
     align-items: center;
     gap: 15px;
     margin-bottom: 15px;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: #666;
 }
 
@@ -3515,7 +3515,7 @@ body {
 
 .article-excerpt {
     color: #666;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     line-height: 1.6;
     margin-bottom: 15px;
     flex: 1;
@@ -3528,7 +3528,7 @@ body {
 }
 
 .author-name {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: #999;
     font-style: italic;
 }
@@ -3597,7 +3597,7 @@ body {
     }
     
     .article-excerpt {
-        font-size: 0.7rem;
+        font-size: 0.8rem;
     }
 }
 
@@ -3611,7 +3611,6 @@ body {
     }
     
     .article-meta {
-        flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
@@ -3640,7 +3639,7 @@ body {
 }
 
 .faq-section .section-title {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--dark-gray);
     margin-bottom: 20px;
@@ -3648,7 +3647,7 @@ body {
 }
 
 .faq-section .section-subtitle {
-    font-size: 1.1rem;
+    font-size: 1.0.8rem;
     color: var(--medium-gray);
     margin-bottom: 0;
     line-height: 1.6;
@@ -3744,16 +3743,16 @@ body {
     }
     
     .faq-section .section-title {
-        font-size: 2rem;
+        font-size: 1.2rem;
     }
     
     .faq-section .section-subtitle {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
     
     .faq-question {
         padding: 20px 20px;
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
     
     .faq-answer.active {
@@ -3771,12 +3770,12 @@ body {
     }
     
     .faq-section .section-title {
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
     
     .faq-question {
         padding: 18px 15px;
-        font-size: 0.95rem;
+        font-size: 0.8rem;
     }
     
     .faq-answer.active {
@@ -3797,7 +3796,7 @@ body {
 }
 
 .single-post .post-title {
-    font-size: 1rem;
+    font-size: 0.8rem;
     line-height: 1.4;
     margin-bottom: 0px;
     color: #1a1a1a;
@@ -3822,7 +3821,7 @@ body {
 }
 
 .single-post .post-content {
-    font-size: 1rem;
+    font-size: 0.8rem;
     line-height: 1.6;
     color: #333333;
     margin-bottom: 0;
@@ -3843,7 +3842,7 @@ body {
 }
 
 .single-post .post-content h2 {
-    font-size: 1rem;
+    font-size: 0.8rem;
 }
 
 .single-post .post-content h3 {
@@ -3851,7 +3850,7 @@ body {
 }
 
 .single-post .post-content h4 {
-    font-size: 1rem;
+    font-size: 0.8rem;
 }
 
 .single-post .post-content p {
@@ -3984,11 +3983,11 @@ body {
     }
 
     .single-post .post-title {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 
     .single-post .post-content {
-        font-size: 0.95rem;
+        font-size: 0.8rem;
     }
 }
 
@@ -4001,7 +4000,7 @@ body {
 }
 
 .single-product .post-title {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1.4;
     margin-bottom: 0px;
     color: #1a1a1a;
@@ -4026,7 +4025,7 @@ body {
 }
 
 .single-product .post-content {
-    font-size: 1rem;
+    font-size: 0.8rem;
     line-height: 1.6;
     color: #333333;
     margin-bottom: 0;
@@ -4047,7 +4046,7 @@ body {
 }
 
 .single-product .post-content h2 {
-    font-size: 1rem;
+    font-size: 0.8rem;
 }
 
 .single-product .post-content h3 {
@@ -4055,7 +4054,7 @@ body {
 }
 
 .single-product .post-content h4 {
-    font-size: 1rem;
+    font-size: 0.8rem;
 }
 
 .single-product .post-content p {
@@ -4182,7 +4181,7 @@ body {
 }
 
 .single-manual .post-title {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1.4;
     margin-bottom: 0px;
     color: #1a1a1a;
@@ -4207,7 +4206,7 @@ body {
 }
 
 .single-manual .post-content {
-    font-size: 1rem;
+    font-size: 0.8rem;
     line-height: 1.6;
     color: #333333;
     margin-bottom: 0;
@@ -4228,7 +4227,7 @@ body {
 }
 
 .single-manual .post-content h2 {
-    font-size: 1rem;
+    font-size: 0.8rem;
 }
 
 .single-manual .post-content h3 {
@@ -4236,7 +4235,7 @@ body {
 }
 
 .single-manual .post-content h4 {
-    font-size: 1rem;
+    font-size: 0.8rem;
 }
 
 .single-manual .post-content p {
@@ -4373,12 +4372,12 @@ body {
 
     .single-product .post-title,
     .single-manual .post-title {
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
 
     .single-product .post-content,
     .single-manual .post-content {
-        font-size: 0.95rem;
+        font-size: 0.8rem;
     }
 }
 
@@ -4403,7 +4402,7 @@ body {
 }
 
 .categories-panel .panel-title {
-    font-size: 18px;
+    font-size: 1rem;
     font-weight: 600;
     margin-bottom: 15px;
     color: #333;
@@ -4428,7 +4427,7 @@ body {
     text-decoration: none;
     border-radius: 5px;
     transition: all 0.3s ease;
-    font-size: 14px;
+    font-size: 0.8rem;
 }
 
 .category-link:hover,
@@ -4474,11 +4473,11 @@ body {
     }
 
     .categories-panel .panel-title {
-        font-size: 16px;
+        font-size: 1.2rem;
     }
 
     .category-link {
-        font-size: 13px;
+        font-size: 1rem;
         padding: 8px 12px;
     }
 }
@@ -4530,7 +4529,7 @@ body {
 .featured-article .featured-title,
 .featured-manual .featured-title,
 .featured-quote .featured-title {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 600;
     line-height: 1.3;
     margin-bottom: 12px;
@@ -4541,7 +4540,7 @@ body {
 .featured-article .article-excerpt,
 .featured-manual .manual-excerpt,
 .featured-quote .quote-excerpt {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
     line-height: 1.6;
     color: #666666;
     margin-bottom: 16px;
@@ -4559,7 +4558,7 @@ body {
 .featured-article .article-meta span,
 .featured-manual .manual-meta span,
 .featured-quote .quote-meta span {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 400;
     letter-spacing: 0.05em;
     color: #888888;
@@ -4596,7 +4595,7 @@ body {
 .regular-article .article-title,
 .regular-manual .manual-title,
 .regular-quote .quote-title {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 500;
     line-height: 1.4;
     margin-bottom: 8px;
@@ -4646,7 +4645,7 @@ body {
     align-items: center;
     gap: 12px;
     margin-bottom: 8px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: #888888;
     font-weight: 400;
 }
@@ -4742,7 +4741,7 @@ body {
     .featured-article .featured-title,
     .featured-manual .featured-title,
     .featured-quote .featured-title {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
 
     .regular-article .article-image,
@@ -4794,6 +4793,6 @@ body {
     .regular-article .article-title,
     .regular-manual .manual-title,
     .regular-quote .quote-title {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 }

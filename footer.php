@@ -207,7 +207,7 @@
 
     .subfooter-links h4 {
         color: var(--primary-dark, #2c3e50);
-        font-size: 18px;
+        font-size: 1rem;
         font-weight: 600;
         margin-bottom: 20px;
         padding-bottom: 10px;
@@ -238,7 +238,7 @@
     .subfooter-links ul li a {
         color: #6c757d;
         text-decoration: none;
-        font-size: 14px;
+        font-size: 0.8rem;
         line-height: 1.5;
         transition: all 0.3s ease;
         display: flex;
@@ -256,7 +256,7 @@
         content: '▸';
         margin-right: 8px;
         color: var(--gold, #d4af37);
-        font-size: 12px;
+        font-size: 0.7rem;
         transition: all 0.3s ease;
     }
 
@@ -278,7 +278,7 @@
         }
 
         .subfooter-links h4 {
-            font-size: 16px;
+            font-size: 1.2rem;
             margin-bottom: 15px;
         }
 
@@ -287,7 +287,7 @@
         }
 
         .subfooter-links ul li a {
-            font-size: 13px;
+            font-size: 1rem;
         }
     }
 
@@ -309,14 +309,14 @@
     .footer-info h3 {
         color: var(--gold);
         margin-bottom: 10px;
-        font-size: 18px;
+        font-size: 1rem;
         font-weight: 400;
     }
 
     .footer-info p {
         margin-bottom: 8px;
         line-height: 1.5;
-        font-size: 14px;
+        font-size: 0.8rem;
     }
 
     .footer-contact {
@@ -325,7 +325,7 @@
 
     .footer-contact p {
         margin-bottom: 6px;
-        font-size: 14px;
+        font-size: 0.8rem;
     }
 
     .footer-contact a {
@@ -343,7 +343,7 @@
 
     .footer-social a {
         color: var(--white);
-        font-size: 14px;
+        font-size: 0.8rem;
         margin-right: 20px;
         text-decoration: none;
         transition: color 0.3s ease;
@@ -361,7 +361,7 @@
 
     .footer-bottom p {
         margin-bottom: 4px;
-        font-size: 12px;
+        font-size: 0.7rem;
         opacity: 0.7;
     }
 
@@ -411,7 +411,7 @@
                     <div class="contact-info-2">
                         <div class="contact-name"><?php echo esc_html($contact['name']); ?></div>
                         <?php if (!empty($contact['position'])) : ?>
-                            <div class="contact-position" style="font-size: 12px; color: #666; margin-bottom: 2px;"><?php echo esc_html($contact['position']); ?></div>
+                            <div class="contact-position" style="font-size: 0.7rem; color: #666; margin-bottom: 2px;"><?php echo esc_html($contact['position']); ?></div>
                         <?php endif; ?>
                         <a href="tel:<?php echo esc_attr(str_replace(' ', '', $contact['phone'])); ?>" class="contact-phone"><?php echo esc_html($contact['phone']); ?></a>
                     </div>
@@ -428,7 +428,7 @@
                 </div>
                 <div class="contact-info-2">
                     <div class="contact-name">Nguyễn Văn An</div>
-                    <div class="contact-position" style="font-size: 12px; color: #666; margin-bottom: 2px;">Sales Manager</div>
+                    <div class="contact-position" style="font-size: 0.7rem; color: #666; margin-bottom: 2px;">Sales Manager</div>
                     <a href="tel:+84123456789" class="contact-phone">+84 123 456 789</a>
                 </div>
             </div>

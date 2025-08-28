@@ -34,12 +34,12 @@ if (!is_active_sidebar('sidebar-1')) {
                 if ($recent_posts) :
                     foreach ($recent_posts as $post) :
                 ?>
-                    <li>
-                        <a href="<?php echo get_permalink($post['ID']); ?>">
-                            <?php echo $post['post_title']; ?>
-                        </a>
-                        <span class="post-date"><?php echo get_the_date('d/m/Y', $post['ID']); ?></span>
-                    </li>
+                        <li>
+                            <a href="<?php echo get_permalink($post['ID']); ?>">
+                                <?php echo $post['post_title']; ?>
+                            </a>
+                            <span class="post-date"><?php echo get_the_date('d/m/Y', $post['ID']); ?></span>
+                        </li>
                 <?php endforeach;
                 endif;
                 wp_reset_query(); ?>
@@ -114,7 +114,7 @@ if (!is_active_sidebar('sidebar-1')) {
 
     .sidebar .widget-title {
         color: var(--primary-blue);
-        font-size: 18px;
+        font-size: 1rem;
         font-weight: 600;
         margin-bottom: 15px;
         padding-bottom: 8px;
@@ -165,7 +165,7 @@ if (!is_active_sidebar('sidebar-1')) {
 
     .sidebar .widget .post-date {
         display: block;
-        font-size: 12px;
+        font-size: 0.7rem;
         color: var(--medium-gray);
         margin-top: 3px;
     }
@@ -177,7 +177,7 @@ if (!is_active_sidebar('sidebar-1')) {
     .sidebar .widget_categories .cat-item .count {
         background-color: var(--primary-orange);
         color: var(--white);
-        font-size: 11px;
+        font-size: 0.6rem;
         padding: 2px 6px;
         border-radius: 10px;
         margin-left: 8px;
@@ -211,7 +211,7 @@ if (!is_active_sidebar('sidebar-1')) {
         padding: 12px 45px 12px 15px;
         border: 2px solid #ddd;
         border-radius: 25px;
-        font-size: 14px;
+        font-size: 0.8rem;
         transition: border-color 0.3s ease;
     }
 
@@ -231,7 +231,7 @@ if (!is_active_sidebar('sidebar-1')) {
         padding: 8px 15px;
         border-radius: 20px;
         cursor: pointer;
-        font-size: 12px;
+        font-size: 0.7rem;
         transition: background-color 0.3s ease;
     }
 

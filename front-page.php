@@ -305,11 +305,11 @@ if ($section_spacing !== 'normal') {
             }
 
             .commitment-title {
-                font-size: 0.9rem;
+                font-size: 1rem;
             }
 
             .commitment-description {
-                font-size: 0.75rem;
+                font-size: 0.8rem;
             }
         }
 
@@ -337,7 +337,7 @@ if ($section_spacing !== 'normal') {
         }
 
         .branding-banner-thin .section-title {
-            font-size: 1rem;
+            font-size: 1.2rem;
             margin-bottom: 8px;
         }
 
@@ -362,7 +362,7 @@ if ($section_spacing !== 'normal') {
             }
 
             .branding-banner-thin .section-title {
-                font-size: 0.85rem;
+                font-size: 1.2rem;
                 line-height: 1.3;
                 margin-top: 10px;
                 margin-bottom: 8px;
@@ -390,7 +390,7 @@ if ($section_spacing !== 'normal') {
             }
 
             .branding-banner-thin .section-title {
-                font-size: 0.75rem;
+                font-size: 1.2rem;
                 margin-top: 8px;
                 margin-bottom: 8px;
                 line-height: 1.4;
