@@ -94,6 +94,37 @@
     </section>
 <?php endif; ?>
 
+<!-- Subfooter Section -->
+<section class="subfooter">
+    <div class="container">
+        <div class="subfooter-content">
+            <div class="subfooter-links">
+                <h4>Thông tin hữu ích</h4>
+                <ul class="info-links">
+                    <li><a href="<?php echo esc_url(home_url('/chinh-sach-bao-hanh')); ?>">Chính sách bảo hành</a></li>
+                    <li><a href="<?php echo esc_url(home_url('/chinh-sach-doi-tra')); ?>">Chính sách đổi trả</a></li>
+                    <li><a href="<?php echo esc_url(home_url('/chinh-sach-bao-mat')); ?>">Chính sách bảo mật</a></li>
+                    <li><a href="<?php echo esc_url(home_url('/dieu-khoan-su-dung')); ?>">Điều khoản sử dụng</a></li>
+                </ul>
+            </div>
+            <div class="subfooter-links">
+                <h4>Hỗ trợ khách hàng</h4>
+                <ul class="support-links">
+                    <li><a href="<?php echo esc_url(home_url('/tai-lieu-ky-thuat')); ?>">Tài liệu kỹ thuật</a></li>
+                </ul>
+            </div>
+            <div class="subfooter-links">
+                <h4>Về công ty</h4>
+                <ul class="company-links">
+                    <li><a href="<?php echo esc_url(home_url('/gioi-thieu')); ?>">Giới thiệu</a></li>
+                    <li><a href="<?php echo esc_url(home_url('/tin-tuc')); ?>">Tin tức</a></li>
+                    <li><a href="<?php echo esc_url(home_url('/tuyen-dung')); ?>">Tuyển dụng</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
 <footer class="site-footer">
     <div class="container">
         <div class="footer-content">
@@ -119,23 +150,23 @@
                         $linkedin_url = get_theme_mod('social_linkedin_url', '');
                         $youtube_url = get_theme_mod('social_youtube_url', '');
                         ?>
-                        
+
                         <?php if ($facebook_url) : ?>
                             <a href="<?php echo esc_url($facebook_url); ?>" class="social-link" target="_blank" rel="noopener noreferrer">Facebook</a>
                         <?php endif; ?>
-                        
+
                         <?php if ($twitter_url) : ?>
                             <a href="<?php echo esc_url($twitter_url); ?>" class="social-link" target="_blank" rel="noopener noreferrer">Twitter</a>
                         <?php endif; ?>
-                        
+
                         <?php if ($instagram_url) : ?>
                             <a href="<?php echo esc_url($instagram_url); ?>" class="social-link" target="_blank" rel="noopener noreferrer">Instagram</a>
                         <?php endif; ?>
-                        
+
                         <?php if ($linkedin_url) : ?>
                             <a href="<?php echo esc_url($linkedin_url); ?>" class="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                         <?php endif; ?>
-                        
+
                         <?php if ($youtube_url) : ?>
                             <a href="<?php echo esc_url($youtube_url); ?>" class="social-link" target="_blank" rel="noopener noreferrer">YouTube</a>
                         <?php endif; ?>
@@ -153,6 +184,118 @@
 <?php wp_footer(); ?>
 
 <style>
+    /* Subfooter Styles */
+    .subfooter {
+        background: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+        padding: 40px 0;
+        margin-top: 60px;
+    }
+
+    .subfooter-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .subfooter-links h4 {
+        color: var(--primary-dark, #2c3e50);
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--gold, #d4af37);
+        position: relative;
+    }
+
+    .subfooter-links h4::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 30px;
+        height: 2px;
+        background: var(--primary-sky-blue, #007acc);
+    }
+
+    .subfooter-links ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .subfooter-links ul li {
+        margin-bottom: 12px;
+    }
+
+    .subfooter-links ul li a {
+        color: #6c757d;
+        text-decoration: none;
+        font-size: 14px;
+        line-height: 1.5;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        padding: 5px 0;
+    }
+
+    .subfooter-links ul li a:hover {
+        color: var(--primary-sky-blue, #007acc);
+        padding-left: 10px;
+        transform: translateX(5px);
+    }
+
+    .subfooter-links ul li a::before {
+        content: '▸';
+        margin-right: 8px;
+        color: var(--gold, #d4af37);
+        font-size: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .subfooter-links ul li a:hover::before {
+        color: var(--primary-sky-blue, #007acc);
+        transform: translateX(3px);
+    }
+
+    @media (max-width: 768px) {
+        .subfooter {
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+
+        .subfooter-content {
+            grid-template-columns: 1fr;
+            gap: 25px;
+            padding: 0 20px;
+        }
+
+        .subfooter-links h4 {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .subfooter-links ul li {
+            margin-bottom: 10px;
+        }
+
+        .subfooter-links ul li a {
+            font-size: 13px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .subfooter {
+            padding: 25px 0;
+        }
+
+        .subfooter-content {
+            padding: 0 15px;
+        }
+    }
+
     .footer-content {
         margin-bottom: 20px;
         text-align: left;
