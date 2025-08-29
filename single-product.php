@@ -419,18 +419,6 @@ get_header(); ?>
                             </a>
                         </div>
 
-                        <!-- Product Description -->
-                        <?php
-                        $product_content = get_the_content();
-                        if (!empty(trim($product_content))) :
-                        ?>
-                            <div class="product-description">
-                                <h3>Thông tin chi tiết</h3>
-                                <div class="description-content">
-                                    <?php the_content(); ?>
-                                </div>
-                            </div>
-                        <?php endif; ?>
                     </div>
 
                     <!-- Sidebar Column -->
@@ -569,6 +557,19 @@ get_header(); ?>
                     </div>
 
                 </div>
+
+                <!-- Full-width Product Description -->
+                <?php
+                $product_content = get_the_content();
+                if (!empty(trim($product_content))) :
+                ?>
+                    <div class="product-description full-width">
+                        <h3>Thông tin chi tiết</h3>
+                        <div class="description-content">
+                            <?php the_content(); ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
             <?php endwhile; ?>
         </div>
