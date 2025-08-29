@@ -385,10 +385,14 @@ get_header(); ?>
                         <!-- Price Calculator -->
                         <?php if (!empty($final_price)) : ?>
                             <div class="price-calculator">
-                                <h3>Tính toán giá</h3>
+                                <h3>Tính toán chi phí(Chưa tính chi phí lắp đặt)</h3>
                                 <div class="calculator-row">
-                                    <label for="quantity-input">Số lượng:</label>
-                                    <input type="number" id="quantity-input" min="1" value="1" />
+                                    <label for="quantity-input">Diện tích thi công:</label>
+                                    <div class="quantity-input-container">
+                                        <button type="button" class="quantity-btn minus-btn" onclick="changeQuantity(-1)">-</button>
+                                        <input type="number" id="quantity-input" min="1" value="1" />
+                                        <button type="button" class="quantity-btn plus-btn" onclick="changeQuantity(1)">+</button>
+                                    </div>
                                     <?php if (!empty($price_unit)) : ?>
                                         <span class="unit-label"><?php echo esc_html($price_unit); ?></span>
                                     <?php endif; ?>
@@ -710,6 +714,25 @@ get_header(); ?>
             updateTotalPrice();
         }
     });
+
+    // Quantity change function
+    function changeQuantity(change) {
+        const quantityInput = document.getElementById('quantity-input');
+        if (quantityInput) {
+            let currentValue = parseInt(quantityInput.value) || 1;
+            let newValue = currentValue + change;
+
+            // Ensure minimum value is 1
+            if (newValue < 1) {
+                newValue = 1;
+            }
+
+            quantityInput.value = newValue;
+
+            // Trigger input event to update total price
+            quantityInput.dispatchEvent(new Event('input'));
+        }
+    }
 </script>
 
 <?php get_footer(); ?>

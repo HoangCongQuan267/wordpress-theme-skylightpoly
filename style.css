@@ -5093,7 +5093,7 @@ body {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 12px;
+    margin-bottom: 0;
 }
 
 .color-option {
@@ -5151,8 +5151,8 @@ body {
 }
 
 .property-block {
-    padding: 6px 10px;
-    font-size: 13px;
+    padding: 2px 10px;
+    font-size: 0.7rem;
     font-weight: 500;
     color: #333;
     background: #fff;
@@ -5203,18 +5203,62 @@ body {
     font-size: 16px;
 }
 
-#quantity-input {
+/* Quantity Input Container */
+.quantity-input-container {
+    display: flex;
+    align-items: center;
     border: 1px solid #ddd;
-    padding: 12px 16px;
-    width: 100px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.quantity-btn {
+    background: #f8f9fa;
+    border: none;
+    width: 36px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.quantity-btn:hover {
+    background: #e9ecef;
+}
+
+.quantity-btn:active {
+    background: #dee2e6;
+}
+
+#quantity-input {
+    border: none;
+    padding: 8px 12px;
+    width: 60px;
     text-align: center;
     font-size: 16px;
     font-weight: 600;
+    background: #fff;
 }
 
 #quantity-input:focus {
     outline: none;
-    border-color: #333;
+}
+
+/* Remove number input arrows */
+#quantity-input::-webkit-outer-spin-button,
+#quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#quantity-input[type=number] {
+    -moz-appearance: textfield;
 }
 
 .unit-label {
@@ -5229,12 +5273,12 @@ body {
 }
 
 .total-price strong {
-    font-size: 16px;
+    font-size: 1.2rem;
     color: #333;
 }
 
 #total-price-display {
-    font-size: 16px;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #333;
 }
@@ -5354,8 +5398,20 @@ body {
         margin-bottom: 15px;
     }
     
+    .quantity-input-container {
+        width: auto;
+    }
+    
+    .quantity-btn {
+        width: 32px;
+        height: 36px;
+        font-size: 16px;
+    }
+    
     #quantity-input {
-        width: 120px;
+        width: 50px;
+        padding: 6px 8px;
+        font-size: 14px;
     }
     
     .contact-button {
@@ -5448,7 +5504,7 @@ body {
     .color-options {
         flex-wrap: nowrap;
         min-width: max-content;
-        padding-bottom: 4px;
+        padding-bottom: 0;
     }
     
     .product-details h1 {
@@ -5484,6 +5540,22 @@ body {
     
     .price-calculator h3 {
         font-size: 16px;
+    }
+    
+    .quantity-input-container {
+        width: auto;
+    }
+    
+    .quantity-btn {
+        width: 28px;
+        height: 32px;
+        font-size: 14px;
+    }
+    
+    #quantity-input {
+        width: 45px;
+        padding: 4px 6px;
+        font-size: 13px;
     }
     
     #total-price-display {
