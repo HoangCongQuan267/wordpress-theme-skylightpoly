@@ -1443,15 +1443,71 @@ body {
     text-decoration: none;
 }
 
-/* Products Grid */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-    margin-top: 0px;
+/* Products Grid Container with Navigation */
+.products-grid-container {
+    position: relative;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    overflow: hidden;
+}
+
+/* Navigation Chevrons */
+.nav-chevron {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+    font-size: 18px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.nav-chevron-left {
+    left: -12px;
+}
+
+.nav-chevron-right {
+    right: -12px;
+}
+
+.nav-chevron:hover {
+    background: rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, 1);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Show chevrons on hover for desktop */
+.products-grid-container:hover .nav-chevron {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Products Grid */
+.products-grid {
+    display: flex;
+    gap: 30px;
+    margin-top: 0px;
+    overflow: visible;
+    transition: transform 0.3s ease;
+}
+
+.products-grid .product-card-link {
+    flex: 0 0 calc(25% - 22.5px); /* 4 products per row with gaps */
+    min-width: 0;
 }
 
 /* Related Products Grid */
@@ -1479,8 +1535,11 @@ body {
 
 @media (max-width: 768px) {
     .products-grid {
-        grid-template-columns: repeat(2, 1fr);
         gap: 15px;
+    }
+    
+    .products-grid .product-card-link {
+        flex: 0 0 calc(50% - 7.5px); /* 2 products per row with gaps */
     }
     
     .related-products-grid {
@@ -1502,6 +1561,22 @@ body {
     .btn-see-all {
         padding: 10px 25px;
         font-size: 1rem;
+    }
+    
+    /* Always show chevrons on mobile */
+    .nav-chevron {
+        opacity: 1;
+        visibility: visible;
+        width: 40px;
+        height: 40px;
+    }
+    
+    .nav-chevron-left {
+        left: -8px;
+    }
+    
+    .nav-chevron-right {
+        right: -8px;
     }
 }
 

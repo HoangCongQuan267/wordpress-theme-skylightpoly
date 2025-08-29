@@ -496,61 +496,73 @@ if ($section_spacing !== 'normal') {
                             </div>
 
                             <!-- Products Grid for this Category -->
-                            <div class="products-grid">
-                                <?php foreach ($category_data['products'] as $product) : ?>
-                                    <?php $product_link = !empty($product['link']) ? $product['link'] : '#'; ?>
-                                    <a href="<?php echo esc_url($product_link); ?>" class="product-card-link">
-                                        <div class="product-card vertical-card">
-                                            <?php
-                                            // Determine which badge to show (priority: custom_badge > discount > hot_tag)
-                                            $badge_text = '';
-                                            $badge_class = '';
+                            <div class="products-grid-container">
+                                <button class="nav-chevron nav-chevron-left" aria-label="Previous products">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                                <div class="products-grid">
+                                    <?php foreach ($category_data['products'] as $product) : ?>
+                                        <?php $product_link = !empty($product['link']) ? $product['link'] : '#'; ?>
+                                        <a href="<?php echo esc_url($product_link); ?>" class="product-card-link">
+                                            <div class="product-card vertical-card">
+                                                <?php
+                                                // Determine which badge to show (priority: custom_badge > discount > hot_tag)
+                                                $badge_text = '';
+                                                $badge_class = '';
 
-                                            if (!empty($product['custom_badge'])) {
-                                                $badge_text = $product['custom_badge'];
-                                                $badge_class = 'custom-badge';
-                                            } elseif (!empty($product['discount']) && $product['discount'] > 0) {
-                                                $badge_text = '-' . $product['discount'] . '%';
-                                                $badge_class = 'discount-badge';
-                                            } elseif (!empty($product['hot_tag'])) {
-                                                $badge_text = 'HOT';
-                                                $badge_class = 'hot-badge';
-                                            }
-                                            ?>
+                                                if (!empty($product['custom_badge'])) {
+                                                    $badge_text = $product['custom_badge'];
+                                                    $badge_class = 'custom-badge';
+                                                } elseif (!empty($product['discount']) && $product['discount'] > 0) {
+                                                    $badge_text = '-' . $product['discount'] . '%';
+                                                    $badge_class = 'discount-badge';
+                                                } elseif (!empty($product['hot_tag'])) {
+                                                    $badge_text = 'HOT';
+                                                    $badge_class = 'hot-badge';
+                                                }
+                                                ?>
 
-                                            <?php if (!empty($badge_text)) : ?>
-                                                <div class="product-badge <?php echo esc_attr($badge_class); ?>">
-                                                    <?php echo esc_html($badge_text); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                            <?php if (!empty($product['image'])) : ?>
-                                                <div class="product-image">
-                                                    <img src="<?php echo esc_url($product['image']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
-                                                </div>
-                                            <?php endif; ?>
-
-                                            <div class="product-content">
-                                                <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
-                                                <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>
-
-                                                <?php if (!empty($product['price']) || !empty($product['discount_price'])) : ?>
-                                                    <div class="product-pricing">
-                                                        <?php
-                                                        $unit_text = !empty($product['unit']) ? '/' . $product['unit'] : '/đơn vị';
-                                                        $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
-                                                        ?>
-                                                        <?php if (!empty($product['discount_price']) && !empty($product['price'])) : ?>
-                                                            <span class="original-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
-                                                            <span class="discount-price"><?php echo number_format($product['discount_price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
-                                                        <?php elseif (!empty($product['price'])) : ?>
-                                                            <span class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
-                                                        <?php endif; ?>
+                                                <?php if (!empty($badge_text)) : ?>
+                                                    <div class="product-badge <?php echo esc_attr($badge_class); ?>">
+                                                        <?php echo esc_html($badge_text); ?>
                                                     </div>
                                                 <?php endif; ?>
+                                                <?php if (!empty($product['image'])) : ?>
+                                                    <div class="product-image">
+                                                        <img src="<?php echo esc_url($product['image']); ?>" alt="<?php echo esc_attr($product['title']); ?>">
+                                                    </div>
+                                                <?php endif; ?>
+
+                                                <div class="product-content">
+                                                    <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
+                                                    <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>
+
+                                                    <?php if (!empty($product['price']) || !empty($product['discount_price'])) : ?>
+                                                        <div class="product-pricing">
+                                                            <?php
+                                                            $unit_text = !empty($product['unit']) ? '/' . $product['unit'] : '/đơn vị';
+                                                            $currency_symbol = get_theme_mod('products_currency_symbol', 'đ');
+                                                            ?>
+                                                            <?php if (!empty($product['discount_price']) && !empty($product['price'])) : ?>
+                                                                <span class="original-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                                <span class="discount-price"><?php echo number_format($product['discount_price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                            <?php elseif (!empty($product['price'])) : ?>
+                                                                <span class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo esc_html($currency_symbol); ?><?php echo esc_html($unit_text); ?></span>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                <?php endforeach; ?>
+                                        </a>
+                                    <?php endforeach; ?>
+                                </div>
+                                <button class="nav-chevron nav-chevron-right" aria-label="Next products">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
                             </div>
 
                             <!-- See All Products Button for this Category -->
@@ -1090,5 +1102,76 @@ if ($section_spacing !== 'normal') {
             });
         </script>
     <?php endif; ?>
+
+    <!-- Product Navigation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const productContainers = document.querySelectorAll('.products-grid-container');
+
+            productContainers.forEach(function(container) {
+                const grid = container.querySelector('.products-grid');
+                const leftBtn = container.querySelector('.nav-chevron-left');
+                const rightBtn = container.querySelector('.nav-chevron-right');
+
+                if (!grid || !leftBtn || !rightBtn) return;
+
+                let currentIndex = 0;
+                const products = grid.querySelectorAll('.product-card-link');
+                const totalProducts = products.length;
+                const productsPerPage = 4;
+                const maxIndex = Math.max(0, totalProducts - productsPerPage);
+
+                function updateNavigation() {
+                    // Hide left chevron completely when at start, show when not at start
+                    leftBtn.style.display = currentIndex === 0 ? 'none' : 'flex';
+                    // Keep right chevron behavior as before
+                    rightBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
+                    leftBtn.disabled = currentIndex === 0;
+                    rightBtn.disabled = currentIndex >= maxIndex;
+                }
+
+                function slideProducts(direction) {
+                    if (direction === 'left' && currentIndex > 0) {
+                        currentIndex = Math.max(0, currentIndex - productsPerPage);
+                    } else if (direction === 'right' && currentIndex < maxIndex) {
+                        currentIndex = Math.min(maxIndex, currentIndex + productsPerPage);
+                    }
+
+                    const productWidth = products[0].offsetWidth;
+                    const gap = 30; // Match CSS gap
+                    const translateX = -(currentIndex * (productWidth + gap));
+
+                    grid.style.transform = `translateX(${translateX}px)`;
+                    grid.style.transition = 'transform 0.3s ease';
+
+                    updateNavigation();
+                }
+
+                leftBtn.addEventListener('click', function() {
+                    slideProducts('left');
+                });
+
+                rightBtn.addEventListener('click', function() {
+                    slideProducts('right');
+                });
+
+                // Initialize navigation state
+                updateNavigation();
+
+                // Update on window resize
+                window.addEventListener('resize', function() {
+                    const newMaxIndex = Math.max(0, totalProducts - productsPerPage);
+                    if (currentIndex > newMaxIndex) {
+                        currentIndex = newMaxIndex;
+                        const productWidth = products[0].offsetWidth;
+                        const gap = 30;
+                        const translateX = -(currentIndex * (productWidth + gap));
+                        grid.style.transform = `translateX(${translateX}px)`;
+                    }
+                    updateNavigation();
+                });
+            });
+        });
+    </script>
 
     <?php get_footer(); ?>

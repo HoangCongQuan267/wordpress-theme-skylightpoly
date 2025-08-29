@@ -90,10 +90,10 @@ function get_products($limit = -1)
  * Get products by categories from WordPress product post type
  *
  * @param array $categories Array of category slugs (optional)
- * @param int $limit Number of products per category (default: 4)
+ * @param int $limit Number of products per category (default: -1 for all)
  * @return array Array of products grouped by category
  */
-function get_products_by_categories($categories = array(), $limit = 4)
+function get_products_by_categories($categories = array(), $limit = -1)
 {
     $products_by_category = array();
 
