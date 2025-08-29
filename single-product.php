@@ -373,7 +373,7 @@ get_header(); ?>
                                                 // Get display name
                                                 if (isset($custom_colors[$color])) {
                                                     $display_name = $custom_colors[$color]['name'];
-                                                    $color_value = isset($custom_colors[$color]['color']) ? $custom_colors[$color]['color'] : '#cccccc';
+                                                    $color_value = isset($custom_colors[$color]['hex']) ? $custom_colors[$color]['hex'] : '#cccccc';
                                                 } elseif (isset($default_color_translations[$color])) {
                                                     $display_name = $default_color_translations[$color];
                                                     $color_value = isset($color_hex_mapping[$color]) ? $color_hex_mapping[$color] : '#cccccc';
