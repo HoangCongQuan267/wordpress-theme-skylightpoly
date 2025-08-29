@@ -62,8 +62,21 @@ function get_products($limit = -1)
         'post_type' => 'product',
         'posts_per_page' => $limit,
         'post_status' => 'publish',
-        'orderby' => 'date',
-        'order' => 'DESC'
+        'meta_query' => array(
+            'relation' => 'OR',
+            'order_clause' => array(
+                'key' => 'product_order',
+                'compare' => 'EXISTS'
+            ),
+            'no_order_clause' => array(
+                'key' => 'product_order',
+                'compare' => 'NOT EXISTS'
+            )
+        ),
+        'orderby' => array(
+            'order_clause' => 'ASC',
+            'date' => 'DESC'
+        )
     );
 
     $products = get_posts($args);
@@ -122,8 +135,22 @@ function get_products_by_categories($categories = array(), $limit = -1)
             'post_type' => 'product',
             'post_status' => 'publish',
             'posts_per_page' => $limit,
-            'orderby' => 'date',
-            'order' => 'DESC',
+            'meta_query' => array(
+                'relation' => 'OR',
+                'order_clause' => array(
+                    'key' => 'product_order',
+                    'compare' => 'EXISTS'
+                ),
+                'no_order_clause' => array(
+                    'key' => 'product_order',
+                    'compare' => 'NOT EXISTS'
+                )
+            ),
+            'orderby' => array(
+                'no_order_clause' => 'ASC',
+                'order_clause' => 'ASC',
+                'date' => 'DESC'
+            ),
             'tax_query' => array(
                 array(
                     'taxonomy' => 'product_category',

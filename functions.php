@@ -567,6 +567,186 @@ if (function_exists('add_action')) {
 }
 
 /**
+ * Add Product Order Management Admin Page
+ */
+function add_product_order_admin_page() {
+    add_submenu_page(
+        'edit.php?post_type=product',
+        'Product Order Management',
+        'Manage Order',
+        'manage_options',
+        'product-order-management',
+        'product_order_admin_page_callback'
+    );
+}
+if (function_exists('add_action')) {
+    add_action('admin_menu', 'add_product_order_admin_page');
+}
+
+/**
+ * Product Order Admin Page Callback
+ */
+function product_order_admin_page_callback() {
+    // Handle form submission
+    if (isset($_POST['bulk_update_order']) && wp_verify_nonce($_POST['product_order_nonce'], 'bulk_product_order')) {
+        $products_to_update = $_POST['product_orders'] ?? array();
+        $updated_count = 0;
+        
+        foreach ($products_to_update as $product_id => $order_value) {
+            if (!empty($order_value) && is_numeric($order_value)) {
+                update_post_meta($product_id, 'product_order', intval($order_value));
+                $updated_count++;
+            }
+        }
+        
+        echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('%d products updated successfully.', 'custom-blue-orange'), $updated_count) . '</p></div>';
+    }
+    
+    // Handle clear order submission
+    if (isset($_POST['bulk_clear_order']) && wp_verify_nonce($_POST['product_order_nonce'], 'bulk_product_order')) {
+        $products_to_clear = $_POST['clear_orders'] ?? array();
+        $cleared_count = 0;
+        
+        foreach ($products_to_clear as $product_id => $clear_value) {
+            if ($clear_value === '1') {
+                delete_post_meta($product_id, 'product_order');
+                $cleared_count++;
+            }
+        }
+        
+        echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('%d product orders cleared successfully.', 'custom-blue-orange'), $cleared_count) . '</p></div>';
+    }
+    
+    // Get product categories
+    $categories = get_terms(array(
+        'taxonomy' => 'product_category',
+        'hide_empty' => false,
+        'orderby' => 'name',
+        'order' => 'ASC'
+    ));
+    
+    echo '<div class="wrap">';
+    echo '<h1>Product Order Management</h1>';
+    echo '<p>Set order numbers for products grouped by category. Lower numbers will appear first within each category.</p>';
+    
+    if (!is_wp_error($categories) && !empty($categories)) {
+        echo '<form method="post" action="">';
+        wp_nonce_field('bulk_product_order', 'product_order_nonce');
+        
+        $has_products = false;
+        
+        foreach ($categories as $category) {
+            // Get all products in this category
+            $products_query = new WP_Query(array(
+                'post_type' => 'product',
+                'post_status' => 'publish',
+                'posts_per_page' => -1,
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'product_category',
+                        'field' => 'term_id',
+                        'terms' => $category->term_id,
+                    ),
+                ),
+                'meta_query' => array(
+                    'relation' => 'OR',
+                    'order_clause' => array(
+                        'key' => 'product_order',
+                        'compare' => 'EXISTS'
+                    ),
+                    'no_order_clause' => array(
+                        'key' => 'product_order',
+                        'compare' => 'NOT EXISTS'
+                    )
+                ),
+                'orderby' => array(
+                    'no_order_clause' => 'ASC',
+                    'order_clause' => 'ASC',
+                    'title' => 'ASC'
+                )
+            ));
+            
+            if ($products_query->have_posts()) {
+                $has_products = true;
+                echo '<h2 style="margin-top: 30px; color: #23282d; border-bottom: 2px solid #0073aa; padding-bottom: 10px;">' . esc_html($category->name) . '</h2>';
+                
+                echo '<table class="wp-list-table widefat fixed striped" style="margin-bottom: 20px;">';
+                echo '<thead><tr><th>Product Name</th><th>Current Order</th><th>New Order</th><th>Clear Order</th></tr></thead>';
+                echo '<tbody>';
+                
+                while ($products_query->have_posts()) {
+                    $products_query->the_post();
+                    $product_id = get_the_ID();
+                    $current_order = get_post_meta($product_id, 'product_order', true);
+                    
+                    echo '<tr>';
+                    echo '<td><strong>' . get_the_title() . '</strong></td>';
+                    echo '<td>' . ($current_order ? $current_order : '<em>Not set</em>') . '</td>';
+                    echo '<td><input type="number" name="product_orders[' . $product_id . ']" value="" min="0" step="1" style="width: 80px;" /></td>';
+                    echo '<td><input type="checkbox" name="clear_orders[' . $product_id . ']" value="1" ' . ($current_order ? '' : 'disabled') . ' /></td>';
+                    echo '</tr>';
+                }
+                
+                echo '</tbody></table>';
+            }
+            
+            wp_reset_postdata();
+        }
+        
+        if ($has_products) {
+            echo '<div class="submit-buttons" style="display: flex; gap: 10px; align-items: center;">';
+            echo '<input type="submit" name="bulk_update_order" class="button-primary" value="Update Product Orders" />';
+            echo '<input type="submit" name="bulk_clear_order" class="button-secondary" value="Clear Selected Orders" onclick="return confirm(\'Are you sure you want to clear the selected product orders?\');" />';
+            echo '</div>';
+        } else {
+            echo '<p>All products already have order numbers assigned.</p>';
+        }
+        
+        echo '</form>';
+    } else {
+        echo '<p>No product categories found. Please create product categories first.</p>';
+    }
+    
+    echo '</div>';
+}
+
+/**
+ * AJAX handler for individual product order updates
+ */
+function handle_product_order_ajax() {
+    if (!wp_verify_nonce($_POST['nonce'], 'product_order_nonce')) {
+        wp_send_json_error('Invalid nonce');
+    }
+    
+    if (!current_user_can('edit_posts')) {
+        wp_send_json_error('Insufficient permissions');
+    }
+    
+    $product_id = intval($_POST['product_id']);
+    $action_type = sanitize_text_field($_POST['action_type'] ?? 'update');
+    
+    if ($product_id) {
+        if ($action_type === 'clear') {
+            delete_post_meta($product_id, 'product_order');
+            wp_send_json_success('Order cleared successfully');
+        } else {
+            $order_value = intval($_POST['order_value']);
+            if ($order_value >= 0) {
+                update_post_meta($product_id, 'product_order', $order_value);
+                wp_send_json_success('Order updated successfully');
+            } else {
+                wp_send_json_error('Invalid order value');
+            }
+        }
+    } else {
+        wp_send_json_error('Invalid product ID');
+    }
+}
+if (function_exists('add_action')) {
+    add_action('wp_ajax_update_product_order', 'handle_product_order_ajax');
+}
+
+/**
  * Contact Form Handler
  * Process contact form submissions and save to database
  */

@@ -51,8 +51,22 @@ $products_args = array(
     'post_type' => 'product',
     'post_status' => 'publish',
     'posts_per_page' => -1,
-    'orderby' => 'date',
-    'order' => 'DESC'
+    'meta_query' => array(
+        'relation' => 'OR',
+        'order_clause' => array(
+            'key' => 'product_order',
+            'compare' => 'EXISTS'
+        ),
+        'no_order_clause' => array(
+            'key' => 'product_order',
+            'compare' => 'NOT EXISTS'
+        )
+    ),
+    'orderby' => array(
+        'no_order_clause' => 'ASC',
+        'order_clause' => 'ASC',
+        'date' => 'DESC'
+    )
 );
 
 // Filter by category if selected

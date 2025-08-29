@@ -127,6 +127,7 @@ function product_meta_box_callback($post)
     $discount = get_post_meta($post->ID, 'discount', true);
     $hot_tag = get_post_meta($post->ID, 'hot_tag', true);
     $link = get_post_meta($post->ID, 'product_link', true);
+    $product_order = get_post_meta($post->ID, 'product_order', true);
 
     echo '<table class="form-table">';
 
@@ -168,6 +169,11 @@ function product_meta_box_callback($post)
     echo '<tr>';
     echo '<th><label for="product_link">' . __('Product Link', 'custom-blue-orange') . '</label></th>';
     echo '<td><input type="url" id="product_link" name="product_link" value="' . esc_attr($link) . '" class="regular-text" placeholder="https://example.com/product" /></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<th><label for="product_order">' . __('Product Order', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="number" id="product_order" name="product_order" value="' . esc_attr($product_order) . '" class="regular-text" placeholder="1" min="1" step="1" /> <small>' . __('Lower numbers appear first', 'custom-blue-orange') . '</small></td>';
     echo '</tr>';
 
     echo '</table>';
@@ -652,6 +658,10 @@ function save_product_meta_data($post_id)
 
     if (isset($_POST['product_link'])) {
         update_post_meta($post_id, 'product_link', esc_url_raw($_POST['product_link']));
+    }
+
+    if (isset($_POST['product_order'])) {
+        update_post_meta($post_id, 'product_order', intval($_POST['product_order']));
     }
     
     // Save product specifications

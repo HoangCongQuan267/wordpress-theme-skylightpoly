@@ -100,6 +100,156 @@ if (!function_exists('get_the_date')) {
     function get_the_date($d = '', $post = null) {}
 }
 
+// Additional WordPress core functions
+if (!function_exists('site_url')) {
+    function site_url($path = '', $scheme = null) {}
+}
+
+if (!function_exists('is_front_page')) {
+    function is_front_page() {}
+}
+
+if (!function_exists('is_category')) {
+    function is_category($category = '') {}
+}
+
+if (!function_exists('get_queried_object_id')) {
+    function get_queried_object_id() {}
+}
+
+if (!function_exists('is_tag')) {
+    function is_tag($tag = '') {}
+}
+
+if (!function_exists('is_admin')) {
+    function is_admin() {}
+}
+
+if (!function_exists('is_feed')) {
+    function is_feed() {}
+}
+
+if (!function_exists('is_preview')) {
+    function is_preview() {}
+}
+
+if (!function_exists('is_single')) {
+    function is_single($post = '') {}
+}
+
+if (!function_exists('is_page_template')) {
+    function is_page_template($template = '') {}
+}
+
+if (!function_exists('is_page')) {
+    function is_page($page = '') {}
+}
+
+if (!function_exists('get_page_template_slug')) {
+    function get_page_template_slug($post = null) {}
+}
+
+if (!function_exists('wp_nonce_url')) {
+    function wp_nonce_url($actionurl, $action = -1, $name = '_wpnonce') {}
+}
+
+if (!function_exists('get_post')) {
+    function get_post($post = null, $output = OBJECT, $filter = 'raw') {}
+}
+
+if (!function_exists('get_current_user_id')) {
+    function get_current_user_id() {}
+}
+
+if (!function_exists('wp_insert_post')) {
+    function wp_insert_post($postarr, $wp_error = false) {}
+}
+
+if (!function_exists('add_post_meta')) {
+    function add_post_meta($post_id, $meta_key, $meta_value, $unique = false) {}
+}
+
+if (!function_exists('maybe_unserialize')) {
+    function maybe_unserialize($original) {}
+}
+
+if (!function_exists('get_object_taxonomies')) {
+    function get_object_taxonomies($object, $output = 'names') {}
+}
+
+if (!function_exists('wp_get_post_terms')) {
+    function wp_get_post_terms($post_id, $taxonomy, $args = array()) {}
+}
+
+if (!function_exists('wp_set_post_terms')) {
+    function wp_set_post_terms($post_id, $terms, $taxonomy, $append = false) {}
+}
+
+if (!function_exists('set_post_thumbnail')) {
+    function set_post_thumbnail($post, $thumbnail_id) {}
+}
+
+if (!function_exists('add_submenu_page')) {
+    function add_submenu_page($parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function = '') {}
+}
+
+if (!function_exists('delete_post_meta')) {
+    function delete_post_meta($post_id, $meta_key, $meta_value = '') {}
+}
+
+if (!function_exists('wp_send_json_error')) {
+    function wp_send_json_error($data = null, $status_code = null) {}
+}
+
+if (!function_exists('wp_send_json_success')) {
+    function wp_send_json_success($data = null, $status_code = null) {}
+}
+
+if (!function_exists('sanitize_email')) {
+    function sanitize_email($email) {}
+}
+
+if (!function_exists('is_email')) {
+    function is_email($email, $deprecated = false) {}
+}
+
+if (!function_exists('current_time')) {
+    function current_time($type, $gmt = 0) {}
+}
+
+if (!function_exists('wp_remote_request')) {
+    function wp_remote_request($url, $args = array()) {}
+}
+
+if (!function_exists('wp_remote_retrieve_response_code')) {
+    function wp_remote_retrieve_response_code($response) {}
+}
+
+if (!function_exists('dbDelta')) {
+    function dbDelta($queries = '', $execute = true) {}
+}
+
+if (!function_exists('wp_mail')) {
+    function wp_mail($to, $subject, $message, $headers = '', $attachments = array()) {}
+}
+
+if (!function_exists('wp_localize_script')) {
+    function wp_localize_script($handle, $object_name, $l10n) {}
+}
+
+if (!function_exists('wp_create_nonce')) {
+    function wp_create_nonce($action = -1) {}
+}
+
+if (!function_exists('add_menu_page')) {
+    function add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function = '', $icon_url = '', $position = null) {}
+}
+
+// WordPress classes
+if (!class_exists('WP_Customize_Image_Control')) {
+    class WP_Customize_Image_Control {}
+}
+
 if (!function_exists('the_category')) {
     function the_category($separator = '', $parents = '', $post_id = false) {}
 }
