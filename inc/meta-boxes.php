@@ -171,6 +171,184 @@ function product_meta_box_callback($post)
     echo '</tr>';
 
     echo '</table>';
+    
+    // Product Specifications Section
+    echo '<h3 style="margin-top: 30px; margin-bottom: 15px; color: #0073aa;">📏 Product Specifications</h3>';
+    
+    $thickness = get_post_meta($post->ID, 'product_thickness', true);
+    $width = get_post_meta($post->ID, 'product_width', true);
+    $height = get_post_meta($post->ID, 'product_height', true);
+    $colors = get_post_meta($post->ID, 'product_colors', true);
+    $gallery = get_post_meta($post->ID, 'product_gallery', true);
+    
+    echo '<table class="form-table">';
+    
+    echo '<tr>';
+    echo '<th><label for="product_thickness">' . __('Thickness', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="text" id="product_thickness" name="product_thickness" value="' . esc_attr($thickness) . '" class="regular-text" placeholder="e.g., 2mm, 5cm" /></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="product_width">' . __('Width', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="text" id="product_width" name="product_width" value="' . esc_attr($width) . '" class="regular-text" placeholder="e.g., 100cm, 1.2m" /></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="product_height">' . __('Height', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="text" id="product_height" name="product_height" value="' . esc_attr($height) . '" class="regular-text" placeholder="e.g., 200cm, 2.5m" /></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="product_colors">' . __('Available Colors', 'custom-blue-orange') . '</label></th>';
+    echo '<td><input type="text" id="product_colors" name="product_colors" value="' . esc_attr($colors) . '" class="regular-text" placeholder="Red, Blue, Green, White" />';
+    echo '<p class="description">Enter colors separated by commas</p></td>';
+    echo '</tr>';
+    
+    echo '<tr>';
+    echo '<th><label for="product_gallery">' . __('Product Gallery', 'custom-blue-orange') . '</label></th>';
+    echo '<td>';
+    echo '<div id="product-gallery-container">';
+    
+    // Display current gallery images
+    if (!empty($gallery)) {
+        $image_ids = explode(',', $gallery);
+        echo '<div id="gallery-images" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">';
+        foreach ($image_ids as $image_id) {
+            $image_id = trim($image_id);
+            if (!empty($image_id)) {
+                 $image_url = false;
+                  if (function_exists('wp_get_attachment_image_src')) {
+                      $image_url = wp_get_attachment_image_src($image_id, 'thumbnail');
+                  }
+                  if ($image_url) {
+                    echo '<div class="gallery-image-item" style="position: relative; display: inline-block;">';
+                    echo '<img src="' . esc_url($image_url[0]) . '" style="width: 80px; height: 80px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;" />';
+                    echo '<button type="button" class="remove-gallery-image" data-image-id="' . esc_attr($image_id) . '" style="position: absolute; top: -5px; right: -5px; background: #dc3232; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px;">×</button>';
+                    echo '</div>';
+                }
+            }
+        }
+        echo '</div>';
+    }
+    
+    echo '<input type="hidden" id="product_gallery" name="product_gallery" value="' . esc_attr($gallery) . '" />';
+    echo '<button type="button" id="add-gallery-images" class="button" style="margin-right: 10px;">📷 Add Images</button>';
+    echo '<button type="button" id="clear-gallery" class="button" style="background: #dc3232; color: white; border-color: #dc3232;">🗑️ Clear All</button>';
+    echo '<p class="description">Click "Add Images" to select multiple images from Media Library</p>';
+    echo '</div>';
+    echo '</td>';
+    echo '</tr>';
+    
+    // Add JavaScript for media uploader
+    echo '<script type="text/javascript">
+    jQuery(document).ready(function($) {
+        var mediaUploader;
+        
+        // Function to add image to gallery display
+        function addImageToGallery(imageId, imageUrl) {
+            var imageHtml = \'<div class="gallery-image-item" style="position: relative; display: inline-block;">\' +
+                           \'<img src="\' + imageUrl + \'" style="width: 80px; height: 80px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;" />\' +
+                           \'<button type="button" class="remove-gallery-image" data-image-id="\' + imageId + \'" style="position: absolute; top: -5px; right: -5px; background: #dc3232; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px;">×</button>\' +
+                           \'</div>\';
+            
+            if ($("#gallery-images").length === 0) {
+                $("#product-gallery-container").prepend(\'<div id="gallery-images" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;"></div>\');
+            }
+            
+            $("#gallery-images").append(imageHtml);
+            
+            // Re-bind remove button events
+            $(".remove-gallery-image").off(\'click\').on(\'click\', function(e) {
+                e.preventDefault();
+                var imageId = $(this).data("image-id");
+                var currentIds = $("#product_gallery").val().split(",");
+                var newIds = currentIds.filter(function(id) {
+                    return id.trim() !== imageId.toString();
+                });
+                
+                $("#product_gallery").val(newIds.join(","));
+                $(this).parent().remove();
+                
+                if ($("#gallery-images .gallery-image-item").length === 0) {
+                    $("#gallery-images").remove();
+                }
+            });
+        }
+        
+        $("#add-gallery-images").click(function(e) {
+            e.preventDefault();
+            
+            // Check if wp.media is available
+            if (typeof wp === \'undefined\' || typeof wp.media === \'undefined\') {
+                alert(\'Media uploader is not available. Please refresh the page and try again.\');
+                return;
+            }
+            
+            if (mediaUploader) {
+                mediaUploader.open();
+                return;
+            }
+            
+            mediaUploader = wp.media({
+                title: "Select Gallery Images",
+                button: {
+                    text: "Add to Gallery"
+                },
+                multiple: true
+            });
+            
+            mediaUploader.on("select", function() {
+                var attachments = mediaUploader.state().get("selection").toJSON();
+                var currentIds = $("#product_gallery").val();
+                var newIds = [];
+                
+                if (currentIds) {
+                    newIds = currentIds.split(",");
+                }
+                
+                $.each(attachments, function(index, attachment) {
+                    if (newIds.indexOf(attachment.id.toString()) === -1) {
+                        newIds.push(attachment.id);
+                        // Add image to display immediately
+                        var thumbnailUrl = attachment.sizes && attachment.sizes.thumbnail ? attachment.sizes.thumbnail.url : attachment.url;
+                        addImageToGallery(attachment.id, thumbnailUrl);
+                    }
+                });
+                
+                $("#product_gallery").val(newIds.join(","));
+            });
+            
+            mediaUploader.open();
+        });
+        
+        $("#clear-gallery").click(function(e) {
+            e.preventDefault();
+            if (confirm("Are you sure you want to remove all gallery images?")) {
+                $("#product_gallery").val("");
+                $("#gallery-images").remove();
+            }
+        });
+        
+        // Initial binding for existing remove buttons
+        $(".remove-gallery-image").click(function(e) {
+            e.preventDefault();
+            var imageId = $(this).data("image-id");
+            var currentIds = $("#product_gallery").val().split(",");
+            var newIds = currentIds.filter(function(id) {
+                return id.trim() !== imageId.toString();
+            });
+            
+            $("#product_gallery").val(newIds.join(","));
+            $(this).parent().remove();
+            
+            if ($("#gallery-images .gallery-image-item").length === 0) {
+                $("#gallery-images").remove();
+            }
+        });
+    });
+    </script>';
+    
+    echo '</table>';
 
     echo '<div style="margin-top: 20px; padding: 15px; background: #f0f8ff; border-left: 4px solid #0073aa; border-radius: 4px;">';
     echo '<h4 style="margin-top: 0; color: #0073aa;">📦 How to use Products:</h4>';
@@ -282,6 +460,27 @@ function save_product_meta_data($post_id)
 
     if (isset($_POST['product_link'])) {
         update_post_meta($post_id, 'product_link', esc_url_raw($_POST['product_link']));
+    }
+    
+    // Save product specifications
+    if (isset($_POST['product_thickness'])) {
+        update_post_meta($post_id, 'product_thickness', sanitize_text_field($_POST['product_thickness']));
+    }
+    
+    if (isset($_POST['product_width'])) {
+        update_post_meta($post_id, 'product_width', sanitize_text_field($_POST['product_width']));
+    }
+    
+    if (isset($_POST['product_height'])) {
+        update_post_meta($post_id, 'product_height', sanitize_text_field($_POST['product_height']));
+    }
+    
+    if (isset($_POST['product_colors'])) {
+        update_post_meta($post_id, 'product_colors', sanitize_text_field($_POST['product_colors']));
+    }
+    
+    if (isset($_POST['product_gallery'])) {
+        update_post_meta($post_id, 'product_gallery', sanitize_text_field($_POST['product_gallery']));
     }
 }
 add_action('save_post', 'save_product_meta_data');

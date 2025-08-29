@@ -33,6 +33,11 @@
         // Hero Slideshow
         initHeroSlideshow();
         
+        // Product Image Gallery
+        initProductImageGallery();
+        
+        // Product Price Calculator
+        initProductPriceCalculator();
 
     });
 
@@ -766,6 +771,151 @@ function closeContactPanel() {
             });
         }
     };
+
+    /**
+     * Product Image Gallery Functionality
+     */
+    function initProductImageGallery() {
+        const mainImage = document.getElementById('main-product-img');
+        const thumbnails = document.querySelectorAll('.thumbnail-item');
+        const prevBtn = document.getElementById('prev-image');
+        const nextBtn = document.getElementById('next-image');
+        const galleryDataElement = document.getElementById('gallery-data');
+        
+        if (!mainImage) return;
+        
+        let currentIndex = 0;
+        let galleryImages = [];
+        
+        // Parse gallery data
+        if (galleryDataElement) {
+            try {
+                galleryImages = JSON.parse(galleryDataElement.textContent);
+            } catch (e) {
+                console.error('Error parsing gallery data:', e);
+                return;
+            }
+        }
+        
+        if (galleryImages.length === 0) return;
+        
+        // Function to update main image
+        function updateMainImage(index) {
+            if (index < 0 || index >= galleryImages.length) return;
+            
+            currentIndex = index;
+            
+            // Add fade effect
+            mainImage.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                mainImage.src = galleryImages[index].url;
+                mainImage.style.opacity = '1';
+            }, 150);
+            
+            // Update thumbnail active states
+            thumbnails.forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+        
+        // Thumbnail click handlers
+        thumbnails.forEach((thumbnail, index) => {
+            thumbnail.addEventListener('click', function() {
+                updateMainImage(index);
+            });
+            
+            // Add hover effect
+            thumbnail.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+            
+            thumbnail.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+        
+        // Previous button handler
+        if (prevBtn) {
+            prevBtn.addEventListener('click', function() {
+                const newIndex = currentIndex > 0 ? currentIndex - 1 : galleryImages.length - 1;
+                updateMainImage(newIndex);
+            });
+        }
+        
+        // Next button handler
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function() {
+                const newIndex = currentIndex < galleryImages.length - 1 ? currentIndex + 1 : 0;
+                updateMainImage(newIndex);
+            });
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && prevBtn) {
+                const newIndex = currentIndex > 0 ? currentIndex - 1 : galleryImages.length - 1;
+                updateMainImage(newIndex);
+            } else if (e.key === 'ArrowRight' && nextBtn) {
+                const newIndex = currentIndex < galleryImages.length - 1 ? currentIndex + 1 : 0;
+                updateMainImage(newIndex);
+            }
+        });
+        
+        // Initialize first image as active
+        if (thumbnails.length > 0) {
+            thumbnails[0].classList.add('active');
+        }
+    }
+    
+    /**
+     * Product Price Calculator Functionality
+     */
+    function initProductPriceCalculator() {
+        const quantityInput = document.getElementById('quantity-input');
+        const totalPriceElement = document.getElementById('total-price');
+        const basePrice = parseFloat(document.querySelector('.product-price')?.dataset.price || 0);
+        
+        if (!quantityInput || !totalPriceElement || !basePrice) return;
+        
+        function updateTotalPrice() {
+            const quantity = parseInt(quantityInput.value) || 1;
+            const total = basePrice * quantity;
+            
+            // Format price with Vietnamese currency
+            const formattedPrice = new Intl.NumberFormat('vi-VN').format(total);
+            totalPriceElement.textContent = formattedPrice + ' đ';
+        }
+        
+        // Update price on input change
+        quantityInput.addEventListener('input', updateTotalPrice);
+        quantityInput.addEventListener('change', updateTotalPrice);
+        
+        // Initialize with default quantity
+        updateTotalPrice();
+        
+        // Add increment/decrement buttons functionality
+        const incrementBtn = document.querySelector('.quantity-increment');
+        const decrementBtn = document.querySelector('.quantity-decrement');
+        
+        if (incrementBtn) {
+            incrementBtn.addEventListener('click', function() {
+                const currentValue = parseInt(quantityInput.value) || 1;
+                quantityInput.value = currentValue + 1;
+                updateTotalPrice();
+            });
+        }
+        
+        if (decrementBtn) {
+            decrementBtn.addEventListener('click', function() {
+                const currentValue = parseInt(quantityInput.value) || 1;
+                if (currentValue > 1) {
+                    quantityInput.value = currentValue - 1;
+                    updateTotalPrice();
+                }
+            });
+        }
+    }
 
 
 

@@ -86,30 +86,211 @@ get_header(); ?>
                     }
                 </script>
 
-                    <!-- Main Content Column -->
-                    <div class="single-product-main">
-                        <article id="post-<?php the_ID(); ?>" <?php post_class('post single-product'); ?>>
-                            <header class="post-header">
-                                <h1 class="post-title"><?php the_title(); ?></h1>
-                            </header>
-
-                            <?php if (has_post_thumbnail()) : ?>
-                                <div class="post-thumbnail">
-                                    <?php the_post_thumbnail('large', array('class' => 'featured-image')); ?>
+                    <!-- Product Gallery Section -->
+                    <div class="product-gallery">
+                        <?php
+                        $product_images = array();
+                        
+                        // Get featured image
+                        if (has_post_thumbnail()) {
+                            $product_images[] = array(
+                                'id' => get_post_thumbnail_id(),
+                                'url' => get_the_post_thumbnail_url(get_the_ID(), 'large'),
+                                'thumb' => get_the_post_thumbnail_url(get_the_ID(), 'medium')
+                            );
+                        }
+                        
+                        // Get gallery images from custom field or content
+                        $gallery_images = get_post_meta(get_the_ID(), 'product_gallery', true);
+                        if (!empty($gallery_images)) {
+                            $gallery_ids = explode(',', $gallery_images);
+                            foreach ($gallery_ids as $img_id) {
+                                if (!empty($img_id)) {
+                                    $product_images[] = array(
+                                        'id' => $img_id,
+                                        'url' => wp_get_attachment_image_url($img_id, 'large'),
+                                        'thumb' => wp_get_attachment_image_url($img_id, 'medium')
+                                    );
+                                }
+                            }
+                        }
+                        
+                        // Only add placeholder if no images at all
+                        if (empty($product_images)) {
+                            $placeholder_url = get_template_directory_uri() . '/assets/images/placeholder-product.jpg';
+                            $product_images[] = array(
+                                'id' => 0,
+                                'url' => $placeholder_url,
+                                'thumb' => $placeholder_url
+                            );
+                        }
+                        ?>
+                        
+                        <!-- Main Product Image with Navigation -->
+                        <div class="main-product-image-container">
+                            <?php if (count($product_images) > 1) : ?>
+                                <button class="gallery-nav prev-btn" id="prev-image">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            <?php endif; ?>
+                            
+                            <div class="main-product-image">
+                                <img id="main-product-img" src="<?php echo esc_url($product_images[0]['url']); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" />
+                            </div>
+                            
+                            <?php if (count($product_images) > 1) : ?>
+                                <button class="gallery-nav next-btn" id="next-image">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                        
+                        <!-- Thumbnail Images -->
+                        <?php if (count($product_images) > 1) : ?>
+                            <div class="product-thumbnails">
+                                <?php foreach ($product_images as $index => $image) : ?>
+                                    <div class="thumbnail-item <?php echo $index === 0 ? 'active' : ''; ?>" data-index="<?php echo $index; ?>" data-image="<?php echo esc_url($image['url']); ?>">
+                                        <img src="<?php echo esc_url($image['thumb']); ?>" alt="<?php echo esc_attr(get_the_title()); ?> - Image <?php echo $index + 1; ?>" />
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <!-- Hidden data for JavaScript -->
+                        <script type="application/json" id="gallery-data">
+                            <?php echo json_encode($product_images); ?>
+                        </script>
+                    </div>
+                    
+                    <!-- Product Details Section -->
+                    <div class="product-details">
+                        <header class="product-header">
+                            <h1 class="product-title"><?php the_title(); ?></h1>
+                        </header>
+                        
+                        <!-- Product Properties -->
+                        <div class="product-properties">
+                            <?php
+                            $product_price = get_post_meta(get_the_ID(), 'product_price', true);
+                            $discount_price = get_post_meta(get_the_ID(), 'discount_price', true);
+                            $price_unit = get_post_meta(get_the_ID(), 'price_unit', true);
+                            $thickness = get_post_meta(get_the_ID(), 'product_thickness', true);
+                            $width = get_post_meta(get_the_ID(), 'product_width', true);
+                            $height = get_post_meta(get_the_ID(), 'product_height', true);
+                            $colors = get_post_meta(get_the_ID(), 'product_colors', true);
+                            $currency = get_theme_mod('products_currency_symbol', 'VND');
+                            
+                            $final_price = !empty($discount_price) ? $discount_price : $product_price;
+                            ?>
+                            
+                            <!-- Price -->
+                            <?php if (!empty($final_price)) : ?>
+                                <div class="property-item price-item">
+                                    <label>Giá:</label>
+                                    <div class="price-display">
+                                        <?php if (!empty($discount_price) && !empty($product_price)) : ?>
+                                            <span class="original-price"><?php echo number_format($product_price); ?> <?php echo esc_html($currency); ?></span>
+                                            <span class="discount-price"><?php echo number_format($discount_price); ?> <?php echo esc_html($currency); ?></span>
+                                        <?php else : ?>
+                                            <span class="current-price"><?php echo number_format($final_price); ?> <?php echo esc_html($currency); ?></span>
+                                        <?php endif; ?>
+                                        <?php if (!empty($price_unit)) : ?>
+                                            <span class="price-unit">/ <?php echo esc_html($price_unit); ?></span>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             <?php endif; ?>
-
-                            <div class="post-content">
-                                <?php the_content(); ?>
-
-                                <?php
-                                wp_link_pages(array(
-                                    'before' => '<div class="page-links">Trang: ',
-                                    'after'  => '</div>',
-                                ));
-                                ?>
+                            
+                            <!-- Thickness -->
+                            <?php if (!empty($thickness)) : ?>
+                                <div class="property-item">
+                                    <label>Độ dày:</label>
+                                    <span><?php echo esc_html($thickness); ?></span>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <!-- Width -->
+                            <?php if (!empty($width)) : ?>
+                                <div class="property-item">
+                                    <label>Chiều rộng:</label>
+                                    <span><?php echo esc_html($width); ?></span>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <!-- Height -->
+                            <?php if (!empty($height)) : ?>
+                                <div class="property-item">
+                                    <label>Chiều cao:</label>
+                                    <span><?php echo esc_html($height); ?></span>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <!-- Color Selection -->
+                            <?php if (!empty($colors)) : 
+                                $color_options = explode(',', $colors);
+                            ?>
+                                <div class="property-item">
+                                    <label for="product-color">Màu sắc:</label>
+                                    <select id="product-color" name="product_color">
+                                        <?php foreach ($color_options as $color) : 
+                                            $color = trim($color);
+                                        ?>
+                                            <option value="<?php echo esc_attr($color); ?>"><?php echo esc_html($color); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        
+                        <!-- Price Calculator -->
+                        <?php if (!empty($final_price)) : ?>
+                            <div class="price-calculator">
+                                <h3>Tính toán giá</h3>
+                                <div class="calculator-row">
+                                    <label for="quantity-input">Số lượng:</label>
+                                    <input type="number" id="quantity-input" min="1" value="1" />
+                                    <?php if (!empty($price_unit)) : ?>
+                                        <span class="unit-label"><?php echo esc_html($price_unit); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="total-price">
+                                    <strong>Tổng giá: <span id="total-price-display"><?php echo number_format($final_price); ?> <?php echo esc_html($currency); ?></span></strong>
+                                </div>
+                                <input type="hidden" id="unit-price" value="<?php echo esc_attr($final_price); ?>" />
+                                <input type="hidden" id="currency-symbol" value="<?php echo esc_attr($currency); ?>" />
                             </div>
-                        </article>
+                        <?php endif; ?>
+                        
+                        <!-- Contact Button -->
+                        <div class="contact-section">
+                            <?php 
+                            $zalo_link = get_theme_mod('zalo_contact_link', 'https://zalo.me/0123456789');
+                            $product_name = get_the_title();
+                            $zalo_message = urlencode("Xin chào! Tôi quan tâm đến sản phẩm: " . $product_name);
+                            $zalo_url = $zalo_link . '?text=' . $zalo_message;
+                            ?>
+                            <a href="<?php echo esc_url($zalo_url); ?>" class="contact-button zalo-contact" target="_blank">
+                                <span class="contact-icon">📱</span>
+                                Liên hệ ngay qua Zalo
+                            </a>
+                        </div>
+                        
+                        <!-- Product Description -->
+                        <?php 
+                        $product_content = get_the_content();
+                        if (!empty(trim($product_content))) : 
+                        ?>
+                            <div class="product-description">
+                                <h3>Thông tin chi tiết</h3>
+                                <div class="description-content">
+                                    <?php the_content(); ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     
                     <!-- Sidebar Column -->

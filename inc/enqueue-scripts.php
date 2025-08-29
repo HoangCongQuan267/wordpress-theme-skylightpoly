@@ -138,6 +138,41 @@ function custom_blue_orange_remove_version()
 add_filter('the_generator', 'custom_blue_orange_remove_version');
 
 /**
+ * Enqueue admin scripts for media uploader
+ */
+function custom_blue_orange_admin_scripts($hook) {
+    global $post_type;
+    
+    // Only load on post edit pages, especially for product post type
+    if (('post.php' == $hook || 'post-new.php' == $hook) && $post_type == 'product') {
+        wp_enqueue_media();
+        wp_enqueue_script('jquery');
+        wp_enqueue_script('media-upload');
+        wp_enqueue_script('thickbox');
+        wp_enqueue_style('thickbox');
+    }
+}
+add_action('admin_enqueue_scripts', 'custom_blue_orange_admin_scripts');
+
+/**
+ * Add admin footer script to ensure media uploader is available
+ */
+function custom_blue_orange_admin_footer_script() {
+    global $post_type;
+    
+    if ($post_type == 'product') {
+        echo '<script type="text/javascript">';
+        echo 'if (typeof wp !== "undefined" && typeof wp.media !== "undefined") {';
+        echo '    console.log("WordPress Media Uploader is ready");';
+        echo '} else {';
+        echo '    console.warn("WordPress Media Uploader not available");';
+        echo '}';
+        echo '</script>';
+    }
+}
+add_action('admin_footer', 'custom_blue_orange_admin_footer_script');
+
+/**
  * Optimize WordPress head
  */
 remove_action('wp_head', 'rsd_link');
