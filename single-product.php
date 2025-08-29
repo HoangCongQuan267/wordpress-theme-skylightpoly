@@ -42,6 +42,9 @@ get_header(); ?>
                     <?php endif; ?>
                     <span class="current-page"><?php the_title(); ?></span>
                 </nav>
+                
+                <!-- Two-column layout wrapper -->
+                <div class="single-product-layout">
                 <!-- Structured Data for Product -->
                 <script type="application/ld+json">
                     {
@@ -83,30 +86,35 @@ get_header(); ?>
                     }
                 </script>
 
-                <article id="post-<?php the_ID(); ?>" <?php post_class('post single-product'); ?>>
-                    <header class="post-header">
-                        <h1 class="post-title"><?php the_title(); ?></h1>
-                    </header>
+                    <!-- Main Content Column -->
+                    <div class="single-product-main">
+                        <article id="post-<?php the_ID(); ?>" <?php post_class('post single-product'); ?>>
+                            <header class="post-header">
+                                <h1 class="post-title"><?php the_title(); ?></h1>
+                            </header>
 
-                    <?php if (has_post_thumbnail()) : ?>
-                        <div class="post-thumbnail">
-                            <?php the_post_thumbnail('large', array('class' => 'featured-image')); ?>
-                        </div>
-                    <?php endif; ?>
+                            <?php if (has_post_thumbnail()) : ?>
+                                <div class="post-thumbnail">
+                                    <?php the_post_thumbnail('large', array('class' => 'featured-image')); ?>
+                                </div>
+                            <?php endif; ?>
 
-                    <div class="post-content">
-                        <?php the_content(); ?>
+                            <div class="post-content">
+                                <?php the_content(); ?>
 
-                        <?php
-                        wp_link_pages(array(
-                            'before' => '<div class="page-links">Trang: ',
-                            'after'  => '</div>',
-                        ));
-                        ?>
+                                <?php
+                                wp_link_pages(array(
+                                    'before' => '<div class="page-links">Trang: ',
+                                    'after'  => '</div>',
+                                ));
+                                ?>
+                            </div>
+                        </article>
                     </div>
-
-                    <footer class="post-footer">
-                        <div class="related-posts">
+                    
+                    <!-- Sidebar Column -->
+                    <div class="single-product-sidebar">
+                        <div class="related-products-sidebar">
                             <h3>Sản phẩm liên quan</h3>
                             <?php
                             // Get current product categories
@@ -118,17 +126,29 @@ get_header(); ?>
                                 }
                             }
 
-                            $query_args = array(
+                            // Get all products in order to find adjacent ones
+                            $all_products_args = array(
                                 'post_type' => 'product',
-                                'posts_per_page' => 3,
-                                'post__not_in' => array(get_the_ID()),
+                                'posts_per_page' => -1,
                                 'orderby' => 'date',
-                                'order' => 'DESC'
+                                'order' => 'DESC',
+                                'fields' => 'ids',
+                                'meta_query' => array(
+                                    'relation' => 'OR',
+                                    array(
+                                        'key' => 'product_price',
+                                        'compare' => 'EXISTS'
+                                    ),
+                                    array(
+                                        'key' => 'discount_price',
+                                        'compare' => 'EXISTS'
+                                    )
+                                )
                             );
 
-                            // If product has categories, filter by them
+                            // If product has categories, filter by same category
                             if (!empty($product_categories)) {
-                                $query_args['tax_query'] = array(
+                                $all_products_args['tax_query'] = array(
                                     array(
                                         'taxonomy' => 'product_category',
                                         'field' => 'term_id',
@@ -138,11 +158,86 @@ get_header(); ?>
                                 );
                             }
 
-                            $related_products = new WP_Query($query_args);
+                            $all_products = get_posts($all_products_args);
+                            $current_product_id = get_the_ID();
+                            $current_index = array_search($current_product_id, $all_products);
+                            
+                            $related_product_ids = array();
+                            
+                            if ($current_index !== false) {
+                                // Get 2 products before current product
+                                for ($i = 1; $i <= 2; $i++) {
+                                    $prev_index = $current_index - $i;
+                                    if ($prev_index >= 0) {
+                                        $related_product_ids[] = $all_products[$prev_index];
+                                    }
+                                }
+                                
+                                // Get 2 products after current product
+                                for ($i = 1; $i <= 2; $i++) {
+                                    $next_index = $current_index + $i;
+                                    if ($next_index < count($all_products)) {
+                                        $related_product_ids[] = $all_products[$next_index];
+                                    }
+                                }
+                            }
+                            
+                            // If we don't have enough adjacent products, fill with others
+                            if (count($related_product_ids) < 4) {
+                                $remaining_needed = 4 - count($related_product_ids);
+                                $exclude_ids = array_merge(array($current_product_id), $related_product_ids);
+                                
+                                $additional_args = array(
+                                    'post_type' => 'product',
+                                    'posts_per_page' => $remaining_needed,
+                                    'post__not_in' => $exclude_ids,
+                                    'orderby' => 'date',
+                                    'order' => 'DESC',
+                                    'fields' => 'ids',
+                                    'meta_query' => array(
+                                        'relation' => 'OR',
+                                        array(
+                                            'key' => 'product_price',
+                                            'compare' => 'EXISTS'
+                                        ),
+                                        array(
+                                            'key' => 'discount_price',
+                                            'compare' => 'EXISTS'
+                                        )
+                                    )
+                                );
+                                
+                                if (!empty($product_categories)) {
+                                    $additional_args['tax_query'] = array(
+                                        array(
+                                            'taxonomy' => 'product_category',
+                                            'field' => 'term_id',
+                                            'terms' => $product_categories,
+                                            'operator' => 'IN'
+                                        )
+                                    );
+                                }
+                                
+                                $additional_products = get_posts($additional_args);
+                                $related_product_ids = array_merge($related_product_ids, $additional_products);
+                            }
+                            
+                            // Query the related products
+                            if (!empty($related_product_ids)) {
+                                $query_args = array(
+                                    'post_type' => 'product',
+                                    'post__in' => $related_product_ids,
+                                    'orderby' => 'post__in',
+                                    'posts_per_page' => 4
+                                );
+                                $related_products = new WP_Query($query_args);
+                            } else {
+                                $related_products = new WP_Query(array('post_type' => 'product', 'posts_per_page' => 0));
+                            }
 
                             if ($related_products->have_posts()) :
                             ?>
-                                <div class="related-products-grid">
+                                <div class="related-products-sidebar-grid">
                                     <?php while ($related_products->have_posts()) : $related_products->the_post(); ?>
                                         <?php include(get_template_directory() . '/template-parts/product-card.php'); ?>
                                     <?php endwhile; ?>
@@ -150,10 +245,9 @@ get_header(); ?>
                             <?php endif; ?>
                             <?php wp_reset_postdata(); ?>
                         </div>
-                    </footer>
-                </article>
+                    </div>
 
-
+                </div>
 
             <?php endwhile; ?>
         </div>

@@ -1827,7 +1827,6 @@ body {
 
 .product-content {
     padding: 10px;
-    border-top: 1px solid #e0e0e0;
 }
 
 .product-title {
@@ -4869,6 +4868,131 @@ body {
     .regular-manual .manual-title,
     .regular-quote .quote-title {
         font-size: 1rem;
+    }
+}
+
+/* Single Product Layout */
+.single-product-layout {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.single-product-main {
+    flex: 2;
+    min-width: 0;
+}
+
+.single-product-sidebar {
+    flex: 1;
+    min-width: 300px;
+}
+
+.related-products-sidebar {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+}
+
+.related-products-sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    color: #333;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.related-products-sidebar-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.related-products-sidebar-grid .product-card-link {
+    display: block;
+    width: 100%;
+    flex: none;
+}
+
+.related-products-sidebar-grid .product-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+    background: transparent;
+    border-radius: 0;
+    border: none;
+    transition: none;
+}
+
+.related-products-sidebar-grid .product-card:hover {
+    background: transparent;
+}
+
+.related-products-sidebar-grid .product-image {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.related-products-sidebar-grid .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.related-products-sidebar-grid .product-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.related-products-sidebar-grid .product-title {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 5px 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.related-products-sidebar-grid .product-excerpt {
+    font-size: 0.8em;
+    color: #666;
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Responsive Design for Single Product Layout */
+@media (max-width: 768px) {
+    .single-product-layout {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .single-product-sidebar {
+        min-width: auto;
+    }
+    
+    .related-products-sidebar-grid .product-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .related-products-sidebar-grid .product-image {
+        width: 120px;
+        height: 120px;
     }
 }
 
