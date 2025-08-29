@@ -152,7 +152,7 @@ $products_query = new WP_Query($products_args);
                             <div class="category-line"></div>
                         </div>
 
-                        <div class="products-grid layout-<?php echo esc_attr($products_layout); ?>">
+                        <div class="archive-products-grid layout-<?php echo esc_attr($products_layout); ?>">
                             <?php while ($products_query->have_posts()) : $products_query->the_post(); ?>
                                 <?php
                                 // Get product meta data
