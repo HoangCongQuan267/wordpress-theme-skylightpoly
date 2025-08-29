@@ -206,28 +206,82 @@ get_header(); ?>
                             <?php endif; ?>
 
                             <!-- Thickness -->
-                            <?php if (!empty($thickness)) : ?>
-                                <div class="property-item">
-                                    <label>Độ dày:</label>
-                                    <span><?php echo esc_html($thickness); ?></span>
+            <?php if (!empty($thickness)) :
+                $thickness_options = explode(',', $thickness);
+            ?>
+                <div class="property-item thickness-selection-item">
+                    <label>Độ dày:</label>
+                    <div class="property-picker-container">
+                        <div class="property-options">
+                            <?php foreach ($thickness_options as $index => $thickness_value) :
+                                $thickness_value = trim($thickness_value);
+                                $is_first = ($index === 0);
+                            ?>
+                                <div class="property-option <?php echo $is_first ? 'active' : ''; ?>"
+                                    data-value="<?php echo esc_attr($thickness_value); ?>">
+                                    <div class="property-block"><?php echo esc_html($thickness_value); ?></div>
                                 </div>
-                            <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="selected-property-name" id="selected-thickness-name">
+                            <?php echo esc_html(trim($thickness_options[0])); ?>
+                        </div>
+                        <input type="hidden" id="product-thickness" name="product-thickness" value="<?php echo esc_attr(trim($thickness_options[0])); ?>" />
+                    </div>
+                </div>
+            <?php endif; ?>
 
-                            <!-- Width -->
-                            <?php if (!empty($width)) : ?>
-                                <div class="property-item">
-                                    <label>Chiều rộng:</label>
-                                    <span><?php echo esc_html($width); ?></span>
+            <!-- Width -->
+            <?php if (!empty($width)) :
+                $width_options = explode(',', $width);
+            ?>
+                <div class="property-item width-selection-item">
+                    <label>Chiều rộng:</label>
+                    <div class="property-picker-container">
+                        <div class="property-options">
+                            <?php foreach ($width_options as $index => $width_value) :
+                                $width_value = trim($width_value);
+                                $is_first = ($index === 0);
+                            ?>
+                                <div class="property-option <?php echo $is_first ? 'active' : ''; ?>"
+                                    data-value="<?php echo esc_attr($width_value); ?>">
+                                    <div class="property-block"><?php echo esc_html($width_value); ?></div>
                                 </div>
-                            <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="selected-property-name" id="selected-width-name">
+                            <?php echo esc_html(trim($width_options[0])); ?>
+                        </div>
+                        <input type="hidden" id="product-width" name="product-width" value="<?php echo esc_attr(trim($width_options[0])); ?>" />
+                    </div>
+                </div>
+            <?php endif; ?>
 
-                            <!-- Height -->
-                            <?php if (!empty($height)) : ?>
-                                <div class="property-item">
-                                    <label>Chiều cao:</label>
-                                    <span><?php echo esc_html($height); ?></span>
+            <!-- Height -->
+            <?php if (!empty($height)) :
+                $height_options = explode(',', $height);
+            ?>
+                <div class="property-item height-selection-item">
+                    <label>Chiều cao:</label>
+                    <div class="property-picker-container">
+                        <div class="property-options">
+                            <?php foreach ($height_options as $index => $height_value) :
+                                $height_value = trim($height_value);
+                                $is_first = ($index === 0);
+                            ?>
+                                <div class="property-option <?php echo $is_first ? 'active' : ''; ?>"
+                                    data-value="<?php echo esc_attr($height_value); ?>">
+                                    <div class="property-block"><?php echo esc_html($height_value); ?></div>
                                 </div>
-                            <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="selected-property-name" id="selected-height-name">
+                            <?php echo esc_html(trim($height_options[0])); ?>
+                        </div>
+                        <input type="hidden" id="product-height" name="product-height" value="<?php echo esc_attr(trim($height_options[0])); ?>" />
+                    </div>
+                </div>
+            <?php endif; ?>
 
                             <!-- Color Selection -->
                             <?php if (!empty($colors)) :
@@ -610,6 +664,41 @@ get_header(); ?>
                 });
             });
         }
+
+        // Property selection functionality (thickness, width, height)
+        function setupPropertySelection(propertyType) {
+            const propertyOptions = document.querySelectorAll(`.${propertyType}-selection-item .property-option`);
+            const selectedPropertyName = document.getElementById(`selected-${propertyType}-name`);
+            const productPropertyInput = document.getElementById(`product-${propertyType}`);
+
+            if (propertyOptions.length > 0) {
+                propertyOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        // Remove active class from all options in this property group
+                        propertyOptions.forEach(opt => opt.classList.remove('active'));
+
+                        // Add active class to clicked option
+                        this.classList.add('active');
+
+                        // Update selected property name
+                        const propertyValue = this.getAttribute('data-value');
+                        if (selectedPropertyName) {
+                            selectedPropertyName.textContent = propertyValue;
+                        }
+
+                        // Update hidden input value
+                        if (productPropertyInput) {
+                            productPropertyInput.value = propertyValue;
+                        }
+                    });
+                });
+            }
+        }
+
+        // Setup property selections
+        setupPropertySelection('thickness');
+        setupPropertySelection('width');
+        setupPropertySelection('height');
 
         // Price calculator functionality
         const quantityInput = document.getElementById('quantity-input');
