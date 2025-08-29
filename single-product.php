@@ -209,7 +209,12 @@ get_header(); ?>
                                 $thickness_options = explode(',', $thickness);
                             ?>
                                 <div class="property-item thickness-selection-item">
-                                    <label>Độ dày:</label>
+                                    <div class="property-header">
+                                        <label>Độ dày:</label>
+                                        <span class="selected-property-value" id="selected-thickness-value">
+                    <?php echo esc_html(trim($thickness_options[0])); ?>
+                </span>
+                                    </div>
                                     <div class="property-picker-container">
                                         <div class="property-options">
                                             <?php foreach ($thickness_options as $index => $thickness_value) :
@@ -231,7 +236,12 @@ get_header(); ?>
                                 $width_options = explode(',', $width);
                             ?>
                                 <div class="property-item width-selection-item">
-                                    <label>Chiều rộng:</label>
+                                    <div class="property-header">
+                                        <label>Chiều rộng:</label>
+                                        <span class="selected-property-value" id="selected-width-value">
+                    <?php echo esc_html(trim($width_options[0])); ?>
+                </span>
+                                    </div>
                                     <div class="property-picker-container">
                                         <div class="property-options">
                                             <?php foreach ($width_options as $index => $width_value) :
@@ -253,7 +263,12 @@ get_header(); ?>
                                 $height_options = explode(',', $height);
                             ?>
                                 <div class="property-item height-selection-item">
-                                    <label>Chiều cao:</label>
+                                    <div class="property-header">
+                                        <label>Chiều cao:</label>
+                                        <span class="selected-property-value" id="selected-height-value">
+                    <?php echo esc_html(trim($height_options[0])); ?>
+                </span>
+                                    </div>
                                     <div class="property-picker-container">
                                         <div class="property-options">
                                             <?php foreach ($height_options as $index => $height_value) :
@@ -661,7 +676,7 @@ get_header(); ?>
         // Property selection functionality (thickness, width, height)
         function setupPropertySelection(propertyType) {
             const propertyOptions = document.querySelectorAll(`.${propertyType}-selection-item .property-option`);
-            const selectedPropertyName = document.getElementById(`selected-${propertyType}-name`);
+            const selectedPropertyValue = document.getElementById(`selected-${propertyType}-value`);
             const productPropertyInput = document.getElementById(`product-${propertyType}`);
 
             if (propertyOptions.length > 0) {
@@ -673,10 +688,10 @@ get_header(); ?>
                         // Add active class to clicked option
                         this.classList.add('active');
 
-                        // Update selected property name
+                        // Update selected property value display
                         const propertyValue = this.getAttribute('data-value');
-                        if (selectedPropertyName) {
-                            selectedPropertyName.textContent = propertyValue;
+                        if (selectedPropertyValue) {
+                            selectedPropertyValue.textContent = propertyValue;
                         }
 
                         // Update hidden input value

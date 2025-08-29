@@ -4983,8 +4983,24 @@ body {
 .property-item.height-selection-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 5px;
     padding: 0 0 10px 0;
+}
+
+.property-header label {
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+    margin: 0;
+}
+
+.selected-property-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    padding: 0 0 0 8px;
+    text-align: left;
 }
 
 /* Special layout for color selection item */
@@ -4997,8 +5013,9 @@ body {
 
 .color-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    margin-right: 8px;
     width: 100%;
 }
 
@@ -5013,7 +5030,7 @@ body {
     font-weight: 600;
     color: #333;
     margin: 0;
-    padding: 0;
+    padding: 0 0 0 8px;
 }
 
 .property-item label {
@@ -5365,13 +5382,11 @@ body {
     }
     
     .color-header {
-        flex-direction: column;
-        align-items: flex-start;
         gap: 8px;
     }
     
     .color-header .selected-color-name {
-        font-size: 14px;
+        font-size: 16px;
     }
     
     .product-details h1 {
@@ -5509,17 +5524,31 @@ body {
     }
     
     .color-header {
+        gap: 6px;
+    }
+    
+    .color-header .selected-color-name {
+        font-size: 16px;
+    }
+    
+    .property-item {
+        padding: 12px 0;
+    }
+    
+    .property-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 6px;
     }
     
-    .color-header .selected-color-name {
-        font-size: 13px;
+    .property-header label {
+        font-size: 14px;
     }
     
-    .property-item {
-        padding: 12px 0;
+    .selected-property-value {
+        font-size: 13px;
+        text-align: left;
+        padding: 0 0 0 6px;
     }
     
     .property-picker-container,
@@ -5615,6 +5644,14 @@ body {
     
     .selected-property-name {
         font-size: 13px;
+    }
+    
+    .property-header label {
+        font-size: 13px;
+    }
+    
+    .selected-property-value {
+        font-size: 12px;
     }
     
     .price-display .current-price {
