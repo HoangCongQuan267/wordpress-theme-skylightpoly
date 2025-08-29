@@ -385,7 +385,7 @@ get_header(); ?>
                         <!-- Price Calculator -->
                         <?php if (!empty($final_price)) : ?>
                             <div class="price-calculator">
-                                <h3>Tính toán chi phí(Chưa tính chi phí lắp đặt)</h3>
+                                <h3>Tính toán sơ bộ chi phí(Chưa tính chi phí lắp đặt)</h3>
                                 <div class="calculator-row">
                                     <label for="quantity-input">Diện tích thi công:</label>
                                     <div class="quantity-input-container">
