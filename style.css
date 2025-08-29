@@ -3076,6 +3076,7 @@ body {
     }
     
     .product-pricing {
+        justify-content: center;
         gap: 8px;
         margin-top: 8px;
     }
