@@ -42,55 +42,55 @@ get_header(); ?>
                     <?php endif; ?>
                     <span class="current-page"><?php the_title(); ?></span>
                 </nav>
-                
+
                 <!-- Two-column layout wrapper -->
                 <div class="single-product-layout">
-                <!-- Structured Data for Product -->
-                <script type="application/ld+json">
-                    {
-                        "@context": "https://schema.org",
-                        "@type": "Product",
-                        "name": "<?php echo esc_attr(get_the_title()); ?>",
-                        "description": "<?php echo esc_attr(wp_trim_words(get_the_excerpt() ? get_the_excerpt() : get_the_content(), 25)); ?>",
-                        "image": {
-                            "@type": "ImageObject",
-                            "url": "<?php echo esc_url(has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'large') : get_template_directory_uri() . '/assets/images/placeholder-product.jpg'); ?>"
-                        },
-                        "brand": {
-                            "@type": "Brand",
-                            "name": "<?php echo esc_attr(get_bloginfo('name')); ?>"
-                        },
-                        "manufacturer": {
-                            "@type": "Organization",
-                            "name": "<?php echo esc_attr(get_bloginfo('name')); ?>"
-                        },
-                        "url": "<?php echo esc_url(get_permalink()); ?>",
-                        "datePublished": "<?php echo esc_attr(get_the_date('c')); ?>"
-                        <?php
-                        $product_price = get_post_meta(get_the_ID(), 'product_price', true);
-                        $discount_price = get_post_meta(get_the_ID(), 'discount_price', true);
-                        $price_unit = get_post_meta(get_the_ID(), 'price_unit', true);
-                        $currency = get_theme_mod('products_currency_symbol', 'VND');
+                    <!-- Structured Data for Product -->
+                    <script type="application/ld+json">
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "Product",
+                            "name": "<?php echo esc_attr(get_the_title()); ?>",
+                            "description": "<?php echo esc_attr(wp_trim_words(get_the_excerpt() ? get_the_excerpt() : get_the_content(), 25)); ?>",
+                            "image": {
+                                "@type": "ImageObject",
+                                "url": "<?php echo esc_url(has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'large') : get_template_directory_uri() . '/assets/images/placeholder-product.jpg'); ?>"
+                            },
+                            "brand": {
+                                "@type": "Brand",
+                                "name": "<?php echo esc_attr(get_bloginfo('name')); ?>"
+                            },
+                            "manufacturer": {
+                                "@type": "Organization",
+                                "name": "<?php echo esc_attr(get_bloginfo('name')); ?>"
+                            },
+                            "url": "<?php echo esc_url(get_permalink()); ?>",
+                            "datePublished": "<?php echo esc_attr(get_the_date('c')); ?>"
+                            <?php
+                            $product_price = get_post_meta(get_the_ID(), 'product_price', true);
+                            $discount_price = get_post_meta(get_the_ID(), 'discount_price', true);
+                            $price_unit = get_post_meta(get_the_ID(), 'price_unit', true);
+                            $currency = get_theme_mod('products_currency_symbol', 'VND');
 
-                        if (!empty($discount_price) || !empty($product_price)) :
-                            $final_price = !empty($discount_price) ? $discount_price : $product_price;
-                        ?>,
-                            "offers": {
-                                "@type": "Offer",
-                                "price": "<?php echo esc_attr($final_price); ?>",
-                                "priceCurrency": "<?php echo esc_attr($currency === 'đ' ? 'VND' : $currency); ?>",
-                                "availability": "https://schema.org/InStock",
-                                "url": "<?php echo esc_url(get_permalink()); ?>"
-                            }
-                        <?php endif; ?>
-                    }
-                </script>
+                            if (!empty($discount_price) || !empty($product_price)) :
+                                $final_price = !empty($discount_price) ? $discount_price : $product_price;
+                            ?>,
+                                "offers": {
+                                    "@type": "Offer",
+                                    "price": "<?php echo esc_attr($final_price); ?>",
+                                    "priceCurrency": "<?php echo esc_attr($currency === 'đ' ? 'VND' : $currency); ?>",
+                                    "availability": "https://schema.org/InStock",
+                                    "url": "<?php echo esc_url(get_permalink()); ?>"
+                                }
+                            <?php endif; ?>
+                        }
+                    </script>
 
                     <!-- Product Gallery Section -->
                     <div class="product-gallery">
                         <?php
                         $product_images = array();
-                        
+
                         // Get featured image
                         if (has_post_thumbnail()) {
                             $product_images[] = array(
@@ -99,7 +99,7 @@ get_header(); ?>
                                 'thumb' => get_the_post_thumbnail_url(get_the_ID(), 'medium')
                             );
                         }
-                        
+
                         // Get gallery images from custom field or content
                         $gallery_images = get_post_meta(get_the_ID(), 'product_gallery', true);
                         if (!empty($gallery_images)) {
@@ -114,7 +114,7 @@ get_header(); ?>
                                 }
                             }
                         }
-                        
+
                         // Only add placeholder if no images at all
                         if (empty($product_images)) {
                             $placeholder_url = get_template_directory_uri() . '/assets/images/placeholder-product.jpg';
@@ -125,30 +125,30 @@ get_header(); ?>
                             );
                         }
                         ?>
-                        
+
                         <!-- Main Product Image with Navigation -->
                         <div class="main-product-image-container">
                             <?php if (count($product_images) > 1) : ?>
                                 <button class="gallery-nav prev-btn" id="prev-image">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </button>
                             <?php endif; ?>
-                            
+
                             <div class="main-product-image">
                                 <img id="main-product-img" src="<?php echo esc_url($product_images[0]['url']); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" />
                             </div>
-                            
+
                             <?php if (count($product_images) > 1) : ?>
                                 <button class="gallery-nav next-btn" id="next-image">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </button>
                             <?php endif; ?>
                         </div>
-                        
+
                         <!-- Thumbnail Images -->
                         <?php if (count($product_images) > 1) : ?>
                             <div class="product-thumbnails">
@@ -159,19 +159,19 @@ get_header(); ?>
                                 <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
-                        
+
                         <!-- Hidden data for JavaScript -->
                         <script type="application/json" id="gallery-data">
                             <?php echo json_encode($product_images); ?>
                         </script>
                     </div>
-                    
+
                     <!-- Product Details Section -->
                     <div class="product-details">
                         <header class="product-header">
                             <h1 class="product-title"><?php the_title(); ?></h1>
                         </header>
-                        
+
                         <!-- Product Properties -->
                         <div class="product-properties">
                             <?php
@@ -183,10 +183,10 @@ get_header(); ?>
                             $height = get_post_meta(get_the_ID(), 'product_height', true);
                             $colors = get_post_meta(get_the_ID(), 'product_colors', true);
                             $currency = get_theme_mod('products_currency_symbol', 'VND');
-                            
+
                             $final_price = !empty($discount_price) ? $discount_price : $product_price;
                             ?>
-                            
+
                             <!-- Price -->
                             <?php if (!empty($final_price)) : ?>
                                 <div class="property-item price-item">
@@ -204,7 +204,7 @@ get_header(); ?>
                                     </div>
                                 </div>
                             <?php endif; ?>
-                            
+
                             <!-- Thickness -->
                             <?php if (!empty($thickness)) : ?>
                                 <div class="property-item">
@@ -212,7 +212,7 @@ get_header(); ?>
                                     <span><?php echo esc_html($thickness); ?></span>
                                 </div>
                             <?php endif; ?>
-                            
+
                             <!-- Width -->
                             <?php if (!empty($width)) : ?>
                                 <div class="property-item">
@@ -220,7 +220,7 @@ get_header(); ?>
                                     <span><?php echo esc_html($width); ?></span>
                                 </div>
                             <?php endif; ?>
-                            
+
                             <!-- Height -->
                             <?php if (!empty($height)) : ?>
                                 <div class="property-item">
@@ -228,24 +228,64 @@ get_header(); ?>
                                     <span><?php echo esc_html($height); ?></span>
                                 </div>
                             <?php endif; ?>
-                            
+
                             <!-- Color Selection -->
                             <?php if (!empty($colors)) : 
                                 $color_options = explode(',', $colors);
+                                
+                                // Default color translation mapping
+                                $default_color_translations = array(
+                                    'white' => 'Trắng',
+                                    'black' => 'Đen', 
+                                    'red' => 'Đỏ',
+                                    'blue' => 'Xanh dương',
+                                    'green' => 'Xanh lá',
+                                    'yellow' => 'Vàng',
+                                    'orange' => 'Cam',
+                                    'purple' => 'Tím',
+                                    'pink' => 'Hồng',
+                                    'brown' => 'Nâu',
+                                    'gray' => 'Xám',
+                                    'transparent' => 'Trong suốt',
+                                    'White' => 'Trắng',
+                                    'Black' => 'Đen',
+                                    'Red' => 'Đỏ',
+                                    'Blue' => 'Xanh dương',
+                                    'Green' => 'Xanh lá',
+                                    'Yellow' => 'Vàng',
+                                    'Orange' => 'Cam',
+                                    'Purple' => 'Tím',
+                                    'Pink' => 'Hồng',
+                                    'Brown' => 'Nâu',
+                                    'Gray' => 'Xám',
+                                    'Transparent' => 'Trong suốt'
+                                );
+                                
+                                // Get custom colors from WordPress options
+                                $custom_colors = get_option('product_custom_colors', array());
                             ?>
                                 <div class="property-item">
                                     <label for="product-color">Màu sắc:</label>
                                     <select id="product-color" name="product_color">
                                         <?php foreach ($color_options as $color) : 
                                             $color = trim($color);
+                                            
+                                            // Check if it's a custom color
+                                            if (isset($custom_colors[$color])) {
+                                                $display_name = $custom_colors[$color]['name'];
+                                            } elseif (isset($default_color_translations[$color])) {
+                                                $display_name = $default_color_translations[$color];
+                                            } else {
+                                                $display_name = $color;
+                                            }
                                         ?>
-                                            <option value="<?php echo esc_attr($color); ?>"><?php echo esc_html($color); ?></option>
+                                            <option value="<?php echo esc_attr($color); ?>"><?php echo esc_html($display_name); ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                             <?php endif; ?>
                         </div>
-                        
+
                         <!-- Price Calculator -->
                         <?php if (!empty($final_price)) : ?>
                             <div class="price-calculator">
@@ -264,10 +304,10 @@ get_header(); ?>
                                 <input type="hidden" id="currency-symbol" value="<?php echo esc_attr($currency); ?>" />
                             </div>
                         <?php endif; ?>
-                        
+
                         <!-- Contact Button -->
                         <div class="contact-section">
-                            <?php 
+                            <?php
                             $zalo_link = get_theme_mod('zalo_contact_link', 'https://zalo.me/0123456789');
                             $product_name = get_the_title();
                             $zalo_message = urlencode("Xin chào! Tôi quan tâm đến sản phẩm: " . $product_name);
@@ -278,11 +318,11 @@ get_header(); ?>
                                 Liên hệ ngay qua Zalo
                             </a>
                         </div>
-                        
+
                         <!-- Product Description -->
-                        <?php 
+                        <?php
                         $product_content = get_the_content();
-                        if (!empty(trim($product_content))) : 
+                        if (!empty(trim($product_content))) :
                         ?>
                             <div class="product-description">
                                 <h3>Thông tin chi tiết</h3>
@@ -292,7 +332,7 @@ get_header(); ?>
                             </div>
                         <?php endif; ?>
                     </div>
-                    
+
                     <!-- Sidebar Column -->
                     <div class="single-product-sidebar">
                         <div class="related-products-sidebar">
@@ -342,9 +382,9 @@ get_header(); ?>
                             $all_products = get_posts($all_products_args);
                             $current_product_id = get_the_ID();
                             $current_index = array_search($current_product_id, $all_products);
-                            
+
                             $related_product_ids = array();
-                            
+
                             if ($current_index !== false) {
                                 // Get 2 products before current product
                                 for ($i = 1; $i <= 2; $i++) {
@@ -353,7 +393,7 @@ get_header(); ?>
                                         $related_product_ids[] = $all_products[$prev_index];
                                     }
                                 }
-                                
+
                                 // Get 2 products after current product
                                 for ($i = 1; $i <= 2; $i++) {
                                     $next_index = $current_index + $i;
@@ -362,12 +402,12 @@ get_header(); ?>
                                     }
                                 }
                             }
-                            
+
                             // If we don't have enough adjacent products, fill with others
                             if (count($related_product_ids) < 4) {
                                 $remaining_needed = 4 - count($related_product_ids);
                                 $exclude_ids = array_merge(array($current_product_id), $related_product_ids);
-                                
+
                                 $additional_args = array(
                                     'post_type' => 'product',
                                     'posts_per_page' => $remaining_needed,
@@ -387,7 +427,7 @@ get_header(); ?>
                                         )
                                     )
                                 );
-                                
+
                                 if (!empty($product_categories)) {
                                     $additional_args['tax_query'] = array(
                                         array(
@@ -398,11 +438,11 @@ get_header(); ?>
                                         )
                                     );
                                 }
-                                
+
                                 $additional_products = get_posts($additional_args);
                                 $related_product_ids = array_merge($related_product_ids, $additional_products);
                             }
-                            
+
                             // Query the related products
                             if (!empty($related_product_ids)) {
                                 $query_args = array(

@@ -204,18 +204,18 @@ function product_meta_box_callback($post)
     
     // Define default colors with their hex codes
     $default_colors = array(
-        'white' => array('name' => 'White', 'hex' => '#FFFFFF'),
-        'black' => array('name' => 'Black', 'hex' => '#000000'),
-        'red' => array('name' => 'Red', 'hex' => '#FF0000'),
-        'blue' => array('name' => 'Blue', 'hex' => '#0066CC'),
-        'green' => array('name' => 'Green', 'hex' => '#00AA00'),
-        'yellow' => array('name' => 'Yellow', 'hex' => '#FFDD00'),
-        'orange' => array('name' => 'Orange', 'hex' => '#FF6600'),
-        'purple' => array('name' => 'Purple', 'hex' => '#9933CC'),
-        'pink' => array('name' => 'Pink', 'hex' => '#FF69B4'),
-        'brown' => array('name' => 'Brown', 'hex' => '#8B4513'),
-        'gray' => array('name' => 'Gray', 'hex' => '#808080'),
-        'transparent' => array('name' => 'Transparent', 'hex' => 'transparent')
+        'white' => array('name' => 'Trắng', 'hex' => '#FFFFFF'),
+        'black' => array('name' => 'Đen', 'hex' => '#000000'),
+        'red' => array('name' => 'Đỏ', 'hex' => '#FF0000'),
+        'blue' => array('name' => 'Xanh dương', 'hex' => '#0066CC'),
+        'green' => array('name' => 'Xanh lá', 'hex' => '#00AA00'),
+        'yellow' => array('name' => 'Vàng', 'hex' => '#FFDD00'),
+        'orange' => array('name' => 'Cam', 'hex' => '#FF6600'),
+        'purple' => array('name' => 'Tím', 'hex' => '#9933CC'),
+        'pink' => array('name' => 'Hồng', 'hex' => '#FF69B4'),
+        'brown' => array('name' => 'Nâu', 'hex' => '#8B4513'),
+        'gray' => array('name' => 'Xám', 'hex' => '#808080'),
+        'transparent' => array('name' => 'Trong suốt', 'hex' => 'transparent')
     );
     
     // Get custom colors from WordPress options
@@ -250,17 +250,17 @@ function product_meta_box_callback($post)
     
     // Custom Color Management Section
     echo '<div id="custom-color-management" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 6px;">';
-    echo '<h4 style="margin-top: 0; color: #0073aa;">🎨 Add Custom Color</h4>';
+    echo '<h4 style="margin-top: 0; color: #0073aa;">🎨 Thêm màu tùy chỉnh</h4>';
     echo '<div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">';
-    echo '<input type="text" id="custom-color-name" placeholder="Color Name (e.g., Sky Blue)" style="flex: 1; padding: 8px;" />';
+    echo '<input type="text" id="custom-color-name" placeholder="Tên màu (ví dụ: Xanh da trời)" style="flex: 1; padding: 8px;" />';
     echo '<input type="color" id="custom-color-hex" value="#0066CC" style="width: 50px; height: 38px; border: 1px solid #ddd; border-radius: 4px;" />';
-    echo '<button type="button" id="add-custom-color" class="button button-primary">➕ Add Color</button>';
+    echo '<button type="button" id="add-custom-color" class="button button-primary">➕ Thêm màu</button>';
     echo '</div>';
     
     // Display existing custom colors with delete option
     if (!empty($custom_colors)) {
         echo '<div style="margin-top: 15px;">';
-        echo '<h5 style="margin-bottom: 10px; color: #666;">Custom Colors:</h5>';
+        echo '<h5 style="margin-bottom: 10px; color: #666;">Màu tùy chỉnh:</h5>';
         echo '<div style="display: flex; flex-wrap: wrap; gap: 8px;">';
         foreach ($custom_colors as $color_key => $color_data) {
             echo '<div class="custom-color-item" data-color-key="' . esc_attr($color_key) . '" style="display: flex; align-items: center; background: white; padding: 5px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">';
@@ -276,7 +276,7 @@ function product_meta_box_callback($post)
     echo '</div>';
     
     echo '<input type="hidden" id="product_colors" name="product_colors" value="' . esc_attr($colors) . '" />';
-    echo '<p class="description">Click color blocks to select/deselect available colors. Add custom colors above to expand your palette.</p>';
+    echo '<p class="description">Nhấp vào các khối màu để chọn/bỏ chọn màu có sẵn. Thêm màu tùy chỉnh ở trên để mở rộng bảng màu của bạn.</p>';
     echo '</td>';
     echo '</tr>';
     
@@ -325,7 +325,7 @@ function product_meta_box_callback($post)
              var colorHex = $("#custom-color-hex").val();
              
              if (!colorName) {
-                 alert("Please enter a color name.");
+                 alert("Vui lòng nhập tên màu.");
                  return;
              }
              
@@ -341,18 +341,18 @@ function product_meta_box_callback($post)
                       color_key: colorKey,
                       color_name: colorName,
                       color_hex: colorHex,
-                      nonce: "' . wp_create_nonce('save_custom_color_nonce') . '"
+                      nonce: "' . (function_exists('wp_create_nonce') ? wp_create_nonce('save_custom_color_nonce') : 'fallback_nonce') . '"
                   },
                  success: function(response) {
                      if (response.success) {
                          // Reload the page to show the new color
                          location.reload();
                      } else {
-                         alert("Error: " + response.data);
+                         alert("Lỗi: " + response.data);
                      }
                  },
                  error: function() {
-                     alert("Error saving custom color. Please try again.");
+                     alert("Lỗi khi lưu màu tùy chỉnh. Vui lòng thử lại.");
                  }
              });
          });
@@ -361,7 +361,7 @@ function product_meta_box_callback($post)
          $(".delete-custom-color").on("click", function() {
              var colorKey = $(this).data("color-key");
              
-             if (!confirm("Are you sure you want to delete this custom color?")) {
+             if (!confirm("Bạn có chắc chắn muốn xóa màu tùy chỉnh này không?")) {
                  return;
              }
              
@@ -372,18 +372,18 @@ function product_meta_box_callback($post)
                   data: {
                       action: "delete_custom_color",
                       color_key: colorKey,
-                      nonce: "' . wp_create_nonce('delete_custom_color_nonce') . '"
+                      nonce: "' . (function_exists('wp_create_nonce') ? wp_create_nonce('delete_custom_color_nonce') : 'fallback_nonce') . '"
                   },
                  success: function(response) {
                      if (response.success) {
                          // Reload the page to remove the color
                          location.reload();
                      } else {
-                         alert("Error: " + response.data);
+                         alert("Lỗi: " + response.data);
                      }
                  },
                  error: function() {
-                     alert("Error deleting custom color. Please try again.");
+                     alert("Lỗi khi xóa màu tùy chỉnh. Vui lòng thử lại.");
                  }
              });
          });
@@ -841,24 +841,33 @@ add_action('save_post', 'save_quote_article_meta_data');
  */
 function save_custom_color_ajax_handler()
 {
-    if (!wp_verify_nonce($_POST['nonce'], 'save_custom_color_nonce')) {
-        wp_die('Security check failed');
+    if (!function_exists('wp_verify_nonce') || !wp_verify_nonce($_POST['nonce'], 'save_custom_color_nonce')) {
+        if (function_exists('wp_die')) {
+            wp_die('Security check failed');
+        }
+        return;
     }
     
-    if (!current_user_can('edit_posts')) {
-        wp_die('Insufficient permissions');
+    if (!function_exists('current_user_can') || !current_user_can('edit_posts')) {
+        if (function_exists('wp_die')) {
+            wp_die('Insufficient permissions');
+        }
+        return;
     }
     
-    $color_key = sanitize_key($_POST['color_key']);
-    $color_name = sanitize_text_field($_POST['color_name']);
-    $color_hex = sanitize_hex_color($_POST['color_hex']);
+    $color_key = function_exists('sanitize_key') ? sanitize_key($_POST['color_key']) : preg_replace('/[^a-z0-9_]/', '', strtolower($_POST['color_key']));
+    $color_name = function_exists('sanitize_text_field') ? sanitize_text_field($_POST['color_name']) : strip_tags($_POST['color_name']);
+    $color_hex = function_exists('sanitize_hex_color') ? sanitize_hex_color($_POST['color_hex']) : $_POST['color_hex'];
     
     if (empty($color_key) || empty($color_name) || empty($color_hex)) {
-        wp_send_json_error('Missing required fields');
+        if (function_exists('wp_send_json_error')) {
+            wp_send_json_error('Missing required fields');
+        }
+        return;
     }
     
     // Get existing custom colors
-    $custom_colors = get_option('product_custom_colors', array());
+    $custom_colors = function_exists('get_option') ? get_option('product_custom_colors', array()) : array();
     
     // Add new color
     $custom_colors[$color_key] = array(
@@ -867,44 +876,67 @@ function save_custom_color_ajax_handler()
     );
     
     // Save updated colors
-    update_option('product_custom_colors', $custom_colors);
+    if (function_exists('update_option')) {
+        update_option('product_custom_colors', $custom_colors);
+    }
     
-    wp_send_json_success('Custom color saved successfully');
+    if (function_exists('wp_send_json_success')) {
+        wp_send_json_success('Custom color saved successfully');
+    }
 }
-add_action('wp_ajax_save_custom_color', 'save_custom_color_ajax_handler');
+if (function_exists('add_action')) {
+    add_action('wp_ajax_save_custom_color', 'save_custom_color_ajax_handler');
+}
 
 /**
  * AJAX handler to delete custom color
  */
 function delete_custom_color_ajax_handler()
 {
-    if (!wp_verify_nonce($_POST['nonce'], 'delete_custom_color_nonce')) {
-        wp_die('Security check failed');
+    if (!function_exists('wp_verify_nonce') || !wp_verify_nonce($_POST['nonce'], 'delete_custom_color_nonce')) {
+        if (function_exists('wp_die')) {
+            wp_die('Security check failed');
+        }
+        return;
     }
     
-    if (!current_user_can('edit_posts')) {
-        wp_die('Insufficient permissions');
+    if (!function_exists('current_user_can') || !current_user_can('edit_posts')) {
+        if (function_exists('wp_die')) {
+            wp_die('Insufficient permissions');
+        }
+        return;
     }
     
-    $color_key = sanitize_key($_POST['color_key']);
+    $color_key = function_exists('sanitize_key') ? sanitize_key($_POST['color_key']) : preg_replace('/[^a-z0-9_]/', '', strtolower($_POST['color_key']));
     
     if (empty($color_key)) {
-        wp_send_json_error('Missing color key');
+        if (function_exists('wp_send_json_error')) {
+            wp_send_json_error('Missing color key');
+        }
+        return;
     }
     
     // Get existing custom colors
-    $custom_colors = get_option('product_custom_colors', array());
+    $custom_colors = function_exists('get_option') ? get_option('product_custom_colors', array()) : array();
     
     // Remove the color
     if (isset($custom_colors[$color_key])) {
         unset($custom_colors[$color_key]);
-        update_option('product_custom_colors', $custom_colors);
-        wp_send_json_success('Custom color deleted successfully');
+        if (function_exists('update_option')) {
+            update_option('product_custom_colors', $custom_colors);
+        }
+        if (function_exists('wp_send_json_success')) {
+            wp_send_json_success('Custom color deleted successfully');
+        }
     } else {
-        wp_send_json_error('Color not found');
+        if (function_exists('wp_send_json_error')) {
+            wp_send_json_error('Color not found');
+        }
     }
 }
-add_action('wp_ajax_delete_custom_color', 'delete_custom_color_ajax_handler');
+if (function_exists('add_action')) {
+    add_action('wp_ajax_delete_custom_color', 'delete_custom_color_ajax_handler');
+}
 
 /**
  * Add admin notice for Hero Slideshow feature
