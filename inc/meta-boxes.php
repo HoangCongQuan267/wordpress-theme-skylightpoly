@@ -200,9 +200,195 @@ function product_meta_box_callback($post)
     
     echo '<tr>';
     echo '<th><label for="product_colors">' . __('Available Colors', 'custom-blue-orange') . '</label></th>';
-    echo '<td><input type="text" id="product_colors" name="product_colors" value="' . esc_attr($colors) . '" class="regular-text" placeholder="Red, Blue, Green, White" />';
-    echo '<p class="description">Enter colors separated by commas</p></td>';
+    echo '<td>';
+    
+    // Define default colors with their hex codes
+    $default_colors = array(
+        'white' => array('name' => 'White', 'hex' => '#FFFFFF'),
+        'black' => array('name' => 'Black', 'hex' => '#000000'),
+        'red' => array('name' => 'Red', 'hex' => '#FF0000'),
+        'blue' => array('name' => 'Blue', 'hex' => '#0066CC'),
+        'green' => array('name' => 'Green', 'hex' => '#00AA00'),
+        'yellow' => array('name' => 'Yellow', 'hex' => '#FFDD00'),
+        'orange' => array('name' => 'Orange', 'hex' => '#FF6600'),
+        'purple' => array('name' => 'Purple', 'hex' => '#9933CC'),
+        'pink' => array('name' => 'Pink', 'hex' => '#FF69B4'),
+        'brown' => array('name' => 'Brown', 'hex' => '#8B4513'),
+        'gray' => array('name' => 'Gray', 'hex' => '#808080'),
+        'transparent' => array('name' => 'Transparent', 'hex' => 'transparent')
+    );
+    
+    // Get custom colors from WordPress options
+    $custom_colors = get_option('product_custom_colors', array());
+    
+    // Merge default and custom colors
+    $available_colors = array_merge($default_colors, $custom_colors);
+    
+    $selected_colors = !empty($colors) ? explode(',', $colors) : array();
+    $selected_colors = array_map('trim', $selected_colors);
+    
+    echo '<div id="color-selector" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">';
+    
+    foreach ($available_colors as $color_key => $color_data) {
+        $is_selected = in_array($color_key, $selected_colors) || in_array($color_data['name'], $selected_colors);
+        $selected_class = $is_selected ? ' selected' : '';
+        $border_style = $color_data['hex'] === 'transparent' ? 'border: 2px dashed #ccc;' : 'border: 2px solid #ddd;';
+        $bg_style = $color_data['hex'] === 'transparent' ? 'background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 5px, #fff 5px, #fff 10px);' : 'background-color: ' . $color_data['hex'] . ';';
+        
+        echo '<div class="color-option' . $selected_class . '" data-color="' . esc_attr($color_key) . '" style="';
+        echo 'width: 40px; height: 40px; cursor: pointer; border-radius: 6px; position: relative; ' . $border_style . ' ' . $bg_style;
+        echo '" title="' . esc_attr($color_data['name']) . '">';
+        
+        if ($is_selected) {
+            echo '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: ' . ($color_data['hex'] === '#FFFFFF' || $color_data['hex'] === 'transparent' ? '#000' : '#fff') . '; font-weight: bold; font-size: 16px;">✓</div>';
+        }
+        
+        echo '</div>';
+    }
+    
+    echo '</div>';
+    
+    // Custom Color Management Section
+    echo '<div id="custom-color-management" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 6px;">';
+    echo '<h4 style="margin-top: 0; color: #0073aa;">🎨 Add Custom Color</h4>';
+    echo '<div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">';
+    echo '<input type="text" id="custom-color-name" placeholder="Color Name (e.g., Sky Blue)" style="flex: 1; padding: 8px;" />';
+    echo '<input type="color" id="custom-color-hex" value="#0066CC" style="width: 50px; height: 38px; border: 1px solid #ddd; border-radius: 4px;" />';
+    echo '<button type="button" id="add-custom-color" class="button button-primary">➕ Add Color</button>';
+    echo '</div>';
+    
+    // Display existing custom colors with delete option
+    if (!empty($custom_colors)) {
+        echo '<div style="margin-top: 15px;">';
+        echo '<h5 style="margin-bottom: 10px; color: #666;">Custom Colors:</h5>';
+        echo '<div style="display: flex; flex-wrap: wrap; gap: 8px;">';
+        foreach ($custom_colors as $color_key => $color_data) {
+            echo '<div class="custom-color-item" data-color-key="' . esc_attr($color_key) . '" style="display: flex; align-items: center; background: white; padding: 5px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">';
+            echo '<div style="width: 16px; height: 16px; background-color: ' . esc_attr($color_data['hex']) . '; border: 1px solid #ccc; border-radius: 2px; margin-right: 6px;"></div>';
+            echo '<span style="margin-right: 6px;">' . esc_html($color_data['name']) . '</span>';
+            echo '<button type="button" class="delete-custom-color" data-color-key="' . esc_attr($color_key) . '" style="background: #dc3232; color: white; border: none; border-radius: 2px; width: 16px; height: 16px; cursor: pointer; font-size: 10px; line-height: 1;">×</button>';
+            echo '</div>';
+        }
+        echo '</div>';
+        echo '</div>';
+    }
+    
+    echo '</div>';
+    
+    echo '<input type="hidden" id="product_colors" name="product_colors" value="' . esc_attr($colors) . '" />';
+    echo '<p class="description">Click color blocks to select/deselect available colors. Add custom colors above to expand your palette.</p>';
+    echo '</td>';
     echo '</tr>';
+    
+    // Add CSS and JavaScript for color selector
+    echo '<style>
+    .color-option {
+        transition: all 0.2s ease;
+    }
+    .color-option:hover {
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .color-option.selected {
+        border-color: #0073aa !important;
+        box-shadow: 0 0 0 2px rgba(0,115,170,0.3);
+    }
+    </style>';
+    
+    echo '<script type="text/javascript">
+     jQuery(document).ready(function($) {
+         $(".color-option").click(function() {
+             var colorKey = $(this).data("color");
+             var isSelected = $(this).hasClass("selected");
+             
+             if (isSelected) {
+                 $(this).removeClass("selected");
+                 $(this).find("div").remove();
+             } else {
+                 $(this).addClass("selected");
+                 var checkColor = $(this).css("background-color") === "rgb(255, 255, 255)" || $(this).data("color") === "transparent" ? "#000" : "#fff";
+                 $(this).append("<div style=\"position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: " + checkColor + "; font-weight: bold; font-size: 16px;\">✓</div>");
+             }
+             
+             // Update hidden input
+             var selectedColors = [];
+             $(".color-option.selected").each(function() {
+                 selectedColors.push($(this).data("color"));
+             });
+             
+             $("#product_colors").val(selectedColors.join(","));
+         });
+         
+         // Add custom color functionality
+         $("#add-custom-color").on("click", function() {
+             var colorName = $("#custom-color-name").val().trim();
+             var colorHex = $("#custom-color-hex").val();
+             
+             if (!colorName) {
+                 alert("Please enter a color name.");
+                 return;
+             }
+             
+             // Create color key from name (lowercase, replace spaces with underscores)
+             var colorKey = "custom_" + colorName.toLowerCase().replace(/[^a-z0-9]/g, "_");
+             
+             // AJAX call to save custom color
+              $.ajax({
+                  url: ajaxurl,
+                  type: "POST",
+                  data: {
+                      action: "save_custom_color",
+                      color_key: colorKey,
+                      color_name: colorName,
+                      color_hex: colorHex,
+                      nonce: "' . wp_create_nonce('save_custom_color_nonce') . '"
+                  },
+                 success: function(response) {
+                     if (response.success) {
+                         // Reload the page to show the new color
+                         location.reload();
+                     } else {
+                         alert("Error: " + response.data);
+                     }
+                 },
+                 error: function() {
+                     alert("Error saving custom color. Please try again.");
+                 }
+             });
+         });
+         
+         // Delete custom color functionality
+         $(".delete-custom-color").on("click", function() {
+             var colorKey = $(this).data("color-key");
+             
+             if (!confirm("Are you sure you want to delete this custom color?")) {
+                 return;
+             }
+             
+             // AJAX call to delete custom color
+              $.ajax({
+                  url: ajaxurl,
+                  type: "POST",
+                  data: {
+                      action: "delete_custom_color",
+                      color_key: colorKey,
+                      nonce: "' . wp_create_nonce('delete_custom_color_nonce') . '"
+                  },
+                 success: function(response) {
+                     if (response.success) {
+                         // Reload the page to remove the color
+                         location.reload();
+                     } else {
+                         alert("Error: " + response.data);
+                     }
+                 },
+                 error: function() {
+                     alert("Error deleting custom color. Please try again.");
+                 }
+             });
+         });
+     });
+     </script>';
     
     echo '<tr>';
     echo '<th><label for="product_gallery">' . __('Product Gallery', 'custom-blue-orange') . '</label></th>';
@@ -219,8 +405,14 @@ function product_meta_box_callback($post)
                  $image_url = false;
                   if (function_exists('wp_get_attachment_image_src')) {
                       $image_url = wp_get_attachment_image_src($image_id, 'thumbnail');
+                  } elseif (function_exists('wp_get_attachment_url')) {
+                      // Fallback to attachment URL if thumbnail function not available
+                      $fallback_url = wp_get_attachment_url($image_id);
+                      if ($fallback_url) {
+                          $image_url = array($fallback_url, 150, 150, false);
+                      }
                   }
-                  if ($image_url) {
+                  if ($image_url && isset($image_url[0])) {
                     echo '<div class="gallery-image-item" style="position: relative; display: inline-block;">';
                     echo '<img src="' . esc_url($image_url[0]) . '" style="width: 80px; height: 80px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;" />';
                     echo '<button type="button" class="remove-gallery-image" data-image-id="' . esc_attr($image_id) . '" style="position: absolute; top: -5px; right: -5px; background: #dc3232; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px;">×</button>';
@@ -643,6 +835,76 @@ function save_quote_article_meta_data($post_id)
     }
 }
 add_action('save_post', 'save_quote_article_meta_data');
+
+/**
+ * AJAX handler to save custom color
+ */
+function save_custom_color_ajax_handler()
+{
+    if (!wp_verify_nonce($_POST['nonce'], 'save_custom_color_nonce')) {
+        wp_die('Security check failed');
+    }
+    
+    if (!current_user_can('edit_posts')) {
+        wp_die('Insufficient permissions');
+    }
+    
+    $color_key = sanitize_key($_POST['color_key']);
+    $color_name = sanitize_text_field($_POST['color_name']);
+    $color_hex = sanitize_hex_color($_POST['color_hex']);
+    
+    if (empty($color_key) || empty($color_name) || empty($color_hex)) {
+        wp_send_json_error('Missing required fields');
+    }
+    
+    // Get existing custom colors
+    $custom_colors = get_option('product_custom_colors', array());
+    
+    // Add new color
+    $custom_colors[$color_key] = array(
+        'name' => $color_name,
+        'hex' => $color_hex
+    );
+    
+    // Save updated colors
+    update_option('product_custom_colors', $custom_colors);
+    
+    wp_send_json_success('Custom color saved successfully');
+}
+add_action('wp_ajax_save_custom_color', 'save_custom_color_ajax_handler');
+
+/**
+ * AJAX handler to delete custom color
+ */
+function delete_custom_color_ajax_handler()
+{
+    if (!wp_verify_nonce($_POST['nonce'], 'delete_custom_color_nonce')) {
+        wp_die('Security check failed');
+    }
+    
+    if (!current_user_can('edit_posts')) {
+        wp_die('Insufficient permissions');
+    }
+    
+    $color_key = sanitize_key($_POST['color_key']);
+    
+    if (empty($color_key)) {
+        wp_send_json_error('Missing color key');
+    }
+    
+    // Get existing custom colors
+    $custom_colors = get_option('product_custom_colors', array());
+    
+    // Remove the color
+    if (isset($custom_colors[$color_key])) {
+        unset($custom_colors[$color_key]);
+        update_option('product_custom_colors', $custom_colors);
+        wp_send_json_success('Custom color deleted successfully');
+    } else {
+        wp_send_json_error('Color not found');
+    }
+}
+add_action('wp_ajax_delete_custom_color', 'delete_custom_color_ajax_handler');
 
 /**
  * Add admin notice for Hero Slideshow feature
