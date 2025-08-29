@@ -423,7 +423,7 @@ get_header(); ?>
                         <!-- Contact Button -->
                         <div class="contact-section">
                             <?php
-                            $zalo_link = get_theme_mod('zalo_contact_link', 'https://zalo.me/0123456789');
+                            $zalo_link = get_theme_mod('social_zalo_url', 'https://zalo.me/0123456789');
                             $product_name = get_the_title();
                             $zalo_message = urlencode("Xin chào! Tôi quan tâm đến sản phẩm: " . $product_name);
                             $zalo_url = $zalo_link . '?text=' . $zalo_message;
