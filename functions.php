@@ -111,7 +111,7 @@ function custom_robots_txt($output, $public)
     }
 
     $site_url = parse_url(site_url());
-    $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
+    $path = (!empty($site_url['path'])) ? (string)$site_url['path'] : '';
 
     $output = "User-agent: *\n";
     $output .= "Disallow: {$path}/wp-admin/\n";
@@ -338,7 +338,7 @@ function add_manual_menu_active_class($classes, $item, $args)
     if (function_exists('is_post_type_archive') && function_exists('home_url') && is_post_type_archive('manual')) {
         // Check if this menu item links to the manual page
         $manual_url = home_url('/tai-lieu-ky-thuat/');
-        if (isset($item->url) && ($item->url === $manual_url || $item->url === rtrim($manual_url, '/'))) {
+        if (isset($item->url) && is_string($item->url) && is_string($manual_url) && ($item->url === $manual_url || $item->url === rtrim($manual_url, '/'))) {
             $classes[] = 'current-menu-item';
         }
     }
@@ -372,13 +372,13 @@ function add_products_menu_active_class($classes, $item, $args)
         $products_url = home_url('/san-pham/');
         $products_url_alt = home_url('/san-pham/');
 
-        if (isset($item->url) && (
+        if (isset($item->url) && is_string($item->url) && is_string($products_url) && is_string($products_url_alt) && (
             $item->url === $products_url ||
             $item->url === rtrim($products_url, '/') ||
             $item->url === $products_url_alt ||
             $item->url === rtrim($products_url_alt, '/') ||
-            (is_string($item->url) && strpos($item->url, '/products') !== false) ||
-            (is_string($item->url) && strpos($item->url, '/san-pham') !== false)
+            strpos($item->url, '/products') !== false ||
+            strpos($item->url, '/san-pham') !== false
         )) {
             $classes[] = 'current-menu-item';
         }
@@ -399,13 +399,13 @@ function add_quotes_menu_active_class($classes, $item, $args)
         $quotes_url = home_url('/bao-gia/');
         $quotes_url_alt = home_url('/quotes/');
 
-        if (isset($item->url) && (
+        if (isset($item->url) && is_string($item->url) && is_string($quotes_url) && is_string($quotes_url_alt) && (
             $item->url === $quotes_url ||
             $item->url === rtrim($quotes_url, '/') ||
             $item->url === $quotes_url_alt ||
             $item->url === rtrim($quotes_url_alt, '/') ||
-            (is_string($item->url) && strpos($item->url, '/bao-gia') !== false) ||
-            (is_string($item->url) && strpos($item->url, '/quotes') !== false)
+            strpos($item->url, '/bao-gia') !== false ||
+            strpos($item->url, '/quotes') !== false
         )) {
             $classes[] = 'current-menu-item';
         }
@@ -506,10 +506,12 @@ function handle_duplicate_product() {
 
     // Copy taxonomies
     $taxonomies = get_object_taxonomies('product');
-    foreach ($taxonomies as $taxonomy) {
-        $terms = wp_get_post_terms($post_id, $taxonomy, array('fields' => 'ids'));
-        if (!is_wp_error($terms) && !empty($terms)) {
-            wp_set_post_terms($new_post_id, $terms, $taxonomy);
+    if (is_array($taxonomies)) {
+        foreach ($taxonomies as $taxonomy) {
+            $terms = wp_get_post_terms($post_id, $taxonomy, array('fields' => 'ids'));
+            if (!is_wp_error($terms) && !empty($terms)) {
+                wp_set_post_terms($new_post_id, $terms, $taxonomy);
+            }
         }
     }
 
@@ -668,7 +670,10 @@ function product_order_admin_page_callback() {
             
             if ($products_query->have_posts()) {
                 $has_products = true;
-                echo '<h2 style="margin-top: 30px; color: #23282d; border-bottom: 2px solid #0073aa; padding-bottom: 10px;">' . esc_html($category->name) . '</h2>';
+                echo '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px; border-bottom: 2px solid #0073aa; padding-bottom: 10px;">';
+                echo '<h2 style="margin: 0; color: #23282d;">' . esc_html($category->name) . '</h2>';
+                echo '<button type="button" class="button-secondary clear-category-orders" data-category-id="' . $category->term_id . '" onclick="clearCategoryOrders(' . $category->term_id . ', \'' . esc_js($category->name) . '\')" style="background: #dc3232; color: white; border-color: #dc3232;">Clear All Orders in Category</button>';
+                echo '</div>';
                 
                 echo '<table class="wp-list-table widefat fixed striped" style="margin-bottom: 20px;">';
                 echo '<thead><tr><th>Product Name</th><th>Current Order</th><th>New Order</th><th>Clear Order</th></tr></thead>';
@@ -708,6 +713,43 @@ function product_order_admin_page_callback() {
     }
     
     echo '</div>';
+    
+    // Add JavaScript for clear category orders functionality
+    echo '<script type="text/javascript">';
+    echo 'function clearCategoryOrders(categoryId, categoryName) {';
+    echo '    if (!confirm("Are you sure you want to clear all orders for products in the \"" + categoryName + "\" category? This action cannot be undone.")) {';
+    echo '        return;';
+    echo '    }';
+    echo '    ';
+    echo '    var button = event.target;';
+    echo '    button.disabled = true;';
+    echo '    button.textContent = "Clearing...";';
+    echo '    ';
+    echo '    jQuery.ajax({';
+    echo '        url: ajaxurl,';
+    echo '        type: "POST",';
+    echo '        data: {';
+    echo '            action: "clear_category_orders",';
+    echo '            category_id: categoryId';
+    echo '        },';
+    echo '        success: function(response) {';
+    echo '            if (response.success) {';
+    echo '                alert(response.data.message);';
+    echo '                location.reload();';
+    echo '            } else {';
+    echo '                alert("Error: " + response.data);';
+    echo '            }';
+    echo '        },';
+    echo '        error: function() {';
+    echo '            alert("An error occurred while clearing orders.");';
+    echo '        },';
+    echo '        complete: function() {';
+    echo '            button.disabled = false;';
+    echo '            button.textContent = "Clear All Orders in Category";';
+    echo '        }';
+    echo '    });';
+    echo '}';
+    echo '</script>';
 }
 
 /**
@@ -742,8 +784,48 @@ function handle_product_order_ajax() {
         wp_send_json_error('Invalid product ID');
     }
 }
+// AJAX handler for clearing all orders in a category
+function handle_clear_category_orders_ajax() {
+    if (!current_user_can('manage_options')) {
+        wp_die('Unauthorized');
+    }
+    
+    $category_id = intval($_POST['category_id']);
+    
+    if (!$category_id) {
+        wp_send_json_error('Invalid category ID');
+        return;
+    }
+    
+    // Get all products in this category
+    $products = get_posts(array(
+        'post_type' => 'product',
+        'posts_per_page' => -1,
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'product_cat',
+                'field' => 'term_id',
+                'terms' => $category_id
+            )
+        )
+    ));
+    
+    $cleared_count = 0;
+    foreach ($products as $product) {
+        if (delete_post_meta($product->ID, 'product_order')) {
+            $cleared_count++;
+        }
+    }
+    
+    wp_send_json_success(array(
+        'message' => "Cleared orders for {$cleared_count} products",
+        'cleared_count' => $cleared_count
+    ));
+}
+
 if (function_exists('add_action')) {
     add_action('wp_ajax_update_product_order', 'handle_product_order_ajax');
+    add_action('wp_ajax_clear_category_orders', 'handle_clear_category_orders_ajax');
 }
 
 /**
@@ -832,7 +914,7 @@ function handle_contact_form_submission()
                 'timeout' => 30
             ));
 
-            if (is_wp_error($response)) {
+            if (is_wp_error($response) && $response !== null) {
                 if (function_exists('wp_send_json_error')) {
                     wp_send_json_error(array('message' => 'Có lỗi xảy ra khi gửi dữ liệu đến API: ' . $response->get_error_message()));
                 }

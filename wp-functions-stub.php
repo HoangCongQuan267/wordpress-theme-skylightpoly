@@ -460,6 +460,14 @@ if (!function_exists('remove_action')) {
     function remove_action($tag, $function_to_remove, $priority = 10) {}
 }
 
+if (!function_exists('remove_filter')) {
+    function remove_filter($tag, $function_to_remove, $priority = 10) {}
+}
+
+if (!function_exists('esc_js')) {
+    function esc_js($text) { return $text; }
+}
+
 if (!function_exists('wp_enqueue_style')) {
     function wp_enqueue_style($handle, $src = '', $deps = array(), $ver = false, $media = 'all') {}
 }
