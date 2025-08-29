@@ -230,13 +230,13 @@ get_header(); ?>
                             <?php endif; ?>
 
                             <!-- Color Selection -->
-                            <?php if (!empty($colors)) : 
+                            <?php if (!empty($colors)) :
                                 $color_options = explode(',', $colors);
-                                
+
                                 // Default color translation mapping
                                 $default_color_translations = array(
                                     'white' => 'Trắng',
-                                    'black' => 'Đen', 
+                                    'black' => 'Đen',
                                     'red' => 'Đỏ',
                                     'blue' => 'Xanh dương',
                                     'green' => 'Xanh lá',
@@ -260,28 +260,82 @@ get_header(); ?>
                                     'Gray' => 'Xám',
                                     'Transparent' => 'Trong suốt'
                                 );
-                                
+
+                                // Color hex mapping for visual display
+                                $color_hex_mapping = array(
+                                    'white' => '#ffffff',
+                                    'black' => '#000000',
+                                    'red' => '#ff0000',
+                                    'blue' => '#0000ff',
+                                    'green' => '#008000',
+                                    'yellow' => '#ffff00',
+                                    'orange' => '#ffa500',
+                                    'purple' => '#800080',
+                                    'pink' => '#ffc0cb',
+                                    'brown' => '#a52a2a',
+                                    'gray' => '#808080',
+                                    'transparent' => 'rgba(255,255,255,0.1)',
+                                    'White' => '#ffffff',
+                                    'Black' => '#000000',
+                                    'Red' => '#ff0000',
+                                    'Blue' => '#0000ff',
+                                    'Green' => '#008000',
+                                    'Yellow' => '#ffff00',
+                                    'Orange' => '#ffa500',
+                                    'Purple' => '#800080',
+                                    'Pink' => '#ffc0cb',
+                                    'Brown' => '#a52a2a',
+                                    'Gray' => '#808080',
+                                    'Transparent' => 'rgba(255,255,255,0.1)'
+                                );
+
                                 // Get custom colors from WordPress options
                                 $custom_colors = get_option('product_custom_colors', array());
                             ?>
-                                <div class="property-item">
-                                    <label for="product-color">Màu sắc:</label>
-                                    <select id="product-color" name="product_color">
-                                        <?php foreach ($color_options as $color) : 
-                                            $color = trim($color);
-                                            
-                                            // Check if it's a custom color
-                                            if (isset($custom_colors[$color])) {
-                                                $display_name = $custom_colors[$color]['name'];
-                                            } elseif (isset($default_color_translations[$color])) {
-                                                $display_name = $default_color_translations[$color];
+                                <div class="property-item color-selection-item">
+                                    <label>Màu sắc:</label>
+                                    <div class="color-picker-container">
+                                        <div class="color-options">
+                                            <?php foreach ($color_options as $index => $color) :
+                                                $color = trim($color);
+
+                                                // Get display name
+                                                if (isset($custom_colors[$color])) {
+                                                    $display_name = $custom_colors[$color]['name'];
+                                                    $color_value = isset($custom_colors[$color]['color']) ? $custom_colors[$color]['color'] : '#cccccc';
+                                                } elseif (isset($default_color_translations[$color])) {
+                                                    $display_name = $default_color_translations[$color];
+                                                    $color_value = isset($color_hex_mapping[$color]) ? $color_hex_mapping[$color] : '#cccccc';
+                                                } else {
+                                                    $display_name = $color;
+                                                    $color_value = '#cccccc';
+                                                }
+
+                                                $is_first = ($index === 0);
+                                            ?>
+                                                <div class="color-option <?php echo $is_first ? 'active' : ''; ?>"
+                                                    data-color="<?php echo esc_attr($color); ?>"
+                                                    data-name="<?php echo esc_attr($display_name); ?>"
+                                                    data-hex="<?php echo esc_attr($color_value); ?>">
+                                                    <div class="color-block" style="background-color: <?php echo esc_attr($color_value); ?>;"></div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                        <div class="selected-color-name" id="selected-color-name">
+                                            <?php
+                                            // Show first color as default
+                                            $first_color = trim($color_options[0]);
+                                            if (isset($custom_colors[$first_color])) {
+                                                echo esc_html($custom_colors[$first_color]['name']);
+                                            } elseif (isset($default_color_translations[$first_color])) {
+                                                echo esc_html($default_color_translations[$first_color]);
                                             } else {
-                                                $display_name = $color;
+                                                echo esc_html($first_color);
                                             }
-                                        ?>
-                                            <option value="<?php echo esc_attr($color); ?>"><?php echo esc_html($display_name); ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                            ?>
+                                        </div>
+                                        <input type="hidden" id="product-color" name="product-color" value="<?php echo esc_attr(trim($color_options[0])); ?>" />
+                                    </div>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -478,5 +532,107 @@ get_header(); ?>
 </main>
 
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gallery functionality
+        const galleryData = document.getElementById('gallery-data');
+        if (galleryData) {
+            const images = JSON.parse(galleryData.textContent);
+            let currentIndex = 0;
+
+            const mainImg = document.getElementById('main-product-img');
+            const thumbnails = document.querySelectorAll('.thumbnail-item');
+            const prevBtn = document.getElementById('prev-image');
+            const nextBtn = document.getElementById('next-image');
+
+            function updateMainImage(index) {
+                if (images[index]) {
+                    mainImg.src = images[index].url;
+
+                    // Update thumbnail active state
+                    thumbnails.forEach((thumb, i) => {
+                        thumb.classList.toggle('active', i === index);
+                    });
+
+                    currentIndex = index;
+                }
+            }
+
+            // Thumbnail click handlers
+            thumbnails.forEach((thumbnail, index) => {
+                thumbnail.addEventListener('click', () => {
+                    updateMainImage(index);
+                });
+            });
+
+            // Navigation button handlers
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    const newIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+                    updateMainImage(newIndex);
+                });
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    const newIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+                    updateMainImage(newIndex);
+                });
+            }
+        }
+
+        // Color selection functionality
+        const colorOptions = document.querySelectorAll('.color-option');
+        const selectedColorName = document.querySelector('.selected-color-name');
+        const productColorInput = document.getElementById('product-color');
+
+        if (colorOptions.length > 0) {
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    colorOptions.forEach(opt => opt.classList.remove('active'));
+
+                    // Add active class to clicked option
+                    this.classList.add('active');
+
+                    // Update selected color name
+                    const colorName = this.getAttribute('data-name');
+                    if (selectedColorName) {
+                        selectedColorName.textContent = colorName;
+                    }
+
+                    // Update hidden input value
+                    const colorValue = this.getAttribute('data-color');
+                    if (productColorInput) {
+                        productColorInput.value = colorValue;
+                    }
+                });
+            });
+        }
+
+        // Price calculator functionality
+        const quantityInput = document.getElementById('quantity-input');
+        const totalPriceDisplay = document.getElementById('total-price-display');
+        const unitPriceInput = document.getElementById('unit-price');
+        const currencySymbol = document.getElementById('currency-symbol');
+
+        if (quantityInput && totalPriceDisplay && unitPriceInput) {
+            function updateTotalPrice() {
+                const quantity = parseInt(quantityInput.value) || 1;
+                const unitPrice = parseFloat(unitPriceInput.value) || 0;
+                const currency = currencySymbol ? currencySymbol.value : 'VND';
+
+                const totalPrice = quantity * unitPrice;
+                totalPriceDisplay.textContent = totalPrice.toLocaleString() + ' ' + currency;
+            }
+
+            quantityInput.addEventListener('input', updateTotalPrice);
+
+            // Initial calculation
+            updateTotalPrice();
+        }
+    });
+</script>
 
 <?php get_footer(); ?>
