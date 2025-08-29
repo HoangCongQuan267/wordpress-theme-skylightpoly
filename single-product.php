@@ -190,7 +190,6 @@ get_header(); ?>
                             <!-- Price -->
                             <?php if (!empty($final_price)) : ?>
                                 <div class="property-item price-item">
-                                    <label>Giá:</label>
                                     <div class="price-display">
                                         <?php if (!empty($discount_price) && !empty($product_price)) : ?>
                                             <span class="original-price"><?php echo number_format($product_price); ?> <?php echo esc_html($currency); ?></span>
@@ -206,82 +205,70 @@ get_header(); ?>
                             <?php endif; ?>
 
                             <!-- Thickness -->
-            <?php if (!empty($thickness)) :
-                $thickness_options = explode(',', $thickness);
-            ?>
-                <div class="property-item thickness-selection-item">
-                    <label>Độ dày:</label>
-                    <div class="property-picker-container">
-                        <div class="property-options">
-                            <?php foreach ($thickness_options as $index => $thickness_value) :
-                                $thickness_value = trim($thickness_value);
-                                $is_first = ($index === 0);
+                            <?php if (!empty($thickness)) :
+                                $thickness_options = explode(',', $thickness);
                             ?>
-                                <div class="property-option <?php echo $is_first ? 'active' : ''; ?>"
-                                    data-value="<?php echo esc_attr($thickness_value); ?>">
-                                    <div class="property-block"><?php echo esc_html($thickness_value); ?></div>
+                                <div class="property-item thickness-selection-item">
+                                    <label>Độ dày:</label>
+                                    <div class="property-picker-container">
+                                        <div class="property-options">
+                                            <?php foreach ($thickness_options as $index => $thickness_value) :
+                                                $thickness_value = trim($thickness_value);
+                                                $is_first = ($index === 0);
+                                            ?>
+                                                <div class="property-option <?php echo $is_first ? 'active' : ''; ?>"
+                                                    data-value="<?php echo esc_attr($thickness_value); ?>">
+                                                    <div class="property-block"><?php echo esc_html($thickness_value); ?></div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
                                 </div>
-                            <?php endforeach; ?>
-                        </div>
-                        <div class="selected-property-name" id="selected-thickness-name">
-                            <?php echo esc_html(trim($thickness_options[0])); ?>
-                        </div>
-                        <input type="hidden" id="product-thickness" name="product-thickness" value="<?php echo esc_attr(trim($thickness_options[0])); ?>" />
-                    </div>
-                </div>
-            <?php endif; ?>
+                            <?php endif; ?>
 
-            <!-- Width -->
-            <?php if (!empty($width)) :
-                $width_options = explode(',', $width);
-            ?>
-                <div class="property-item width-selection-item">
-                    <label>Chiều rộng:</label>
-                    <div class="property-picker-container">
-                        <div class="property-options">
-                            <?php foreach ($width_options as $index => $width_value) :
-                                $width_value = trim($width_value);
-                                $is_first = ($index === 0);
+                            <!-- Width -->
+                            <?php if (!empty($width)) :
+                                $width_options = explode(',', $width);
                             ?>
-                                <div class="property-option <?php echo $is_first ? 'active' : ''; ?>"
-                                    data-value="<?php echo esc_attr($width_value); ?>">
-                                    <div class="property-block"><?php echo esc_html($width_value); ?></div>
+                                <div class="property-item width-selection-item">
+                                    <label>Chiều rộng:</label>
+                                    <div class="property-picker-container">
+                                        <div class="property-options">
+                                            <?php foreach ($width_options as $index => $width_value) :
+                                                $width_value = trim($width_value);
+                                                $is_first = ($index === 0);
+                                            ?>
+                                                <div class="property-option <?php echo $is_first ? 'active' : ''; ?>"
+                                                    data-value="<?php echo esc_attr($width_value); ?>">
+                                                    <div class="property-block"><?php echo esc_html($width_value); ?></div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
                                 </div>
-                            <?php endforeach; ?>
-                        </div>
-                        <div class="selected-property-name" id="selected-width-name">
-                            <?php echo esc_html(trim($width_options[0])); ?>
-                        </div>
-                        <input type="hidden" id="product-width" name="product-width" value="<?php echo esc_attr(trim($width_options[0])); ?>" />
-                    </div>
-                </div>
-            <?php endif; ?>
+                            <?php endif; ?>
 
-            <!-- Height -->
-            <?php if (!empty($height)) :
-                $height_options = explode(',', $height);
-            ?>
-                <div class="property-item height-selection-item">
-                    <label>Chiều cao:</label>
-                    <div class="property-picker-container">
-                        <div class="property-options">
-                            <?php foreach ($height_options as $index => $height_value) :
-                                $height_value = trim($height_value);
-                                $is_first = ($index === 0);
+                            <!-- Height -->
+                            <?php if (!empty($height)) :
+                                $height_options = explode(',', $height);
                             ?>
-                                <div class="property-option <?php echo $is_first ? 'active' : ''; ?>"
-                                    data-value="<?php echo esc_attr($height_value); ?>">
-                                    <div class="property-block"><?php echo esc_html($height_value); ?></div>
+                                <div class="property-item height-selection-item">
+                                    <label>Chiều cao:</label>
+                                    <div class="property-picker-container">
+                                        <div class="property-options">
+                                            <?php foreach ($height_options as $index => $height_value) :
+                                                $height_value = trim($height_value);
+                                                $is_first = ($index === 0);
+                                            ?>
+                                                <div class="property-option <?php echo $is_first ? 'active' : ''; ?>"
+                                                    data-value="<?php echo esc_attr($height_value); ?>">
+                                                    <div class="property-block"><?php echo esc_html($height_value); ?></div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
                                 </div>
-                            <?php endforeach; ?>
-                        </div>
-                        <div class="selected-property-name" id="selected-height-name">
-                            <?php echo esc_html(trim($height_options[0])); ?>
-                        </div>
-                        <input type="hidden" id="product-height" name="product-height" value="<?php echo esc_attr(trim($height_options[0])); ?>" />
-                    </div>
-                </div>
-            <?php endif; ?>
+                            <?php endif; ?>
 
                             <!-- Color Selection -->
                             <?php if (!empty($colors)) :
@@ -347,7 +334,22 @@ get_header(); ?>
                                 $custom_colors = get_option('product_custom_colors', array());
                             ?>
                                 <div class="property-item color-selection-item">
-                                    <label>Màu sắc:</label>
+                                    <div class="color-header">
+                                        <label>Màu sắc:</label>
+                                        <div class="selected-color-name" id="selected-color-name">
+                                            <?php
+                                            // Show first color as default
+                                            $first_color = trim($color_options[0]);
+                                            if (isset($custom_colors[$first_color])) {
+                                                echo esc_html($custom_colors[$first_color]['name']);
+                                            } elseif (isset($default_color_translations[$first_color])) {
+                                                echo esc_html($default_color_translations[$first_color]);
+                                            } else {
+                                                echo esc_html($first_color);
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
                                     <div class="color-picker-container">
                                         <div class="color-options">
                                             <?php foreach ($color_options as $index => $color) :
@@ -375,20 +377,6 @@ get_header(); ?>
                                                 </div>
                                             <?php endforeach; ?>
                                         </div>
-                                        <div class="selected-color-name" id="selected-color-name">
-                                            <?php
-                                            // Show first color as default
-                                            $first_color = trim($color_options[0]);
-                                            if (isset($custom_colors[$first_color])) {
-                                                echo esc_html($custom_colors[$first_color]['name']);
-                                            } elseif (isset($default_color_translations[$first_color])) {
-                                                echo esc_html($default_color_translations[$first_color]);
-                                            } else {
-                                                echo esc_html($first_color);
-                                            }
-                                            ?>
-                                        </div>
-                                        <input type="hidden" id="product-color" name="product-color" value="<?php echo esc_attr(trim($color_options[0])); ?>" />
                                     </div>
                                 </div>
                             <?php endif; ?>

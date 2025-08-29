@@ -4851,7 +4851,7 @@ body {
 
 /* Product Gallery Section */
 .product-gallery {
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 
 /* Main Product Image Container with Navigation */
@@ -4859,7 +4859,7 @@ body {
     position: relative;
     width: 100%;
     max-width: 600px;
-    margin: 0 auto 30px;
+    margin: 0 auto 0;
 }
 
 .main-product-image {
@@ -4959,7 +4959,7 @@ body {
 .product-details h1 {
     font-size: 32px;
     color: var(--accent-sky-blue);
-    margin-bottom: 10px;
+    margin-bottom: 0;
     font-weight: 700;
     line-height: 1.3;
 }
@@ -4975,6 +4975,45 @@ body {
     align-items: center;
     padding: 6px 0;
     font-size: 16px;
+}
+
+/* Override for property selection items */
+.property-item.thickness-selection-item,
+.property-item.width-selection-item,
+.property-item.height-selection-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 0 0 10px 0;
+}
+
+/* Special layout for color selection item */
+.property-item.color-selection-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 0 0;
+}
+
+.color-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.color-header label {
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+}
+
+.color-header .selected-color-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
 .property-item label {
@@ -5073,19 +5112,14 @@ body {
 }
 
 .color-block {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     display: block;
     border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 4px;
 }
 
-.selected-color-name {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    padding: 8px 0;
-    min-height: 24px;
-}
+/* Remove the old selected-color-name styles since it's now handled by .color-header .selected-color-name */
 
 /* Property Picker Styles (for thickness, width, height) */
 .property-picker-container {
@@ -5096,7 +5130,7 @@ body {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 12px;
+    margin-bottom: 0;
 }
 
 .property-option {
@@ -5117,13 +5151,13 @@ body {
 }
 
 .property-block {
-    padding: 8px 12px;
-    font-size: 14px;
+    padding: 6px 10px;
+    font-size: 13px;
     font-weight: 500;
     color: #333;
     background: #fff;
-    border-radius: 2px;
-    min-width: 40px;
+    border-radius: 4px;
+    min-width: 32px;
     text-align: center;
     white-space: nowrap;
 }
@@ -5259,11 +5293,21 @@ body {
 @media (max-width: 768px) {
     .main-product-image-container {
         max-width: 100%;
-        margin-bottom: 25px;
+        margin-bottom: 0;
     }
     
     .product-details {
         padding: 15px;
+    }
+    
+    .color-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .color-header .selected-color-name {
+        font-size: 14px;
     }
     
     .product-details h1 {
@@ -5323,8 +5367,8 @@ body {
     }
     
     .color-block {
-        width: 35px;
-        height: 35px;
+        width: 28px;
+        height: 28px;
     }
     
     .selected-color-name {
@@ -5336,9 +5380,9 @@ body {
     }
     
     .property-block {
-        padding: 6px 10px;
-        font-size: 13px;
-        min-width: 35px;
+        padding: 5px 8px;
+        font-size: 12px;
+        min-width: 28px;
     }
     
     .selected-property-name {
@@ -5373,11 +5417,38 @@ body {
 @media (max-width: 480px) {
     .main-product-image-container {
         max-width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 0;
     }
     
     .product-details {
-        padding: 12px;
+        padding: 0px;
+    }
+    
+    .color-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    
+    .color-header .selected-color-name {
+        font-size: 13px;
+    }
+    
+    .property-item {
+        padding: 12px 0;
+    }
+    
+    .property-picker-container,
+    .color-picker-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+    
+    .property-options,
+    .color-options {
+        flex-wrap: nowrap;
+        min-width: max-content;
+        padding-bottom: 4px;
     }
     
     .product-details h1 {
@@ -5424,8 +5495,8 @@ body {
     }
     
     .color-block {
-        width: 30px;
-        height: 30px;
+        width: 24px;
+        height: 24px;
     }
     
     .selected-color-name {
@@ -5437,9 +5508,9 @@ body {
     }
     
     .property-block {
-        padding: 5px 8px;
-        font-size: 12px;
-        min-width: 30px;
+        padding: 4px 6px;
+        font-size: 11px;
+        min-width: 24px;
     }
     
     .selected-property-name {
@@ -5579,7 +5650,7 @@ body {
 @media (max-width: 768px) {
     .single-product-layout {
         flex-direction: column;
-        gap: 20px;
+        gap: 0;
     }
     
     .single-product-sidebar {
