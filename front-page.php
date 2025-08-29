@@ -1124,8 +1124,8 @@ if ($section_spacing !== 'normal') {
                 function updateNavigation() {
                     // Hide left chevron completely when at start, show when not at start
                     leftBtn.style.display = currentIndex === 0 ? 'none' : 'flex';
-                    // Keep right chevron behavior as before
-                    rightBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
+                    // Hide right chevron completely when at end, show when not at end
+                    rightBtn.style.display = currentIndex >= maxIndex ? 'none' : 'flex';
                     leftBtn.disabled = currentIndex === 0;
                     rightBtn.disabled = currentIndex >= maxIndex;
                 }
