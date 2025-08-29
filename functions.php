@@ -436,6 +436,132 @@ function manual_permalink_flush()
         }
     }
 }
+/**
+ * Add duplicate product functionality
+ */
+function add_duplicate_product_link($actions, $post) {
+    if ($post->post_type === 'product' && current_user_can('edit_posts')) {
+        $duplicate_url = wp_nonce_url(
+            admin_url('admin.php?action=duplicate_product&post=' . $post->ID),
+            'duplicate_product_' . $post->ID
+        );
+        $actions['duplicate'] = '<a href="' . $duplicate_url . '" title="Duplicate this product">Duplicate</a>';
+    }
+    return $actions;
+}
+add_filter('post_row_actions', 'add_duplicate_product_link', 10, 2);
+
+/**
+ * Handle product duplication
+ */
+function handle_duplicate_product() {
+    if (!isset($_GET['action']) || $_GET['action'] !== 'duplicate_product') {
+        return;
+    }
+
+    if (!isset($_GET['post']) || !is_numeric($_GET['post'])) {
+        wp_die('Invalid product ID.');
+    }
+
+    $post_id = intval($_GET['post']);
+    
+    if (!wp_verify_nonce($_GET['_wpnonce'], 'duplicate_product_' . $post_id)) {
+        wp_die('Security check failed.');
+    }
+
+    if (!current_user_can('edit_posts')) {
+        wp_die('You do not have permission to duplicate products.');
+    }
+
+    $original_post = get_post($post_id);
+    if (!$original_post || $original_post->post_type !== 'product') {
+        wp_die('Product not found.');
+    }
+
+    // Create new post data
+    $new_post_data = array(
+        'post_title' => $original_post->post_title . ' (Copy)',
+        'post_content' => $original_post->post_content,
+        'post_excerpt' => $original_post->post_excerpt,
+        'post_status' => 'draft',
+        'post_type' => 'product',
+        'post_author' => get_current_user_id(),
+        'menu_order' => $original_post->menu_order
+    );
+
+    // Insert the new post
+    $new_post_id = wp_insert_post($new_post_data);
+
+    if (is_wp_error($new_post_id)) {
+        wp_die('Failed to create duplicate product.');
+    }
+
+    // Copy all meta fields
+    $meta_keys = get_post_meta($post_id);
+    foreach ($meta_keys as $key => $values) {
+        foreach ($values as $value) {
+            add_post_meta($new_post_id, $key, maybe_unserialize($value));
+        }
+    }
+
+    // Copy taxonomies
+    $taxonomies = get_object_taxonomies('product');
+    foreach ($taxonomies as $taxonomy) {
+        $terms = wp_get_post_terms($post_id, $taxonomy, array('fields' => 'ids'));
+        if (!is_wp_error($terms) && !empty($terms)) {
+            wp_set_post_terms($new_post_id, $terms, $taxonomy);
+        }
+    }
+
+    // Copy featured image
+    $thumbnail_id = get_post_thumbnail_id($post_id);
+    if ($thumbnail_id) {
+        set_post_thumbnail($new_post_id, $thumbnail_id);
+    }
+
+    // Redirect to edit the new post with success message
+    wp_redirect(admin_url('post.php?action=edit&post=' . $new_post_id . '&message=11&duplicated=1'));
+    exit;
+}
+add_action('admin_action_duplicate_product', 'handle_duplicate_product');
+
+/**
+ * Add duplicate button to product edit screen
+ */
+function add_duplicate_product_button() {
+    global $post;
+    
+    if ($post && $post->post_type === 'product' && current_user_can('edit_posts')) {
+        $duplicate_url = wp_nonce_url(
+            admin_url('admin.php?action=duplicate_product&post=' . $post->ID),
+            'duplicate_product_' . $post->ID
+        );
+        
+        echo '<div id="duplicate-action">';
+        echo '<a class="button button-large" href="' . esc_url($duplicate_url) . '">Duplicate Product</a>';
+        echo '</div>';
+        
+        // Add some styling
+        echo '<style>';
+        echo '#duplicate-action { margin: 10px 0; }';
+        echo '#duplicate-action .button { margin-right: 10px; }';
+        echo '</style>';
+    }
+}
+add_action('edit_form_after_title', 'add_duplicate_product_button');
+
+/**
+ * Add admin notices for product duplication
+ */
+function product_duplication_admin_notices() {
+    if (isset($_GET['duplicated']) && $_GET['duplicated'] == '1') {
+        echo '<div class="notice notice-success is-dismissible">';
+        echo '<p><strong>Product duplicated successfully!</strong> You are now editing the duplicated product.</p>';
+        echo '</div>';
+    }
+}
+add_action('admin_notices', 'product_duplication_admin_notices');
+
 if (function_exists('add_action')) {
     add_action('init', 'manual_permalink_flush');
 }
