@@ -212,8 +212,8 @@ get_header(); ?>
                                     <div class="property-header">
                                         <label>Độ dày:</label>
                                         <span class="selected-property-value" id="selected-thickness-value">
-                    <?php echo esc_html(trim($thickness_options[0])); ?>
-                </span>
+                                            <?php echo esc_html(trim($thickness_options[0])); ?>
+                                        </span>
                                     </div>
                                     <div class="property-picker-container">
                                         <div class="property-options">
@@ -239,8 +239,8 @@ get_header(); ?>
                                     <div class="property-header">
                                         <label>Chiều rộng:</label>
                                         <span class="selected-property-value" id="selected-width-value">
-                    <?php echo esc_html(trim($width_options[0])); ?>
-                </span>
+                                            <?php echo esc_html(trim($width_options[0])); ?>
+                                        </span>
                                     </div>
                                     <div class="property-picker-container">
                                         <div class="property-options">
@@ -266,8 +266,8 @@ get_header(); ?>
                                     <div class="property-header">
                                         <label>Chiều cao:</label>
                                         <span class="selected-property-value" id="selected-height-value">
-                    <?php echo esc_html(trim($height_options[0])); ?>
-                </span>
+                                            <?php echo esc_html(trim($height_options[0])); ?>
+                                        </span>
                                     </div>
                                     <div class="property-picker-container">
                                         <div class="property-options">
@@ -428,8 +428,7 @@ get_header(); ?>
                             $zalo_message = urlencode("Xin chào! Tôi quan tâm đến sản phẩm: " . $product_name);
                             $zalo_url = $zalo_link . '?text=' . $zalo_message;
                             ?>
-                            <a href="<?php echo esc_url($zalo_url); ?>" class="contact-button zalo-contact" target="_blank">
-                                <span class="contact-icon">📱</span>
+                            <a href="<?php echo esc_url($zalo_url); ?>" class="btn btn-outline-primary btn-see-all" target="_blank">
                                 Liên hệ ngay qua Zalo
                             </a>
                         </div>
