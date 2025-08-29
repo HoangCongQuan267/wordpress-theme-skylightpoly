@@ -5811,21 +5811,93 @@ body {
 @media (max-width: 768px) {
     .single-product-layout {
         flex-direction: column;
-        gap: 0;
+        gap: 20px;
     }
     
     .single-product-sidebar {
         min-width: auto;
+        margin-top: 20px;
+    }
+    
+    .related-products-sidebar {
+        padding: 20px 0;
+    }
+    
+    .related-products-sidebar h3 {
+        font-size: 1.1em;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    
+    .related-products-sidebar-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
     
     .related-products-sidebar-grid .product-card {
         flex-direction: column;
         text-align: center;
+        padding: 15px 10px;
+        background: #f9f9f9;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+    }
+    
+    .related-products-sidebar-grid .product-card:hover {
+        background: #f0f0f0;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     
     .related-products-sidebar-grid .product-image {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 10px;
+    }
+    
+    .related-products-sidebar-grid .product-title {
+        font-size: 0.8em;
+        margin-bottom: 8px;
+        -webkit-line-clamp: 2;
+    }
+    
+    .related-products-sidebar-grid .product-excerpt {
+        font-size: 0.75em;
+        -webkit-line-clamp: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .related-products-sidebar-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .related-products-sidebar-grid .product-card {
+        flex-direction: row;
+        text-align: left;
+        padding: 12px;
+    }
+    
+    .related-products-sidebar-grid .product-image {
+        width: 80px;
+        height: 80px;
+        margin: 0 0 0 0;
+        flex-shrink: 0;
+    }
+    
+    .related-products-sidebar-grid .product-info {
+        flex: 1;
+    }
+    
+    .related-products-sidebar-grid .product-title {
+        font-size: 0.8em;
+        margin-bottom: 6px;
+    }
+    
+    .related-products-sidebar-grid .product-excerpt {
+        font-size: 0.8em;
     }
 }
 
