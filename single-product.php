@@ -545,6 +545,9 @@ get_header(); ?>
                                 $related_product_ids = array_merge($related_product_ids, $additional_products);
                             }
 
+                            // Ensure we never have more than 4 products
+                            $related_product_ids = array_slice($related_product_ids, 0, 4);
+
                             // Query the related products
                             if (!empty($related_product_ids)) {
                                 $query_args = array(
