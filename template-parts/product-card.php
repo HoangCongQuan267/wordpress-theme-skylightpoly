@@ -91,7 +91,7 @@ if (!empty($product_custom_badge)) {
     <!-- Product Info Below -->
     <div class="product-content">
         <h4 class="product-title"><?php echo esc_html($product_title); ?></h4>
-        <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product_content, 15)); ?></p>
+
 
         <?php if (!empty($product_price) || !empty($product_discount_price)) : ?>
             <div class="product-pricing">

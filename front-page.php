@@ -537,7 +537,7 @@ if ($section_spacing !== 'normal') {
 
                                                 <div class="product-content">
                                                     <h4 class="product-title"><?php echo esc_html($product['title']); ?></h4>
-                                                    <p class="product-excerpt"><?php echo esc_html(wp_trim_words($product['content'], 15)); ?></p>
+                    
 
                                                     <?php if (!empty($product['price']) || !empty($product['discount_price'])) : ?>
                                                         <div class="product-pricing">
@@ -594,7 +594,6 @@ if ($section_spacing !== 'normal') {
                                 </div>
                                 <div class="product-content">
                                     <h4 class="product-title">Sản Phẩm Cao Cấp A</h4>
-                                    <p class="product-excerpt">Giải pháp chất lượng cao được thiết kế cho các doanh nghiệp hiện đại với tính năng tiên tiến.</p>
                                     <div class="product-pricing">
                                         <span class="original-price">2.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
                                         <span class="discount-price">1.999.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
@@ -609,7 +608,6 @@ if ($section_spacing !== 'normal') {
                                 </div>
                                 <div class="product-content">
                                     <h4 class="product-title">Dòng Sản Phẩm Đổi Mới B</h4>
-                                    <p class="product-excerpt">Công nghệ tiên tiến mang lại hiệu suất và độ tin cậy vượt trội.</p>
                                     <div class="product-pricing">
                                         <span class="current-price">3.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
                                     </div>
@@ -623,7 +621,6 @@ if ($section_spacing !== 'normal') {
                                 </div>
                                 <div class="product-content">
                                     <h4 class="product-title">Bộ Giải Pháp Chuyên Nghiệp C</h4>
-                                    <p class="product-excerpt">Giải pháp toàn diện cho các yêu cầu cấp doanh nghiệp và khả năng mở rộng.</p>
                                     <div class="product-pricing">
                                         <span class="original-price">5.000.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
                                         <span class="discount-price">4.200.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
@@ -638,7 +635,6 @@ if ($section_spacing !== 'normal') {
                                 </div>
                                 <div class="product-content">
                                     <h4 class="product-title">Giải Pháp Thông Minh D</h4>
-                                    <p class="product-excerpt">Công nghệ AI tiên tiến giúp tối ưu hóa quy trình làm việc và nâng cao hiệu quả.</p>
                                     <div class="product-pricing">
                                         <span class="current-price">7.500.000<?php echo esc_html($currency_symbol); ?><?php echo esc_html($demo_unit_text); ?></span>
                                     </div>

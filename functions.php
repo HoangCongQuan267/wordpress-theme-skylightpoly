@@ -112,6 +112,9 @@ function custom_robots_txt($output, $public)
 
     $site_url = parse_url(site_url());
     $path = (!empty($site_url['path'])) ? (string)$site_url['path'] : '';
+    if ($site_url === false || $site_url === null) {
+        $path = '';
+    }
 
     $output = "User-agent: *\n";
     $output .= "Disallow: {$path}/wp-admin/\n";
@@ -439,7 +442,8 @@ function manual_permalink_flush()
 /**
  * Add duplicate product functionality
  */
-function add_duplicate_product_link($actions, $post) {
+function add_duplicate_product_link($actions, $post)
+{
     if ($post->post_type === 'product' && current_user_can('edit_posts')) {
         $duplicate_url = wp_nonce_url(
             admin_url('admin.php?action=duplicate_product&post=' . $post->ID),
@@ -454,7 +458,8 @@ add_filter('post_row_actions', 'add_duplicate_product_link', 10, 2);
 /**
  * Handle product duplication
  */
-function handle_duplicate_product() {
+function handle_duplicate_product()
+{
     if (!isset($_GET['action']) || $_GET['action'] !== 'duplicate_product') {
         return;
     }
@@ -464,7 +469,7 @@ function handle_duplicate_product() {
     }
 
     $post_id = intval($_GET['post']);
-    
+
     if (!wp_verify_nonce($_GET['_wpnonce'], 'duplicate_product_' . $post_id)) {
         wp_die('Security check failed.');
     }
@@ -530,19 +535,20 @@ add_action('admin_action_duplicate_product', 'handle_duplicate_product');
 /**
  * Add duplicate button to product edit screen
  */
-function add_duplicate_product_button() {
+function add_duplicate_product_button()
+{
     global $post;
-    
+
     if ($post && $post->post_type === 'product' && current_user_can('edit_posts')) {
         $duplicate_url = wp_nonce_url(
             admin_url('admin.php?action=duplicate_product&post=' . $post->ID),
             'duplicate_product_' . $post->ID
         );
-        
+
         echo '<div id="duplicate-action">';
         echo '<a class="button button-large" href="' . esc_url($duplicate_url) . '">Duplicate Product</a>';
         echo '</div>';
-        
+
         // Add some styling
         echo '<style>';
         echo '#duplicate-action { margin: 10px 0; }';
@@ -555,7 +561,8 @@ add_action('edit_form_after_title', 'add_duplicate_product_button');
 /**
  * Add admin notices for product duplication
  */
-function product_duplication_admin_notices() {
+function product_duplication_admin_notices()
+{
     if (isset($_GET['duplicated']) && $_GET['duplicated'] == '1') {
         echo '<div class="notice notice-success is-dismissible">';
         echo '<p><strong>Product duplicated successfully!</strong> You are now editing the duplicated product.</p>';
@@ -571,7 +578,8 @@ if (function_exists('add_action')) {
 /**
  * Add Product Order Management Admin Page
  */
-function add_product_order_admin_page() {
+function add_product_order_admin_page()
+{
     add_submenu_page(
         'edit.php?post_type=product',
         'Product Order Management',
@@ -588,37 +596,38 @@ if (function_exists('add_action')) {
 /**
  * Product Order Admin Page Callback
  */
-function product_order_admin_page_callback() {
+function product_order_admin_page_callback()
+{
     // Handle form submission
     if (isset($_POST['bulk_update_order']) && wp_verify_nonce($_POST['product_order_nonce'], 'bulk_product_order')) {
         $products_to_update = $_POST['product_orders'] ?? array();
         $updated_count = 0;
-        
+
         foreach ($products_to_update as $product_id => $order_value) {
             if (!empty($order_value) && is_numeric($order_value)) {
                 update_post_meta($product_id, 'product_order', intval($order_value));
                 $updated_count++;
             }
         }
-        
+
         echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('%d products updated successfully.', 'custom-blue-orange'), $updated_count) . '</p></div>';
     }
-    
+
     // Handle clear order submission
     if (isset($_POST['bulk_clear_order']) && wp_verify_nonce($_POST['product_order_nonce'], 'bulk_product_order')) {
         $products_to_clear = $_POST['clear_orders'] ?? array();
         $cleared_count = 0;
-        
+
         foreach ($products_to_clear as $product_id => $clear_value) {
             if ($clear_value === '1') {
                 delete_post_meta($product_id, 'product_order');
                 $cleared_count++;
             }
         }
-        
+
         echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(__('%d product orders cleared successfully.', 'custom-blue-orange'), $cleared_count) . '</p></div>';
     }
-    
+
     // Get product categories
     $categories = get_terms(array(
         'taxonomy' => 'product_category',
@@ -626,17 +635,17 @@ function product_order_admin_page_callback() {
         'orderby' => 'name',
         'order' => 'ASC'
     ));
-    
+
     echo '<div class="wrap">';
     echo '<h1>Product Order Management</h1>';
     echo '<p>Set order numbers for products grouped by category. Lower numbers will appear first within each category.</p>';
-    
+
     if (!is_wp_error($categories) && !empty($categories)) {
         echo '<form method="post" action="">';
         wp_nonce_field('bulk_product_order', 'product_order_nonce');
-        
+
         $has_products = false;
-        
+
         foreach ($categories as $category) {
             // Get all products in this category
             $products_query = new WP_Query(array(
@@ -654,7 +663,8 @@ function product_order_admin_page_callback() {
                     'relation' => 'OR',
                     'order_clause' => array(
                         'key' => 'product_order',
-                        'compare' => 'EXISTS'
+                        'compare' => 'EXISTS',
+                        'type' => 'NUMERIC'
                     ),
                     'no_order_clause' => array(
                         'key' => 'product_order',
@@ -662,28 +672,28 @@ function product_order_admin_page_callback() {
                     )
                 ),
                 'orderby' => array(
-                    'no_order_clause' => 'ASC',
                     'order_clause' => 'ASC',
+                    'no_order_clause' => 'ASC',
                     'title' => 'ASC'
                 )
             ));
-            
+
             if ($products_query->have_posts()) {
                 $has_products = true;
                 echo '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px; border-bottom: 2px solid #0073aa; padding-bottom: 10px;">';
                 echo '<h2 style="margin: 0; color: #23282d;">' . esc_html($category->name) . '</h2>';
                 echo '<button type="button" class="button-secondary clear-category-orders" data-category-id="' . $category->term_id . '" onclick="clearCategoryOrders(' . $category->term_id . ', \'' . esc_js($category->name) . '\')" style="background: #dc3232; color: white; border-color: #dc3232;">Clear All Orders in Category</button>';
                 echo '</div>';
-                
+
                 echo '<table class="wp-list-table widefat fixed striped" style="margin-bottom: 20px;">';
                 echo '<thead><tr><th>Product Name</th><th>Current Order</th><th>New Order</th><th>Clear Order</th></tr></thead>';
                 echo '<tbody>';
-                
+
                 while ($products_query->have_posts()) {
                     $products_query->the_post();
                     $product_id = get_the_ID();
                     $current_order = get_post_meta($product_id, 'product_order', true);
-                    
+
                     echo '<tr>';
                     echo '<td><strong>' . get_the_title() . '</strong></td>';
                     echo '<td>' . ($current_order ? $current_order : '<em>Not set</em>') . '</td>';
@@ -691,13 +701,13 @@ function product_order_admin_page_callback() {
                     echo '<td><input type="checkbox" name="clear_orders[' . $product_id . ']" value="1" ' . ($current_order ? '' : 'disabled') . ' /></td>';
                     echo '</tr>';
                 }
-                
+
                 echo '</tbody></table>';
             }
-            
+
             wp_reset_postdata();
         }
-        
+
         if ($has_products) {
             echo '<div class="submit-buttons" style="display: flex; gap: 10px; align-items: center;">';
             echo '<input type="submit" name="bulk_update_order" class="button-primary" value="Update Product Orders" />';
@@ -706,14 +716,14 @@ function product_order_admin_page_callback() {
         } else {
             echo '<p>All products already have order numbers assigned.</p>';
         }
-        
+
         echo '</form>';
     } else {
         echo '<p>No product categories found. Please create product categories first.</p>';
     }
-    
+
     echo '</div>';
-    
+
     // Add JavaScript for clear category orders functionality
     echo '<script type="text/javascript">';
     echo 'function clearCategoryOrders(categoryId, categoryName) {';
@@ -755,18 +765,19 @@ function product_order_admin_page_callback() {
 /**
  * AJAX handler for individual product order updates
  */
-function handle_product_order_ajax() {
+function handle_product_order_ajax()
+{
     if (!wp_verify_nonce($_POST['nonce'], 'product_order_nonce')) {
         wp_send_json_error('Invalid nonce');
     }
-    
+
     if (!current_user_can('edit_posts')) {
         wp_send_json_error('Insufficient permissions');
     }
-    
+
     $product_id = intval($_POST['product_id']);
     $action_type = sanitize_text_field($_POST['action_type'] ?? 'update');
-    
+
     if ($product_id) {
         if ($action_type === 'clear') {
             delete_post_meta($product_id, 'product_order');
@@ -785,18 +796,19 @@ function handle_product_order_ajax() {
     }
 }
 // AJAX handler for clearing all orders in a category
-function handle_clear_category_orders_ajax() {
+function handle_clear_category_orders_ajax()
+{
     if (!current_user_can('manage_options')) {
         wp_die('Unauthorized');
     }
-    
+
     $category_id = intval($_POST['category_id']);
-    
+
     if (!$category_id) {
         wp_send_json_error('Invalid category ID');
         return;
     }
-    
+
     // Get all products in this category
     $products = get_posts(array(
         'post_type' => 'product',
@@ -809,14 +821,14 @@ function handle_clear_category_orders_ajax() {
             )
         )
     ));
-    
+
     $cleared_count = 0;
     foreach ($products as $product) {
         if (delete_post_meta($product->ID, 'product_order')) {
             $cleared_count++;
         }
     }
-    
+
     wp_send_json_success(array(
         'message' => "Cleared orders for {$cleared_count} products",
         'cleared_count' => $cleared_count

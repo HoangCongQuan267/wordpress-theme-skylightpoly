@@ -35,7 +35,7 @@ get_header(); ?>
                                 $products_page_url = get_permalink($products_page->ID);
                             }
                         }
-                        $category_url = $products_page_url . '?category=' . urlencode($first_category->slug);
+                        $category_url = $products_page_url . '?danh-muc=' . urlencode($first_category->slug);
                     ?>
                         <a href="<?php echo esc_url($category_url); ?>"><?php echo esc_html($first_category->name); ?></a>
                         <span class="breadcrumb-separator">›</span>

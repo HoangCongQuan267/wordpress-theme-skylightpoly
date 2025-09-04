@@ -139,7 +139,8 @@ function get_products_by_categories($categories = array(), $limit = -1)
                 'relation' => 'OR',
                 'order_clause' => array(
                     'key' => 'product_order',
-                    'compare' => 'EXISTS'
+                    'compare' => 'EXISTS',
+                    'type' => 'NUMERIC'
                 ),
                 'no_order_clause' => array(
                     'key' => 'product_order',
@@ -147,8 +148,8 @@ function get_products_by_categories($categories = array(), $limit = -1)
                 )
             ),
             'orderby' => array(
-                'no_order_clause' => 'ASC',
                 'order_clause' => 'ASC',
+                'no_order_clause' => 'ASC',
                 'date' => 'DESC'
             ),
             'tax_query' => array(
@@ -391,11 +392,14 @@ function generate_seo_title($title = '', $separator = '|')
         } elseif (is_page()) {
             return get_the_title() . ' ' . $separator . ' ' . $site_name;
         } elseif (is_category()) {
-            return single_cat_title('', false) . ' ' . $separator . ' ' . $site_name;
+            $cat_title = function_exists('single_cat_title') ? single_cat_title('', false) : 'Category';
+            return $cat_title . ' ' . $separator . ' ' . $site_name;
         } elseif (is_tag()) {
-            return single_tag_title('', false) . ' ' . $separator . ' ' . $site_name;
+            $tag_title = function_exists('single_tag_title') ? single_tag_title('', false) : 'Tag';
+            return $tag_title . ' ' . $separator . ' ' . $site_name;
         } elseif (is_archive()) {
-            return get_the_archive_title() . ' ' . $separator . ' ' . $site_name;
+            $archive_title = function_exists('get_the_archive_title') ? get_the_archive_title() : 'Archive';
+            return $archive_title . ' ' . $separator . ' ' . $site_name;
         }
     }
     
@@ -431,12 +435,12 @@ function generate_meta_description($description = '')
         $content = get_the_content();
         return wp_trim_words(strip_tags($content), 25, '...');
     } elseif (is_category()) {
-        $desc = category_description();
+        $desc = function_exists('category_description') ? category_description() : '';
         if (!empty($desc)) {
             return wp_trim_words(strip_tags($desc), 25, '...');
         }
     } elseif (is_tag()) {
-        $desc = tag_description();
+        $desc = function_exists('tag_description') ? tag_description() : '';
         if (!empty($desc)) {
             return wp_trim_words(strip_tags($desc), 25, '...');
         }
@@ -544,7 +548,9 @@ function get_canonical_url()
 function should_index_page()
 {
     // Don't index admin, login, or search pages
-    if (is_admin() || is_search() || is_404()) {
+    $is_search = function_exists('is_search') ? is_search() : false;
+    $is_404 = function_exists('is_404') ? is_404() : false;
+    if (is_admin() || $is_search || $is_404) {
         return false;
     }
     

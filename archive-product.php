@@ -55,7 +55,8 @@ $products_args = array(
         'relation' => 'OR',
         'order_clause' => array(
             'key' => 'product_order',
-            'compare' => 'EXISTS'
+            'compare' => 'EXISTS',
+            'type' => 'NUMERIC'
         ),
         'no_order_clause' => array(
             'key' => 'product_order',
@@ -63,8 +64,8 @@ $products_args = array(
         )
     ),
     'orderby' => array(
-        'no_order_clause' => 'ASC',
         'order_clause' => 'ASC',
+        'no_order_clause' => 'ASC',
         'date' => 'DESC'
     )
 );
@@ -212,7 +213,7 @@ $products_query = new WP_Query($products_args);
 
                                         <div class="product-content">
                                             <h4 class="product-title"><?php the_title(); ?></h4>
-                                            <p class="product-excerpt"><?php echo has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 15); ?></p>
+
 
                                             <?php if (!empty($product_price) || !empty($discount_price)) : ?>
                                                 <div class="product-pricing">
